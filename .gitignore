@@ -1,0 +1,24 @@
+# macOS system files
+.DS_Store
+
+# Node modules (if you use npm/yarn in the future)
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+dist/
+build/
+
+# Local environment files
+.env
+.env.*
+
+# VS Code settings
+.vscode/
+
+# Other system files
+Thumbs.db

@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "title": "Taijiquan Academy - Ancient Chinese Martial Arts"
+  },
+  "nav": {
+    "home": "Home",
+    "mission": "Philosophy",
+    "silkReeling": "Silk Reeling",
+    "instructor": "Instructor",
+    "features": "Features",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Ancient Chinese Martial Arts",
+    "accent": "for Physical and Mental Health",
+    "subtitle": "Start learning Silk Reeling with AI Technology",
+    "cta": "Start Learning"
+  },
+  "mission": {
+    "title": "Our Philosophy",
+    "text": "At Taijiquan Academy, we share the essence of Chinese martial arts so that everyone can benefit by applying the principles to daily life. We offer simple and effective methods for students to achieve optimal health."
+  },
+  "silkReeling": {
+    "title": "12 Silk Reeling Forms",
+    "subtitle": "Each form includes 3 variations: Sitting, Standing, and Low Standing",
+    "tabs": {
+      "all": "All",
+      "sitting": "Sitting Form",
+      "standing": "Standing Form",
+      "lowStanding": "Low Standing Form"
+    },
+    "learn": "Learn"
+  },
+  "instructor": {
+    "title": "Professional Instructor",
+    "name": "Master Tai Chi",
+    "role": "Professional Taiji and Wushu Instructor (6th Dan)",
+    "bio": "Born in 1977 in Henan Province, China. Trained in martial arts from Shaolin Temple lineage under his father's strict guidance. With over 20 years of teaching experience, he is recognized internationally.",
+    "more": "Learn More"
+  },
+  "features": {
+    "title": "Special Features",
+    "items": {
+      "beginner": {
+        "title": "Perfect for Beginners",
+        "desc": "Learn basic forms and breathing with step-by-step guidance"
+      },
+      "intermediate": {
+        "title": "For Intermediate Practitioners",
+        "desc": "Focus on internal energy and advanced techniques"
+      },
+      "therapy": {
+        "title": "Therapy and Recovery",
+        "desc": "Focus on healing and recovery, suitable for all ages"
+      },
+      "ai": {
+        "title": "AI Motion Analysis",
+        "desc": "AI technology analyzes posture and provides real-time guidance"
+      },
+      "online": {
+        "title": "Online Learning",
+        "desc": "Learn anytime, anywhere via mobile or computer"
+      },
+      "progress": {
+        "title": "Progress Tracking",
+        "desc": "Track and analyze your learning progress"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "form": {
+      "name": "Full Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "message": "Message",
+      "submit": "Send Message"
+    },
+    "infoTitle": "Contact Information"
+  },
+  "about": {
+    "title": "About Us",
+    "text": "Taijiquan Academy was founded with the vision of presenting ancient Chinese martial arts in an accessible and modern way, integrating AI technology for effective and personalized learning."
+  },
+  "modal": {
+    "position": {
+      "sitting": "🪑 Sitting",
+      "standing": "🧍 Standing",
+      "lowStanding": "🤸 Low Standing"
+    },
+    "ai": {
+      "title": "🤖 AI Posture Analysis",
+      "start": "📹 Start Posture Analysis",
+      "stop": "⏹️ Stop Analysis",
+      "initialHint": "Turn on your camera to start posture analysis"
+    },
+    "details": {
+      "description": "📖 Description",
+      "keyPoints": "🎯 Key Points",
+      "mistakes": "⚠️ Common Mistakes",
+      "breathing": "🫁 Breathing Technique",
+      "tips": "💡 Practice Tips"
+    }
+  }
+}

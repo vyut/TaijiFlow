@@ -7,7 +7,7 @@ const videoElement = document.getElementById("input_video");
 const canvasElement = document.getElementById("output_canvas");
 const canvasCtx = canvasElement.getContext("2d");
 const loadingOverlay = document.getElementById("loading-overlay");
-const startOverlay = document.getElementById("start-overlay"); // Overlay ใหม่
+const startOverlay = document.getElementById("start-overlay");
 
 // Instances
 const engine = new HeuristicsEngine();

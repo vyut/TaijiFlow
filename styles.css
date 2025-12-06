@@ -1,0 +1,45 @@
+/* --- Global Styles --- */
+body {
+  font-family: "Sarabun", sans-serif;
+  transition: background-color 0.3s;
+}
+
+/* --- Canvas Styling --- */
+canvas {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Animation: Pulse Effect --- */
+.pulse-btn {
+  animation: pulse-shadow 2s infinite;
+}
+
+@keyframes pulse-shadow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(147, 51, 234, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(147, 51, 234, 0);
+  }
+}
+
+/* --- Fullscreen Handling --- */
+/* ปรับให้รองรับหลาย Browser Engine */
+canvas:fullscreen {
+  object-fit: contain;
+  background: black;
+}
+
+canvas:-webkit-full-screen {
+  object-fit: contain;
+  background: black;
+}
+
+canvas:-moz-full-screen {
+  object-fit: contain;
+  background: black;
+}

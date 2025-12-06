@@ -4,35 +4,40 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TaijiFlow AI</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <!-- Stylesheets -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap"
       rel="stylesheet"
     />
-    <style>
-      body {
-        font-family: "Sarabun", sans-serif;
-        transition: background-color 0.3s;
-      }
-      canvas {
-        border-radius: 8px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      }
-      .pulse-btn {
-        animation: pulse-shadow 2s infinite;
-      }
-      @keyframes pulse-shadow {
-        0% {
-          box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.7);
-        }
-        70% {
-          box-shadow: 0 0 0 15px rgba(147, 51, 234, 0);
-        }
-        100% {
-          box-shadow: 0 0 0 0 rgba(147, 51, 234, 0);
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Scripts (ใช้ defer เพื่อให้โหลดพร้อม HTML แต่รันทีหลัง) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+
+    <!-- App Modules -->
+    <script src="calibration_manager.js" defer></script>
+    <script src="heuristics_engine.js" defer></script>
+    <script src="ui_manager.js" defer></script>
+    <script src="script.js" defer></script>
   </head>
   <body
     class="h-screen flex flex-col items-center justify-center p-4 bg-f3f4f6"
@@ -49,13 +54,13 @@
       <div class="flex gap-2">
         <button
           id="lang-btn"
-          class="px-3 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 font-bold text-sm"
+          class="px-3 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 font-bold text-sm transition-colors"
         >
           🇹🇭 TH / 🇺🇸 EN
         </button>
         <button
           id="theme-btn"
-          class="px-3 py-1 bg-gray-800 text-white border border-gray-600 rounded hover:bg-gray-700 text-sm"
+          class="px-3 py-1 bg-gray-800 text-white border border-gray-600 rounded hover:bg-gray-700 text-sm transition-colors"
         >
           🌙 / ☀️
         </button>
@@ -63,7 +68,7 @@
     </div>
 
     <div class="flex flex-col md:flex-row gap-6 items-start w-full max-w-6xl">
-      <!-- Video Canvas -->
+      <!-- Video Canvas Container -->
       <div class="relative flex-grow group w-full md:w-auto">
         <video
           id="input_video"
@@ -78,7 +83,7 @@
           class="w-full bg-black rounded-lg"
         ></canvas>
 
-        <!-- Loading -->
+        <!-- Loading Overlay -->
         <div
           id="loading-overlay"
           class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80 text-white text-xl z-20 hidden rounded-lg"
@@ -147,7 +152,8 @@
           >
           <select
             id="exercise-select"
-            class="w-full p-2 border rounded-md bg-gray-50 text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full p-2 border rounded-md bg-gray-50 text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
+            title="เลือกท่าฝึก"
           >
             <option value="rh_cw">มือขวา - ตามเข็ม</option>
             <option value="rh_ccw">มือขวา - ทวนเข็ม</option>
@@ -223,7 +229,7 @@
 
         <!-- Instructions -->
         <div
-          class="mt-2 p-3 bg-blue-50 text-blue-800 text-xs rounded border border-blue-100 dark:bg-blue-900 dark:text-blue-100 dark:border-blue-800"
+          class="mt-2 p-3 bg-blue-50 text-blue-800 text-xs rounded border border-blue-100 dark:bg-blue-900 dark:text-blue-100 dark:border-blue-800 transition-colors"
         >
           <strong id="instr-title">💡 คำแนะนำ:</strong>
           <ul class="list-disc list-inside mt-1 space-y-1">
@@ -234,24 +240,5 @@
         </div>
       </div>
     </div>
-
-    <!-- Scripts -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"
-      crossorigin="anonymous"
-    ></script>
-
-    <script src="calibration_manager.js"></script>
-    <script src="heuristics_engine.js"></script>
-    <script src="ui_manager.js"></script>
-    <script src="script.js"></script>
   </body>
 </html>

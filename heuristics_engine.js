@@ -104,21 +104,27 @@ class HeuristicsEngine {
     const leftAnkle = landmarks[27];
     const rightAnkle = landmarks[28];
 
+    // --- เลือก Landmark ของแขนข้างที่ใช้งานอยู่ ---
+    const isRightHandExercise = currentExercise.startsWith("rh");
+    const activeWrist = isRightHandExercise ? rightWrist : leftWrist;
+    const activeShoulder = isRightHandExercise ? rightShoulder : leftShoulder;
+    const activeElbow = isRightHandExercise ? rightElbow : leftElbow;
+    const activeThumb = isRightHandExercise ? rightThumb : leftThumb;
+    const activePinky = isRightHandExercise ? rightPinky : leftPinky;
+
     // --- ตรวจสอบกฎต่างๆ และเก็บใส่ allErrors ---
 
     // 1. Path Accuracy
     if (config.checkPath && referencePath && referencePath.length > 0) {
-      const err = this.checkPathAccuracy(rightWrist, referencePath);
+      const err = this.checkPathAccuracy(activeWrist, referencePath);
       if (err) allErrors.push({ msg: err, rule: "Path Accuracy" });
     }
 
     // 2. Arm Rotation
     if (config.checkRotation) {
       const err = this.checkArmRotation(
-        rightThumb,
-        rightPinky,
-        rightWrist,
-        rightElbow,
+        activeThumb,
+        activePinky,
         currentExercise
       );
       if (err) allErrors.push({ msg: err, rule: "Arm Rotation" });
@@ -126,7 +132,11 @@ class HeuristicsEngine {
 
     // 3. Elbow Sinking
     if (config.checkElbow) {
-      const err = this.checkElbowSinking(rightShoulder, rightElbow, rightWrist);
+      const err = this.checkElbowSinking(
+        activeShoulder,
+        activeElbow,
+        activeWrist
+      );
       if (err) allErrors.push({ msg: err, rule: "Elbow Sinking" });
     }
 
@@ -144,7 +154,7 @@ class HeuristicsEngine {
 
     // 6. Smoothness
     if (config.checkSmooth) {
-      const err = this.checkSmoothness(rightWrist);
+      const err = this.checkSmoothness(activeWrist);
       if (err) allErrors.push({ msg: err, rule: "Smoothness" });
     }
 
@@ -187,7 +197,7 @@ class HeuristicsEngine {
       return [topError]; // ส่งกลับเป็น Array ตาม Format เดิม
     }
 
-    // กรณีที่ 2: ไม่พบข้อผิดพลาดในเฟรมนี้ (แต่จะโชว์อันเก่าค้างไว้หน่อยไหม?)
+    // กรณีที่ 2: ไม่พบข้อผิดพลาดในเฟรมนี้ (แต่จะโชว์อันเก่าค้างไว้)
     else {
       // ถ้าเวลาผ่านไปไม่ถึงกำหนด (Hold Time) ให้โชว์อันเดิมไปก่อน
       if (Date.now() - this.lastFeedbackTime < this.FEEDBACK_HOLD_TIME) {
@@ -227,6 +237,7 @@ class HeuristicsEngine {
       const d = this.calculateDistance(userWrist, refPoint);
       if (d < minDistance) minDistance = d;
     }
+    // Dynamic Thresholds
     let threshold = 0.08;
     if (this.calibrationData) {
       threshold = this.calibrationData.shoulderWidth * 0.4;
@@ -236,13 +247,56 @@ class HeuristicsEngine {
       : null;
   }
 
-  checkArmRotation(thumb, pinky, wrist, elbow, moveType) {
-    if (!thumb || !pinky) return null;
-    return null; // รอ Logic จริง
+  checkArmRotation(thumb, pinky, moveType) {
+    // 1. ตรวจสอบว่ามีข้อมูล landmark และประวัติการเคลื่อนไหวเพียงพอหรือไม่
+    if (!thumb || !pinky || this.wristHistory.length < 2) {
+      return null;
+    }
+
+    // 2. หา-ทิศทางการเคลื่อนที่ของข้อมือ (ขึ้นหรือลง)
+    const p_current = this.wristHistory[this.wristHistory.length - 1];
+    const p_previous = this.wristHistory[this.wristHistory.length - 2];
+    const deltaY = p_current.y - p_previous.y;
+
+    // ถ้าเคลื่อนที่น้อยไป ไม่ต้องเช็ค
+    if (Math.abs(deltaY) < 0.005) {
+      return null;
+    }
+    const isMovingUp = deltaY < 0;
+    const isMovingDown = deltaY > 0;
+
+    // 3. ตรวจสอบการหงาย/คว่ำของฝ่ามือ (Supination/Pronation)
+    // Landmark ที่ได้มายังไม่กลับด้าน (un-mirrored)
+    const isRightHand = moveType.startsWith("rh");
+    const isActuallySupinated = isRightHand
+      ? thumb.x > pinky.x // มือขวา: นิ้วโป้งอยู่ขวากว่านิ้วก้อย = หงาย
+      : thumb.x < pinky.x; // มือซ้าย: นิ้วโป้งอยู่ซ้ายกว่านิ้วก้อย = หงาย
+
+    // 4. กำหนด Logic การหมุนที่ถูกต้องตามท่า
+    let isSupinationExpected = false;
+    if (isMovingUp) {
+      // ตอนเคลื่อนที่ขึ้น: rh_cw และ lh_ccw ควรจะหงายฝ่ามือ
+      isSupinationExpected = moveType === "rh_cw" || moveType === "lh_ccw";
+    } else if (isMovingDown) {
+      // ตอนเคลื่อนที่ลง: rh_ccw และ lh_cw ควรจะหงายฝ่ามือ
+      isSupinationExpected = moveType === "rh_ccw" || moveType === "lh_cw";
+    }
+
+    // 5. เปรียบเทียบและส่ง Feedback
+    if (isSupinationExpected !== isActuallySupinated) {
+      return "⚠️ หมุนแขนไม่ถูกต้อง (Incorrect Arm Rotation)";
+    }
+
+    return null;
   }
 
   checkElbowSinking(shoulder, elbow, wrist) {
-    if (elbow.y < shoulder.y) {
+    // เพิ่ม Tolerance เพื่อลดความ Sensitive ของการตรวจจับ
+    // ทำให้ระบบไม่แจ้งเตือนถี่เกินไปจากการขยับเล็กๆ น้อยๆ
+    const tolerance = this.calibrationData
+      ? this.calibrationData.torsoHeight * 0.05 // 5% ของความสูงลำตัว
+      : 0.01; // ค่า Default
+    if (elbow.y < shoulder.y - tolerance) {
       return "⚠️ ศอกลอย (Elbow too high)";
     }
     return null;
@@ -278,8 +332,12 @@ class HeuristicsEngine {
     this.lastTimestamp = timestamp;
     this.lastLandmarks = landmarks;
 
-    const THRESHOLD = 10;
-    if (shoulderVel > THRESHOLD && hipVel < THRESHOLD / 2) {
+    // ปรับปรุง Logic: ตรวจจับเมื่อความเร็วไหล่ 'มากกว่า' ความเร็วสะโพกอย่างมีนัยสำคัญ
+    // โดยใช้ 'อัตราส่วน' แทนค่าตายตัว เพื่อให้ยืดหยุ่นตามความเร็วของผู้ใช้
+    const RATIO_THRESHOLD = 3.0; // ไหล่หมุนเร็วกว่าเอว 3 เท่า
+    const MIN_HIP_VELOCITY = 2.0; // เช็คต่อเมื่อมีการหมุนเอวจริงๆ เท่านั้น
+
+    if (hipVel > MIN_HIP_VELOCITY && shoulderVel > hipVel * RATIO_THRESHOLD) {
       return "⚠️ ใช้เอวนำ (Start with Waist)";
     }
     return null;
@@ -344,11 +402,24 @@ class HeuristicsEngine {
   }
 
   checkWeightShift(leftHip, rightHip, leftAnkle, rightAnkle) {
-    const hipCenter = (leftHip.x + rightHip.x) / 2;
-    const feetCenter = (leftAnkle.x + rightAnkle.x) / 2;
+    if (!leftHip || !rightHip || !leftAnkle || !rightAnkle) return null;
 
-    if (Math.abs(hipCenter - feetCenter) > 0.1)
+    const hipCenter = (leftHip.x + rightHip.x) / 2;
+    const stanceWidth = Math.abs(leftAnkle.x - rightAnkle.x);
+
+    // กำหนดขอบเขตของฐานการยืน (Base of Support)
+    const leftBoundary = Math.min(leftAnkle.x, rightAnkle.x);
+    const rightBoundary = Math.max(leftAnkle.x, rightAnkle.x);
+
+    // เพิ่มระยะกันชน (Buffer) 10% ของความกว้างการยืน เพื่อไม่ให้เอียงจนสุดเกินไป
+    const buffer = stanceWidth * 0.1;
+
+    if (
+      hipCenter < leftBoundary + buffer ||
+      hipCenter > rightBoundary - buffer
+    ) {
       return "⚠️ เสียสมดุล (Off Balance)";
+    }
     return null;
   }
 }

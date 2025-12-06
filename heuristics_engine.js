@@ -1,14 +1,16 @@
 /**
- * TaijiFlow AI - Heuristics Engine v2.1
- * รองรับ Dynamic Thresholds จากการ Calibration
+ * TaijiFlow AI - Heuristics Engine v2.2
+ * - รองรับ Dynamic Thresholds (Calibration)
+ * - จัดลำดับความสำคัญของ Feedback (Prioritization)
+ * - แสดงผลค้างไว้ให้อ่านทัน (Sticky Feedback)
  */
 
 class HeuristicsEngine {
   constructor() {
-    // *** ตัวแปรสำหรับเก็บข้อมูล Calibration ***
-    this.calibrationData = null; // จะถูก set เมื่อ calibrate เสร็จ
+    // --- ตัวแปรสำหรับเก็บข้อมูล Calibration ---
+    this.calibrationData = null;
 
-    // *** ตัวแปร State & History เดิม ***
+    // --- ตัวแปร State & History ---
     this.lastLandmarks = null;
     this.lastTimestamp = -1;
     this.headYHistory = [];
@@ -17,18 +19,23 @@ class HeuristicsEngine {
     this.HISTORY_LENGTH_WRIST = 10;
     this.pauseCounter = 0;
 
-    // *** ตารางกำหนดว่า Level ไหน ต้องตรวจกฎข้อไหนบ้าง ***
+    // --- ตัวแปรสำหรับ Sticky Feedback (กันข้อความกระพริบ) ---
+    this.lastFeedbackMsg = null;
+    this.lastFeedbackTime = 0;
+    this.FEEDBACK_HOLD_TIME = 1500; // แสดงค้างไว้อย่างน้อย 1.5 วินาที
+
+    // --- Config: Level ไหน ตรวจอะไรบ้าง ---
     this.RULES_CONFIG = {
       L1: {
         // ท่านั่ง
         checkPath: true,
         checkRotation: true,
         checkElbow: true,
-        checkWaist: true, // เอวหมุนได้แม้นั่ง
-        checkStability: false, // นั่งอยู่ ตัวนิ่งอยู่แล้ว ไม่ต้องตรวจเข้ม
+        checkWaist: true,
+        checkStability: false,
         checkSmooth: true,
         checkContinuity: true,
-        checkWeight: false, // นั่งอยู่ ไม่มีการถ่ายน้ำหนักขา
+        checkWeight: false,
       },
       L2: {
         // ท่ายืน
@@ -36,13 +43,13 @@ class HeuristicsEngine {
         checkRotation: true,
         checkElbow: true,
         checkWaist: true,
-        checkStability: true, // ยืนแล้ว ต้องตรวจการโยกตัว
+        checkStability: true,
         checkSmooth: true,
         checkContinuity: true,
-        checkWeight: false, // ยืนเฉยๆ อาจยังไม่เน้นถ่ายน้ำหนักมาก
+        checkWeight: false,
       },
       L3: {
-        // ท่ายืนย่อ (Bow Stance)
+        // ท่ายืนย่อ
         checkPath: true,
         checkRotation: true,
         checkElbow: true,
@@ -50,42 +57,37 @@ class HeuristicsEngine {
         checkStability: true,
         checkSmooth: true,
         checkContinuity: true,
-        checkWeight: true, // *** สำคัญมากสำหรับเลเวลนี้ ***
+        checkWeight: true,
       },
     };
 
-    // กำหนดความสำคัญ (ค่าน้อย = สำคัญมาก)
+    // --- Priority: ลำดับความสำคัญ (เลขน้อย = สำคัญมาก) ---
     this.RULE_PRIORITY = {
-        'Path Accuracy': 1,
-        'Waist Initiation': 2,
-        'Weight Shift': 3,
-        'Vertical Stability': 4,
-        'Arm Rotation': 5,
-        'Elbow Sinking': 6,
-        'Smoothness': 7,
-        'Continuity': 8
+      "Path Accuracy": 1, // รูปทรงผิด ต้องแก้ก่อน
+      "Waist Initiation": 2, // แกนกลางสำคัญรองลงมา
+      "Weight Shift": 3, // ฐานรากสำคัญ
+      "Vertical Stability": 4,
+      "Arm Rotation": 5,
+      "Elbow Sinking": 6,
+      Smoothness: 7,
+      Continuity: 8,
     };
   }
 
-  /**
-   * รับค่าสัดส่วนร่างกายของผู้ใช้มาเก็บไว้
-   */
   setCalibration(data) {
     this.calibrationData = data;
     console.log("Engine updated with user metrics:", this.calibrationData);
   }
 
   analyze(landmarks, timestamp, referencePath, currentExercise, currentLevel) {
-    const feedbacks = [];
-    if (!landmarks) return feedbacks;
+    // 1. เปลี่ยนจาก feedbacks array เป็น allErrors array เพื่อเก็บรายละเอียด
+    let allErrors = [];
 
-    // ดึง Config ของเลเวลปัจจุบันมาดู
-    const config = this.RULES_CONFIG[currentLevel];
+    if (!landmarks) return [];
 
-    // ถ้าไม่เจอ Config ให้ใช้ของ L3 (ตรวจหมด)
-    const rules = config || this.RULES_CONFIG["L3"];
+    const config = this.RULES_CONFIG[currentLevel] || this.RULES_CONFIG["L3"];
 
-    // ดึงจุดสำคัญ (Keypoints)
+    // Keypoints extraction
     const nose = landmarks[0];
     const leftShoulder = landmarks[11];
     const rightShoulder = landmarks[12];
@@ -102,78 +104,100 @@ class HeuristicsEngine {
     const leftAnkle = landmarks[27];
     const rightAnkle = landmarks[28];
 
-    // --- เริ่มตรวจสอบตาม Config ---
-
-    // --- กลุ่มที่ 1: รูปแบบภายนอก ---
+    // --- ตรวจสอบกฎต่างๆ และเก็บใส่ allErrors ---
 
     // 1. Path Accuracy
-    if (rules.checkPath && referencePath && referencePath.length > 0) {
-      const pathError = this.checkPathAccuracy(rightWrist, referencePath);
-      if (pathError) feedbacks.push(pathError);
+    if (config.checkPath && referencePath && referencePath.length > 0) {
+      const err = this.checkPathAccuracy(rightWrist, referencePath);
+      if (err) allErrors.push({ msg: err, rule: "Path Accuracy" });
     }
 
     // 2. Arm Rotation
-    if (rules.checkRotation) {
-      const rotationError = this.checkArmRotation(
+    if (config.checkRotation) {
+      const err = this.checkArmRotation(
         rightThumb,
         rightPinky,
         rightWrist,
         rightElbow,
         currentExercise
       );
-      if (rotationError) feedbacks.push(rotationError);
+      if (err) allErrors.push({ msg: err, rule: "Arm Rotation" });
     }
 
     // 3. Elbow Sinking
-    if (rules.checkElbow) {
-      const elbowError = this.checkElbowSinking(
-        rightShoulder,
-        rightElbow,
-        rightWrist
-      );
-      if (elbowError) feedbacks.push(elbowError);
+    if (config.checkElbow) {
+      const err = this.checkElbowSinking(rightShoulder, rightElbow, rightWrist);
+      if (err) allErrors.push({ msg: err, rule: "Elbow Sinking" });
     }
 
-    // --- กลุ่มที่ 2: คุณภาพภายใน ---
-
     // 4. Waist Initiation
-    if (rules.checkWaist) {
-      const waistError = this.checkWaistInitiation(landmarks, timestamp);
-      if (waistError) feedbacks.push(waistError);
+    if (config.checkWaist) {
+      const err = this.checkWaistInitiation(landmarks, timestamp);
+      if (err) allErrors.push({ msg: err, rule: "Waist Initiation" });
     }
 
     // 5. Vertical Stability
-    if (rules.checkStability) {
-      const stabilityError = this.checkVerticalStability(nose);
-      if (stabilityError) feedbacks.push(stabilityError);
+    if (config.checkStability) {
+      const err = this.checkVerticalStability(nose);
+      if (err) allErrors.push({ msg: err, rule: "Vertical Stability" });
     }
 
     // 6. Smoothness
-    if (rules.checkSmooth) {
-      const smoothnessError = this.checkSmoothness(rightWrist);
-      if (smoothnessError) feedbacks.push(smoothnessError);
+    if (config.checkSmooth) {
+      const err = this.checkSmoothness(rightWrist);
+      if (err) allErrors.push({ msg: err, rule: "Smoothness" });
     }
-
-    // --- กลุ่มที่ 3: ขั้นสูง ---
 
     // 7. Continuity
-    if (rules.checkContinuity) {
-      const continuityError = this.checkContinuity();
-      if (continuityError) feedbacks.push(continuityError);
+    if (config.checkContinuity) {
+      const err = this.checkContinuity();
+      if (err) allErrors.push({ msg: err, rule: "Continuity" });
     }
 
-    // 8. Weight Shifting (เฉพาะ L3 ตาม Config)
-    if (rules.checkWeight) {
-      const weightError = this.checkWeightShift(
+    // 8. Weight Shifting
+    if (config.checkWeight) {
+      const err = this.checkWeightShift(
         leftHip,
         rightHip,
         leftAnkle,
         rightAnkle
       );
-      if (weightError) feedbacks.push(weightError);
+      if (err) allErrors.push({ msg: err, rule: "Weight Shift" });
     }
 
-    return feedbacks;
+    // --- ขั้นตอนการคัดเลือก Feedback (Selection Logic) ---
+
+    // กรณีที่ 1: พบข้อผิดพลาดใหม่ในเฟรมนี้
+    if (allErrors.length > 0) {
+      // เรียงลำดับความสำคัญ (Priority Sort)
+      allErrors.sort((a, b) => {
+        return (
+          (this.RULE_PRIORITY[a.rule] || 99) -
+          (this.RULE_PRIORITY[b.rule] || 99)
+        );
+      });
+
+      // เลือกข้อผิดพลาดที่สำคัญที่สุด (Top Priority)
+      const topError = allErrors[0].msg;
+
+      // อัปเดต Sticky Logic
+      this.lastFeedbackMsg = topError;
+      this.lastFeedbackTime = Date.now();
+
+      return [topError]; // ส่งกลับเป็น Array ตาม Format เดิม
+    }
+
+    // กรณีที่ 2: ไม่พบข้อผิดพลาดในเฟรมนี้ (แต่จะโชว์อันเก่าค้างไว้หน่อยไหม?)
+    else {
+      // ถ้าเวลาผ่านไปไม่ถึงกำหนด (Hold Time) ให้โชว์อันเดิมไปก่อน
+      if (Date.now() - this.lastFeedbackTime < this.FEEDBACK_HOLD_TIME) {
+        return this.lastFeedbackMsg ? [this.lastFeedbackMsg] : [];
+      } else {
+        // ถ้าผ่านไปนานแล้ว ก็เคลียร์หน้าจอ (แสดงว่าทำถูกแล้ว)
+        this.lastFeedbackMsg = null;
+        return []; // ส่งค่าว่าง = สีเขียว/ไม่มีข้อความ
+      }
+    }
   }
 
   // ================= Helper Functions =================
@@ -195,7 +219,7 @@ class HeuristicsEngine {
     return Math.abs(diff / deltaTime);
   }
 
-  // ================= Rule Implementations =================
+  // ================= Rule Implementations (เหมือนเดิม) =================
 
   checkPathAccuracy(userWrist, referencePath) {
     let minDistance = Infinity;
@@ -203,24 +227,18 @@ class HeuristicsEngine {
       const d = this.calculateDistance(userWrist, refPoint);
       if (d < minDistance) minDistance = d;
     }
-
-    // **Dynamic Threshold**: ใช้ 40% ของความกว้างไหล่ (ถ้ามีค่า Calibrate)
-    // ถ้าไม่มีค่า ให้ใช้ค่า Default 0.08
     let threshold = 0.08;
     if (this.calibrationData) {
       threshold = this.calibrationData.shoulderWidth * 0.4;
     }
-
     return minDistance > threshold
       ? "⚠️ เส้นทางไม่แม่นยำ (Path Deviation)"
       : null;
   }
 
   checkArmRotation(thumb, pinky, wrist, elbow, moveType) {
-    // (Logic เดิม) ยังคงใช้การเปรียบเทียบความสูงสัมพัทธ์
     if (!thumb || !pinky) return null;
-    // const isPalmUp = thumb.y < pinky.y;
-    return null;
+    return null; // รอ Logic จริง
   }
 
   checkElbowSinking(shoulder, elbow, wrist) {
@@ -279,7 +297,6 @@ class HeuristicsEngine {
     const max = Math.max(...this.headYHistory);
     const displacement = max - min;
 
-    // **Dynamic Threshold**: ใช้ 10% ของความสูงลำตัว (Torso Height)
     let threshold = 0.05;
     if (this.calibrationData) {
       threshold = this.calibrationData.torsoHeight * 0.1;

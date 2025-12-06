@@ -13,6 +13,7 @@ const startOverlay = document.getElementById("start-overlay");
 const engine = new HeuristicsEngine();
 const calibrator = new CalibrationManager();
 const uiManager = new UIManager(); // สร้าง Instance
+const drawer = new DrawingManager(canvasCtx, canvasElement); // สร้าง Instance Drawer
 
 // State Variables
 let currentExercise = "rh_cw";
@@ -80,14 +81,8 @@ exerciseSelect.addEventListener("change", (e) => {
 
 levelButtons.forEach((btn) => {
   btn.addEventListener("click", (e) => {
-    levelButtons.forEach((b) => {
-      b.classList.remove("bg-blue-600", "text-white", "active", "shadow-sm");
-      b.classList.add("bg-gray-100", "text-gray-600");
-    });
-    e.target.classList.remove("bg-gray-100", "text-gray-600");
-    e.target.classList.add("bg-blue-600", "text-white", "active", "shadow-sm");
-
     currentLevel = e.target.dataset.level;
+    uiManager.updateLevelButtons(currentLevel);
     loadReferenceData();
   });
 });
@@ -107,9 +102,7 @@ recordBtn.addEventListener("click", () => {
 
   if (isRecording) {
     // --- เริ่มต้นการฝึก ---
-    recordBtn.innerText = "⏹️ จบการฝึก (Stop)";
-    recordBtn.classList.replace("bg-red-100", "bg-red-600");
-    recordBtn.classList.replace("text-red-600", "text-white");
+    uiManager.updateRecordButtonState(true);
 
     // Reset Data
     sessionLog = [];
@@ -118,12 +111,25 @@ recordBtn.addEventListener("click", () => {
     console.log("Session Started & Recording Data...");
   } else {
     // --- จบการฝึก ---
-    recordBtn.innerText = "⏺️ บันทึก (R)";
-    recordBtn.classList.replace("bg-red-600", "bg-red-100");
-    recordBtn.classList.replace("text-white", "text-red-600");
+    uiManager.updateRecordButtonState(false);
 
     // ดาวน์โหลดข้อมูลครบชุด (Report + Raw Data)
     downloadFullData();
+  }
+});
+
+// --- Keyboard Shortcuts ---
+window.addEventListener("keydown", (e) => {
+  // ใช้ e.key เพื่อความทันสมัยและอ่านง่าย
+  switch (e.key.toLowerCase()) {
+    case "f":
+      e.preventDefault(); // ป้องกันพฤติกรรม default ของเบราว์เซอร์
+      fullscreenBtn.click();
+      break;
+    case "r":
+      e.preventDefault();
+      recordBtn.click();
+      break;
   }
 });
 
@@ -169,7 +175,7 @@ function onResults(results) {
 
   if (results.poseLandmarks) {
     if (calibrator.isActive) {
-      drawSkeleton(results.poseLandmarks);
+      drawer.drawSkeleton(results.poseLandmarks);
 
       const calibResult = calibrator.process(results.poseLandmarks);
       calibrator.drawOverlay(
@@ -182,7 +188,7 @@ function onResults(results) {
         engine.setCalibration(calibResult.data);
 
         // ใช้ข้อความจาก uiManager
-        alert(uiManager.getText("alert_calib_success"));
+        alert(uiManager.getText("alert_calib_success")); // ปรับปรุงแล้ว
 
         // Reset UI
         loadReferenceData();
@@ -191,10 +197,10 @@ function onResults(results) {
       }
     } else {
       if (referencePath.length > 0) {
-        drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4);
+        drawer.drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4);
       }
 
-      drawSkeleton(results.poseLandmarks);
+      drawer.drawSkeleton(results.poseLandmarks);
 
       if (!calibrator.isActive && referencePath.length > 0) {
         // 1. วิเคราะห์ด้วย Engine
@@ -205,7 +211,7 @@ function onResults(results) {
           currentExercise, // ส่งชื่อท่า
           currentLevel // *** ส่งเลเวลไปด้วย (L1, L2, L3) ***
         );
-        drawFeedbackPanel(feedbacks);
+        drawer.drawFeedbackPanel(feedbacks);
 
         // 2. *** เก็บข้อมูล (Data Logging) ***
         if (isRecording) {
@@ -238,76 +244,10 @@ function onResults(results) {
   canvasCtx.restore();
 }
 
-function drawSkeleton(landmarks) {
-  canvasCtx.save();
-  canvasCtx.scale(-1, 1);
-  canvasCtx.translate(-canvasElement.width, 0);
-  drawConnectors(canvasCtx, landmarks, POSE_CONNECTIONS, {
-    color: "#FFFFFF",
-    lineWidth: 4,
-  });
-  drawLandmarks(canvasCtx, landmarks, {
-    color: "#FF0000",
-    lineWidth: 2,
-    radius: 4,
-  });
-  canvasCtx.restore();
-}
-
-function drawPath(path, color, width) {
-  canvasCtx.save();
-  canvasCtx.scale(-1, 1);
-  canvasCtx.translate(-canvasElement.width, 0);
-  canvasCtx.beginPath();
-  canvasCtx.strokeStyle = color;
-  canvasCtx.lineWidth = width;
-  if (path.length > 0) {
-    canvasCtx.moveTo(
-      path[0].x * canvasElement.width,
-      path[0].y * canvasElement.height
-    );
-    for (let i = 1; i < path.length; i++) {
-      canvasCtx.lineTo(
-        path[i].x * canvasElement.width,
-        path[i].y * canvasElement.height
-      );
-    }
-  }
-  canvasCtx.stroke();
-  canvasCtx.restore();
-}
-
-function drawFeedbackPanel(feedbacks) {
-  if (feedbacks.length === 0) return;
-  const boxX = 20,
-    boxY = 20,
-    padding = 15,
-    lineHeight = 30;
-  const boxWidth = 450;
-  const boxHeight = feedbacks.length * lineHeight + padding * 2;
-
-  canvasCtx.fillStyle = "rgba(0, 0, 0, 0.7)";
-  canvasCtx.roundRect(boxX, boxY, boxWidth, boxHeight, 10);
-  canvasCtx.fill();
-
-  canvasCtx.font = 'bold 20px "Sarabun", sans-serif';
-  canvasCtx.fillStyle = "#FFD700";
-  canvasCtx.textAlign = "left";
-  canvasCtx.textBaseline = "top";
-
-  feedbacks.forEach((text, index) => {
-    canvasCtx.fillText(
-      text,
-      boxX + padding,
-      boxY + padding + index * lineHeight
-    );
-  });
-}
-
 // --- ส่วนที่ 3: ฟังก์ชันดาวน์โหลดรายงาน ---
 function downloadSessionReport() {
   if (sessionLog.length === 0) {
-    alert("การฝึกเสร็จสิ้น! (ไม่มีข้อผิดพลาดที่บันทึกไว้)");
+    alert(uiManager.getText("alert_no_data")); // ใช้ข้อความจาก UIManager
     return;
   }
 
@@ -335,7 +275,7 @@ function downloadSessionReport() {
 
 function downloadFullData() {
   if (recordedSessionData.length === 0) {
-    alert("ไม่มีข้อมูลการบันทึก");
+    alert(uiManager.getText("alert_no_data")); // ใช้ข้อความจาก UIManager
     return;
   }
 

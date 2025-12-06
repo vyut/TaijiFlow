@@ -16,8 +16,8 @@ class UIManager {
         re_calibrate_btn: "📏 วัดใหม่อีกครั้ง",
         cancel_btn: "❌ ยกเลิก",
         fullscreen_btn: "เต็มจอ (F)",
-        record_btn_start: "บันทึก (R)",
-        record_btn_stop: "⏹️ จบการฝึก",
+        record_btn_start: "⏺️ บันทึก (R)",
+        record_btn_stop: "⏹️ หยุดบันทึก",
         instructions_title: "💡 คำแนะนำ:",
         instructions_1: 'กดปุ่ม "ปรับเทียบสัดส่วน" ก่อนเริ่มใช้งานครั้งแรก',
         instructions_2: "ยืนให้เต็มตัว ห่างจากกล้อง 2-3 เมตร",
@@ -26,6 +26,7 @@ class UIManager {
         overlay_title: "พร้อมเริ่มฝึกหรือยัง?",
         overlay_desc: "*กดเพื่อเริ่มวัดตัวก่อนการฝึก",
         alert_calib_success: "ปรับเทียบสำเร็จ! ระบบพร้อมใช้งานแล้ว",
+        alert_no_data: "ไม่มีข้อมูลการบันทึก",
         ex_rh_cw: "มือขวา - ตามเข็ม",
         ex_rh_ccw: "มือขวา - ทวนเข็ม",
         ex_lh_cw: "มือซ้าย - ตามเข็ม",
@@ -42,8 +43,8 @@ class UIManager {
         re_calibrate_btn: "📏 Re-Calibrate",
         cancel_btn: "❌ Cancel",
         fullscreen_btn: "(F)ullscreen",
-        record_btn_start: "(R)ecord",
-        record_btn_stop: "⏹️ Stop",
+        record_btn_start: "⏺️ Record (R)",
+        record_btn_stop: "⏹️ Stop Recording",
         instructions_title: "💡 Instructions:",
         instructions_1: 'Press "Calibrate" before starting.',
         instructions_2: "Stand full-body, 2-3m from camera.",
@@ -52,6 +53,7 @@ class UIManager {
         overlay_title: "Ready to Train?",
         overlay_desc: "*Press to calibrate your body proportions",
         alert_calib_success: "Calibration Complete! System Ready.",
+        alert_no_data: "No recorded data found.",
         ex_rh_cw: "Right Hand - Clockwise",
         ex_rh_ccw: "Right Hand - Counter-Clockwise",
         ex_lh_cw: "Left Hand - Clockwise",
@@ -136,13 +138,7 @@ class UIManager {
     setText("small-calibrate-btn", "re_calibrate_btn");
     setText("cancel-calib-btn", "cancel_btn");
     setText("fullscreen-btn", "fullscreen_btn");
-
-    // ปุ่ม Record ต้องเช็คสถานะปัจจุบันก่อน
-    const recBtn = document.getElementById("record_btn");
-    if (recBtn) {
-      // Logic นี้อาจจะต้องเชื่อมกับ scriptหลัก แต่เบื้องต้นเซ็ตค่า default ก่อน
-      // หรือเราอาจจะข้ามปุ่มนี้ไปก่อนแล้วให้ script.js จัดการตอน toggle
-    }
+    this.updateRecordButtonState(false); // ตั้งค่าเริ่มต้นให้ปุ่ม Record
 
     setText("instr-title", "instructions_title");
     setText("instr-1", "instructions_1");
@@ -165,5 +161,38 @@ class UIManager {
   // ฟังก์ชันช่วยสำหรับดึงข้อความไปใช้ใน script.js (เช่น Alert)
   getText(key) {
     return this.translations[this.currentLang][key];
+  }
+
+  updateLevelButtons(activeLevel) {
+    const levelButtons = document.querySelectorAll(".level-btn");
+    levelButtons.forEach((btn) => {
+      if (btn.dataset.level === activeLevel) {
+        btn.classList.remove("bg-gray-100", "text-gray-600");
+        btn.classList.add("bg-blue-600", "text-white", "active", "shadow-sm");
+      } else {
+        btn.classList.remove(
+          "bg-blue-600",
+          "text-white",
+          "active",
+          "shadow-sm"
+        );
+        btn.classList.add("bg-gray-100", "text-gray-600");
+      }
+    });
+  }
+
+  updateRecordButtonState(isRecording) {
+    const recordBtn = document.getElementById("record-btn");
+    if (!recordBtn) return;
+
+    if (isRecording) {
+      recordBtn.innerText = this.getText("record_btn_stop");
+      recordBtn.classList.replace("bg-red-100", "bg-red-600");
+      recordBtn.classList.replace("text-red-600", "text-white");
+    } else {
+      recordBtn.innerText = this.getText("record_btn_start");
+      recordBtn.classList.replace("bg-red-600", "bg-red-100");
+      recordBtn.classList.replace("text-white", "text-red-600");
+    }
   }
 }

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TaijiFlow AI - Ground Truth Collector (HD)</title>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #1a202c;
+        color: white;
+        font-family: "Sarabun", sans-serif;
+      }
+      /* ปรับขนาด Container ให้รองรับ 16:9 Aspect Ratio */
+      .canvas-container {
+        position: relative;
+        width: 1280px;
+        max-width: 90vw;
+        aspect-ratio: 16/9;
+        margin: 0 auto;
+      }
+      video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform: scaleX(-1);
+        object-fit: cover;
+      }
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform: scaleX(-1);
+        object-fit: cover;
+      }
+      .status-dot {
+        height: 12px;
+        width: 12px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+      .recording {
+        background-color: #ef4444;
+        animation: pulse 1s infinite;
+      }
+      .idle {
+        background-color: #9ca3af;
+      }
+      @keyframes pulse {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body class="flex flex-col items-center justify-center min-h-screen p-4">
+    <h1 class="text-3xl font-bold mb-4 text-blue-400">
+      TaijiFlow AI: Ground Truth Collector (HD)
+    </h1>
+
+    <div
+      class="bg-gray-800 p-6 rounded-lg shadow-lg text-center w-full max-w-6xl"
+    >
+      <div class="mb-4 flex justify-between items-center">
+        <span id="statusText" class="text-gray-400"
+          >สถานะ: พร้อมใช้งาน (1280x720)</span
+        >
+        <div>
+          <span id="recordIndicator" class="status-dot idle mr-2"></span>
+          <span id="timer">00:00</span>
+        </div>
+      </div>
+
+      <div
+        class="canvas-container bg-black rounded overflow-hidden shadow-xl mb-6"
+      >
+        <video id="input_video" style="display: none"></video>
+        <!-- ปรับ Canvas size เป็น HD -->
+        <canvas id="output_canvas" width="1280" height="720"></canvas>
+      </div>
+
+      <div class="space-x-4">
+        <button
+          id="startBtn"
+          onclick="startRecording()"
+          class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded transition"
+        >
+          🔴 เริ่มบันทึก
+        </button>
+        <button
+          id="stopBtn"
+          onclick="stopRecording()"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition opacity-50 cursor-not-allowed"
+          disabled
+        >
+          ⬛ หยุด & บันทึก
+        </button>
+      </div>
+
+      <p class="mt-4 text-sm text-gray-500">
+        *บันทึกที่ความละเอียด 1280x720 (HD)
+        เพื่อความลื่นไหลและขนาดไฟล์ที่เหมาะสม
+      </p>
+    </div>
+
+    <script>
+      const videoElement = document.getElementById("input_video");
+      const canvasElement = document.getElementById("output_canvas");
+      const canvasCtx = canvasElement.getContext("2d");
+      const startBtn = document.getElementById("startBtn");
+      const stopBtn = document.getElementById("stopBtn");
+      const statusText = document.getElementById("statusText");
+      const recordIndicator = document.getElementById("recordIndicator");
+      const timerDisplay = document.getElementById("timer");
+
+      let isRecording = false;
+      let recordedLandmarks = [];
+      let mediaRecorder;
+      let recordedChunks = [];
+      let startTime;
+      let timerInterval;
+
+      const pose = new Pose({
+        locateFile: (file) => {
+          return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
+        },
+      });
+
+      pose.setOptions({
+        modelComplexity: 1,
+        smoothLandmarks: true,
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5,
+      });
+
+      pose.onResults(onResults);
+
+      // --- ตั้งค่ากล้องเป็น HD (1280x720) ---
+      const camera = new Camera(videoElement, {
+        onFrame: async () => {
+          await pose.send({ image: videoElement });
+        },
+        width: 1280, // ปรับความกว้าง
+        height: 720, // ปรับความสูง
+      });
+      camera.start();
+
+      function onResults(results) {
+        canvasCtx.save();
+        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+        canvasCtx.drawImage(
+          results.image,
+          0,
+          0,
+          canvasElement.width,
+          canvasElement.height
+        );
+
+        if (results.poseLandmarks) {
+          drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
+            color: "#00FF00",
+            lineWidth: 4,
+          });
+          drawLandmarks(canvasCtx, results.poseLandmarks, {
+            color: "#FF0000",
+            lineWidth: 2,
+          });
+
+          if (isRecording) {
+            recordedLandmarks.push({
+              timestamp: Date.now() - startTime,
+              landmarks: results.poseLandmarks,
+            });
+          }
+        }
+        canvasCtx.restore();
+      }
+
+      async function startRecording() {
+        isRecording = true;
+        recordedLandmarks = [];
+        recordedChunks = [];
+
+        // บันทึกวิดีโอที่ 30 FPS
+        const stream = canvasElement.captureStream(30);
+        // ใช้ Codec ที่เหมาะสมสำหรับเว็บ (VP8/VP9)
+        let options = { mimeType: "video/webm;codecs=vp9" };
+        if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+          options = { mimeType: "video/webm" };
+        }
+
+        mediaRecorder = new MediaRecorder(stream, options);
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) recordedChunks.push(event.data);
+        };
+        mediaRecorder.start();
+
+        startTime = Date.now();
+        startBtn.disabled = true;
+        startBtn.classList.add("opacity-50", "cursor-not-allowed");
+        stopBtn.disabled = false;
+        stopBtn.classList.remove("opacity-50", "cursor-not-allowed");
+        statusText.innerText = "สถานะ: กำลังบันทึก...";
+        statusText.classList.add("text-red-400");
+        recordIndicator.classList.remove("idle");
+        recordIndicator.classList.add("recording");
+
+        timerInterval = setInterval(() => {
+          const elapsed = Math.floor((Date.now() - startTime) / 1000);
+          const minutes = Math.floor(elapsed / 60)
+            .toString()
+            .padStart(2, "0");
+          const seconds = (elapsed % 60).toString().padStart(2, "0");
+          timerDisplay.innerText = `${minutes}:${seconds}`;
+        }, 1000);
+      }
+
+      function stopRecording() {
+        isRecording = false;
+        mediaRecorder.stop();
+        clearInterval(timerInterval);
+
+        setTimeout(() => {
+          downloadData();
+          resetUI();
+        }, 500);
+      }
+
+      function downloadData() {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+
+        const jsonString = JSON.stringify(recordedLandmarks, null, 2);
+        const jsonBlob = new Blob([jsonString], { type: "application/json" });
+        const jsonUrl = URL.createObjectURL(jsonBlob);
+        const jsonLink = document.createElement("a");
+        jsonLink.href = jsonUrl;
+        jsonLink.download = `taiji_landmarks_${timestamp}.json`;
+        jsonLink.click();
+
+        const videoBlob = new Blob(recordedChunks, { type: "video/webm" });
+        const videoUrl = URL.createObjectURL(videoBlob);
+        const videoLink = document.createElement("a");
+        videoLink.href = videoUrl;
+        videoLink.download = `taiji_video_${timestamp}.webm`;
+        videoLink.click();
+      }
+
+      function resetUI() {
+        startBtn.disabled = false;
+        startBtn.classList.remove("opacity-50", "cursor-not-allowed");
+        stopBtn.disabled = true;
+        stopBtn.classList.add("opacity-50", "cursor-not-allowed");
+        statusText.innerText = "สถานะ: บันทึกเสร็จสิ้น พร้อมเริ่มใหม่";
+        statusText.classList.remove("text-red-400");
+        recordIndicator.classList.remove("recording");
+        recordIndicator.classList.add("idle");
+        timerDisplay.innerText = "00:00";
+      }
+    </script>
+  </body>
+</html>

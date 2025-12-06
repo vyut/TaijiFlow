@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Antigravity / IDX Flow</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #ffffff;
+        font-family: "Google Sans", sans-serif;
+      }
+      canvas {
+        display: block;
+      }
+      .content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        pointer-events: none;
+        z-index: 10;
+        mix-blend-mode: multiply; /* ให้ตัวหนังสือกลืนไปกับพื้นหลังนิดๆ */
+      }
+      h1 {
+        font-size: 3.5rem;
+        color: #202124;
+        margin: 0;
+        letter-spacing: -1px;
+      }
+      p {
+        font-size: 1.25rem;
+        color: #5f6368;
+        margin-top: 10px;
+      }
+      .logo {
+        font-size: 0.9rem;
+        color: #5f6368;
+        margin-bottom: 20px;
+        display: inline-block;
+        font-weight: 500;
+      }
+      .logo span {
+        color: #4285f4;
+      } /* สีฟ้า Google */
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <div class="logo"><span>▲</span> Google Antigravity</div>
+      <h1>Experience liftoff</h1>
+      <p>with the next-generation IDE</p>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+      /**
+       * Simplex Noise อย่างย่อ (เพื่อสร้างความพริ้วไหวแบบสุ่มที่ต่อเนื่องกัน)
+       * โดยปกติจะต้อง Import Library แต่เขียนฟังก์ชันจำลองง่ายๆ ไว้ตรงนี้เพื่อให้ Copy ไปใช้ได้เลย
+       */
+      const Noise = {
+        seed: Math.random(),
+        perlin: function (x, y, z) {
+          // ฟังก์ชันสร้างคลื่นเทียม (Pseudo-noise)
+          // ใช้ Math.sin ผสมกันหลายคลื่นเพื่อให้ดูเหมือนสุ่มแบบธรรมชาติ
+          return (
+            (Math.sin(x * 0.005 + this.seed) +
+              Math.sin(y * 0.005 + z * 0.5) +
+              Math.sin((x + y) * 0.01 + z)) /
+            3
+          );
+        },
+      };
+
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      let width, height;
+      let particles = [];
+      const particleCount = 600; // จำนวนจุด (ลด/เพิ่ม ได้ตามความแรงเครื่อง)
+      const flowScale = 20; // ขนาดช่องตารางลม (ยิ่งเลขน้อย คลื่นยิ่งละเอียด)
+
+      // สีตาม Theme Google IDX (ฟ้า, น้ำเงิน, เทาจางๆ)
+      const colors = [
+        "#4285F4",
+        "#8AB4F8",
+        "#D2E3FC",
+        "#EA4335",
+        "#FBBC04",
+        "#34A853",
+      ];
+      // หมายเหตุ: ใส่สีอื่นเพิ่มเล็กน้อยเพื่อให้ดูมีมิติเหมือนต้นฉบับ
+
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+
+      class Particle {
+        constructor() {
+          this.reset(true);
+        }
+
+        reset(initial = false) {
+          this.x = Math.random() * width;
+          this.y = initial ? Math.random() * height : height + 10;
+
+          // ความเร็วพื้นฐาน (ลอยขึ้น)
+          this.baseSpeed = Math.random() * 2 + 1;
+          this.vx = 0;
+          this.vy = 0;
+
+          this.size = Math.random() * 2 + 0.5; // จุดเล็กใหญ่ไม่เท่ากัน
+
+          // สุ่มสี แต่เน้นสีฟ้าเป็นหลัก (80% ฟ้า, 20% สีอื่น)
+          if (Math.random() > 0.2) {
+            this.color = colors[Math.floor(Math.random() * 2)]; // ฟ้าเข้ม/อ่อน
+          } else {
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+          }
+
+          this.alpha = Math.random() * 0.5 + 0.5; // ความโปร่งใส
+        }
+
+        update(time) {
+          // 1. คำนวณ Flow Field ณ ตำแหน่งปัจจุบันของจุด
+          // ใช้ Noise สร้างมุม (Angle) ของแรงลม
+          // time * 0.0005 คือความเร็วที่คลื่นขยับเปลี่ยนทรงไปเรื่อยๆ
+          let angle = Noise.perlin(this.x, this.y, time * 0.0002) * Math.PI * 2;
+
+          // 2. แปลงมุมเป็นแรงส่ง (Vector)
+          // ปรับแต่ง: ให้แรงลมพัดขึ้นข้างบนเป็นหลัก (-PI/2) แล้วบิดเบี้ยวตาม Noise
+          // angle * 0.5 คือลดผลกระทบของ noise ลง ไม่ให้หมุนวนมากเกินไป เน้นลอยขึ้น
+          let windX = Math.cos(angle) * 0.5;
+          let windY = -Math.abs(Math.sin(angle) * 0.5) - 0.5; // บังคับให้ลอยขึ้นเสมอ (-y)
+
+          // 3. ใส่แรงลมเข้าไปในตำแหน่ง
+          this.x += windX * this.baseSpeed;
+          this.y += windY * this.baseSpeed;
+
+          // 4. ถ้าหลุดขอบจอ ให้กลับมาเกิดใหม่ข้างล่าง
+          if (this.y < -10 || this.x < -10 || this.x > width + 10) {
+            this.reset();
+          }
+        }
+
+        draw() {
+          ctx.globalAlpha = this.alpha;
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+
+          // วาดเป็นวงรีเล็กๆ (Pill shape) ตามทิศทางการเคลื่อนที่ จะดูเหมือน Speed line
+          // หรือวาดเป็นวงกลมธรรมดาถ้าชอบแบบจุด
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+      }
+
+      function init() {
+        resize();
+        particles = [];
+        for (let i = 0; i < particleCount; i++) {
+          particles.push(new Particle());
+        }
+      }
+
+      let time = 0;
+      function animate() {
+        // ล้างจอแบบ Fade effect (ถ้าอยากให้มีหางยาวๆ ให้เปลี่ยน opacity เป็น 0.1)
+        ctx.clearRect(0, 0, width, height);
+
+        time++;
+        particles.forEach((p) => {
+          p.update(time);
+          p.draw();
+        });
+
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener("resize", () => {
+        resize();
+        init();
+      });
+
+      init();
+      animate();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity Clone</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* ป้องกัน Scrollbar */
+            background-color: #f0f0f0;
+            font-family: sans-serif;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+        }
+        .instruction {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #555;
+            pointer-events: none; /* ให้คลิกทะลุตัวหนังสือได้ */
+            user-select: none;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+</head>
+<body>
+
+    <div class="instruction">
+        <h1>Antigravity Demo</h1>
+        <p>ลองใช้เมาส์ลากกล่อง หรือเหวี่ยงไปมาดูครับ</p>
+    </div>
+    <div id="canvas-container"></div>
+
+    <script>
+        // 1. ตั้งค่า Module ของ Matter.js
+        const Engine = Matter.Engine,
+              Render = Matter.Render,
+              Runner = Matter.Runner,
+              Bodies = Matter.Bodies,
+              Composite = Matter.Composite,
+              Mouse = Matter.Mouse,
+              MouseConstraint = Matter.MouseConstraint,
+              Events = Matter.Events;
+
+        // 2. สร้าง Engine และ World
+        const engine = Engine.create();
+        const world = engine.world;
+
+        // --- หัวใจสำคัญ: ปิดแรงโน้มถ่วง (Zero Gravity) ---
+        engine.world.gravity.y = 0; 
+        engine.world.gravity.x = 0;
+
+        // 3. สร้าง Renderer (ตัวแสดงผล)
+        const render = Render.create({
+            element: document.getElementById('canvas-container'),
+            engine: engine,
+            options: {
+                width: window.innerWidth,
+                height: window.innerHeight,
+                wireframes: false, // ใส่สีให้วัตถุ
+                background: 'transparent'
+            }
+        });
+
+        // 4. สร้างขอบกำแพง (เพื่อไม่ให้ของลอยหลุดจอ)
+        const wallThickness = 50;
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        const walls = [
+            Bodies.rectangle(width / 2, -wallThickness / 2, width, wallThickness, { isStatic: true }), // บน
+            Bodies.rectangle(width / 2, height + wallThickness / 2, width, wallThickness, { isStatic: true }), // ล่าง
+            Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height, { isStatic: true }), // ขวา
+            Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, height, { isStatic: true }) // ซ้าย
+        ];
+        Composite.add(world, walls);
+
+        // 5. สร้างวัตถุลอย (เหมือนปุ่ม Google)
+        for (let i = 0; i < 20; i++) {
+            // สุ่มตำแหน่งและขนาด
+            let x = Math.random() * width;
+            let y = Math.random() * height;
+            
+            // สร้างกล่องสี่เหลี่ยม (เลียนแบบปุ่ม search/input)
+            let box = Bodies.rectangle(x, y, 120, 40, {
+                restitution: 0.9, // ความเด้งดึ๋ง (0-1)
+                frictionAir: 0.01, // แรงต้านอากาศ (ยิ่งน้อยยิ่งลอยนาน)
+                render: {
+                    fillStyle: ['#4285F4', '#DB4437', '#F4B400', '#0F9D58'][Math.floor(Math.random() * 4)] // สี Google
+                }
+            });
+            Composite.add(world, box);
+        }
+
+        // 6. เพิ่มการควบคุมด้วยเมาส์
+        const mouse = Mouse.create(render.canvas);
+        const mouseConstraint = MouseConstraint.create(engine, {
+            mouse: mouse,
+            constraint: {
+                stiffness: 0.2,
+                render: { visible: false }
+            }
+        });
+        Composite.add(world, mouseConstraint);
+
+        // ทำให้ Scroll ของเมาส์ใช้งานกับ Canvas ได้ถูกต้อง
+        render.mouse = mouse;
+
+        // 7. สั่งให้รัน
+        Render.run(render);
+        const runner = Runner.create();
+        Runner.run(runner, engine);
+
+        // (Option) เพิ่มลูกเล่น: คลิกแล้วระเบิดกระเจิง
+        Events.on(mouseConstraint, 'mousedown', function(event) {
+            let mousePosition = event.mouse.position;
+            let bodies = Composite.allBodies(world);
+            
+            bodies.forEach(body => {
+                if (!body.isStatic) {
+                    // คำนวณแรงผลัก
+                    let forceMagnitude = 0.05 * body.mass;
+                    Matter.Body.applyForce(body, body.position, {
+                        x: (body.position.x - mousePosition.x) * forceMagnitude * 0.002,
+                        y: (body.position.y - mousePosition.y) * forceMagnitude * 0.002
+                    });
+                }
+            });
+        });
+
+        // จัดการเมื่อย่อขยายหน้าจอ
+        window.addEventListener('resize', () => {
+            render.canvas.width = window.innerWidth;
+            render.canvas.height = window.innerHeight;
+            // หมายเหตุ: ในงานจริงต้อง Reset ตำแหน่งกำแพงด้วย
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>AI Silk Reeling Training Assistant</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #ffffff; /* พื้นหลังสีขาว */
+        color: #111; /* ตัวอักษรหลักสีดำ */
+      }
+      .container {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        padding: 20px;
+      }
+      #output_canvas {
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        background-color: #000; /* พื้นหลังสีดำสำหรับ canvas เผื่อตอนโหลด */
+      }
+
+      /* --- ใหม่: CSS สำหรับจัดการ Fullscreen --- */
+      #output_canvas:fullscreen {
+        /* ทำให้วิดีโอเต็มจอโดยใช้การครอบตัด (Crop) */
+        object-fit: cover;
+      }
+      #output_canvas:-webkit-full-screen {
+        /* สำหรับ Chrome, Safari, Edge */
+        object-fit: cover;
+      }
+      #output_canvas:-moz-full-screen {
+        /* สำหรับ Firefox */
+        object-fit: cover;
+      }
+      /* --- จบส่วน Fullscreen --- */
+
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        background-color: #f7f7f7;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        width: 250px;
+      }
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      label {
+        font-weight: bold;
+        font-size: 16px;
+        color: #333;
+      }
+      select,
+      button {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        color: #333;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+      button:hover {
+        background-color: #e9e9e9;
+      }
+      .level-buttons button.active {
+        background-color: #ff0000; /* ใช้สีแดงเป็นสีรอง */
+        color: #fff;
+        font-weight: bold;
+        border-color: #ff0000;
+      }
+      #fullscreen-btn {
+        background-color: #555;
+        color: white;
+      }
+      #fullscreen-btn:hover {
+        background-color: #777;
+      }
+      .instructions {
+        margin-top: 10px;
+        font-size: 14px;
+        font-style: italic;
+        color: #666;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>AI Silk Reeling Training Assistant</h1>
+    <div class="container">
+      <canvas id="output_canvas" width="640px" height="480px"></canvas>
+      <div class="controls">
+        <div class="control-group">
+          <label for="exercise-select">เลือกท่าฝึก:</label>
+          <select id="exercise-select">
+            <option value="rh_cw">มือขวา - ตามเข็มนาฬิกา</option>
+            <option value="rh_ccw">มือขวา - ทวนเข็มนาฬิกา</option>
+            <option value="lh_cw">มือซ้าย - ตามเข็มนาฬิกา</option>
+            <option value="lh_ccw">มือซ้าย - ทวนเข็มนาฬิกา</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label>เลือกระดับการฝึก:</label>
+          <div class="level-buttons">
+            <button id="level1-btn" class="active">Level 1: ท่านั่ง</button>
+            <button id="level2-btn">Level 2: ท่ายืน</button>
+            <button id="level3-btn">Level 3: ท่ายืนย่อ</button>
+          </div>
+        </div>
+        <div class="control-group">
+          <label>การแสดงผล:</label>
+          <button id="fullscreen-btn">Fullscreen (F)</button>
+        </div>
+        <div class="instructions">
+          <p><strong>โหมดบันทึกข้อมูล:</strong></p>
+          <p>กดปุ่ม 'R' บนคีย์บอร์ดเพื่อเริ่ม/หยุดการบันทึก</p>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="reference_data.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

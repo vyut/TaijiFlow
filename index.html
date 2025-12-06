@@ -1,138 +1,240 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
   <head>
     <meta charset="utf-8" />
-    <title>AI Silk Reeling Training Assistant</title>
+    <title>TaijiFlow AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Helvetica, Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        background-color: #ffffff; /* พื้นหลังสีขาว */
-        color: #111; /* ตัวอักษรหลักสีดำ */
+        font-family: "Sarabun", sans-serif;
+        transition: background-color 0.3s;
       }
-      .container {
-        display: flex;
-        gap: 20px;
-        align-items: flex-start;
-        padding: 20px;
-      }
-      #output_canvas {
-        border: 2px solid #ccc;
+      canvas {
         border-radius: 8px;
-        background-color: #000; /* พื้นหลังสีดำสำหรับ canvas เผื่อตอนโหลด */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
       }
-
-      /* --- ใหม่: CSS สำหรับจัดการ Fullscreen --- */
-      #output_canvas:fullscreen {
-        /* ทำให้วิดีโอเต็มจอโดยใช้การครอบตัด (Crop) */
-        object-fit: cover;
+      .pulse-btn {
+        animation: pulse-shadow 2s infinite;
       }
-      #output_canvas:-webkit-full-screen {
-        /* สำหรับ Chrome, Safari, Edge */
-        object-fit: cover;
-      }
-      #output_canvas:-moz-full-screen {
-        /* สำหรับ Firefox */
-        object-fit: cover;
-      }
-      /* --- จบส่วน Fullscreen --- */
-
-      .controls {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        background-color: #f7f7f7;
-        padding: 20px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        width: 250px;
-      }
-      .control-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      label {
-        font-weight: bold;
-        font-size: 16px;
-        color: #333;
-      }
-      select,
-      button {
-        width: 100%;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        background-color: #fff;
-        color: #333;
-        font-size: 14px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-      }
-      button:hover {
-        background-color: #e9e9e9;
-      }
-      .level-buttons button.active {
-        background-color: #ff0000; /* ใช้สีแดงเป็นสีรอง */
-        color: #fff;
-        font-weight: bold;
-        border-color: #ff0000;
-      }
-      #fullscreen-btn {
-        background-color: #555;
-        color: white;
-      }
-      #fullscreen-btn:hover {
-        background-color: #777;
-      }
-      .instructions {
-        margin-top: 10px;
-        font-size: 14px;
-        font-style: italic;
-        color: #666;
+      @keyframes pulse-shadow {
+        0% {
+          box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.7);
+        }
+        70% {
+          box-shadow: 0 0 0 15px rgba(147, 51, 234, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(147, 51, 234, 0);
+        }
       }
     </style>
   </head>
+  <body
+    class="h-screen flex flex-col items-center justify-center p-4 bg-f3f4f6"
+  >
+    <!-- Header & Toggle Buttons -->
+    <div class="w-full max-w-6xl flex justify-between items-center mb-4">
+      <h1
+        id="app-title"
+        class="text-3xl font-bold text-gray-800 dark:text-white"
+      >
+        ☯️ TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก - ท่าม้วนไหม
+      </h1>
 
-  <body>
-    <h1>AI Silk Reeling Training Assistant</h1>
-    <div class="container">
-      <canvas id="output_canvas" width="640px" height="480px"></canvas>
-      <div class="controls">
-        <div class="control-group">
-          <label for="exercise-select">เลือกท่าฝึก:</label>
-          <select id="exercise-select">
-            <option value="rh_cw">มือขวา - ตามเข็มนาฬิกา</option>
-            <option value="rh_ccw">มือขวา - ทวนเข็มนาฬิกา</option>
-            <option value="lh_cw">มือซ้าย - ตามเข็มนาฬิกา</option>
-            <option value="lh_ccw">มือซ้าย - ทวนเข็มนาฬิกา</option>
-          </select>
-        </div>
-        <div class="control-group">
-          <label>เลือกระดับการฝึก:</label>
-          <div class="level-buttons">
-            <button id="level1-btn" class="active">Level 1: ท่านั่ง</button>
-            <button id="level2-btn">Level 2: ท่ายืน</button>
-            <button id="level3-btn">Level 3: ท่ายืนย่อ</button>
+      <div class="flex gap-2">
+        <button
+          id="lang-btn"
+          class="px-3 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 font-bold text-sm"
+        >
+          🇹🇭 TH / 🇺🇸 EN
+        </button>
+        <button
+          id="theme-btn"
+          class="px-3 py-1 bg-gray-800 text-white border border-gray-600 rounded hover:bg-gray-700 text-sm"
+        >
+          🌙 / ☀️
+        </button>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-6 items-start w-full max-w-6xl">
+      <!-- Video Canvas -->
+      <div class="relative flex-grow group w-full md:w-auto">
+        <video
+          id="input_video"
+          style="display: none"
+          autoplay
+          playsinline
+        ></video>
+        <canvas
+          id="output_canvas"
+          width="1280"
+          height="720"
+          class="w-full bg-black rounded-lg"
+        ></canvas>
+
+        <!-- Loading -->
+        <div
+          id="loading-overlay"
+          class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80 text-white text-xl z-20 hidden rounded-lg"
+        >
+          <div class="flex flex-col items-center">
+            <svg
+              class="animate-spin h-10 w-10 text-white mb-3"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            <span id="loading-text">กำลังโหลดโมเดล AI...</span>
           </div>
         </div>
-        <div class="control-group">
-          <label>การแสดงผล:</label>
-          <button id="fullscreen-btn">Fullscreen (F)</button>
+
+        <!-- Start Overlay -->
+        <div
+          id="start-overlay"
+          class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-70 z-10 rounded-lg transition-opacity duration-300"
+        >
+          <h2
+            id="overlay-title"
+            class="text-white text-2xl font-bold mb-6 drop-shadow-md"
+          >
+            พร้อมเริ่มฝึกหรือยัง?
+          </h2>
+          <button
+            id="big-calibrate-btn"
+            class="pulse-btn bg-purple-600 hover:bg-purple-700 text-white text-xl font-bold py-4 px-10 rounded-full shadow-lg transform transition hover:scale-105 flex items-center gap-3"
+          >
+            <span id="big-calibrate-btn-text"
+              >📏 ปรับเทียบสัดส่วน (Calibrate)</span
+            >
+          </button>
+          <p id="overlay-desc" class="text-gray-300 mt-4 text-sm">
+            *กดเพื่อเริ่มวัดตัวก่อนการฝึก
+          </p>
         </div>
-        <div class="instructions">
-          <p><strong>โหมดบันทึกข้อมูล:</strong></p>
-          <p>กดปุ่ม 'R' บนคีย์บอร์ดเพื่อเริ่ม/หยุดการบันทึก</p>
+      </div>
+
+      <!-- Controls Panel -->
+      <div
+        id="main-card"
+        class="w-full md:w-80 flex flex-col gap-4 bg-white p-6 rounded-lg shadow-md border border-gray-200 transition-colors duration-300"
+      >
+        <!-- Select Exercise -->
+        <div>
+          <label
+            id="label-exercise"
+            class="block text-sm font-bold text-gray-700 mb-2"
+            >เลือกท่าฝึก:</label
+          >
+          <select
+            id="exercise-select"
+            class="w-full p-2 border rounded-md bg-gray-50 text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none"
+          >
+            <option value="rh_cw">มือขวา - ตามเข็ม</option>
+            <option value="rh_ccw">มือขวา - ทวนเข็ม</option>
+            <option value="lh_cw">มือซ้าย - ตามเข็ม</option>
+            <option value="lh_ccw">มือซ้าย - ทวนเข็ม</option>
+          </select>
+        </div>
+
+        <!-- Select Level -->
+        <div>
+          <label
+            id="label-level"
+            class="block text-sm font-bold text-gray-700 mb-2"
+            >เลือกระดับ:</label
+          >
+          <div class="flex flex-col gap-2" id="level-buttons">
+            <button
+              id="level1-btn"
+              data-level="L1"
+              class="level-btn active w-full py-2 px-4 rounded bg-blue-600 text-white font-bold transition hover:bg-blue-700 shadow-sm"
+            >
+              Level 1: ท่านั่ง
+            </button>
+            <button
+              id="level2-btn"
+              data-level="L2"
+              class="level-btn w-full py-2 px-4 rounded bg-gray-100 text-gray-600 font-medium transition hover:bg-gray-200"
+            >
+              Level 2: ท่ายืน
+            </button>
+            <button
+              id="level3-btn"
+              data-level="L3"
+              class="level-btn w-full py-2 px-4 rounded bg-gray-100 text-gray-600 font-medium transition hover:bg-gray-200"
+            >
+              Level 3: ท่ายืนย่อ
+            </button>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col gap-2 mt-4 pt-4 border-t border-gray-200">
+          <div class="flex gap-2">
+            <button
+              id="small-calibrate-btn"
+              class="flex-grow py-2 bg-purple-100 text-purple-700 font-bold rounded border border-purple-200 hover:bg-purple-200 transition"
+            >
+              📏 วัดตัวใหม่
+            </button>
+            <button
+              id="cancel-calib-btn"
+              class="hidden py-2 px-4 bg-red-500 text-white font-bold rounded shadow hover:bg-red-600 transition"
+            >
+              ❌ ยกเลิก
+            </button>
+          </div>
+
+          <div class="flex gap-2">
+            <button
+              id="fullscreen-btn"
+              class="flex-1 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 transition"
+            >
+              เต็มจอ (F)
+            </button>
+            <button
+              id="record-btn"
+              class="flex-1 py-2 bg-red-100 text-red-600 border border-red-200 rounded hover:bg-red-200 transition font-bold"
+            >
+              บันทึก (R)
+            </button>
+          </div>
+        </div>
+
+        <!-- Instructions -->
+        <div
+          class="mt-2 p-3 bg-blue-50 text-blue-800 text-xs rounded border border-blue-100 dark:bg-blue-900 dark:text-blue-100 dark:border-blue-800"
+        >
+          <strong id="instr-title">💡 คำแนะนำ:</strong>
+          <ul class="list-disc list-inside mt-1 space-y-1">
+            <li id="instr-1">กดปุ่ม "ปรับเทียบ" ก่อนเริ่ม</li>
+            <li id="instr-2">ยืนให้เต็มตัว 2-3 เมตร</li>
+            <li id="instr-3">แสงสว่างต้องเพียงพอ</li>
+          </ul>
         </div>
       </div>
     </div>
 
+    <!-- Scripts -->
     <script
       src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
       crossorigin="anonymous"
@@ -145,7 +247,10 @@
       src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"
       crossorigin="anonymous"
     ></script>
-    <script src="reference_data.js"></script>
+
+    <script src="calibration_manager.js"></script>
+    <script src="heuristics_engine.js"></script>
+    <script src="ui_manager.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

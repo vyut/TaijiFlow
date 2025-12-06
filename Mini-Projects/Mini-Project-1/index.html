@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Mini-Project #1: Path Accuracy Prototype</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #1e1e1e;
+        color: white;
+      }
+      .container {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      #output_canvas {
+        border: 2px solid #555;
+        border-radius: 8px;
+      }
+      .instructions {
+        padding: 20px;
+        background-color: #2c3e50;
+        border-radius: 8px;
+      }
+      h1,
+      h3 {
+        text-align: center;
+      }
+      p {
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Mini-Project #1: Path Accuracy (กฎ #1)</h1>
+    <div class="container">
+      <canvas id="output_canvas" width="640px" height="480px"></canvas>
+      <div class="instructions">
+        <h3>วิธีการใช้งาน</h3>
+        <p><strong>1. บันทึกข้อมูลต้นแบบ:</strong></p>
+        <p>- กดปุ่ม <strong>'R'</strong> เพื่อเริ่มบันทึก</p>
+        <p>- รำท่า "ม้วนไหมมือเดียว-ขวา-ตามเข็ม" 1 รอบ</p>
+        <p>- กด <strong>'R'</strong> อีกครั้งเพื่อหยุดบันทึก</p>
+        <p><strong>2. คัดลอกข้อมูล:</strong></p>
+        <p>- กด <strong>F12</strong> เปิด Console</p>
+        <p>- คัดลอก `const referencePath = ...`</p>
+        <p>- สร้างไฟล์ <strong>`reference_path.js`</strong> แล้ววางโค้ด</p>
+        <p><strong>3. ทดสอบ:</strong></p>
+        <p>- รีเฟรชหน้าเว็บ (F5)</p>
+        <p>- เส้นทางสีฟ้าจะปรากฏขึ้น</p>x
+        <p>- ลองรำตามและดู Feedback</p>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="reference_path.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

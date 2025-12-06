@@ -219,7 +219,7 @@ class HeuristicsEngine {
     return Math.abs(diff / deltaTime);
   }
 
-  // ================= Rule Implementations (เหมือนเดิม) =================
+  // ================= Rule Implementations =================
 
   checkPathAccuracy(userWrist, referencePath) {
     let minDistance = Infinity;

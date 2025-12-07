@@ -32,11 +32,17 @@
       crossorigin="anonymous"
       defer
     ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
 
     <!-- App Modules -->
     <script src="calibration_manager.js" defer></script>
     <script src="heuristics_engine.js" defer></script>
     <script src="drawing_manager.js" defer></script>
+    <script src="data_exporter.js" defer></script>
     <script src="ui_manager.js" defer></script>
     <script src="script.js" defer></script>
   </head>
@@ -240,6 +246,14 @@
           </ul>
         </div>
       </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div
+      id="notification-container"
+      class="fixed top-5 right-5 z-50 flex flex-col items-end gap-3"
+    >
+      <!-- Notifications will be injected here by JavaScript -->
     </div>
   </body>
 </html>

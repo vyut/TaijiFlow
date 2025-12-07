@@ -1,6 +1,9 @@
 class UIManager {
   constructor() {
     this.currentLang = "th";
+    this.notificationContainer = document.getElementById(
+      "notification-container"
+    );
     this.currentTheme = "dark";
 
     // พจนานุกรมคำศัพท์ (Dictionary)
@@ -27,6 +30,8 @@ class UIManager {
         overlay_desc: "*กดเพื่อเริ่มวัดตัวก่อนการฝึก",
         alert_calib_success: "ปรับเทียบสำเร็จ! ระบบพร้อมใช้งานแล้ว",
         alert_no_data: "ไม่มีข้อมูลการบันทึก",
+        alert_report_saved: "บันทึกรายงานผลการฝึกเรียบร้อยแล้ว!",
+        alert_data_saved: "บันทึกข้อมูลสำเร็จ!",
         ex_rh_cw: "มือขวา - ตามเข็ม",
         ex_rh_ccw: "มือขวา - ทวนเข็ม",
         ex_lh_cw: "มือซ้าย - ตามเข็ม",
@@ -54,6 +59,8 @@ class UIManager {
         overlay_desc: "*Press to calibrate your body proportions",
         alert_calib_success: "Calibration Complete! System Ready.",
         alert_no_data: "No recorded data found.",
+        alert_report_saved: "Session report saved successfully!",
+        alert_data_saved: "Data saved successfully!",
         ex_rh_cw: "Right Hand - Clockwise",
         ex_rh_ccw: "Right Hand - Counter-Clockwise",
         ex_lh_cw: "Left Hand - Clockwise",
@@ -194,5 +201,61 @@ class UIManager {
       recordBtn.classList.replace("bg-red-600", "bg-red-100");
       recordBtn.classList.replace("text-white", "text-red-600");
     }
+  }
+
+  /**
+   * แสดง Notification แบบ Toast ที่มุมจอ
+   * @param {string} message ข้อความที่จะแสดง
+   * @param {string} type ประเภท ('info', 'success', 'warning', 'error')
+   * @param {number} duration ระยะเวลาที่จะแสดง (ms)
+   */
+  showNotification(message, type = "info", duration = 3000) {
+    if (!this.notificationContainer) return;
+
+    const notification = document.createElement("div");
+    // Base classes
+    notification.className =
+      "notification flex items-center gap-4 p-4 rounded-lg shadow-lg text-white max-w-sm";
+
+    let bgColor, icon;
+
+    switch (type) {
+      case "success":
+        bgColor = "bg-green-500";
+        icon = "✅";
+        break;
+      case "error":
+        bgColor = "bg-red-500";
+        icon = "❌";
+        break;
+      case "warning":
+        bgColor = "bg-yellow-500";
+        icon = "⚠️";
+        break;
+      default: // 'info'
+        bgColor = "bg-blue-500";
+        icon = "ℹ️";
+        break;
+    }
+
+    notification.classList.add(bgColor);
+    notification.innerHTML = `
+        <span class="text-2xl">${icon}</span>
+        <span class="font-medium">${message}</span>
+    `;
+
+    this.notificationContainer.appendChild(notification);
+
+    // Animate in
+    requestAnimationFrame(() => notification.classList.add("show"));
+
+    // Animate out and remove
+    setTimeout(() => {
+      notification.classList.remove("show");
+      // รอ animation จบแล้วค่อยลบ Element
+      notification.addEventListener("transitionend", () =>
+        notification.remove()
+      );
+    }, duration);
   }
 }

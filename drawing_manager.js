@@ -66,6 +66,51 @@ class DrawingManager {
   }
 
   /**
+   * 
+   * @param {string[]} feedback 
+   */
+  drawGestureFeedback(feedback) {
+    if (!feedback || !feedback.hand) return;
+
+    // เราจะใช้ landmark ที่ 9 (โคนนิ้วกลาง) เป็นจุดศูนย์กลางของวงกลม
+    const handlandmark = feedback.hand[9];
+    if (!handlandmark) return;
+
+    const canvasWidth = this.canvasElement.width;
+    const canvasHeight = this.canvasElement.height;
+
+    const x = handlandmark.x * canvasWidth;
+    const y = handlandmark.y * canvasHeight;
+    const radius = 40;
+
+    this.ctx.save();
+
+    // วาดวงกลมพื้นหลังโปร่งแสง
+    this.ctx.globalAlpha = 0.5;
+    this.ctx.beginPath();
+    this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
+    this.ctx.fillStyle = "white";
+    this.ctx.fill();
+    this.ctx.globalAlpha = 1.0;
+
+    // วาดเส้นโค้งแสดงความคืบหน้าการกดค้าง
+    this.ctx.beginPath();
+    // เริ่มวาดจากด้านบน (-90 องศา)
+    this.ctx.arc(
+      x,
+      y,
+      radius,
+      -0.5 * Math.PI,
+      (-0.5 + 2 * feedback.progress) * Math.PI
+    );
+    this.ctx.strokeStyle = "#00FF00"; // สีเขียว
+    this.ctx.lineWidth = 8;
+    this.ctx.stroke();
+
+    this.ctx.restore();
+  }
+
+  /**
    * วาดกล่องแสดงข้อความ Feedback
    * @param {string[]} feedbacks - Array ของข้อความที่จะแสดง
    */

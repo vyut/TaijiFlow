@@ -10,18 +10,18 @@ const loadingOverlay = document.getElementById("loading-overlay");
 const startOverlay = document.getElementById("start-overlay");
 
 // Instances
-const engine = new HeuristicsEngine();
-const calibrator = new CalibrationManager();
-const uiManager = new UIManager(); // สร้าง Instance
-const drawer = new DrawingManager(canvasCtx, canvasElement); // สร้าง Instance Drawer
+const engine = new HeuristicsEngine(); // สมองกลสำหรับวิเคราะห์ท่าทาง
+const calibrator = new CalibrationManager(); // ผู้จัดการปรับเทียบ
+const uiManager = new UIManager(); // ผู้จัดการหน้าจอและภาษา
+const drawer = new DrawingManager(canvasCtx, canvasElement); // ผู้จัดการวาดภาพบน Canvas
 
 // State Variables
-let currentExercise = "rh_cw";
-let currentLevel = "L1";
-let referencePath = [];
-let sessionLog = []; // เก็บประวัติการวิเคราะห์
+let currentExercise = "rh_cw"; // เก็บชื่อท่าที่กำลังฝึก
+let currentLevel = "L1"; // เก็บระดับความยาก (L1, L2, L3)
+let referencePath = []; // เก็บข้อมูลเส้นทางต้นแบบที่โหลดมาจากไฟล์ JSON
+let sessionLog = []; // เก็บประวัติข้อผิดพลาดที่เกิดขึ้นระหว่างการฝึก (สำหรับ Report แบบสรุป)
 let sessionStartTime = 0;
-let recordedSessionData = []; // เก็บ Raw Data
+let recordedSessionData = []; // เก็บข้อมูลดิบทั้งหมดแบบเฟรมต่อเฟรม (สำหรับนำไปใช้กับ Machine Learning)
 
 // 2. UI Event Listeners
 const exerciseSelect = document.getElementById("exercise-select");
@@ -113,8 +113,32 @@ recordBtn.addEventListener("click", () => {
     // --- จบการฝึก ---
     uiManager.updateRecordButtonState(false);
 
-    // ดาวน์โหลดข้อมูลครบชุด (Report + Raw Data)
-    downloadFullData();
+    // รวบรวมข้อมูลและส่งให้ Exporter จัดการ
+    if (recordedSessionData.length > 0) {
+      const fullDataset = {
+        meta: {
+          date: new Date().toISOString(),
+          exercise: currentExercise,
+          level: currentLevel,
+          user_calibration: engine.calibrationData,
+        },
+        summary: {
+          duration: ((Date.now() - sessionStartTime) / 1000).toFixed(2),
+          total_issues: sessionLog.length,
+          issue_log: sessionLog,
+        },
+        raw_data: recordedSessionData,
+      };
+      DataExporter.exportFullSession(fullDataset);
+      uiManager.showNotification(
+        `${uiManager.getText("alert_data_saved")} (${
+          recordedSessionData.length
+        } frames)`,
+        "success"
+      );
+    } else {
+      uiManager.showNotification(uiManager.getText("alert_no_data"), "warning");
+    }
   }
 });
 
@@ -188,7 +212,10 @@ function onResults(results) {
         engine.setCalibration(calibResult.data);
 
         // ใช้ข้อความจาก uiManager
-        alert(uiManager.getText("alert_calib_success")); // ปรับปรุงแล้ว
+        uiManager.showNotification(
+          uiManager.getText("alert_calib_success"),
+          "success"
+        );
 
         // Reset UI
         loadReferenceData();
@@ -209,7 +236,7 @@ function onResults(results) {
           results.image.timeStamp,
           referencePath,
           currentExercise, // ส่งชื่อท่า
-          currentLevel // *** ส่งเลเวลไปด้วย (L1, L2, L3) ***
+          currentLevel // ส่งเลเวล (L1, L2, L3)
         );
         drawer.drawFeedbackPanel(feedbacks);
 
@@ -244,78 +271,11 @@ function onResults(results) {
   canvasCtx.restore();
 }
 
-// --- ส่วนที่ 3: ฟังก์ชันดาวน์โหลดรายงาน ---
-function downloadSessionReport() {
-  if (sessionLog.length === 0) {
-    alert(uiManager.getText("alert_no_data")); // ใช้ข้อความจาก UIManager
-    return;
-  }
-
-  const report = {
-    date: new Date().toLocaleString(),
-    exercise: currentExercise,
-    level: currentLevel,
-    duration: ((Date.now() - sessionStartTime) / 1000).toFixed(2) + " seconds",
-    total_issues: sessionLog.length,
-    details: sessionLog,
-  };
-
-  const jsonString = JSON.stringify(report, null, 2);
-  const blob = new Blob([jsonString], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `taiji_report_${new Date().getTime()}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  alert("บันทึกรายงานผลการฝึกเรียบร้อยแล้ว!");
-}
-
-function downloadFullData() {
-  if (recordedSessionData.length === 0) {
-    alert(uiManager.getText("alert_no_data")); // ใช้ข้อความจาก UIManager
-    return;
-  }
-
-  const fullDataset = {
-    meta: {
-      date: new Date().toISOString(),
-      exercise: currentExercise,
-      level: currentLevel,
-      // สำคัญ: บันทึกค่า Calibrate ไว้ด้วย เพื่อนำไปใช้ Train Model ให้แม่นยำ
-      user_calibration: engine.calibrationData,
-    },
-    summary: {
-      duration: ((Date.now() - sessionStartTime) / 1000).toFixed(2),
-      total_issues: sessionLog.length,
-      issue_log: sessionLog, // Log แบบอ่านง่าย
-    },
-    raw_data: recordedSessionData, // ข้อมูลดิบสำหรับ ML
-  };
-
-  const jsonString = JSON.stringify(fullDataset, null, 2); // จัดรูปแบบสวยงาม
-  const blob = new Blob([jsonString], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-
-  // สร้างชื่อไฟล์ที่มี timestamp เพื่อไม่ให้ซ้ำ
-  const filename = `taiji_data_${currentExercise}_${new Date().getTime()}.json`;
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  alert(`บันทึกข้อมูลสำเร็จ! (${recordedSessionData.length} frames)`);
-}
-
 // 5. Initialization
 const pose = new Pose({
   locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
 });
+
 pose.setOptions({
   modelComplexity: 1,
   smoothLandmarks: true,
@@ -325,6 +285,7 @@ pose.setOptions({
 pose.onResults(onResults);
 
 loadingOverlay.classList.remove("hidden");
+
 const camera = new Camera(videoElement, {
   onFrame: async () => {
     await pose.send({ image: videoElement });

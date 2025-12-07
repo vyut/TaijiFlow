@@ -1,3 +1,15 @@
+/* --- Notification System --- */
+.notification {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.notification.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
 /* --- Global Styles --- */
 body {
   font-family: "Sarabun", sans-serif;

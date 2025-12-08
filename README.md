@@ -24,6 +24,7 @@ A web-based real-time pose analysis system that helps practitioners learn and im
 | **3 Training Levels** | L1 (Seated), L2 (Standing), L3 (Bow Stance) |
 | **4 Exercise Modes** | Right/Left hand, Clockwise/Counter-clockwise |
 | **Scoring System** | 0-100% score with grade (A-F) after each session |
+| **Audio Feedback** | Voice announcements using Web Speech API (TH/EN) |
 | **Data Export** | JSON export for ML training data |
 | **Bilingual** | Thai & English |
 | **Dark/Light Theme** | User preference saved locally |
@@ -69,6 +70,7 @@ TaijiFlow/
 ├── calibration_manager.js  # Body proportion calibration
 ├── drawing_manager.js      # Canvas rendering
 ├── scoring_manager.js      # Session scoring system
+├── audio_manager.js        # Voice feedback (TTS)
 ├── ui_manager.js           # UI, theme, language management
 ├── data_exporter.js        # JSON data export
 ├── styles.css              # Custom styles
@@ -82,12 +84,14 @@ TaijiFlow/
 
 ## 🎯 How to Use
 
-1. **Calibrate** - Click "Calibrate" button, stand in T-Pose for 3 seconds
-2. **Select Exercise** - Choose hand (Right/Left) and direction (CW/CCW)
-3. **Select Level** - L1 (Seated), L2 (Standing), or L3 (Bow Stance)
-4. **Practice** - Follow the green reference path with your wrist
-5. **Record** - Press "R" or Record button to start scoring session
-6. **Review** - After stopping, see your score and top errors
+1. **Toggle Audio** - Click 🔊 button to enable voice feedback (optional)
+2. **Calibrate** - Click "Calibrate" button, stand in T-Pose for 3 seconds
+3. **Select Exercise** - Choose hand (Right/Left) and direction (CW/CCW)
+4. **Select Level** - L1 (Seated), L2 (Standing), or L3 (Bow Stance)
+5. **Practice** - Follow the green reference path with your wrist
+6. **Listen** - Voice alerts will guide you when errors are detected
+7. **Record** - Press "R" or Record button to start scoring session
+8. **Review** - After stopping, see your score and top errors
 
 ### Keyboard Shortcuts
 
@@ -132,7 +136,7 @@ After each recorded session, you receive:
 | MediaPipe Pose | Real-time pose detection |
 | TailwindCSS | UI styling |
 | Canvas 2D API | Rendering overlay |
-| Web Speech API | (Planned) Audio feedback |
+| Web Speech API | Audio feedback (TTS) |
 | LocalStorage | User preferences |
 
 ---

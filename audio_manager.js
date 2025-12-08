@@ -81,16 +81,18 @@ class AudioManager {
     // ดึงเฉพาะข้อความสั้นๆ จาก Feedback แรก
     const feedback = feedbacks[0];
 
-    // แปลงเป็นข้อความสั้นๆ สำหรับพูด
+    // แปลงเป็นข้อความสั้นๆ สำหรับพูด (รองรับทั้ง TH และ EN)
+    const isThaiLang = this.lang === "th-TH";
+    
     const shortMessages = {
-      "Path Deviation": "เส้นทางผิด",
-      "Incorrect Arm Rotation": "หมุนแขนผิด",
-      "Elbow too high": "ศอกลอย",
-      "Start with Waist": "ใช้เอวนำ",
-      "Head Unstable": "ศีรษะไม่นิ่ง",
-      "Not Smooth": "สะดุด",
-      "Keep Moving": "อย่าหยุด",
-      "Off Balance": "เสียสมดุล",
+      "Path Deviation": isThaiLang ? "เส้นทางผิด" : "Wrong path",
+      "Incorrect Arm Rotation": isThaiLang ? "หมุนแขนผิด" : "Wrong rotation",
+      "Elbow too high": isThaiLang ? "ศอกลอย" : "Elbow too high",
+      "Start with Waist": isThaiLang ? "ใช้เอวนำ" : "Lead with waist",
+      "Head Unstable": isThaiLang ? "ศีรษะไม่นิ่ง" : "Head unstable",
+      "Not Smooth": isThaiLang ? "สะดุด" : "Not smooth",
+      "Keep Moving": isThaiLang ? "อย่าหยุด" : "Keep moving",
+      "Off Balance": isThaiLang ? "เสียสมดุล" : "Off balance",
     };
 
     // หาคีย์ที่ตรงกัน
@@ -107,11 +109,13 @@ class AudioManager {
    * @param {string} type - ประเภทประกาศ
    */
   announce(type) {
+    const isThaiLang = this.lang === "th-TH";
+    
     const announcements = {
-      record_start: "เริ่มบันทึก",
-      record_stop: "หยุดบันทึก",
-      calib_success: "ปรับเทียบสำเร็จ",
-      calib_start: "กรุณายืนท่ากางเขน",
+      record_start: isThaiLang ? "เริ่มบันทึก" : "Recording started",
+      record_stop: isThaiLang ? "หยุดบันทึก" : "Recording stopped",
+      calib_success: isThaiLang ? "ปรับเทียบสำเร็จ" : "Calibration complete",
+      calib_start: isThaiLang ? "กรุณายืนท่ากางเขน" : "Please stand in T pose",
     };
 
     if (announcements[type]) {
@@ -119,3 +123,4 @@ class AudioManager {
     }
   }
 }
+

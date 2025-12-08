@@ -24,6 +24,35 @@ let referencePath = []; // เก็บข้อมูลเส้นทาง�
 let sessionLog = []; // เก็บประวัติข้อผิดพลาดที่เกิดขึ้นระหว่างการฝึก (สำหรับ Report แบบสรุป)
 let sessionStartTime = 0;
 let recordedSessionData = []; // เก็บข้อมูลดิบทั้งหมดแบบเฟรมต่อเฟรม (สำหรับนำไปใช้กับ Machine Learning)
+let currentSessionId = null; // Unique ID สำหรับแต่ละ Session
+
+// สร้าง User ID (เก็บใน LocalStorage เพื่อให้คงที่ตลอดการใช้งาน)
+function getOrCreateUserId() {
+  let userId = localStorage.getItem('taijiflow_user_id');
+  if (!userId) {
+    userId = 'user_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+    localStorage.setItem('taijiflow_user_id', userId);
+  }
+  return userId;
+}
+
+// สร้าง Session ID ใหม่ทุกครั้งที่เริ่มบันทึก
+function generateSessionId() {
+  return 'sess_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+}
+
+// ดึงข้อมูล Platform
+function getPlatformInfo() {
+  const ua = navigator.userAgent;
+  return {
+    userAgent: ua,
+    platform: navigator.platform,
+    isMobile: /Android|iPhone|iPad|iPod/i.test(ua),
+    screenWidth: window.screen.width,
+    screenHeight: window.screen.height,
+    language: navigator.language,
+  };
+}
 
 // 2. UI Event Listeners
 const exerciseSelect = document.getElementById("exercise-select");
@@ -110,8 +139,9 @@ recordBtn.addEventListener("click", () => {
     sessionLog = [];
     recordedSessionData = [];
     sessionStartTime = Date.now();
+    currentSessionId = generateSessionId(); // สร้าง Session ID ใหม่
     scorer.start(); // เริ่มนับคะแนน
-    console.log("Session Started & Recording Data...");
+    console.log(`Session Started: ${currentSessionId}`);
   } else {
     // --- จบการฝึก ---
     uiManager.updateRecordButtonState(false);
@@ -123,24 +153,40 @@ recordBtn.addEventListener("click", () => {
     // รวบรวมข้อมูลและส่งให้ Exporter จัดการ
     if (recordedSessionData.length > 0) {
       const fullDataset = {
+        // === ข้อมูลระบุตัวตน (Identification) ===
+        user_id: getOrCreateUserId(),
+        session_id: currentSessionId,
+        
+        // === Metadata ===
         meta: {
           date: new Date().toISOString(),
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           exercise: currentExercise,
           level: currentLevel,
           user_calibration: engine.calibrationData,
+          platform: getPlatformInfo(),
         },
+        
+        // === สรุปผล (Summary) ===
         summary: {
-          duration: scoreSummary.durationSeconds,
+          duration_seconds: scoreSummary.durationSeconds,
+          total_frames: scoreSummary.totalFrames,
+          fps_estimated: Math.round(scoreSummary.totalFrames / scoreSummary.durationSeconds),
           total_issues: sessionLog.length,
           issue_log: sessionLog,
         },
+        
+        // === คะแนน (Scoring) ===
         scoring: {
           score: scoreSummary.score,
           grade: gradeInfo.grade,
-          totalFrames: scoreSummary.totalFrames,
-          correctFrames: scoreSummary.correctFrames,
-          topErrors: scoreSummary.topErrors,
+          correct_frames: scoreSummary.correctFrames,
+          error_frames: scoreSummary.errorFrames,
+          top_errors: scoreSummary.topErrors,
+          all_errors: scoreSummary.allErrors,
         },
+        
+        // === ข้อมูลดิบ (Raw Data) ===
         raw_data: recordedSessionData,
       };
       DataExporter.exportFullSession(fullDataset);
@@ -254,12 +300,22 @@ function onResults(results) {
         // 2. *** เก็บข้อมูล (Data Logging) ***
         if (isRecording) {
           const currentTime = (Date.now() - sessionStartTime) / 1000;
+          
+          // คำนวณค่าเฉลี่ย Visibility ของ Landmarks สำคัญ
+          const keyIndices = [11, 12, 13, 14, 15, 16, 23, 24]; // ไหล่, ศอก, ข้อมือ, สะโพก
+          const visibilitySum = keyIndices.reduce((sum, i) => {
+            return sum + (results.poseLandmarks[i]?.visibility || 0);
+          }, 0);
+          const avgVisibility = visibilitySum / keyIndices.length;
 
           // เก็บ Snapshot ของเฟรมนี้
           recordedSessionData.push({
+            frame_number: recordedSessionData.length,
             timestamp: currentTime,
+            visibility_avg: Math.round(avgVisibility * 1000) / 1000, // ปัดเศษ 3 ตำแหน่ง
             landmarks: results.poseLandmarks, // เก็บพิกัดทั้งตัว
             active_feedbacks: feedbacks, // เก็บผลการตรวจ (ใช้เป็น Label ในอนาคต)
+            has_error: feedbacks.length > 0,
           });
 
           // บันทึกคะแนนทุกเฟรม

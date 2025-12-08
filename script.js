@@ -383,5 +383,66 @@ const camera = new Camera(videoElement, {
   height: 720,
 });
 
+// ฟังก์ชันแสดง Error สำหรับกล้อง
+function showCameraError(errorType) {
+  loadingOverlay.classList.add("hidden");
+  startOverlay.classList.remove("hidden");
+
+  const messages = {
+    not_allowed: {
+      th: "❌ ไม่ได้รับอนุญาตใช้กล้อง\n\nกรุณาอนุญาตการเข้าถึงกล้องใน Browser Settings แล้วรีเฟรชหน้า",
+      en: "❌ Camera access denied\n\nPlease allow camera access in browser settings and refresh",
+    },
+    not_found: {
+      th: "❌ ไม่พบกล้อง\n\nกรุณาเชื่อมต่อ Webcam แล้วรีเฟรชหน้า",
+      en: "❌ No camera found\n\nPlease connect a webcam and refresh",
+    },
+    not_readable: {
+      th: "❌ กล้องถูกใช้งานโดยโปรแกรมอื่น\n\nกรุณาปิดโปรแกรมอื่นที่ใช้กล้องแล้วรีเฟรชหน้า",
+      en: "❌ Camera in use by another app\n\nPlease close other apps using the camera and refresh",
+    },
+    unknown: {
+      th: "❌ เกิดข้อผิดพลาดในการเข้าถึงกล้อง\n\nกรุณารีเฟรชหน้าแล้วลองใหม่",
+      en: "❌ Camera error\n\nPlease refresh and try again",
+    },
+  };
+
+  const lang = uiManager.currentLang;
+  const msg = messages[errorType] || messages.unknown;
+  const errorText = lang === "th" ? msg.th : msg.en;
+
+  // แสดง Alert
+  uiManager.showNotification(errorText.split("\n")[0], "error", 10000);
+
+  // แสดงบน Overlay
+  const overlayTitle = document.getElementById("overlay-title");
+  if (overlayTitle) {
+    overlayTitle.innerText = errorText.split("\n")[0];
+  }
+
+  console.error("Camera Error:", errorType);
+}
+
+// เริ่มต้นกล้องพร้อม Error Handling
+async function initCamera() {
+  try {
+    await camera.start();
+    console.log("Camera started successfully");
+  } catch (error) {
+    console.error("Camera initialization failed:", error);
+
+    // จำแนกประเภท Error
+    if (error.name === "NotAllowedError" || error.name === "PermissionDeniedError") {
+      showCameraError("not_allowed");
+    } else if (error.name === "NotFoundError" || error.name === "DevicesNotFoundError") {
+      showCameraError("not_found");
+    } else if (error.name === "NotReadableError" || error.name === "TrackStartError") {
+      showCameraError("not_readable");
+    } else {
+      showCameraError("unknown");
+    }
+  }
+}
+
 loadReferenceData();
-camera.start();
+initCamera();

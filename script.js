@@ -1,5 +1,5 @@
 // =================================================================
-//  TaijiFlow AI - Main Controller (script.js) v2.2 (UX Improved)
+//  TaijiFlow AI - Main Controller (script.js) v2.3 (Scoring Added)
 // =================================================================
 
 // 1. Setup & Variables
@@ -14,8 +14,10 @@ const engine = new HeuristicsEngine(); // สมองกลสำหรับ�
 const calibrator = new CalibrationManager(); // ผู้จัดการปรับเทียบ
 const uiManager = new UIManager(); // ผู้จัดการหน้าจอและภาษา
 const drawer = new DrawingManager(canvasCtx, canvasElement); // ผู้จัดการวาดภาพบน Canvas
+const scorer = new ScoringManager(); // ผู้จัดการคะแนน
 
 // State Variables
+let isRecording = false; // สถานะการบันทึก
 let currentExercise = "rh_cw"; // เก็บชื่อท่าที่กำลังฝึก
 let currentLevel = "L1"; // เก็บระดับความยาก (L1, L2, L3)
 let referencePath = []; // เก็บข้อมูลเส้นทางต้นแบบที่โหลดมาจากไฟล์ JSON
@@ -106,12 +108,17 @@ recordBtn.addEventListener("click", () => {
 
     // Reset Data
     sessionLog = [];
-    recordedSessionData = []; // ล้างค่าเก่า
+    recordedSessionData = [];
     sessionStartTime = Date.now();
+    scorer.start(); // เริ่มนับคะแนน
     console.log("Session Started & Recording Data...");
   } else {
     // --- จบการฝึก ---
     uiManager.updateRecordButtonState(false);
+
+    // หยุดและดึงข้อมูลคะแนน
+    const scoreSummary = scorer.stop();
+    const gradeInfo = ScoringManager.getGrade(scoreSummary.score);
 
     // รวบรวมข้อมูลและส่งให้ Exporter จัดการ
     if (recordedSessionData.length > 0) {
@@ -123,19 +130,23 @@ recordBtn.addEventListener("click", () => {
           user_calibration: engine.calibrationData,
         },
         summary: {
-          duration: ((Date.now() - sessionStartTime) / 1000).toFixed(2),
+          duration: scoreSummary.durationSeconds,
           total_issues: sessionLog.length,
           issue_log: sessionLog,
+        },
+        scoring: {
+          score: scoreSummary.score,
+          grade: gradeInfo.grade,
+          totalFrames: scoreSummary.totalFrames,
+          correctFrames: scoreSummary.correctFrames,
+          topErrors: scoreSummary.topErrors,
         },
         raw_data: recordedSessionData,
       };
       DataExporter.exportFullSession(fullDataset);
-      uiManager.showNotification(
-        `${uiManager.getText("alert_data_saved")} (${
-          recordedSessionData.length
-        } frames)`,
-        "success"
-      );
+
+      // แสดงผลคะแนน
+      uiManager.showScoreSummary(scoreSummary, gradeInfo);
     } else {
       uiManager.showNotification(uiManager.getText("alert_no_data"), "warning");
     }
@@ -250,6 +261,9 @@ function onResults(results) {
             landmarks: results.poseLandmarks, // เก็บพิกัดทั้งตัว
             active_feedbacks: feedbacks, // เก็บผลการตรวจ (ใช้เป็น Label ในอนาคต)
           });
+
+          // บันทึกคะแนนทุกเฟรม
+          scorer.recordFrame(feedbacks);
 
           // (ส่วนเก็บ Log Error เดิมไว้อ่านง่ายๆ)
           if (feedbacks.length > 0) {

@@ -258,4 +258,87 @@ class UIManager {
       );
     }, duration);
   }
+
+  /**
+   * แสดง Popup สรุปคะแนนหลังจบ Session
+   * @param {Object} summary - ข้อมูลสรุปจาก ScoringManager
+   * @param {Object} gradeInfo - ข้อมูลเกรด (grade, label, color)
+   */
+  showScoreSummary(summary, gradeInfo) {
+    if (!this.notificationContainer) return;
+
+    const isThaiLang = this.currentLang === "th";
+
+    // สร้าง Popup Element
+    const popup = document.createElement("div");
+    popup.className =
+      "fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50";
+
+    // สร้างข้อความ Top Errors
+    let topErrorsHtml = "";
+    if (summary.topErrors && summary.topErrors.length > 0) {
+      const errorItems = summary.topErrors
+        .map(
+          (e) =>
+            `<li class="text-sm text-gray-600 dark:text-gray-300">• ${e.type} (${e.count}x)</li>`
+        )
+        .join("");
+      topErrorsHtml = `
+        <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+          <p class="text-xs font-bold text-gray-500 mb-1">${
+            isThaiLang ? "ข้อผิดพลาดที่พบบ่อย:" : "Top Errors:"
+          }</p>
+          <ul>${errorItems}</ul>
+        </div>
+      `;
+    }
+
+    popup.innerHTML = `
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-sm text-center transform scale-100 animate-pulse-once">
+        <div class="text-6xl font-bold mb-2" style="color: ${gradeInfo.color}">${gradeInfo.grade}</div>
+        <div class="text-2xl font-medium text-gray-600 dark:text-gray-300 mb-1">${gradeInfo.label}</div>
+        <div class="text-5xl font-bold text-gray-800 dark:text-white mb-4">${summary.score}%</div>
+        
+        <div class="grid grid-cols-2 gap-4 text-center mb-4">
+          <div class="bg-green-50 dark:bg-green-900 p-3 rounded-lg">
+            <div class="text-2xl font-bold text-green-600 dark:text-green-400">${summary.correctFrames}</div>
+            <div class="text-xs text-green-700 dark:text-green-300">${
+              isThaiLang ? "เฟรมถูกต้อง" : "Correct"
+            }</div>
+          </div>
+          <div class="bg-red-50 dark:bg-red-900 p-3 rounded-lg">
+            <div class="text-2xl font-bold text-red-600 dark:text-red-400">${summary.errorFrames}</div>
+            <div class="text-xs text-red-700 dark:text-red-300">${
+              isThaiLang ? "เฟรมผิดพลาด" : "Errors"
+            }</div>
+          </div>
+        </div>
+        
+        <p class="text-sm text-gray-500">${
+          isThaiLang ? "ระยะเวลา:" : "Duration:"
+        } ${summary.durationSeconds}s | ${summary.totalFrames} frames</p>
+        
+        ${topErrorsHtml}
+        
+        <button id="close-score-popup" class="mt-6 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition font-bold">
+          ${isThaiLang ? "ปิด" : "Close"}
+        </button>
+      </div>
+    `;
+
+    document.body.appendChild(popup);
+
+    // ปิด Popup เมื่อคลิกปุ่มหรือพื้นหลัง
+    const closeBtn = popup.querySelector("#close-score-popup");
+    closeBtn.addEventListener("click", () => popup.remove());
+    popup.addEventListener("click", (e) => {
+      if (e.target === popup) popup.remove();
+    });
+
+    // แสดง Notification ด้วย
+    this.showNotification(
+      `${this.getText("alert_data_saved")} (${summary.totalFrames} frames)`,
+      "success"
+    );
+  }
 }

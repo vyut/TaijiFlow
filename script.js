@@ -71,6 +71,7 @@ const themeBtn = document.getElementById("theme-btn");
 langBtn.addEventListener("click", () => {
   const newLang = uiManager.toggleLanguage();
   audioManager.setLanguage(newLang); // Sync เสียงพูดกับภาษา
+  calibrator.setLanguage(newLang); // Sync Calibration text กับภาษา
   langBtn.innerText = newLang === "th" ? "🇹🇭 TH / 🇺🇸 EN" : "🇺🇸 EN / 🇹🇭 TH";
 });
 

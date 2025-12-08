@@ -3,11 +3,40 @@ class CalibrationManager {
     this.isActive = false;
     this.isComplete = false;
     this.calibrationData = null;
+    this.lang = "th"; // ภาษาปัจจุบัน
 
     // ตัวแปรสำหรับจับเวลาและความนิ่ง
     this.stableFrames = 0;
     this.REQUIRED_STABLE_FRAMES = 90; // ต้องยืนนิ่งๆ ประมาณ 3 วินาที (30fps)
     this.statusText = "";
+
+    // ข้อความ 2 ภาษา
+    this.texts = {
+      th: {
+        tpose: "กรุณายืนตัวตรง กางแขน (T-Pose)",
+        backUp: "ถอยหลังอีกนิด! (ให้เห็นทั้งตัว)",
+        armsUp: "กางแขนระดับไหล่ (T-Pose)",
+        holdStill: "อยู่นิ่งๆ...",
+        complete: "✅ ปรับเทียบเสร็จสมบูรณ์!",
+        cancel: "(กดปุ่ม 'ยกเลิก' หากต้องการหยุด)",
+      },
+      en: {
+        tpose: "Stand straight, arms out (T-Pose)",
+        backUp: "Step back! (Full body visible)",
+        armsUp: "Raise arms to shoulder level (T-Pose)",
+        holdStill: "Hold still...",
+        complete: "✅ Calibration complete!",
+        cancel: "(Press 'Cancel' to stop)",
+      },
+    };
+  }
+
+  setLanguage(lang) {
+    this.lang = lang === "th" ? "th" : "en";
+  }
+
+  getText(key) {
+    return this.texts[this.lang][key] || this.texts.th[key];
   }
 
   start() {
@@ -15,7 +44,7 @@ class CalibrationManager {
     this.isComplete = false;
     this.stableFrames = 0;
     this.calibrationData = null;
-    this.statusText = "กรุณายืนตัวตรง กางแขน (T-Pose)";
+    this.statusText = this.getText("tpose");
     console.log("Calibration Started");
   }
 
@@ -37,7 +66,7 @@ class CalibrationManager {
     );
 
     if (!isVisible) {
-      this.statusText = "ถอยหลังอีกนิด! (ให้เห็นทั้งตัว)";
+      this.statusText = this.getText("backUp");
       this.stableFrames = 0;
       return { status: "adjusting", message: this.statusText };
     }
@@ -48,7 +77,7 @@ class CalibrationManager {
 
     // ใช้ค่า 0.2 เป็น threshold (ปรับจูนได้)
     if (Math.abs(wristY - shoulderY) > 0.2) {
-      this.statusText = "กางแขนระดับไหล่ (T-Pose)";
+      this.statusText = this.getText("armsUp");
       this.stableFrames = 0;
       return { status: "adjusting", message: this.statusText };
     }
@@ -59,7 +88,7 @@ class CalibrationManager {
       const timeLeft = Math.ceil(
         (this.REQUIRED_STABLE_FRAMES - this.stableFrames) / 30
       );
-      this.statusText = `อยู่นิ่งๆ... ${timeLeft}`;
+      this.statusText = `${this.getText("holdStill")} ${timeLeft}`;
       return { status: "measuring", message: this.statusText };
     }
 
@@ -67,7 +96,8 @@ class CalibrationManager {
     this.calibrationData = this.calculateMetrics(landmarks);
     this.isComplete = true;
     this.isActive = false;
-    this.statusText = "✅ ปรับเทียบเสร็จสมบูรณ์!";
+    this.statusText = this.getText("complete");
+
 
     return {
       status: "complete",
@@ -129,7 +159,7 @@ class CalibrationManager {
     ctx.font = "20px 'Sarabun', sans-serif";
     ctx.fillStyle = "#FFFFFF";
     ctx.fillText(
-      "(กดปุ่ม 'ยกเลิก' หากต้องการหยุด)",
+      this.getText("cancel"),
       canvasWidth / 2,
       canvasHeight / 2 + 50
     );

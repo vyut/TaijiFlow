@@ -1,6 +1,11 @@
 /**
- * TaijiFlow AI - Drawing Manager
+ * TaijiFlow AI - Drawing Manager v1.0
  * รับผิดชอบการวาดภาพทั้งหมดลงบน Canvas
+ * 
+ * Features:
+ * - วาด Skeleton (โครงกระดูก) จาก MediaPipe landmarks
+ * - วาด Reference Path (เส้นทางต้นแบบ)
+ * - วาด Feedback Panel (กล่องแสดงข้อผิดพลาด)
  */
 class DrawingManager {
   constructor(canvasCtx, canvasElement) {

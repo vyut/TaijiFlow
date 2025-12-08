@@ -1,3 +1,13 @@
+/**
+ * TaijiFlow AI - UI Manager v1.1
+ * จัดการส่วนติดต่อผู้ใช้ (User Interface)
+ * 
+ * Features:
+ * - สลับภาษา Thai/English (i18n)
+ * - สลับ Theme Light/Dark
+ * - แสดง Notifications (Toast)
+ * - แสดง Score Summary Popup
+ */
 class UIManager {
   constructor() {
     this.currentLang = "th";

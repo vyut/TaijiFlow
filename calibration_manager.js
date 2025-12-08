@@ -1,3 +1,12 @@
+/**
+ * TaijiFlow AI - Calibration Manager v1.1
+ * จัดการการปรับเทียบสัดส่วนร่างกายผู้ใช้ผ่านท่า T-Pose
+ * 
+ * Features:
+ * - วัด Torso Height, Shoulder Width, Arm Length
+ * - ใช้สำหรับ Dynamic Thresholds ใน HeuristicsEngine
+ * - รองรับ 2 ภาษา (TH/EN)
+ */
 class CalibrationManager {
   constructor() {
     this.isActive = false;

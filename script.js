@@ -1,5 +1,5 @@
 // =================================================================
-//  TaijiFlow AI - Main Controller (script.js) v2.3 (Scoring Added)
+//  TaijiFlow AI - Main Controller (script.js) v2.4 (Audio Feedback Added)
 // =================================================================
 
 // 1. Setup & Variables
@@ -15,6 +15,7 @@ const calibrator = new CalibrationManager(); // ผู้จัดการป�
 const uiManager = new UIManager(); // ผู้จัดการหน้าจอและภาษา
 const drawer = new DrawingManager(canvasCtx, canvasElement); // ผู้จัดการวาดภาพบน Canvas
 const scorer = new ScoringManager(); // ผู้จัดการคะแนน
+const audioManager = new AudioManager(); // ผู้จัดการเสียงพูด
 
 // State Variables
 let isRecording = false; // สถานะการบันทึก
@@ -69,11 +70,21 @@ const themeBtn = document.getElementById("theme-btn");
 
 langBtn.addEventListener("click", () => {
   const newLang = uiManager.toggleLanguage();
+  audioManager.setLanguage(newLang); // Sync เสียงพูดกับภาษา
   langBtn.innerText = newLang === "th" ? "🇹🇭 TH / 🇺🇸 EN" : "🇺🇸 EN / 🇹🇭 TH";
 });
 
 themeBtn.addEventListener("click", () => {
   uiManager.toggleTheme();
+});
+
+// Audio Toggle Button
+const audioBtn = document.getElementById("audio-btn");
+audioBtn.addEventListener("click", () => {
+  const isEnabled = audioManager.toggle();
+  audioBtn.innerText = isEnabled ? "🔊" : "🔇";
+  audioBtn.classList.toggle("bg-green-600", isEnabled);
+  audioBtn.classList.toggle("bg-gray-500", !isEnabled);
 });
 
 // เริ่มต้น UI
@@ -82,6 +93,7 @@ uiManager.init();
 // ฟังก์ชันเริ่ม Calibration (ใช้ร่วมกันทั้งปุ่มเล็กและใหญ่)
 function startCalibration() {
   calibrator.start();
+  audioManager.announce("calib_start"); // พูดแจ้งเตือน
   referencePath = []; // ซ่อน Path ชั่วคราว
 
   // UI Updates
@@ -134,6 +146,7 @@ recordBtn.addEventListener("click", () => {
   if (isRecording) {
     // --- เริ่มต้นการฝึก ---
     uiManager.updateRecordButtonState(true);
+    audioManager.announce("record_start"); // พูดแจ้งเตือน
 
     // Reset Data
     sessionLog = [];
@@ -145,6 +158,7 @@ recordBtn.addEventListener("click", () => {
   } else {
     // --- จบการฝึก ---
     uiManager.updateRecordButtonState(false);
+    audioManager.announce("record_stop"); // พูดแจ้งเตือน
 
     // หยุดและดึงข้อมูลคะแนน
     const scoreSummary = scorer.stop();
@@ -267,6 +281,7 @@ function onResults(results) {
 
       if (calibResult && calibResult.status === "complete") {
         engine.setCalibration(calibResult.data);
+        audioManager.announce("calib_success"); // พูดแจ้งเตือน
 
         // ใช้ข้อความจาก uiManager
         uiManager.showNotification(
@@ -296,6 +311,9 @@ function onResults(results) {
           currentLevel // ส่งเลเวล (L1, L2, L3)
         );
         drawer.drawFeedbackPanel(feedbacks);
+        
+        // 1.1 พูดแจ้งเตือนเมื่อมีข้อผิดพลาด (มี Cooldown ป้องกันพูดซ้ำเร็วเกินไป)
+        audioManager.speakFeedback(feedbacks);
 
         // 2. *** เก็บข้อมูล (Data Logging) ***
         if (isRecording) {

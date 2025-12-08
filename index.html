@@ -43,6 +43,7 @@
     <script src="heuristics_engine.js" defer></script>
     <script src="drawing_manager.js" defer></script>
     <script src="data_exporter.js" defer></script>
+    <script src="audio_manager.js" defer></script>
     <script src="scoring_manager.js" defer></script>
     <script src="ui_manager.js" defer></script>
     <script src="script.js" defer></script>
@@ -60,6 +61,13 @@
       </h1>
 
       <div class="flex gap-2">
+        <button
+          id="audio-btn"
+          class="px-3 py-1 bg-green-600 text-white border border-green-700 rounded hover:bg-green-700 text-sm transition-colors"
+          title="เปิด/ปิดเสียงพูด"
+        >
+          🔊
+        </button>
         <button
           id="lang-btn"
           class="px-3 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 font-bold text-sm transition-colors"

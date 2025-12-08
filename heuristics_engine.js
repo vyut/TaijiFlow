@@ -19,6 +19,10 @@ class HeuristicsEngine {
     this.HISTORY_LENGTH_WRIST = 10;
     this.pauseCounter = 0;
 
+    // --- Default Thresholds (ใช้เมื่อไม่มี Calibration Data) ---
+    this.DEFAULT_PATH_THRESHOLD = 0.08;
+    this.DEFAULT_SMOOTHNESS_THRESHOLD = 0.02;
+
     // --- ตัวแปรสำหรับ Sticky Feedback (กันข้อความกระพริบ) ---
     this.lastFeedbackMsg = null;
     this.lastFeedbackTime = 0;
@@ -238,7 +242,7 @@ class HeuristicsEngine {
       if (d < minDistance) minDistance = d;
     }
     // Dynamic Thresholds
-    let threshold = 0.08;
+    let threshold = this.DEFAULT_PATH_THRESHOLD;
     if (this.calibrationData) {
       threshold = this.calibrationData.shoulderWidth * 0.4;
     }
@@ -380,7 +384,13 @@ class HeuristicsEngine {
     const v1 = this.calculateDistance(p1, p2);
     const acceleration = Math.abs(v2 - v1);
 
-    if (acceleration > 0.02) return "⚠️ การเคลื่อนไหวสะดุด (Not Smooth)";
+    // Dynamic Threshold: 5% ของความยาวแขน (ถ้ามี Calibration Data)
+    let threshold = this.DEFAULT_SMOOTHNESS_THRESHOLD;
+    if (this.calibrationData) {
+      threshold = this.calibrationData.armLength * 0.05;
+    }
+
+    if (acceleration > threshold) return "⚠️ การเคลื่อนไหวสะดุด (Not Smooth)";
     return null;
   }
 

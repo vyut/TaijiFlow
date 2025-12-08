@@ -229,6 +229,8 @@ window.addEventListener("keydown", (e) => {
 });
 
 // 3. Data Loading Function
+let referenceDataLoaded = false; // สถานะการโหลด Reference Data
+
 async function loadReferenceData() {
   const filename = `data/${currentExercise}_${currentLevel}.json`;
   console.log(`Loading reference data from: ${filename}`);
@@ -237,14 +239,41 @@ async function loadReferenceData() {
     const response = await fetch(filename);
     if (!response.ok) throw new Error("File not found");
     const data = await response.json();
+    
+    // ตรวจสอบว่าข้อมูลมี format ถูกต้อง
+    if (!Array.isArray(data) || data.length === 0) {
+      throw new Error("Invalid data format");
+    }
+    
     referencePath = data.map((frame) => {
       const wrist = frame.landmarks[16];
+      if (!wrist) throw new Error("Missing wrist landmark");
       return { x: wrist.x, y: wrist.y };
     });
-    console.log(`Loaded ${referencePath.length} points.`);
+    
+    referenceDataLoaded = true;
+    console.log(`✅ Loaded ${referencePath.length} points.`);
+    
   } catch (error) {
-    console.warn("Reference data not found (User needs to record).");
+    console.warn("⚠️ Reference data not found:", error.message);
     referencePath = [];
+    referenceDataLoaded = false;
+    
+    // แสดง Notification แจ้งผู้ใช้
+    const exerciseNames = {
+      rh_cw: "มือขวา-ตามเข็ม",
+      rh_ccw: "มือขวา-ทวนเข็ม",
+      lh_cw: "มือซ้าย-ตามเข็ม",
+      lh_ccw: "มือซ้าย-ทวนเข็ม",
+    };
+    const exerciseName = exerciseNames[currentExercise] || currentExercise;
+    
+    const isThaiLang = uiManager.currentLang === "th";
+    const msg = isThaiLang
+      ? `⚠️ ไม่พบข้อมูลต้นแบบสำหรับ ${exerciseName} (${currentLevel})`
+      : `⚠️ No reference data for ${currentExercise} (${currentLevel})`;
+    
+    uiManager.showNotification(msg, "warning", 5000);
   }
 }
 

@@ -97,15 +97,22 @@ class ScoringManager {
   }
 
   /**
-   * แปลงคะแนนเป็นเกรด
+   * แปลงคะแนนเป็นเกรด (รองรับ 2 ภาษา)
    * @param {number} score - คะแนน 0-100
+   * @param {string} lang - ภาษา ('th' หรือ 'en')
    * @returns {Object} เกรดและสี
    */
-  static getGrade(score) {
-    if (score >= 90) return { grade: "A", label: "ยอดเยี่ยม", color: "#22c55e" };
-    if (score >= 80) return { grade: "B", label: "ดีมาก", color: "#84cc16" };
-    if (score >= 70) return { grade: "C", label: "ดี", color: "#eab308" };
-    if (score >= 60) return { grade: "D", label: "พอใช้", color: "#f97316" };
-    return { grade: "F", label: "ต้องปรับปรุง", color: "#ef4444" };
+  static getGrade(score, lang = "th") {
+    const labels = {
+      th: { A: "ยอดเยี่ยม", B: "ดีมาก", C: "ดี", D: "พอใช้", F: "ต้องปรับปรุง" },
+      en: { A: "Excellent", B: "Very Good", C: "Good", D: "Fair", F: "Needs Improvement" },
+    };
+    const l = labels[lang] || labels.th;
+
+    if (score >= 90) return { grade: "A", label: l.A, color: "#22c55e" };
+    if (score >= 80) return { grade: "B", label: l.B, color: "#84cc16" };
+    if (score >= 70) return { grade: "C", label: l.C, color: "#eab308" };
+    if (score >= 60) return { grade: "D", label: l.D, color: "#f97316" };
+    return { grade: "F", label: l.F, color: "#ef4444" };
   }
 }

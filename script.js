@@ -162,7 +162,7 @@ recordBtn.addEventListener("click", () => {
 
     // หยุดและดึงข้อมูลคะแนน
     const scoreSummary = scorer.stop();
-    const gradeInfo = ScoringManager.getGrade(scoreSummary.score);
+    const gradeInfo = ScoringManager.getGrade(scoreSummary.score, uiManager.currentLang);
 
     // รวบรวมข้อมูลและส่งให้ Exporter จัดการ
     if (recordedSessionData.length > 0) {

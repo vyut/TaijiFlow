@@ -85,6 +85,8 @@ const countdownNumber = document.getElementById("countdown-number");
 const trainingControls = document.getElementById("training-controls");
 const trainingTimer = document.getElementById("training-timer");
 const stopEarlyBtn = document.getElementById("stop-early-btn");
+const fullscreenOverlayBtn = document.getElementById("fullscreen-overlay-btn");
+const videoFullscreenBtn = document.getElementById("video-fullscreen-btn");
 
 // ฟังก์ชันตรวจสอบว่าเลือกท่าและระดับครบหรือยัง
 function checkSelectionComplete() {
@@ -244,14 +246,7 @@ async function startTrainingAfterCalibration() {
   // 1. Countdown 3-2-1
   await showCountdown();
 
-  // 2. เต็มจอ
-  try {
-    await canvasElement.requestFullscreen();
-  } catch (e) {
-    console.warn("Fullscreen not supported:", e);
-  }
-
-  // 3. เริ่มบันทึก
+  // 2. เริ่มบันทึก (ไม่เต็มจออัตโนมัติแล้ว - ให้ผู้ใช้กดเอง)
   isTrainingMode = true;
   isRecording = true;
   sessionStartTime = Date.now();
@@ -264,10 +259,13 @@ async function startTrainingAfterCalibration() {
   audioManager.announce("record_start");
   uiManager.updateRecordButtonState(true);
 
-  // 4. แสดง Timer และปุ่มหยุด
+  // 3. แสดง Timer และปุ่มหยุด (ซ้ายล่าง)
   trainingControls.classList.remove("hidden");
   trainingControls.classList.add("flex");
   trainingTimer.textContent = formatTime(TRAINING_DURATION_MS);
+
+  // 4. แสดงปุ่มเต็มจอ (ขวาล่าง)
+  fullscreenOverlayBtn.classList.remove("hidden");
 
   // 5. เริ่ม Timer
   trainingTimerId = setInterval(updateTrainingTimer, 1000);
@@ -465,6 +463,13 @@ window.addEventListener("keydown", (e) => {
 let referenceDataLoaded = false; // สถานะการโหลด Reference Data
 
 async function loadReferenceData() {
+  // ถ้ายังไม่ได้เลือกท่าหรือระดับ ไม่ต้องโหลด
+  if (!currentExercise || !currentLevel) {
+    referencePath = [];
+    referenceDataLoaded = false;
+    return; // ไม่แสดง Error
+  }
+
   const filename = `data/${currentExercise}_${currentLevel}.json`;
   console.log(`Loading reference data from: ${filename}`);
 

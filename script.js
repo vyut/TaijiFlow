@@ -384,7 +384,8 @@ function resetToHomeScreen() {
     "bg-red-600",
     "hover:bg-red-700"
   );
-  setButtonToStartMode();
+  // เปลี่ยนข้อความปุ่มกลับเป็น "เริ่มการฝึก" (ไม่เรียก setButtonToStartMode เพราะจะเพิ่ม green กลับมา)
+  startTrainingBtn.innerText = uiManager.getText("start_training_btn");
   startOverlay.classList.remove("hidden");
   uiManager.updateRecordButtonState(false);
 }

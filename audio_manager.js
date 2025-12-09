@@ -83,7 +83,7 @@ class AudioManager {
 
     // แปลงเป็นข้อความสั้นๆ สำหรับพูด (รองรับทั้ง TH และ EN)
     const isThaiLang = this.lang === "th-TH";
-    
+
     const shortMessages = {
       "Path Deviation": isThaiLang ? "เส้นทางผิด" : "Wrong path",
       "Incorrect Arm Rotation": isThaiLang ? "หมุนแขนผิด" : "Wrong rotation",
@@ -110,10 +110,10 @@ class AudioManager {
    */
   announce(type) {
     const isThaiLang = this.lang === "th-TH";
-    
+
     const announcements = {
-      record_start: isThaiLang ? "เริ่มบันทึก" : "Recording started",
-      record_stop: isThaiLang ? "หยุดบันทึก" : "Recording stopped",
+      record_start: isThaiLang ? "เริ่มการฝึก" : "Start training",
+      record_stop: isThaiLang ? "หยุดการฝึก" : "Stop training",
       calib_success: isThaiLang ? "ปรับเทียบสำเร็จ" : "Calibration complete",
       calib_start: isThaiLang ? "กรุณายืนท่ากางเขน" : "Please stand in T pose",
     };
@@ -123,4 +123,3 @@ class AudioManager {
     }
   }
 }
-

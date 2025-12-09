@@ -165,7 +165,7 @@
                 >3</span
               >
               <span id="overlay-step3"
-                >กดปุ่ม <strong>"🏃 เริ่มฝึก"</strong></span
+                >กดปุ่ม <strong>"🏃 เริ่มการฝึก"</strong></span
               >
             </p>
           </div>
@@ -187,7 +187,7 @@
           >
         </div>
 
-        <!-- Training Timer & Stop Button (แสดงระหว่างฝึก - มุมซ้ายล่าง) -->
+        <!-- Training Timer (แสดงระหว่างฝึก - มุมซ้ายล่าง) -->
         <div
           id="training-controls"
           class="absolute bottom-4 left-4 z-20 hidden"
@@ -197,13 +197,6 @@
           >
             <span class="text-white font-bold">⏱️</span>
             <span id="training-timer" class="text-white font-bold">5:00</span>
-            <button
-              id="stop-early-btn"
-              class="bg-red-600 hover:bg-red-700 text-white w-8 h-8 rounded-full font-bold transition flex items-center justify-center"
-              title="หยุดก่อน"
-            >
-              ⏹️
-            </button>
           </div>
         </div>
 
@@ -278,12 +271,13 @@
             </button>
           </div>
 
-          <!-- Start Training Button (แสดงเมื่อเลือกครบ) -->
+          <!-- Start/Stop Training Button (Toggle) -->
           <button
             id="start-training-btn"
-            class="hidden w-full py-3 mt-2 bg-green-600 text-white text-lg font-bold rounded-lg shadow-lg hover:bg-green-700 transition transform hover:scale-105"
+            disabled
+            class="w-full py-3 mt-2 bg-gray-400 text-white text-lg font-bold rounded-lg shadow-lg cursor-not-allowed transition"
           >
-            🏃 เริ่มฝึก
+            🏃 เริ่มการฝึก
           </button>
         </div>
 
@@ -322,12 +316,12 @@
 
         <!-- Instructions (อัปเดตให้ตรงกับ Flow ใหม่) -->
         <div
-          class="mt-2 p-3 bg-blue-50 text-blue-800 text-xs rounded border border-blue-100 dark:bg-blue-900 dark:text-blue-100 dark:border-blue-800 transition-colors"
+          class="mt-2 p-3 bg-purple-50 text-purple-800 text-xs rounded border border-purple-200 dark:bg-purple-900 dark:text-purple-100 dark:border-purple-700 transition-colors"
         >
           <strong id="instr-title">💡 คำแนะนำ:</strong>
           <ul class="list-disc list-inside mt-1 space-y-1">
-            <li id="instr-1">เลือกท่าฝึกและระดับจากด้านบน</li>
-            <li id="instr-2">ยืนให้เต็มตัว ห่างจากกล้อง 2-3 เมตร</li>
+            <li id="instr-1">เลือกท่าฝึกและระดับ แล้วกด 'เริ่มการฝึก'</li>
+            <li id="instr-2">ยืนให้เห็นเต็มตัว ห่างจากกล้อง 2-3 เมตร</li>
             <li id="instr-3">แสงสว่างต้องเพียงพอ</li>
           </ul>
         </div>

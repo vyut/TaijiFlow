@@ -92,11 +92,40 @@ const videoFullscreenBtn = document.getElementById("video-fullscreen-btn");
 function checkSelectionComplete() {
   const isComplete = currentExercise !== null && currentLevel !== null;
   if (isComplete) {
-    startTrainingBtn.classList.remove("hidden");
+    // Enable button and change to start style
+    startTrainingBtn.disabled = false;
+    startTrainingBtn.classList.remove("bg-gray-400", "cursor-not-allowed");
+    startTrainingBtn.classList.add(
+      "bg-green-600",
+      "hover:bg-green-700",
+      "hover:scale-105"
+    );
   } else {
-    startTrainingBtn.classList.add("hidden");
+    // Disable button and change to disabled style
+    startTrainingBtn.disabled = true;
+    startTrainingBtn.classList.add("bg-gray-400", "cursor-not-allowed");
+    startTrainingBtn.classList.remove(
+      "bg-green-600",
+      "hover:bg-green-700",
+      "hover:scale-105"
+    );
   }
   return isComplete;
+}
+
+/**
+ * เปลี่ยนปุ่มเป็นโหมด "Start" หรือ "Stop"
+ */
+function setButtonToStopMode() {
+  startTrainingBtn.innerText = uiManager.getText("stop_training_btn");
+  startTrainingBtn.classList.remove("bg-green-600", "hover:bg-green-700");
+  startTrainingBtn.classList.add("bg-red-600", "hover:bg-red-700");
+}
+
+function setButtonToStartMode() {
+  startTrainingBtn.innerText = uiManager.getText("start_training_btn");
+  startTrainingBtn.classList.remove("bg-red-600", "hover:bg-red-700");
+  startTrainingBtn.classList.add("bg-green-600", "hover:bg-green-700");
 }
 
 langBtn.addEventListener("click", () => {
@@ -213,30 +242,16 @@ function updateTrainingTimer() {
 }
 
 /**
- * เริ่ม Training Session (Flow ใหม่)
+ * เริ่ม Training Session (Flow ใหม่ - Calibrate ทุกครั้ง)
  */
 async function startTrainingFlow() {
-  // 1. ซ่อนปุ่มเริ่มฝึก
-  startTrainingBtn.classList.add("hidden");
+  // 1. ซ่อน Overlay คำแนะนำ
   startOverlay.classList.add("hidden");
 
-  // 2. ตรวจสอบ Calibration Data
-  if (!calibrator.isComplete) {
-    const storedData = calibrator.loadFromStorage();
-    if (!storedData) {
-      // ต้อง Calibrate ก่อน
-      calibrator.start();
-      audioManager.announce("calib_start");
-      // รอ Calibration เสร็จ (จะถูกเรียก startTrainingAfterCalibration)
-      return;
-    } else {
-      // ใช้ข้อมูลที่บันทึกไว้
-      engine.setCalibration(storedData);
-    }
-  }
-
-  // 3. เริ่ม Training หลัง Calibration เสร็จ (หรือมีข้อมูลแล้ว)
-  startTrainingAfterCalibration();
+  // 2. เริ่ม Calibrate ทุกครั้ง (ไม่ใช้ค่าจาก LocalStorage)
+  calibrator.start();
+  audioManager.announce("calib_start");
+  // รอ Calibration เสร็จ (callback จะเรียก startTrainingAfterCalibration)
 }
 
 /**
@@ -259,15 +274,18 @@ async function startTrainingAfterCalibration() {
   audioManager.announce("record_start");
   uiManager.updateRecordButtonState(true);
 
-  // 3. แสดง Timer และปุ่มหยุด (ซ้ายล่าง)
+  // 3. เปลี่ยนปุ่มเป็น "หยุดฝึก"
+  setButtonToStopMode();
+
+  // 4. แสดง Timer (ซ้ายล่าง)
   trainingControls.classList.remove("hidden");
   trainingControls.classList.add("flex");
   trainingTimer.textContent = formatTime(TRAINING_DURATION_MS);
 
-  // 4. แสดงปุ่มเต็มจอ (ขวาล่าง)
+  // 5. แสดงปุ่มเต็มจอ (ขวาล่าง)
   fullscreenOverlayBtn.classList.remove("hidden");
 
-  // 5. เริ่ม Timer
+  // 6. เริ่ม Timer
   trainingTimerId = setInterval(updateTrainingTimer, 1000);
 }
 
@@ -298,34 +316,43 @@ function endTrainingSession() {
     document.exitFullscreen();
   }
 
-  // 5. สรุปคะแนน
-  const summary = scorer.getSessionSummary();
-  const grade = ScoringManager.getGrade(summary.score, uiManager.currentLang);
+  // 5. สรุปคะแนนและ Export Data (wrap ใน try-catch เพื่อไม่ให้ crash)
+  try {
+    const summary = scorer.getSessionSummary();
+    const grade = ScoringManager.getGrade(summary.score, uiManager.currentLang);
 
-  // 6. Export Data
-  const fullDataset = {
-    meta: {
-      user_id: getOrCreateUserId(),
-      session_id: currentSessionId,
-      exercise: currentExercise,
-      level: currentLevel,
-      timestamp: new Date().toISOString(),
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      platform: getPlatformInfo(),
-      total_frames: recordedSessionData.length,
-      fps_estimated:
-        recordedSessionData.length / ((Date.now() - sessionStartTime) / 1000),
-    },
-    score_summary: { ...summary, grade: grade.label },
-    all_errors: sessionLog,
-    frames: recordedSessionData,
-  };
-  DataExporter.exportFullSession(fullDataset);
+    // Export Data (ถ้ามีข้อมูล)
+    if (recordedSessionData.length > 0) {
+      const fullDataset = {
+        meta: {
+          user_id: getOrCreateUserId(),
+          session_id: currentSessionId,
+          exercise: currentExercise,
+          level: currentLevel,
+          timestamp: new Date().toISOString(),
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          platform: getPlatformInfo(),
+          total_frames: recordedSessionData.length,
+          fps_estimated:
+            recordedSessionData.length /
+            ((Date.now() - sessionStartTime) / 1000),
+        },
+        score_summary: { ...summary, grade: grade.label },
+        all_errors: sessionLog,
+        frames: recordedSessionData,
+      };
+      DataExporter.exportFullSession(fullDataset);
+    }
 
-  // 7. แสดง Score Popup
-  uiManager.showScoreSummary(summary.score, grade.label, summary.totalErrors);
+    // แสดง Score Popup
+    uiManager.showScoreSummary(summary.score, grade.label, summary.totalErrors);
+  } catch (error) {
+    console.error("Error in endTrainingSession:", error);
+    // ยังคงแสดง notification แจ้งเตือน
+    uiManager.showNotification("เกิดข้อผิดพลาดในการสรุปผล", "warning", 3000);
+  }
 
-  // 8. Reset UI และกลับหน้าแรก
+  // 6. Reset UI และกลับหน้าแรก (เรียกเสมอ ไม่ว่าจะมี error หรือไม่)
   setTimeout(() => {
     resetToHomeScreen();
   }, 3000);
@@ -348,14 +375,30 @@ function resetToHomeScreen() {
   levelButtons.forEach((btn) =>
     btn.classList.add("bg-gray-100", "text-gray-600", "font-medium")
   );
-  startTrainingBtn.classList.add("hidden");
+  startTrainingBtn.disabled = true;
+  startTrainingBtn.classList.add("bg-gray-400", "cursor-not-allowed");
+  startTrainingBtn.classList.remove(
+    "bg-green-600",
+    "hover:bg-green-700",
+    "hover:scale-105",
+    "bg-red-600",
+    "hover:bg-red-700"
+  );
+  setButtonToStartMode();
   startOverlay.classList.remove("hidden");
   uiManager.updateRecordButtonState(false);
 }
 
-// Event Listeners สำหรับ Training Flow
-startTrainingBtn.addEventListener("click", startTrainingFlow);
-stopEarlyBtn.addEventListener("click", endTrainingSession);
+// Event Listener สำหรับ Toggle Button (เริ่มการฝึก/หยุดการฝึก)
+startTrainingBtn.addEventListener("click", () => {
+  if (isTrainingMode) {
+    // กำลังฝึกอยู่ → หยุดการฝึก
+    endTrainingSession();
+  } else {
+    // ยังไม่ได้ฝึก → เริ่มการฝึก
+    startTrainingFlow();
+  }
+});
 
 // Video Fullscreen Button (ปุ่ม Overlay บนวิดีโอ)
 videoFullscreenBtn.addEventListener("click", () => {
@@ -464,10 +507,7 @@ window.addEventListener("keydown", (e) => {
       e.preventDefault(); // ป้องกันพฤติกรรม default ของเบราว์เซอร์
       fullscreenBtn.click();
       break;
-    case "r":
-      e.preventDefault();
-      recordBtn.click();
-      break;
+    // ลบ R key ออก เพราะการบันทึกเป็นอัตโนมัติแล้ว
   }
 });
 

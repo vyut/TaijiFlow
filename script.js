@@ -288,9 +288,10 @@ function endTrainingSession() {
   isRecording = false;
   audioManager.announce("record_stop");
 
-  // 3. ซ่อน Training Controls
+  // 3. ซ่อน Training Controls และปุ่มเต็มจอ
   trainingControls.classList.add("hidden");
   trainingControls.classList.remove("flex");
+  fullscreenOverlayBtn.classList.add("hidden");
 
   // 4. ออกจาก Fullscreen
   if (document.fullscreenElement) {
@@ -355,6 +356,17 @@ function resetToHomeScreen() {
 // Event Listeners สำหรับ Training Flow
 startTrainingBtn.addEventListener("click", startTrainingFlow);
 stopEarlyBtn.addEventListener("click", endTrainingSession);
+
+// Video Fullscreen Button (ปุ่ม Overlay บนวิดีโอ)
+videoFullscreenBtn.addEventListener("click", () => {
+  if (!document.fullscreenElement) {
+    canvasElement.requestFullscreen().catch((err) => {
+      console.warn("Fullscreen error:", err);
+    });
+  } else {
+    document.exitFullscreen();
+  }
+});
 
 fullscreenBtn.addEventListener("click", () => {
   if (!document.fullscreenElement) {

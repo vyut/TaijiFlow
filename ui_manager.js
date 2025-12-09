@@ -1,7 +1,7 @@
 /**
  * TaijiFlow AI - UI Manager v1.1
  * จัดการส่วนติดต่อผู้ใช้ (User Interface)
- * 
+ *
  * Features:
  * - สลับภาษา Thai/English (i18n)
  * - สลับ Theme Light/Dark
@@ -46,6 +46,14 @@ class UIManager {
         ex_rh_ccw: "มือขวา - ทวนเข็ม",
         ex_lh_cw: "มือซ้าย - ตามเข็ม",
         ex_lh_ccw: "มือซ้าย - ทวนเข็ม",
+        ex_placeholder: "-- เลือกท่าฝึก --",
+        start_training_btn: "🏃 เริ่มฝึก",
+        overlay_how_to: "📋 วิธีเริ่มต้นใช้งาน",
+        overlay_step1: 'เลือก "ท่าฝึก" จากเมนูด้านขวา',
+        overlay_step2: 'เลือก "ระดับ" ที่ต้องการฝึก',
+        overlay_step3: 'กดปุ่ม "🏃 เริ่มฝึก"',
+        overlay_note:
+          "⏱️ ระบบจะบันทึกอัตโนมัติ 5 นาที | 📏 ครั้งแรกจะมีการปรับเทียบสัดส่วนร่างกาย",
       },
       en: {
         app_title: "☯️ TaijiFlow AI: Taijiquan Assistant - Silk Reeling",
@@ -75,6 +83,14 @@ class UIManager {
         ex_rh_ccw: "Right Hand - Counter-Clockwise",
         ex_lh_cw: "Left Hand - Clockwise",
         ex_lh_ccw: "Left Hand - Counter-Clockwise",
+        ex_placeholder: "-- Select Exercise --",
+        start_training_btn: "🏃 Start Training",
+        overlay_how_to: "📋 How to Start",
+        overlay_step1: 'Select "Exercise" from the right menu',
+        overlay_step2: 'Select "Level" to train',
+        overlay_step3: 'Press "🏃 Start Training"',
+        overlay_note:
+          "⏱️ Auto-record for 5 minutes | 📏 First time: body calibration",
       },
     };
   }
@@ -162,16 +178,21 @@ class UIManager {
     setText("instr-2", "instructions_2");
     setText("instr-3", "instructions_3");
     setText("loading-text", "loading");
-    setText("overlay-title", "overlay_title");
-    setText("overlay-desc", "overlay_desc");
+    setText("overlay-title", "overlay_how_to");
+    setText("overlay-step1", "overlay_step1");
+    setText("overlay-step2", "overlay_step2");
+    setText("overlay-step3", "overlay_step3");
+    setText("overlay-note", "overlay_note");
+    setText("start-training-btn", "start_training_btn");
 
-    // Update Dropdown Options
+    // Update Dropdown Options (index 0 = placeholder, 1-4 = exercises)
     const exSelect = document.getElementById("exercise-select");
-    if (exSelect) {
-      exSelect.options[0].text = t["ex_rh_cw"];
-      exSelect.options[1].text = t["ex_rh_ccw"];
-      exSelect.options[2].text = t["ex_lh_cw"];
-      exSelect.options[3].text = t["ex_lh_ccw"];
+    if (exSelect && exSelect.options.length >= 5) {
+      exSelect.options[0].text = t["ex_placeholder"];
+      exSelect.options[1].text = t["ex_rh_cw"];
+      exSelect.options[2].text = t["ex_rh_ccw"];
+      exSelect.options[3].text = t["ex_lh_cw"];
+      exSelect.options[4].text = t["ex_lh_ccw"];
     }
   }
 
@@ -305,19 +326,29 @@ class UIManager {
 
     popup.innerHTML = `
       <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-sm text-center transform scale-100 animate-pulse-once">
-        <div class="text-6xl font-bold mb-2" style="color: ${gradeInfo.color}">${gradeInfo.grade}</div>
-        <div class="text-2xl font-medium text-gray-600 dark:text-gray-300 mb-1">${gradeInfo.label}</div>
-        <div class="text-5xl font-bold text-gray-800 dark:text-white mb-4">${summary.score}%</div>
+        <div class="text-6xl font-bold mb-2" style="color: ${
+          gradeInfo.color
+        }">${gradeInfo.grade}</div>
+        <div class="text-2xl font-medium text-gray-600 dark:text-gray-300 mb-1">${
+          gradeInfo.label
+        }</div>
+        <div class="text-5xl font-bold text-gray-800 dark:text-white mb-4">${
+          summary.score
+        }%</div>
         
         <div class="grid grid-cols-2 gap-4 text-center mb-4">
           <div class="bg-green-50 dark:bg-green-900 p-3 rounded-lg">
-            <div class="text-2xl font-bold text-green-600 dark:text-green-400">${summary.correctFrames}</div>
+            <div class="text-2xl font-bold text-green-600 dark:text-green-400">${
+              summary.correctFrames
+            }</div>
             <div class="text-xs text-green-700 dark:text-green-300">${
               isThaiLang ? "เฟรมถูกต้อง" : "Correct"
             }</div>
           </div>
           <div class="bg-red-50 dark:bg-red-900 p-3 rounded-lg">
-            <div class="text-2xl font-bold text-red-600 dark:text-red-400">${summary.errorFrames}</div>
+            <div class="text-2xl font-bold text-red-600 dark:text-red-400">${
+              summary.errorFrames
+            }</div>
             <div class="text-xs text-red-700 dark:text-red-300">${
               isThaiLang ? "เฟรมผิดพลาด" : "Errors"
             }</div>

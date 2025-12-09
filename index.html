@@ -146,26 +146,32 @@
                 class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
                 >1</span
               >
-              <span>เลือก <strong>"ท่าฝึก"</strong> จากเมนูด้านขวา</span>
+              <span id="overlay-step1"
+                >เลือก <strong>"ท่าฝึก"</strong> จากเมนูด้านขวา</span
+              >
             </p>
             <p class="flex items-center gap-3">
               <span
                 class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
                 >2</span
               >
-              <span>เลือก <strong>"ระดับ"</strong> ที่ต้องการฝึก</span>
+              <span id="overlay-step2"
+                >เลือก <strong>"ระดับ"</strong> ที่ต้องการฝึก</span
+              >
             </p>
             <p class="flex items-center gap-3">
               <span
                 class="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
                 >3</span
               >
-              <span>กดปุ่ม <strong>"🏃 เริ่มฝึก"</strong></span>
+              <span id="overlay-step3"
+                >กดปุ่ม <strong>"🏃 เริ่มฝึก"</strong></span
+              >
             </p>
           </div>
-          <p id="overlay-desc" class="text-gray-400 mt-6 text-sm text-center">
-            ⏱️ ระบบจะบันทึกอัตโนมัติ 5 นาที<br />
-            📏 ครั้งแรกจะมีการปรับเทียบสัดส่วนร่างกาย
+          <p id="overlay-note" class="text-gray-400 mt-6 text-sm text-center">
+            ⏱️ ระบบจะบันทึกอัตโนมัติ 5 นาที | 📏
+            ครั้งแรกจะมีการปรับเทียบสัดส่วนร่างกาย
           </p>
         </div>
 
@@ -181,22 +187,24 @@
           >
         </div>
 
-        <!-- Training Timer & Stop Button (แสดงระหว่างฝึก) -->
+        <!-- Training Timer & Stop Button (แสดงระหว่างฝึก - มุมซ้ายล่าง) -->
         <div
           id="training-controls"
-          class="absolute top-4 left-1/2 transform -translate-x-1/2 z-20 hidden flex-col items-center gap-2"
+          class="absolute bottom-4 left-4 z-20 hidden"
         >
           <div
-            class="bg-black bg-opacity-70 text-white px-6 py-2 rounded-full text-lg font-bold"
+            class="flex items-center gap-2 bg-black bg-opacity-70 px-3 py-2 rounded-full"
           >
-            ⏱️ <span id="training-timer">5:00</span>
+            <span class="text-white font-bold">⏱️</span>
+            <span id="training-timer" class="text-white font-bold">5:00</span>
+            <button
+              id="stop-early-btn"
+              class="bg-red-600 hover:bg-red-700 text-white w-8 h-8 rounded-full font-bold transition flex items-center justify-center"
+              title="หยุดก่อน"
+            >
+              ⏹️
+            </button>
           </div>
-          <button
-            id="stop-early-btn"
-            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-bold shadow-lg transition"
-          >
-            ⏹️ หยุดก่อน
-          </button>
         </div>
       </div>
 

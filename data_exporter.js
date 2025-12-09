@@ -31,8 +31,8 @@ class DataExporter {
   static exportFullSession(sessionData) {
     if (
       !sessionData ||
-      !sessionData.raw_data ||
-      sessionData.raw_data.length === 0
+      !sessionData.frames ||
+      sessionData.frames.length === 0
     ) {
       console.warn("Export cancelled: No data to export.");
       return;

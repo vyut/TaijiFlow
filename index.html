@@ -129,28 +129,74 @@
           </div>
         </div>
 
-        <!-- Start Overlay -->
+        <!-- Start Overlay (คำแนะนำการใช้งาน) -->
         <div
           id="start-overlay"
-          class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-70 z-10 rounded-lg transition-opacity duration-300"
+          class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-70 z-10 rounded-lg transition-opacity duration-300 p-8"
         >
           <h2
             id="overlay-title"
             class="text-white text-2xl font-bold mb-6 drop-shadow-md"
           >
-            พร้อมเริ่มฝึกหรือยัง?
+            📋 วิธีเริ่มต้นใช้งาน
           </h2>
-          <button
-            id="big-calibrate-btn"
-            class="pulse-btn bg-purple-600 hover:bg-purple-700 text-white text-xl font-bold py-4 px-10 rounded-full shadow-lg transform transition hover:scale-105 flex items-center gap-3"
-          >
-            <span id="big-calibrate-btn-text"
-              >📏 ปรับเทียบสัดส่วน (Calibrate)</span
-            >
-          </button>
-          <p id="overlay-desc" class="text-gray-300 mt-4 text-sm">
-            *กดเพื่อเริ่มวัดตัวก่อนการฝึก
+          <div class="text-white text-lg text-left space-y-3 max-w-md">
+            <p class="flex items-center gap-3">
+              <span
+                class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
+                >1</span
+              >
+              <span>เลือก <strong>"ท่าฝึก"</strong> จากเมนูด้านขวา</span>
+            </p>
+            <p class="flex items-center gap-3">
+              <span
+                class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
+                >2</span
+              >
+              <span>เลือก <strong>"ระดับ"</strong> ที่ต้องการฝึก</span>
+            </p>
+            <p class="flex items-center gap-3">
+              <span
+                class="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
+                >3</span
+              >
+              <span>กดปุ่ม <strong>"🏃 เริ่มฝึก"</strong></span>
+            </p>
+          </div>
+          <p id="overlay-desc" class="text-gray-400 mt-6 text-sm text-center">
+            ⏱️ ระบบจะบันทึกอัตโนมัติ 5 นาที<br />
+            📏 ครั้งแรกจะมีการปรับเทียบสัดส่วนร่างกาย
           </p>
+        </div>
+
+        <!-- Countdown Overlay (3-2-1) -->
+        <div
+          id="countdown-overlay"
+          class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80 z-30 hidden rounded-lg"
+        >
+          <span
+            id="countdown-number"
+            class="text-white text-9xl font-bold animate-pulse"
+            >3</span
+          >
+        </div>
+
+        <!-- Training Timer & Stop Button (แสดงระหว่างฝึก) -->
+        <div
+          id="training-controls"
+          class="absolute top-4 left-1/2 transform -translate-x-1/2 z-20 hidden flex-col items-center gap-2"
+        >
+          <div
+            class="bg-black bg-opacity-70 text-white px-6 py-2 rounded-full text-lg font-bold"
+          >
+            ⏱️ <span id="training-timer">5:00</span>
+          </div>
+          <button
+            id="stop-early-btn"
+            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-bold shadow-lg transition"
+          >
+            ⏹️ หยุดก่อน
+          </button>
         </div>
       </div>
 
@@ -171,6 +217,7 @@
             class="w-full p-2 border rounded-md bg-gray-50 text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
             title="เลือกท่าฝึก"
           >
+            <option value="" disabled selected>-- เลือกท่าฝึก --</option>
             <option value="rh_cw">มือขวา - ตามเข็ม</option>
             <option value="rh_ccw">มือขวา - ทวนเข็ม</option>
             <option value="lh_cw">มือซ้าย - ตามเข็ม</option>
@@ -189,7 +236,7 @@
             <button
               id="level1-btn"
               data-level="L1"
-              class="level-btn active w-full py-2 px-4 rounded bg-blue-600 text-white font-bold transition hover:bg-blue-700 shadow-sm"
+              class="level-btn w-full py-2 px-4 rounded bg-gray-100 text-gray-600 font-medium transition hover:bg-gray-200"
             >
               Level 1: ท่านั่ง
             </button>
@@ -208,6 +255,14 @@
               Level 3: ท่ายืนย่อ
             </button>
           </div>
+
+          <!-- Start Training Button (แสดงเมื่อเลือกครบ) -->
+          <button
+            id="start-training-btn"
+            class="hidden w-full py-3 mt-2 bg-green-600 text-white text-lg font-bold rounded-lg shadow-lg hover:bg-green-700 transition transform hover:scale-105"
+          >
+            🏃 เริ่มฝึก
+          </button>
         </div>
 
         <!-- Action Buttons -->

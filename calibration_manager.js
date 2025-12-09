@@ -1,7 +1,7 @@
 /**
  * TaijiFlow AI - Calibration Manager v1.1
  * จัดการการปรับเทียบสัดส่วนร่างกายผู้ใช้ผ่านท่า T-Pose
- * 
+ *
  * Features:
  * - วัด Torso Height, Shoulder Width, Arm Length
  * - ใช้สำหรับ Dynamic Thresholds ใน HeuristicsEngine
@@ -46,6 +46,62 @@ class CalibrationManager {
 
   getText(key) {
     return this.texts[this.lang][key] || this.texts.th[key];
+  }
+
+  // --- LocalStorage Methods ---
+  static STORAGE_KEY = "taijiflow_calibration_data";
+
+  /**
+   * บันทึก Calibration Data ลง LocalStorage
+   */
+  saveToStorage() {
+    if (this.calibrationData) {
+      const data = {
+        ...this.calibrationData,
+        savedAt: new Date().toISOString(),
+      };
+      localStorage.setItem(
+        CalibrationManager.STORAGE_KEY,
+        JSON.stringify(data)
+      );
+      console.log("Calibration data saved to LocalStorage");
+    }
+  }
+
+  /**
+   * โหลด Calibration Data จาก LocalStorage
+   * @returns {Object|null} Calibration data หรือ null ถ้าไม่มี
+   */
+  loadFromStorage() {
+    try {
+      const stored = localStorage.getItem(CalibrationManager.STORAGE_KEY);
+      if (stored) {
+        const data = JSON.parse(stored);
+        this.calibrationData = data;
+        this.isComplete = true;
+        console.log("Calibration data loaded from LocalStorage:", data);
+        return data;
+      }
+    } catch (e) {
+      console.warn("Failed to load calibration data:", e);
+    }
+    return null;
+  }
+
+  /**
+   * เช็คว่ามี Calibration Data ใน LocalStorage หรือไม่
+   * @returns {boolean}
+   */
+  hasStoredData() {
+    return localStorage.getItem(CalibrationManager.STORAGE_KEY) !== null;
+  }
+
+  /**
+   * ลบ Calibration Data จาก LocalStorage
+   */
+  clearStorage() {
+    localStorage.removeItem(CalibrationManager.STORAGE_KEY);
+    console.log("Calibration data cleared from LocalStorage");
   }
 
   start() {
@@ -106,7 +162,6 @@ class CalibrationManager {
     this.isComplete = true;
     this.isActive = false;
     this.statusText = this.getText("complete");
-
 
     return {
       status: "complete",

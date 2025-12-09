@@ -76,7 +76,17 @@ TaijiFlow/
 ├── styles.css              # Custom styles
 ├── data/                   # Reference movement data
 │   ├── rh_cw_L1.json       # Right hand, clockwise, Level 1
-│   └── ...
+│   └── lh_cw_L1.json       # Left hand, clockwise, Level 1
+│   └── rh_ccw_L1.json       # Right hand, counter-clockwise, Level 1
+│   └── lh_ccw_L1.json       # Left hand, counter-clockwise, Level 1
+│   └── rh_cw_L2.json       # Right hand, clockwise, Level 2
+│   └── lh_cw_L2.json       # Left hand, clockwise, Level 2
+│   └── rh_ccw_L2.json       # Right hand, counter-clockwise, Level 2
+│   └── lh_ccw_L2.json       # Left hand, counter-clockwise, Level 2
+│   └── rh_cw_L3.json       # Right hand, clockwise, Level 3
+│   └── lh_cw_L3.json       # Left hand, clockwise, Level 3
+│   └── rh_ccw_L3.json       # Right hand, counter-clockwise, Level 3
+│   └── lh_ccw_L3.json       # Left hand, counter-clockwise, Level 3
 └── README.md
 ```
 

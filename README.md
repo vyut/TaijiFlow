@@ -94,21 +94,30 @@ TaijiFlow/
 
 ## 🎯 How to Use
 
-1. **Toggle Audio** - Click 🔊 button to enable voice feedback (optional)
-2. **Calibrate** - Click "Calibrate" button, stand in T-Pose for 3 seconds
-3. **Select Exercise** - Choose hand (Right/Left) and direction (CW/CCW)
-4. **Select Level** - L1 (Seated), L2 (Standing), or L3 (Bow Stance)
-5. **Practice** - Follow the green reference path with your wrist
-6. **Listen** - Voice alerts will guide you when errors are detected
-7. **Record** - Press "R" or Record button to start scoring session
-8. **Review** - After stopping, see your score and top errors
+### New Streamlined Flow (v3.0)
+
+1. **Select Exercise** - Choose movement type (Right/Left hand, CW/CCW)
+2. **Select Level** - L1 (Seated), L2 (Standing), or L3 (Bow Stance)
+3. **Start Training** - Click "🏃 เริ่มการฝึก" button
+4. **Auto Calibrate** - Stand in T-Pose for 3 seconds (automatic)
+5. **Countdown** - 3-2-1 countdown before recording starts
+6. **Practice** - Follow the green reference path with your wrist (5 min max)
+7. **Stop** - Click "⏹️ หยุดการฝึก" or wait until 5 minutes
+8. **Review** - See your score, grade, and top errors
+
+### Features During Training
+
+| Position | Element | Description |
+|----------|---------|-------------|
+| Bottom-Left | ⏱️ Timer | Shows remaining time (max 5:00) |
+| Bottom-Right | ⛶ Fullscreen | Toggle fullscreen mode |
+| Control Panel | Stop Button | Changes to red "หยุดการฝึก" |
 
 ### Keyboard Shortcuts
 
 | Key | Action |
 |-----|--------|
 | `F` | Toggle Fullscreen |
-| `R` | Start/Stop Recording |
 
 ---
 

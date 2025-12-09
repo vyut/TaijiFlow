@@ -10,7 +10,7 @@ class AudioManager {
     this.lastSpeakTime = 0;
     this.cooldownMs = 2000; // พูดซ้ำได้ทุก 2 วินาที
     this.lang = "th-TH";
-    this.rate = 1.1; // ความเร็วในการพูด (1.0 = ปกติ)
+    this.rate = 1.0; // ความเร็วในการพูด (1.0 = ปกติ)
 
     // ตรวจสอบว่า Browser รองรับ Speech API ไหม
     this.isSupported = "speechSynthesis" in window;

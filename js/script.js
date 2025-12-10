@@ -148,7 +148,8 @@ langBtn.addEventListener("click", () => {
 });
 
 themeBtn.addEventListener("click", () => {
-  uiManager.toggleTheme();
+  const newTheme = uiManager.toggleTheme();
+  themeBtn.innerText = newTheme === "dark" ? "🌙" : "☀️"; // Toggle moon/sun icon
 });
 
 // Audio Toggle Button

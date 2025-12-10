@@ -19,7 +19,7 @@ class UIManager {
     // พจนานุกรมคำศัพท์ (Dictionary)
     this.translations = {
       th: {
-        app_title: "☯️ TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก (v0.1)",
+        app_title: "TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก (v0.1)",
         select_exercise: "เลือกท่าฝึก :",
         select_level: "เลือกระดับ :",
         l1_btn: "ระดับที่ 1: ท่านั่ง",
@@ -50,14 +50,18 @@ class UIManager {
         start_training_btn: "🏃 เริ่มการฝึก",
         stop_training_btn: "⏹️ หยุดการฝึก",
         overlay_how_to: "📋 วิธีเริ่มต้นใช้งาน",
-        overlay_step1: 'เลือก "ท่าฝึก" จากเมนูด้านขวา',
+        overlay_step1: 'เลือก "ท่าฝึก" จากเมนูด้านบน',
         overlay_step2: 'เลือก "ระดับ" ที่ต้องการฝึก',
         overlay_step3: 'กดปุ่ม "🏃 เริ่มการฝึก"',
         overlay_note:
           "⏱️ บันทึกอัตโนมัติ 5 นาที | 📏 ปรับเทียบสัดส่วนอัตโนมัติทุกครั้ง",
+        level_placeholder: "-- เลือกระดับ --",
+        level_l1: "Level 1: ท่านั่ง",
+        level_l2: "Level 2: ท่ายืน",
+        level_l3: "Level 3: ท่ายืนย่อ",
       },
       en: {
-        app_title: "☯️ TaijiFlow AI: Taijiquan Assistant (v0.1)",
+        app_title: "TaijiFlow AI: Taijiquan Assistant (v0.1)",
         select_exercise: "Select Exercise:",
         select_level: "Select Level:",
         l1_btn: "Level 1: Seated",
@@ -88,11 +92,15 @@ class UIManager {
         start_training_btn: "🏃 Start Training",
         stop_training_btn: "⏹️ Stop Training",
         overlay_how_to: "📋 How to Start",
-        overlay_step1: 'Select "Exercise" from the right menu',
+        overlay_step1: 'Select "Exercise" from the menu above',
         overlay_step2: 'Select "Level" to train',
         overlay_step3: 'Press "🏃 Start Training"',
         overlay_note:
           "⏱️ Auto-record 5 min | 📏 Auto-calibration before each session",
+        level_placeholder: "-- Select Level --",
+        level_l1: "Level 1: Seated",
+        level_l2: "Level 2: Standing",
+        level_l3: "Level 3: Bow Stance",
       },
     };
   }
@@ -195,6 +203,26 @@ class UIManager {
       exSelect.options[2].text = t["ex_rh_ccw"];
       exSelect.options[3].text = t["ex_lh_cw"];
       exSelect.options[4].text = t["ex_lh_ccw"];
+    }
+
+    // Update Level Dropdown Options
+    const levelSelect = document.getElementById("level-select");
+    if (levelSelect && levelSelect.options.length >= 4) {
+      levelSelect.options[0].text = t["level_placeholder"];
+      levelSelect.options[1].text = t["level_l1"];
+      levelSelect.options[2].text = t["level_l2"];
+      levelSelect.options[3].text = t["level_l3"];
+    }
+
+    // Update Stop Training Button
+    const stopBtn = document.getElementById("stop-training-btn");
+    if (stopBtn) stopBtn.innerText = t["stop_training_btn"];
+
+    // Update Title Text (separate from emoji)
+    const titleText = document.querySelector(".title-text");
+    if (titleText) {
+      const titleOnly = t["app_title"].replace(/^☯️\s*/, "");
+      titleText.innerText = titleOnly;
     }
   }
 

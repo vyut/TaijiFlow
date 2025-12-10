@@ -72,7 +72,8 @@ function getPlatformInfo() {
 
 // 2. UI Event Listeners
 const exerciseSelect = document.getElementById("exercise-select");
-const levelButtons = document.querySelectorAll(".level-btn");
+const levelSelect = document.getElementById("level-select"); // New: dropdown instead of buttons
+const levelButtons = document.querySelectorAll(".level-btn"); // Keep for hidden elements
 const fullscreenBtn = document.getElementById("fullscreen-btn");
 const recordBtn = document.getElementById("record-btn");
 
@@ -84,10 +85,14 @@ const themeBtn = document.getElementById("theme-btn");
 
 // New UX Flow Elements
 const startTrainingBtn = document.getElementById("start-training-btn");
+const stopTrainingBtn = document.getElementById("stop-training-btn"); // New: separate stop button
 const countdownOverlay = document.getElementById("countdown-overlay");
 const countdownNumber = document.getElementById("countdown-number");
 const trainingControls = document.getElementById("training-controls");
 const trainingTimer = document.getElementById("training-timer");
+const trainingTimerTop = document.getElementById("training-timer"); // Timer at top bar
+const trainingTimerOverlay = document.getElementById("training-timer-overlay"); // Timer on video overlay
+const recordIndicator = document.getElementById("recordIndicator");
 const stopEarlyBtn = document.getElementById("stop-early-btn");
 const fullscreenOverlayBtn = document.getElementById("fullscreen-overlay-btn");
 const videoFullscreenBtn = document.getElementById("video-fullscreen-btn");
@@ -96,40 +101,43 @@ const videoFullscreenBtn = document.getElementById("video-fullscreen-btn");
 function checkSelectionComplete() {
   const isComplete = currentExercise !== null && currentLevel !== null;
   if (isComplete) {
-    // Enable button and change to start style
+    // Enable start button
     startTrainingBtn.disabled = false;
-    startTrainingBtn.classList.remove("bg-gray-400", "cursor-not-allowed");
-    startTrainingBtn.classList.add(
-      "bg-green-600",
-      "hover:bg-green-700",
-      "hover:scale-105"
-    );
+    startTrainingBtn.classList.remove("opacity-50", "cursor-not-allowed");
   } else {
-    // Disable button and change to disabled style
+    // Disable start button
     startTrainingBtn.disabled = true;
-    startTrainingBtn.classList.add("bg-gray-400", "cursor-not-allowed");
-    startTrainingBtn.classList.remove(
-      "bg-green-600",
-      "hover:bg-green-700",
-      "hover:scale-105"
-    );
+    startTrainingBtn.classList.add("opacity-50", "cursor-not-allowed");
   }
   return isComplete;
 }
 
 /**
- * เปลี่ยนปุ่มเป็นโหมด "Start" หรือ "Stop"
+ * อัปเดตสถานะปุ่ม Start/Stop
  */
-function setButtonToStopMode() {
-  startTrainingBtn.innerText = uiManager.getText("stop_training_btn");
-  startTrainingBtn.classList.remove("bg-green-600", "hover:bg-green-700");
-  startTrainingBtn.classList.add("bg-red-600", "hover:bg-red-700");
-}
-
-function setButtonToStartMode() {
-  startTrainingBtn.innerText = uiManager.getText("start_training_btn");
-  startTrainingBtn.classList.remove("bg-red-600", "hover:bg-red-700");
-  startTrainingBtn.classList.add("bg-green-600", "hover:bg-green-700");
+function updateButtonStates(isTraining) {
+  if (isTraining) {
+    // Disable start, enable stop
+    startTrainingBtn.disabled = true;
+    startTrainingBtn.classList.add("opacity-50", "cursor-not-allowed");
+    stopTrainingBtn.disabled = false;
+    stopTrainingBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    // Update record indicator
+    if (recordIndicator) {
+      recordIndicator.classList.remove("idle");
+      recordIndicator.classList.add("recording");
+    }
+  } else {
+    // Enable start (if selection complete), disable stop
+    checkSelectionComplete();
+    stopTrainingBtn.disabled = true;
+    stopTrainingBtn.classList.add("opacity-50", "cursor-not-allowed");
+    // Update record indicator
+    if (recordIndicator) {
+      recordIndicator.classList.remove("recording");
+      recordIndicator.classList.add("idle");
+    }
+  }
 }
 
 langBtn.addEventListener("click", () => {
@@ -187,6 +195,14 @@ exerciseSelect.addEventListener("change", (e) => {
   checkSelectionComplete();
 });
 
+// Level Select (Dropdown - New UI)
+levelSelect.addEventListener("change", (e) => {
+  currentLevel = e.target.value || null;
+  loadReferenceData();
+  checkSelectionComplete();
+});
+
+// Legacy level buttons (hidden, for compatibility)
 levelButtons.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     currentLevel = e.target.dataset.level;
@@ -233,12 +249,16 @@ function formatTime(ms) {
 }
 
 /**
- * อัปเดต Timer Display
+ * อัปเดต Timer Display (ทั้งด้านบนและ overlay)
  */
 function updateTrainingTimer() {
   const elapsed = Date.now() - trainingStartTime;
   const remaining = Math.max(0, TRAINING_DURATION_MS - elapsed);
-  trainingTimer.textContent = formatTime(remaining);
+  const timeStr = formatTime(remaining);
+
+  // Update both timers
+  if (trainingTimerTop) trainingTimerTop.textContent = timeStr;
+  if (trainingTimerOverlay) trainingTimerOverlay.textContent = timeStr;
 
   if (remaining <= 0) {
     endTrainingSession();
@@ -278,13 +298,14 @@ async function startTrainingAfterCalibration() {
   audioManager.announce("record_start");
   uiManager.updateRecordButtonState(true);
 
-  // 3. เปลี่ยนปุ่มเป็น "หยุดฝึก"
-  setButtonToStopMode();
+  // 3. อัปเดตสถานะปุ่ม (Start disabled, Stop enabled)
+  updateButtonStates(true);
 
   // 4. แสดง Timer (ซ้ายล่าง)
   trainingControls.classList.remove("hidden");
-  trainingControls.classList.add("flex");
-  trainingTimer.textContent = formatTime(TRAINING_DURATION_MS);
+  const timeStr = formatTime(TRAINING_DURATION_MS);
+  if (trainingTimerTop) trainingTimerTop.textContent = timeStr;
+  if (trainingTimerOverlay) trainingTimerOverlay.textContent = timeStr;
 
   // 5. แสดงปุ่มเต็มจอ (ขวาล่าง)
   fullscreenOverlayBtn.classList.remove("hidden");
@@ -373,35 +394,30 @@ function resetToHomeScreen() {
 
   // Reset UI
   exerciseSelect.value = "";
-  levelButtons.forEach((btn) =>
-    btn.classList.remove("active", "bg-blue-600", "text-white", "font-bold")
-  );
-  levelButtons.forEach((btn) =>
-    btn.classList.add("bg-gray-100", "text-gray-600", "font-medium")
-  );
-  startTrainingBtn.disabled = true;
-  startTrainingBtn.classList.add("bg-gray-400", "cursor-not-allowed");
-  startTrainingBtn.classList.remove(
-    "bg-green-600",
-    "hover:bg-green-700",
-    "hover:scale-105",
-    "bg-red-600",
-    "hover:bg-red-700"
-  );
-  // เปลี่ยนข้อความปุ่มกลับเป็น "เริ่มการฝึก" (ไม่เรียก setButtonToStartMode เพราะจะเพิ่ม green กลับมา)
-  startTrainingBtn.innerText = uiManager.getText("start_training_btn");
+  if (levelSelect) levelSelect.value = "";
+
+  // Reset button states
+  updateButtonStates(false);
+
+  // Reset timers
+  if (trainingTimerTop) trainingTimerTop.textContent = "00:00";
+  if (trainingTimerOverlay) trainingTimerOverlay.textContent = "5:00";
+
   startOverlay.classList.remove("hidden");
   uiManager.updateRecordButtonState(false);
 }
 
-// Event Listener สำหรับ Toggle Button (เริ่มการฝึก/หยุดการฝึก)
+// Event Listener สำหรับปุ่มเริ่มการฝึก
 startTrainingBtn.addEventListener("click", () => {
-  if (isTrainingMode) {
-    // กำลังฝึกอยู่ → หยุดการฝึก
-    endTrainingSession();
-  } else {
-    // ยังไม่ได้ฝึก → เริ่มการฝึก
+  if (!isTrainingMode) {
     startTrainingFlow();
+  }
+});
+
+// Event Listener สำหรับปุ่มหยุดการฝึก (Separate button)
+stopTrainingBtn.addEventListener("click", () => {
+  if (isTrainingMode) {
+    endTrainingSession();
   }
 });
 

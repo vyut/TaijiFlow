@@ -49,55 +49,99 @@
     <script src="js/script.js" defer></script>
   </head>
   <body
-    class="h-screen flex flex-col items-center justify-center p-4 bg-f3f4f6"
+    class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-900"
   >
-    <!-- Header & Toggle Buttons -->
-    <div class="w-full max-w-6xl flex justify-between items-center mb-4">
-      <h1
-        id="app-title"
-        class="text-3xl font-bold text-gray-800 dark:text-white"
-      >
-        ☯️ TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก - ท่าม้วนไหม
-      </h1>
+    <!-- Header -->
+    <h1 id="app-title" class="text-3xl font-bold mb-4 text-purple-400">
+      ☯️ TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก (v0.1)
+    </h1>
 
-      <div class="flex gap-2">
-        <button
-          id="audio-btn"
-          class="px-3 py-1 bg-green-600 text-white border border-green-700 rounded hover:bg-green-700 text-sm transition-colors"
-          title="เปิด/ปิดเสียงพูด"
-        >
-          🔊
-        </button>
-        <button
-          id="lang-btn"
-          class="px-3 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 font-bold text-sm transition-colors"
-        >
-          🇹🇭 TH / 🇺🇸 EN
-        </button>
-        <button
-          id="theme-btn"
-          class="px-3 py-1 bg-gray-800 text-white border border-gray-600 rounded hover:bg-gray-700 text-sm transition-colors"
-        >
-          🌙 / ☀️
-        </button>
+    <!-- Main Container -->
+    <div
+      id="main-card"
+      class="bg-gray-800 p-6 rounded-lg shadow-lg text-center w-full max-w-6xl"
+    >
+      <!-- Top Bar: Selectors + Settings + Timer -->
+      <div class="mb-4 flex flex-wrap justify-between items-center gap-4">
+        <!-- Left: Dropdowns -->
+        <div class="flex gap-4 flex-wrap">
+          <div>
+            <label id="label-exercise" class="block text-sm text-gray-400 mb-1"
+              >เลือกท่าฝึก:</label
+            >
+            <select
+              id="exercise-select"
+              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+            >
+              <option value="" disabled selected>-- เลือกท่าฝึก --</option>
+              <option value="rh_cw">มือขวา - ตามเข็ม</option>
+              <option value="rh_ccw">มือขวา - ทวนเข็ม</option>
+              <option value="lh_cw">มือซ้าย - ตามเข็ม</option>
+              <option value="lh_ccw">มือซ้าย - ทวนเข็ม</option>
+            </select>
+          </div>
+          <div>
+            <label id="label-level" class="block text-sm text-gray-400 mb-1"
+              >เลือกระดับ:</label
+            >
+            <select
+              id="level-select"
+              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+            >
+              <option value="" disabled selected>-- เลือกระดับ --</option>
+              <option value="L1">Level 1: ท่านั่ง</option>
+              <option value="L2">Level 2: ท่ายืน</option>
+              <option value="L3">Level 3: ท่ายืนย่อ</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Right: Settings + Timer -->
+        <div class="flex items-center gap-4">
+          <!-- Settings Buttons -->
+          <div class="flex gap-2">
+            <button
+              id="audio-btn"
+              class="px-3 py-2 bg-green-600 text-white border border-green-700 rounded hover:bg-green-700 transition-colors"
+              title="เปิด/ปิดเสียงพูด"
+            >
+              🔊
+            </button>
+            <button
+              id="lang-btn"
+              class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 font-bold transition-colors"
+            >
+              🇹🇭/🇺🇸
+            </button>
+            <button
+              id="theme-btn"
+              class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+            >
+              🌙
+            </button>
+          </div>
+          <!-- Timer -->
+          <div class="flex items-center gap-2">
+            <span id="recordIndicator" class="status-dot idle"></span>
+            <span id="training-timer" class="font-mono text-xl text-white"
+              >00:00</span
+            >
+            <span class="text-gray-500 text-sm">/ 05:00</span>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="flex flex-col md:flex-row gap-6 items-start w-full max-w-6xl">
-      <!-- Video Canvas Container -->
-      <div class="relative flex-grow group w-full md:w-auto">
+      <!-- Canvas Container (Full Width) -->
+      <div
+        class="canvas-container bg-black rounded overflow-hidden shadow-xl mb-6"
+      >
         <video
           id="input_video"
           style="display: none"
           autoplay
           playsinline
         ></video>
-        <canvas
-          id="output_canvas"
-          width="1280"
-          height="720"
-          class="w-full bg-black rounded-lg"
-        ></canvas>
+        <canvas id="output_canvas" width="1280" height="720"></canvas>
 
         <!-- Loading Overlay -->
         <div
@@ -143,16 +187,16 @@
           <div class="text-white text-lg text-left space-y-3 max-w-md">
             <p class="flex items-center gap-3">
               <span
-                class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
+                class="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
                 >1</span
               >
               <span id="overlay-step1"
-                >เลือก <strong>"ท่าฝึก"</strong> จากเมนูด้านขวา</span
+                >เลือก <strong>"ท่าฝึก"</strong> จากเมนูด้านบน</span
               >
             </p>
             <p class="flex items-center gap-3">
               <span
-                class="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
+                class="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
                 >2</span
               >
               <span id="overlay-step2"
@@ -170,34 +214,13 @@
             </p>
           </div>
           <p id="overlay-note" class="text-gray-400 mt-6 text-sm text-center">
-            ⏱️ ระบบจะบันทึกอัตโนมัติ 5 นาที | 📏
-            ครั้งแรกจะมีการปรับเทียบสัดส่วนร่างกาย
+            ⏱️ บันทึกอัตโนมัติ 5 นาที | 📏 ปรับเทียบสัดส่วนอัตโนมัติทุกครั้ง
           </p>
         </div>
 
         <!-- Countdown Overlay (3-2-1) -->
-        <div
-          id="countdown-overlay"
-          class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80 z-30 hidden rounded-lg"
-        >
-          <span
-            id="countdown-number"
-            class="text-white text-9xl font-bold animate-pulse"
-            >3</span
-          >
-        </div>
-
-        <!-- Training Timer (แสดงระหว่างฝึก - มุมซ้ายล่าง) -->
-        <div
-          id="training-controls"
-          class="absolute bottom-4 left-4 z-20 hidden"
-        >
-          <div
-            class="flex items-center gap-2 bg-black bg-opacity-70 px-3 py-2 rounded-full"
-          >
-            <span class="text-white font-bold">⏱️</span>
-            <span id="training-timer" class="text-white font-bold">5:00</span>
-          </div>
+        <div id="countdown-overlay" class="countdown-overlay hidden">
+          <span id="countdown-number" class="countdown-number">3</span>
         </div>
 
         <!-- Fullscreen Button (มุมขวาล่าง - แสดงระหว่างฝึก) -->
@@ -213,118 +236,62 @@
             ⛶ <span id="fullscreen-btn-text">เต็มจอ</span>
           </button>
         </div>
+
+        <!-- Training Timer Overlay (มุมซ้ายล่าง - แสดงระหว่างฝึก) -->
+        <div
+          id="training-controls"
+          class="absolute bottom-4 left-4 z-20 hidden"
+        >
+          <div
+            class="flex items-center gap-2 bg-black bg-opacity-70 px-3 py-2 rounded-full"
+          >
+            <span class="text-white font-bold">⏱️</span>
+            <span id="training-timer-overlay" class="text-white font-bold"
+              >5:00</span
+            >
+          </div>
+        </div>
       </div>
 
-      <!-- Controls Panel -->
-      <div
-        id="main-card"
-        class="w-full md:w-80 flex flex-col gap-4 bg-white p-6 rounded-lg shadow-md border border-gray-200 transition-colors duration-300"
-      >
-        <!-- Select Exercise -->
-        <div>
-          <label
-            id="label-exercise"
-            class="block text-sm font-bold text-gray-700 mb-2"
-            >เลือกท่าฝึก:</label
-          >
-          <select
-            id="exercise-select"
-            class="w-full p-2 border rounded-md bg-gray-50 text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
-            title="เลือกท่าฝึก"
-          >
-            <option value="" disabled selected>-- เลือกท่าฝึก --</option>
-            <option value="rh_cw">มือขวา - ตามเข็ม</option>
-            <option value="rh_ccw">มือขวา - ทวนเข็ม</option>
-            <option value="lh_cw">มือซ้าย - ตามเข็ม</option>
-            <option value="lh_ccw">มือซ้าย - ทวนเข็ม</option>
-          </select>
-        </div>
-
-        <!-- Select Level -->
-        <div>
-          <label
-            id="label-level"
-            class="block text-sm font-bold text-gray-700 mb-2"
-            >เลือกระดับ:</label
-          >
-          <div class="flex flex-col gap-2" id="level-buttons">
-            <button
-              id="level1-btn"
-              data-level="L1"
-              class="level-btn w-full py-2 px-4 rounded bg-gray-100 text-gray-600 font-medium transition hover:bg-gray-200"
-            >
-              Level 1: ท่านั่ง
-            </button>
-            <button
-              id="level2-btn"
-              data-level="L2"
-              class="level-btn w-full py-2 px-4 rounded bg-gray-100 text-gray-600 font-medium transition hover:bg-gray-200"
-            >
-              Level 2: ท่ายืน
-            </button>
-            <button
-              id="level3-btn"
-              data-level="L3"
-              class="level-btn w-full py-2 px-4 rounded bg-gray-100 text-gray-600 font-medium transition hover:bg-gray-200"
-            >
-              Level 3: ท่ายืนย่อ
-            </button>
-          </div>
-
-          <!-- Start/Stop Training Button (Toggle) -->
-          <button
-            id="start-training-btn"
-            disabled
-            class="w-full py-3 mt-2 bg-gray-400 text-white text-lg font-bold rounded-lg shadow-lg cursor-not-allowed transition"
-          >
-            🏃 เริ่มการฝึก
-          </button>
-        </div>
-
-        <!-- Action Buttons (ซ่อนเพราะ Flow ใหม่ทำอัตโนมัติแล้ว) -->
-        <div class="hidden">
-          <div class="flex gap-2">
-            <button
-              id="small-calibrate-btn"
-              class="flex-grow py-2 bg-purple-100 text-purple-700 font-bold rounded border border-purple-200 hover:bg-purple-200 transition"
-            >
-              📏 วัดตัวใหม่
-            </button>
-            <button
-              id="cancel-calib-btn"
-              class="hidden py-2 px-4 bg-red-500 text-white font-bold rounded shadow hover:bg-red-600 transition"
-            >
-              ❌ ยกเลิก
-            </button>
-          </div>
-
-          <div class="flex gap-2">
-            <button
-              id="fullscreen-btn"
-              class="flex-1 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 transition"
-            >
-              เต็มจอ (F)
-            </button>
-            <button
-              id="record-btn"
-              class="flex-1 py-2 bg-red-100 text-red-600 border border-red-200 rounded hover:bg-red-200 transition font-bold"
-            >
-              บันทึก (R)
-            </button>
-          </div>
-        </div>
-
-        <!-- Instructions (อัปเดตให้ตรงกับ Flow ใหม่) -->
-        <div
-          class="instructions-box mt-2 p-3 text-xs rounded transition-colors"
+      <!-- Control Buttons (Start/Stop - Separate) -->
+      <div class="flex justify-center gap-4 mb-6">
+        <button
+          id="start-training-btn"
+          class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition text-lg opacity-50 cursor-not-allowed"
+          disabled
         >
-          <strong id="instr-title">💡 คำแนะนำ:</strong>
-          <ul class="list-disc list-inside mt-1 space-y-1">
-            <li id="instr-1">เลือกท่าฝึกและระดับ แล้วกด 'เริ่มการฝึก'</li>
-            <li id="instr-2">ยืนให้เห็นเต็มตัว ห่างจากกล้อง 2-3 เมตร</li>
-            <li id="instr-3">แสงสว่างต้องเพียงพอ</li>
-          </ul>
-        </div>
+          🏃 เริ่มการฝึก
+        </button>
+        <button
+          id="stop-training-btn"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition text-lg opacity-50 cursor-not-allowed"
+          disabled
+        >
+          ⏹️ หยุดการฝึก
+        </button>
+      </div>
+
+      <!-- Instructions (Purple Theme - like data_collector) -->
+      <div class="instructions-box p-4 rounded text-left">
+        <h3 id="instr-title" class="font-bold mb-2">💡 คำแนะนำ:</h3>
+        <ul class="list-disc list-inside text-sm space-y-1">
+          <li id="instr-1">เลือกท่าฝึกและระดับ แล้วกด 'เริ่มการฝึก'</li>
+          <li id="instr-2">ยืนให้เห็นเต็มตัว ห่างจากกล้อง 2-3 เมตร</li>
+          <li id="instr-3">ปรับเทียบสัดส่วนอัตโนมัติทุกครั้งก่อนเริ่มฝึก</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Hidden Legacy Elements (for script.js compatibility) -->
+    <div class="hidden">
+      <button id="small-calibrate-btn"></button>
+      <button id="cancel-calib-btn"></button>
+      <button id="fullscreen-btn"></button>
+      <button id="record-btn"></button>
+      <div id="level-buttons">
+        <button class="level-btn" data-level="L1"></button>
+        <button class="level-btn" data-level="L2"></button>
+        <button class="level-btn" data-level="L3"></button>
       </div>
     </div>
 

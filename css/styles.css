@@ -56,39 +56,39 @@ canvas:-moz-full-screen {
   background: black;
 }
 
-/* --- App Title Purple Gradient --- */
+/* --- App Title Red Gradient --- */
 #app-title {
-  background: linear-gradient(135deg, #a855f7, #6366f1);
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Dark mode: slightly lighter purple */
+/* Dark mode: slightly lighter red */
 .dark #app-title {
-  background: linear-gradient(135deg, #c084fc, #818cf8);
+  background: linear-gradient(135deg, #f87171, #ef4444);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* --- Instructions Box Purple Theme --- */
+/* --- Instructions Box Red Theme --- */
 .instructions-box {
-  background-color: rgba(147, 51, 234, 0.1);
-  border: 1px solid rgba(147, 51, 234, 0.3);
-  color: #6b21a8;
+  background-color: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  color: #991b1b;
 }
 
 .dark .instructions-box {
-  background-color: rgba(147, 51, 234, 0.2);
-  border: 1px solid rgba(147, 51, 234, 0.4);
-  color: #ffffff;
+  background-color: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fecaca;
 }
 
 .instructions-box strong {
-  color: #7c3aed;
+  color: #dc2626;
 }
 
 .dark .instructions-box strong {
-  color: #ffffff;
+  color: #fca5a5;
 }

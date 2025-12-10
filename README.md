@@ -19,15 +19,17 @@ A web-based real-time pose analysis system that helps practitioners learn and im
 | Feature | Description |
 |---------|-------------|
 | **Real-time Pose Detection** | Using MediaPipe Pose for 33 body landmarks |
-| **Body Calibration** | Personalized thresholds based on user's body proportions |
+| **Auto Calibration** | Automatic T-Pose calibration before each session |
 | **8 Heuristic Rules** | Path accuracy, arm rotation, elbow sinking, waist initiation, stability, smoothness, continuity, weight shift |
 | **3 Training Levels** | L1 (Seated), L2 (Standing), L3 (Bow Stance) |
 | **4 Exercise Modes** | Right/Left hand, Clockwise/Counter-clockwise |
+| **Auto Recording** | 5-minute auto-record with timer display |
 | **Scoring System** | 0-100% score with grade (A-F) after each session |
 | **Audio Feedback** | Voice announcements using Web Speech API (TH/EN) |
 | **Data Export** | JSON export for ML training data |
 | **Bilingual** | Thai & English |
 | **Dark/Light Theme** | User preference saved locally |
+| **Performance Optimized** | 10 FPS heuristics check (reduced from 30 FPS) |
 
 ---
 
@@ -64,29 +66,26 @@ Open `http://localhost:8000` in your browser.
 
 ```
 TaijiFlow/
-├── index.html              # Main HTML file
-├── script.js               # Main controller
-├── heuristics_engine.js    # Pose analysis & feedback rules
-├── calibration_manager.js  # Body proportion calibration
-├── drawing_manager.js      # Canvas rendering
-├── scoring_manager.js      # Session scoring system
-├── audio_manager.js        # Voice feedback (TTS)
-├── ui_manager.js           # UI, theme, language management
-├── data_exporter.js        # JSON data export
-├── styles.css              # Custom styles
-├── data/                   # Reference movement data
-│   ├── rh_cw_L1.json       # Right hand, clockwise, Level 1
-│   └── lh_cw_L1.json       # Left hand, clockwise, Level 1
-│   └── rh_ccw_L1.json       # Right hand, counter-clockwise, Level 1
-│   └── lh_ccw_L1.json       # Left hand, counter-clockwise, Level 1
-│   └── rh_cw_L2.json       # Right hand, clockwise, Level 2
-│   └── lh_cw_L2.json       # Left hand, clockwise, Level 2
-│   └── rh_ccw_L2.json       # Right hand, counter-clockwise, Level 2
-│   └── lh_ccw_L2.json       # Left hand, counter-clockwise, Level 2
-│   └── rh_cw_L3.json       # Right hand, clockwise, Level 3
-│   └── lh_cw_L3.json       # Left hand, clockwise, Level 3
-│   └── rh_ccw_L3.json       # Right hand, counter-clockwise, Level 3
-│   └── lh_ccw_L3.json       # Left hand, counter-clockwise, Level 3
+├── index.html                # Main application
+├── data_collector.html       # Reference data recorder (for creating training data)
+├── js/                       # JavaScript modules
+│   ├── script.js             # Main controller (v3.0)
+│   ├── heuristics_engine.js  # Pose analysis & 8 feedback rules
+│   ├── calibration_manager.js # Body proportion calibration
+│   ├── drawing_manager.js    # Canvas rendering
+│   ├── scoring_manager.js    # Session scoring system
+│   ├── audio_manager.js      # Voice feedback (TTS)
+│   ├── ui_manager.js         # UI, theme, language management
+│   └── data_exporter.js      # JSON data export
+├── css/
+│   └── styles.css            # Custom styles (purple theme)
+├── data/                     # Reference movement data (12 files needed)
+│   ├── rh_cw_L1.json         # Right hand, clockwise, Level 1
+│   ├── rh_cw_L2.json         # Right hand, clockwise, Level 2
+│   ├── rh_cw_L3.json         # Right hand, clockwise, Level 3
+│   ├── rh_ccw_L1.json        # Right hand, counter-clockwise, Level 1
+│   ├── ... (12 files total: 4 exercises × 3 levels)
+│   └── lh_ccw_L3.json        # Left hand, counter-clockwise, Level 3
 └── README.md
 ```
 

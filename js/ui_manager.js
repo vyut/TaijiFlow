@@ -19,7 +19,7 @@ class UIManager {
     // พจนานุกรมคำศัพท์ (Dictionary)
     this.translations = {
       th: {
-        app_title: "☯️ TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก - ท่าม้วนไหม",
+        app_title: "☯️ TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก (v0.1)",
         select_exercise: "เลือกท่าฝึก :",
         select_level: "เลือกระดับ :",
         l1_btn: "ระดับที่ 1: ท่านั่ง",
@@ -54,10 +54,10 @@ class UIManager {
         overlay_step2: 'เลือก "ระดับ" ที่ต้องการฝึก',
         overlay_step3: 'กดปุ่ม "🏃 เริ่มการฝึก"',
         overlay_note:
-          "⏱️ ระบบจะบันทึกอัตโนมัติ 5 นาที | 📏 ครั้งแรกจะมีการปรับเทียบสัดส่วนร่างกาย",
+          "⏱️ บันทึกอัตโนมัติ 5 นาที | 📏 ปรับเทียบสัดส่วนอัตโนมัติทุกครั้ง",
       },
       en: {
-        app_title: "☯️ TaijiFlow AI: Taijiquan Assistant - Silk Reeling",
+        app_title: "☯️ TaijiFlow AI: Taijiquan Assistant (v0.1)",
         select_exercise: "Select Exercise:",
         select_level: "Select Level:",
         l1_btn: "Level 1: Seated",
@@ -92,7 +92,7 @@ class UIManager {
         overlay_step2: 'Select "Level" to train',
         overlay_step3: 'Press "🏃 Start Training"',
         overlay_note:
-          "⏱️ Auto-record for 5 minutes | 📏 First time: body calibration",
+          "⏱️ Auto-record 5 min | 📏 Auto-calibration before each session",
       },
     };
   }

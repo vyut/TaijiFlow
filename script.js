@@ -653,8 +653,8 @@ function onResults(results) {
           audioManager.speakFeedback(feedbacks);
         }
 
-        // 2. *** เก็บข้อมูล (Data Logging) ***
-        if (isRecording) {
+        // 2. *** เก็บข้อมูล (Data Logging) - เก็บทุก 3 frames เพื่อลดขนาดไฟล์ ***
+        if (isRecording && shouldCheckHeuristics) {
           const currentTime = (Date.now() - sessionStartTime) / 1000;
 
           // คำนวณค่าเฉลี่ย Visibility ของ Landmarks สำคัญ

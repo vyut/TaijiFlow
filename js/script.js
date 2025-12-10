@@ -144,7 +144,7 @@ langBtn.addEventListener("click", () => {
   const newLang = uiManager.toggleLanguage();
   audioManager.setLanguage(newLang); // Sync เสียงพูดกับภาษา
   calibrator.setLanguage(newLang); // Sync Calibration text กับภาษา
-  langBtn.innerText = newLang === "th" ? "🇹🇭 TH / 🇺🇸 EN" : "🇺🇸 EN / 🇹🇭 TH";
+  langBtn.innerText = newLang === "th" ? "🇹🇭" : "🇺🇸"; // แสดงแค่ธงภาษาปัจจุบัน
 });
 
 themeBtn.addEventListener("click", () => {
@@ -527,6 +527,16 @@ window.addEventListener("keydown", (e) => {
     case "f":
       e.preventDefault(); // ป้องกันพฤติกรรม default ของเบราว์เซอร์
       fullscreenBtn.click();
+      break;
+    case "escape":
+      // Secret key: ยกเลิก Calibration และกลับหน้าแรก
+      if (calibrator.isActive) {
+        e.preventDefault();
+        calibrator.cancel();
+        loadReferenceData();
+        resetToHomeScreen();
+        uiManager.showNotification("ยกเลิกการปรับเทียบ", "info", 2000);
+      }
       break;
     // ลบ R key ออก เพราะการบันทึกเป็นอัตโนมัติแล้ว
   }

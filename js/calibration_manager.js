@@ -208,8 +208,8 @@ class CalibrationManager {
     // เนื่องจาก Context หลัก (ใน script.js) ถูก Mirror ไว้ (-1, 1)
     // เราต้อง Scale (-1, 1) อีกครั้งเพื่อกลับเป็นปกติ
     // และ Translate กลับมาที่จุดเดิม
-    // ctx.scale(-1, 1);
-    // ctx.translate(-canvasWidth, 0);
+    ctx.scale(-1, 1);
+    ctx.translate(-canvasWidth, 0);
 
     // วาดข้อความสถานะ
     ctx.font = "bold 40px 'Sarabun', sans-serif";

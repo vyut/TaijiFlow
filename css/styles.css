@@ -72,9 +72,10 @@ canvas:-moz-full-screen {
   background-clip: text;
 }
 
-/* --- Instructions Box Purple Theme (like data_collector) --- */
+/* --- Instructions Box Purple Theme --- */
+/* Default (Dark Mode) */
 .instructions-box {
-  background-color: rgba(147, 51, 234, 0.15);
+  background-color: rgba(147, 51, 234, 0.2);
   border: 1px solid rgba(147, 51, 234, 0.4);
   color: #e9d5ff;
 }
@@ -82,6 +83,21 @@ canvas:-moz-full-screen {
 .instructions-box h3,
 .instructions-box strong {
   color: #c4b5fd;
+}
+
+/* Light Mode Override */
+body:not(.dark) .instructions-box,
+body.light .instructions-box {
+  background-color: rgba(147, 51, 234, 0.1);
+  border: 1px solid rgba(147, 51, 234, 0.3);
+  color: #581c87;
+}
+
+body:not(.dark) .instructions-box h3,
+body:not(.dark) .instructions-box strong,
+body.light .instructions-box h3,
+body.light .instructions-box strong {
+  color: #7c3aed;
 }
 
 /* --- Canvas Container (Full Width Video) --- */

@@ -33,6 +33,10 @@ const TRAINING_DURATION_MS = 5 * 60 * 1000; // 5 นาที
 let trainingTimerId = null;
 let trainingStartTime = 0;
 
+// Performance Optimization: เช็ค Heuristics ทุก N frames (ลดจาก 30 FPS เป็น ~10 FPS)
+const HEURISTICS_CHECK_INTERVAL = 3; // เช็คทุก 3 frames = ~10 FPS
+let frameCounter = 0;
+
 // สร้าง User ID (เก็บใน LocalStorage เพื่อให้คงที่ตลอดการใช้งาน)
 function getOrCreateUserId() {
   let userId = localStorage.getItem("taijiflow_user_id");
@@ -627,18 +631,27 @@ function onResults(results) {
       drawer.drawSkeleton(results.poseLandmarks);
 
       if (!calibrator.isActive && referencePath.length > 0) {
-        // 1. วิเคราะห์ด้วย Engine
-        const feedbacks = engine.analyze(
-          results.poseLandmarks,
-          results.image.timeStamp,
-          referencePath,
-          currentExercise, // ส่งชื่อท่า
-          currentLevel // ส่งเลเวล (L1, L2, L3)
-        );
-        drawer.drawFeedbackPanel(feedbacks);
+        // Performance: เช็ค Heuristics ทุก 3 frames (~10 FPS แทน 30 FPS) เพื่อประหยัด CPU
+        frameCounter++;
+        const shouldCheckHeuristics =
+          frameCounter % HEURISTICS_CHECK_INTERVAL === 0;
 
-        // 1.1 พูดแจ้งเตือนเมื่อมีข้อผิดพลาด (มี Cooldown ป้องกันพูดซ้ำเร็วเกินไป)
-        audioManager.speakFeedback(feedbacks);
+        let feedbacks = [];
+
+        if (shouldCheckHeuristics) {
+          // 1. วิเคราะห์ด้วย Engine
+          feedbacks = engine.analyze(
+            results.poseLandmarks,
+            results.image.timeStamp,
+            referencePath,
+            currentExercise, // ส่งชื่อท่า
+            currentLevel // ส่งเลเวล (L1, L2, L3)
+          );
+          drawer.drawFeedbackPanel(feedbacks);
+
+          // 1.1 พูดแจ้งเตือนเมื่อมีข้อผิดพลาด (มี Cooldown ป้องกันพูดซ้ำเร็วเกินไป)
+          audioManager.speakFeedback(feedbacks);
+        }
 
         // 2. *** เก็บข้อมูล (Data Logging) ***
         if (isRecording) {

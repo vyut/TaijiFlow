@@ -37,6 +37,9 @@ let trainingStartTime = 0;
 const HEURISTICS_CHECK_INTERVAL = 3; // เช็คทุก 3 frames = ~10 FPS
 let frameCounter = 0;
 
+// Fullscreen State - ใช้กลับ mirror ตอน fullscreen
+let isFullscreen = false;
+
 // สร้าง User ID (เก็บใน LocalStorage เพื่อให้คงที่ตลอดการใช้งาน)
 function getOrCreateUserId() {
   let userId = localStorage.getItem("taijiflow_user_id");
@@ -443,6 +446,12 @@ fullscreenBtn.addEventListener("click", () => {
   }
 });
 
+// Fullscreen change listener - ตรวจจับเมื่อเข้า/ออก fullscreen
+document.addEventListener("fullscreenchange", () => {
+  isFullscreen = !!document.fullscreenElement;
+  console.log(`Fullscreen: ${isFullscreen}`);
+});
+
 recordBtn.addEventListener("click", () => {
   isRecording = !isRecording;
 
@@ -613,10 +622,17 @@ function onResults(results) {
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-  // Draw Video (Mirror) - ใช้ save/restore แยกเพื่อไม่ให้ transform ซ้อนกัน
+  // Draw Video
+  // หมายเหตุ: Webcam ส่งภาพแบบ mirror มาแล้ว เวลาปกติ
+  // แต่ใน Fullscreen ต้อง mirror ด้วย JS เพราะ CSS transform ไม่ทำงาน
   canvasCtx.save();
-  canvasCtx.scale(-1, 1);
-  canvasCtx.translate(-canvasElement.width, 0);
+
+  // Fullscreen: ต้อง mirror เพิ่ม เพราะ browser render ต่างออกไป
+  if (isFullscreen) {
+    canvasCtx.scale(-1, 1);
+    canvasCtx.translate(-canvasElement.width, 0);
+  }
+
   canvasCtx.drawImage(
     results.image,
     0,
@@ -624,10 +640,9 @@ function onResults(results) {
     canvasElement.width,
     canvasElement.height
   );
-  canvasCtx.restore(); // กลับเป็น identity transform
+  canvasCtx.restore();
 
-  // ตอนนี้ canvas context เป็น identity แล้ว
-  // DrawingManager จะจัดการ mirror เองในแต่ละ method
+  // DrawingManager: mirrorDisplay = false เพราะ landmarks ก็ตรงกับภาพ webcam อยู่แล้ว
 
   if (results.poseLandmarks) {
     if (calibrator.isActive) {

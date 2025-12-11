@@ -44,16 +44,24 @@ canvas {
 canvas:fullscreen {
   object-fit: contain;
   background: black;
+  -webkit-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -ms-transform: scaleX(-1);
+  transform: scaleX(-1);
 }
 
 canvas:-webkit-full-screen {
   object-fit: contain;
   background: black;
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
 }
 
 canvas:-moz-full-screen {
   object-fit: contain;
   background: black;
+  -moz-transform: scaleX(-1);
+  transform: scaleX(-1);
 }
 
 /* --- App Title Purple Gradient --- */

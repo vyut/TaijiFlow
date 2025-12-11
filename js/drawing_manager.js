@@ -12,7 +12,7 @@ class DrawingManager {
     this.ctx = canvasCtx;
     this.canvasWidth = canvasElement.width;
     this.canvasHeight = canvasElement.height;
-    this.mirrorDisplay = true; // Default: mirror for user (like looking in a mirror)
+    this.mirrorDisplay = false; // Webcam ส่งภาพ mirror มาแล้ว ไม่ต้อง flip เพิ่ม
   }
 
   /**
@@ -29,8 +29,12 @@ class DrawingManager {
    */
   drawSkeleton(landmarks) {
     this.ctx.save();
-    // Mirror ถ้าเปิดใช้งาน (กลับด้านภาพให้เหมือนกระจกเงา)
-    if (this.mirrorDisplay) {
+    // Fullscreen: ต้อง mirror เพิ่ม (ใช้ตัวแปร global isFullscreen จาก script.js)
+    // ปกติ: mirrorDisplay = false เพราะ webcam ส่ง mirror มาแล้ว
+    const shouldMirror =
+      this.mirrorDisplay ||
+      (typeof isFullscreen !== "undefined" && isFullscreen);
+    if (shouldMirror) {
       this.ctx.scale(-1, 1);
       this.ctx.translate(-this.canvasWidth, 0);
     }
@@ -56,8 +60,11 @@ class DrawingManager {
    */
   drawPath(path, color, width) {
     this.ctx.save();
-    // Mirror ถ้าเปิดใช้งาน
-    if (this.mirrorDisplay) {
+    // Fullscreen: ต้อง mirror เพิ่ม
+    const shouldMirror =
+      this.mirrorDisplay ||
+      (typeof isFullscreen !== "undefined" && isFullscreen);
+    if (shouldMirror) {
       this.ctx.scale(-1, 1);
       this.ctx.translate(-this.canvasWidth, 0);
     }

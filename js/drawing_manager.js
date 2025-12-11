@@ -1,7 +1,7 @@
 /**
  * TaijiFlow AI - Drawing Manager v1.0
  * รับผิดชอบการวาดภาพทั้งหมดลงบน Canvas
- * 
+ *
  * Features:
  * - วาด Skeleton (โครงกระดูก) จาก MediaPipe landmarks
  * - วาด Reference Path (เส้นทางต้นแบบ)
@@ -12,6 +12,15 @@ class DrawingManager {
     this.ctx = canvasCtx;
     this.canvasWidth = canvasElement.width;
     this.canvasHeight = canvasElement.height;
+    this.mirrorDisplay = true; // Default: mirror for user (like looking in a mirror)
+  }
+
+  /**
+   * เปิด/ปิด Mirror Mode
+   * @param {boolean} enabled - true = mirror, false = no mirror
+   */
+  setMirror(enabled) {
+    this.mirrorDisplay = enabled;
   }
 
   /**
@@ -20,9 +29,11 @@ class DrawingManager {
    */
   drawSkeleton(landmarks) {
     this.ctx.save();
-    // กลับด้านภาพให้เหมือนกระจกเงา
-    this.ctx.scale(-1, 1);
-    this.ctx.translate(-this.canvasWidth, 0);
+    // Mirror ถ้าเปิดใช้งาน (กลับด้านภาพให้เหมือนกระจกเงา)
+    if (this.mirrorDisplay) {
+      this.ctx.scale(-1, 1);
+      this.ctx.translate(-this.canvasWidth, 0);
+    }
 
     drawConnectors(this.ctx, landmarks, POSE_CONNECTIONS, {
       color: "#FFFFFF",
@@ -45,9 +56,11 @@ class DrawingManager {
    */
   drawPath(path, color, width) {
     this.ctx.save();
-    // กลับด้านภาพให้เหมือนกระจกเงา
-    this.ctx.scale(-1, 1);
-    this.ctx.translate(-this.canvasWidth, 0);
+    // Mirror ถ้าเปิดใช้งาน
+    if (this.mirrorDisplay) {
+      this.ctx.scale(-1, 1);
+      this.ctx.translate(-this.canvasWidth, 0);
+    }
 
     this.ctx.beginPath();
     this.ctx.strokeStyle = color;
@@ -71,8 +84,8 @@ class DrawingManager {
   }
 
   /**
-   * 
-   * @param {string[]} feedback 
+   *
+   * @param {string[]} feedback
    */
   drawGestureFeedback(feedback) {
     if (!feedback || !feedback.hand) return;
@@ -143,6 +156,53 @@ class DrawingManager {
         text,
         boxX + padding,
         boxY + padding + index * lineHeight
+      );
+    });
+  }
+
+  /**
+   * วาด Debug Overlay แสดงค่าตัวแปรสำคัญ
+   * @param {object} debugInfo - ข้อมูล debug จาก HeuristicsEngine
+   */
+  drawDebugOverlay(debugInfo) {
+    if (!debugInfo || Object.keys(debugInfo).length === 0) return;
+
+    const boxX = this.canvasWidth - 300;
+    const boxY = 20;
+    const padding = 10;
+    const lineHeight = 22;
+    const entries = Object.entries(debugInfo);
+    const boxWidth = 280;
+    const boxHeight = entries.length * lineHeight + padding * 2 + 25;
+
+    // Background
+    this.ctx.fillStyle = "rgba(0, 0, 50, 0.85)";
+    this.ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 8);
+    this.ctx.fill();
+
+    // Border
+    this.ctx.strokeStyle = "#00FFFF";
+    this.ctx.lineWidth = 2;
+    this.ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 8);
+    this.ctx.stroke();
+
+    // Title
+    this.ctx.font = 'bold 14px "Consolas", monospace';
+    this.ctx.fillStyle = "#00FFFF";
+    this.ctx.textAlign = "left";
+    this.ctx.textBaseline = "top";
+    this.ctx.fillText("🔧 DEBUG MODE", boxX + padding, boxY + padding);
+
+    // Debug values
+    this.ctx.font = '12px "Consolas", monospace';
+    this.ctx.fillStyle = "#00FF00";
+
+    entries.forEach(([key, value], index) => {
+      const displayKey = key.replace(/([A-Z])/g, " $1").trim(); // camelCase to space
+      this.ctx.fillText(
+        `${displayKey}: ${value}`,
+        boxX + padding,
+        boxY + padding + 25 + index * lineHeight
       );
     });
   }

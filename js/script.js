@@ -529,6 +529,16 @@ window.addEventListener("keydown", (e) => {
       e.preventDefault(); // ป้องกันพฤติกรรม default ของเบราว์เซอร์
       fullscreenBtn.click();
       break;
+    case "d":
+      // Toggle Debug Mode
+      e.preventDefault();
+      engine.setDebugMode(!engine.debugMode);
+      uiManager.showNotification(
+        `Debug Mode: ${engine.debugMode ? "ON" : "OFF"}`,
+        "info",
+        1500
+      );
+      break;
     case "escape":
       // Secret key: ยกเลิก Calibration และกลับหน้าแรก
       if (calibrator.isActive) {
@@ -603,7 +613,8 @@ function onResults(results) {
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-  // Draw Video (Mirror)
+  // Draw Video (Mirror) - ใช้ save/restore แยกเพื่อไม่ให้ transform ซ้อนกัน
+  canvasCtx.save();
   canvasCtx.scale(-1, 1);
   canvasCtx.translate(-canvasElement.width, 0);
   canvasCtx.drawImage(
@@ -613,10 +624,10 @@ function onResults(results) {
     canvasElement.width,
     canvasElement.height
   );
+  canvasCtx.restore(); // กลับเป็น identity transform
 
-  // Un-mirror for overlay text
-  canvasCtx.scale(-1, 1);
-  canvasCtx.translate(-canvasElement.width, 0);
+  // ตอนนี้ canvas context เป็น identity แล้ว
+  // DrawingManager จะจัดการ mirror เองในแต่ละ method
 
   if (results.poseLandmarks) {
     if (calibrator.isActive) {
@@ -678,6 +689,11 @@ function onResults(results) {
 
           // 1.1 พูดแจ้งเตือนเมื่อมีข้อผิดพลาด (มี Cooldown ป้องกันพูดซ้ำเร็วเกินไป)
           audioManager.speakFeedback(feedbacks);
+
+          // 1.2 Debug Overlay (กด D เพื่อเปิด)
+          if (engine.debugMode) {
+            drawer.drawDebugOverlay(engine.getDebugInfo());
+          }
         }
 
         // 2. *** เก็บข้อมูล (Data Logging) - เก็บทุก 3 frames เพื่อลดขนาดไฟล์ ***

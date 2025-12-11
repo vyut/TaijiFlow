@@ -1,12 +1,59 @@
 /**
- * TaijiFlow AI - Heuristics Engine v2.2
+ * TaijiFlow AI - Heuristics Engine v3.0
  * - รองรับ Dynamic Thresholds (Calibration)
  * - จัดลำดับความสำคัญของ Feedback (Prioritization)
  * - แสดงผลค้างไว้ให้อ่านทัน (Sticky Feedback)
+ * - Time-normalized calculations (v3.0)
+ * - Configurable thresholds (v3.0)
  */
 
 class HeuristicsEngine {
   constructor() {
+    // =====================================================
+    // CONFIG: Thresholds ทั้งหมด (ปรับแต่งได้)
+    // หน่วย: normalized (0-1) หรือ degrees/second
+    // =====================================================
+    this.CONFIG = {
+      // Path Accuracy
+      PATH_THRESHOLD_DEFAULT: 0.08, // normalized units (8% of screen)
+      PATH_THRESHOLD_CALIBRATION_RATIO: 0.4, // 40% of shoulderWidth
+      PATH_THRESHOLD_MIN: 0.02, // minimum threshold
+      PATH_THRESHOLD_MAX: 0.25, // maximum threshold
+
+      // Arm Rotation
+      ARM_MOTION_THRESHOLD: 0.005, // min deltaY to check rotation
+
+      // Elbow Sinking
+      ELBOW_TOLERANCE_DEFAULT: 0.01, // normalized units
+      ELBOW_TOLERANCE_CALIBRATION_RATIO: 0.05, // 5% of torsoHeight
+
+      // Waist Initiation
+      MIN_HIP_VELOCITY_DEG_SEC: 2.0, // degrees/second
+      SHOULDER_HIP_RATIO: 3.0, // shoulder must rotate 3x faster than hip
+
+      // Vertical Stability
+      STABILITY_HISTORY_LENGTH: 30, // frames (~1 second at 30fps)
+      STABILITY_THRESHOLD_DEFAULT: 0.05, // normalized units
+      STABILITY_THRESHOLD_CALIBRATION_RATIO: 0.1, // 10% of torsoHeight
+
+      // Smoothness
+      SMOOTHNESS_THRESHOLD_DEFAULT: 0.02, // normalized units
+      SMOOTHNESS_CALIBRATION_RATIO: 0.05, // 5% of armLength
+
+      // Continuity
+      MOTION_THRESHOLD: 0.001, // normalized units (min movement)
+      PAUSE_FRAME_THRESHOLD: 15, // frames (~0.5 sec at 30fps)
+
+      // Weight Shift
+      WEIGHT_BUFFER_RATIO: 0.1, // 10% of stanceWidth
+
+      // Feedback Display
+      FEEDBACK_HOLD_TIME_MS: 1500, // 1.5 seconds
+
+      // History Lengths
+      WRIST_HISTORY_LENGTH: 10, // frames
+    };
+
     // --- ตัวแปรสำหรับเก็บข้อมูล Calibration ---
     this.calibrationData = null;
 
@@ -14,19 +61,16 @@ class HeuristicsEngine {
     this.lastLandmarks = null;
     this.lastTimestamp = -1;
     this.headYHistory = [];
-    this.HISTORY_LENGTH_STABILITY = 30;
-    this.wristHistory = [];
-    this.HISTORY_LENGTH_WRIST = 10;
+    this.wristHistory = []; // เก็บ {x, y, t} โดย t = timestamp (ms)
     this.pauseCounter = 0;
-
-    // --- Default Thresholds (ใช้เมื่อไม่มี Calibration Data) ---
-    this.DEFAULT_PATH_THRESHOLD = 0.08;
-    this.DEFAULT_SMOOTHNESS_THRESHOLD = 0.02;
 
     // --- ตัวแปรสำหรับ Sticky Feedback (กันข้อความกระพริบ) ---
     this.lastFeedbackMsg = null;
     this.lastFeedbackTime = 0;
-    this.FEEDBACK_HOLD_TIME = 1500; // แสดงค้างไว้อย่างน้อย 1.5 วินาที
+
+    // --- Debug Mode ---
+    this.debugMode = false;
+    this.debugInfo = {}; // เก็บค่าสำหรับ debug overlay
 
     // --- Config: Level ไหน ตรวจอะไรบ้าง ---
     this.RULES_CONFIG = {
@@ -76,6 +120,21 @@ class HeuristicsEngine {
       Smoothness: 7,
       Continuity: 8,
     };
+  }
+
+  /**
+   * เปิด/ปิด Debug Mode
+   */
+  setDebugMode(enabled) {
+    this.debugMode = enabled;
+    console.log(`Debug mode: ${enabled ? "ON" : "OFF"}`);
+  }
+
+  /**
+   * ดึง Debug Info สำหรับแสดง overlay
+   */
+  getDebugInfo() {
+    return this.debugInfo;
   }
 
   setCalibration(data) {
@@ -156,9 +215,9 @@ class HeuristicsEngine {
       if (err) allErrors.push({ msg: err, rule: "Vertical Stability" });
     }
 
-    // 6. Smoothness
+    // 6. Smoothness (ส่ง timestamp เพื่อคำนวณ time-normalized acceleration)
     if (config.checkSmooth) {
-      const err = this.checkSmoothness(activeWrist);
+      const err = this.checkSmoothness(activeWrist, timestamp);
       if (err) allErrors.push({ msg: err, rule: "Smoothness" });
     }
 
@@ -204,7 +263,10 @@ class HeuristicsEngine {
     // กรณีที่ 2: ไม่พบข้อผิดพลาดในเฟรมนี้ (แต่จะโชว์อันเก่าค้างไว้)
     else {
       // ถ้าเวลาผ่านไปไม่ถึงกำหนด (Hold Time) ให้โชว์อันเดิมไปก่อน
-      if (Date.now() - this.lastFeedbackTime < this.FEEDBACK_HOLD_TIME) {
+      if (
+        Date.now() - this.lastFeedbackTime <
+        this.CONFIG.FEEDBACK_HOLD_TIME_MS
+      ) {
         return this.lastFeedbackMsg ? [this.lastFeedbackMsg] : [];
       } else {
         // ถ้าผ่านไปนานแล้ว ก็เคลียร์หน้าจอ (แสดงว่าทำถูกแล้ว)
@@ -236,16 +298,32 @@ class HeuristicsEngine {
   // ================= Rule Implementations =================
 
   checkPathAccuracy(userWrist, referencePath) {
+    if (!userWrist) return null;
+
     let minDistance = Infinity;
     for (const refPoint of referencePath) {
       const d = this.calculateDistance(userWrist, refPoint);
       if (d < minDistance) minDistance = d;
     }
-    // Dynamic Thresholds
-    let threshold = this.DEFAULT_PATH_THRESHOLD;
+
+    // Dynamic Thresholds with min/max caps
+    let threshold = this.CONFIG.PATH_THRESHOLD_DEFAULT;
     if (this.calibrationData) {
-      threshold = this.calibrationData.shoulderWidth * 0.4;
+      const calibThreshold =
+        this.calibrationData.shoulderWidth *
+        this.CONFIG.PATH_THRESHOLD_CALIBRATION_RATIO;
+      threshold = Math.max(
+        this.CONFIG.PATH_THRESHOLD_MIN,
+        Math.min(this.CONFIG.PATH_THRESHOLD_MAX, calibThreshold)
+      );
     }
+
+    // Debug info
+    if (this.debugMode) {
+      this.debugInfo.pathDistance = minDistance.toFixed(3);
+      this.debugInfo.pathThreshold = threshold.toFixed(3);
+    }
+
     return minDistance > threshold
       ? "⚠️ เส้นทางไม่แม่นยำ (Path Deviation)"
       : null;
@@ -263,7 +341,7 @@ class HeuristicsEngine {
     const deltaY = p_current.y - p_previous.y;
 
     // ถ้าเคลื่อนที่น้อยไป ไม่ต้องเช็ค
-    if (Math.abs(deltaY) < 0.005) {
+    if (Math.abs(deltaY) < this.CONFIG.ARM_MOTION_THRESHOLD) {
       return null;
     }
     const isMovingUp = deltaY < 0;
@@ -338,8 +416,8 @@ class HeuristicsEngine {
 
     // ปรับปรุง Logic: ตรวจจับเมื่อความเร็วไหล่ 'มากกว่า' ความเร็วสะโพกอย่างมีนัยสำคัญ
     // โดยใช้ 'อัตราส่วน' แทนค่าตายตัว เพื่อให้ยืดหยุ่นตามความเร็วของผู้ใช้
-    const RATIO_THRESHOLD = 3.0; // ไหล่หมุนเร็วกว่าเอว 3 เท่า
-    const MIN_HIP_VELOCITY = 2.0; // เช็คต่อเมื่อมีการหมุนเอวจริงๆ เท่านั้น
+    const RATIO_THRESHOLD = this.CONFIG.SHOULDER_HIP_RATIO;
+    const MIN_HIP_VELOCITY = this.CONFIG.MIN_HIP_VELOCITY_DEG_SEC;
 
     if (hipVel > MIN_HIP_VELOCITY && shoulderVel > hipVel * RATIO_THRESHOLD) {
       return "⚠️ ใช้เอวนำ (Start with Waist)";
@@ -350,28 +428,41 @@ class HeuristicsEngine {
   checkVerticalStability(nose) {
     if (!nose) return null;
     this.headYHistory.push(nose.y);
-    if (this.headYHistory.length > this.HISTORY_LENGTH_STABILITY)
+    if (this.headYHistory.length > this.CONFIG.STABILITY_HISTORY_LENGTH)
       this.headYHistory.shift();
 
-    if (this.headYHistory.length < this.HISTORY_LENGTH_STABILITY) return null;
+    if (this.headYHistory.length < this.CONFIG.STABILITY_HISTORY_LENGTH)
+      return null;
 
     const min = Math.min(...this.headYHistory);
     const max = Math.max(...this.headYHistory);
     const displacement = max - min;
 
-    let threshold = 0.05;
+    let threshold = this.CONFIG.STABILITY_THRESHOLD_DEFAULT;
     if (this.calibrationData) {
-      threshold = this.calibrationData.torsoHeight * 0.1;
+      threshold =
+        this.calibrationData.torsoHeight *
+        this.CONFIG.STABILITY_THRESHOLD_CALIBRATION_RATIO;
     }
 
     if (displacement > threshold) return "⚠️ ศีรษะไม่นิ่ง (Head Unstable)";
     return null;
   }
 
-  checkSmoothness(wrist) {
+  /**
+   * ตรวจสอบความลื่นไหลของการเคลื่อนไหว
+   * เก็บ wrist พร้อม timestamp เพื่อคำนวณ time-normalized acceleration
+   * @param {object} wrist - {x, y} landmark
+   * @param {number} timestamp - timestamp in ms
+   */
+  checkSmoothness(wrist, timestamp) {
     if (!wrist) return null;
-    this.wristHistory.push(wrist);
-    if (this.wristHistory.length > this.HISTORY_LENGTH_WRIST)
+
+    // เก็บ wrist พร้อม timestamp
+    const currentTime = timestamp || Date.now();
+    this.wristHistory.push({ x: wrist.x, y: wrist.y, t: currentTime });
+
+    if (this.wristHistory.length > this.CONFIG.WRIST_HISTORY_LENGTH)
       this.wristHistory.shift();
 
     if (this.wristHistory.length < 3) return null;
@@ -380,14 +471,28 @@ class HeuristicsEngine {
     const p2 = this.wristHistory[this.wristHistory.length - 2];
     const p1 = this.wristHistory[this.wristHistory.length - 3];
 
-    const v2 = this.calculateDistance(p2, p3);
-    const v1 = this.calculateDistance(p1, p2);
+    // Time-normalized velocity
+    const dt2 = (p3.t - p2.t) / 1000; // seconds
+    const dt1 = (p2.t - p1.t) / 1000;
+
+    if (dt1 <= 0 || dt2 <= 0) return null;
+
+    const v2 = this.calculateDistance(p2, p3) / dt2; // normalized units/sec
+    const v1 = this.calculateDistance(p1, p2) / dt1;
     const acceleration = Math.abs(v2 - v1);
 
-    // Dynamic Threshold: 5% ของความยาวแขน (ถ้ามี Calibration Data)
-    let threshold = this.DEFAULT_SMOOTHNESS_THRESHOLD;
+    // Dynamic Threshold
+    let threshold = this.CONFIG.SMOOTHNESS_THRESHOLD_DEFAULT;
     if (this.calibrationData) {
-      threshold = this.calibrationData.armLength * 0.05;
+      threshold =
+        this.calibrationData.armLength *
+        this.CONFIG.SMOOTHNESS_CALIBRATION_RATIO;
+    }
+
+    // Debug info
+    if (this.debugMode) {
+      this.debugInfo.wristVelocity = v2.toFixed(3);
+      this.debugInfo.acceleration = acceleration.toFixed(3);
     }
 
     if (acceleration > threshold) return "⚠️ การเคลื่อนไหวสะดุด (Not Smooth)";
@@ -401,13 +506,15 @@ class HeuristicsEngine {
     const p1 = this.wristHistory[this.wristHistory.length - 2];
     const velocity = this.calculateDistance(p1, p2);
 
-    if (velocity < 0.001) {
+    if (velocity < this.CONFIG.MOTION_THRESHOLD) {
       this.pauseCounter++;
     } else {
       this.pauseCounter = 0;
     }
 
-    if (this.pauseCounter > 15) return "⚠️ อย่าหยุดนิ่ง (Keep Moving)";
+    if (this.pauseCounter > this.CONFIG.PAUSE_FRAME_THRESHOLD) {
+      return "⚠️ อย่าหยุดนิ่ง (Keep Moving)";
+    }
     return null;
   }
 

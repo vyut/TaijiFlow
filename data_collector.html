@@ -225,6 +225,7 @@
       let recordedChunks = [];
       let startTime;
       let timerInterval;
+      let frameCounter = 0; // For frame rate optimization (record every 3rd frame)
 
       // =============================================================
       // Update Filename Preview when selection changes
@@ -296,14 +297,24 @@
 
           // บันทึก landmarks ถ้ากำลัง recording
           if (isRecording) {
+            // Optimization 1: เก็บทุก 3 frames (ลดจาก 30fps เป็น 10fps)
+            frameCounter++;
+            if (frameCounter % 3 !== 0) {
+              canvasCtx.restore();
+              return; // Skip this frame
+            }
+
+            // Optimization 2: ปัดทศนิยมเหลือ 3 ตำแหน่ง (0.123456789 -> 0.123)
+            const roundedLandmarks = results.poseLandmarks.map((lm) => ({
+              x: Math.round(lm.x * 1000) / 1000,
+              y: Math.round(lm.y * 1000) / 1000,
+              z: Math.round(lm.z * 1000) / 1000,
+              visibility: Math.round(lm.visibility * 1000) / 1000,
+            }));
+
             recordedLandmarks.push({
               timestamp: Date.now() - startTime,
-              landmarks: results.poseLandmarks.map((lm) => ({
-                x: lm.x,
-                y: lm.y,
-                z: lm.z,
-                visibility: lm.visibility,
-              })),
+              landmarks: roundedLandmarks,
             });
           }
         }
@@ -352,6 +363,7 @@
         isRecording = true;
         recordedLandmarks = [];
         recordedChunks = [];
+        frameCounter = 0; // Reset frame counter
 
         // Video recording at 30 FPS
         const stream = canvasElement.captureStream(30);
@@ -417,7 +429,8 @@
         const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
 
         // 1. Download JSON (Landmarks) - ใช้ชื่อตามท่าและระดับ
-        const jsonString = JSON.stringify(recordedLandmarks, null, 2);
+        // Optimization 3: Minify JSON (ไม่ใส่ null, 2 -> ไม่มี whitespace)
+        const jsonString = JSON.stringify(recordedLandmarks);
         const jsonBlob = new Blob([jsonString], { type: "application/json" });
         const jsonUrl = URL.createObjectURL(jsonBlob);
         const jsonLink = document.createElement("a");

@@ -429,8 +429,7 @@
         const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
 
         // 1. Download JSON (Landmarks) - ใช้ชื่อตามท่าและระดับ
-        // Optimization 3: Minify JSON (ไม่ใส่ null, 2 -> ไม่มี whitespace)
-        const jsonString = JSON.stringify(recordedLandmarks);
+        const jsonString = JSON.stringify(recordedLandmarks); // Optimization 3: Minify JSON (ไม่ใส่ null, 2 -> ไม่มี whitespace)
         const jsonBlob = new Blob([jsonString], { type: "application/json" });
         const jsonUrl = URL.createObjectURL(jsonBlob);
         const jsonLink = document.createElement("a");

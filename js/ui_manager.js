@@ -19,7 +19,7 @@ class UIManager {
     // พจนานุกรมคำศัพท์ (Dictionary)
     this.translations = {
       th: {
-        app_title: "TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก (v0.1)",
+        app_title: "TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก (v0.3)",
         select_exercise: "เลือกท่าฝึก :",
         select_level: "เลือกระดับ :",
         l1_btn: "ระดับที่ 1: ท่านั่ง",
@@ -61,7 +61,7 @@ class UIManager {
         level_l3: "Level 3: ท่ายืนย่อ",
       },
       en: {
-        app_title: "TaijiFlow AI: Taijiquan Assistant (v0.1)",
+        app_title: "TaijiFlow AI: Taijiquan Assistant (v0.3)",
         select_exercise: "Select Exercise:",
         select_level: "Select Level:",
         l1_btn: "Level 1: Seated",

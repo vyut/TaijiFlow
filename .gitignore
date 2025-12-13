@@ -22,3 +22,6 @@ build/
 
 # Other system files
 Thumbs.db
+
+# Backup
+backup/

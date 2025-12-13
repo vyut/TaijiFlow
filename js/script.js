@@ -40,6 +40,15 @@ let frameCounter = 0;
 // Fullscreen State - ใช้กลับ mirror ตอน fullscreen
 let isFullscreen = false;
 
+// Privacy Modal - ปิด popup เมื่อกด Accept
+const privacyModal = document.getElementById("privacy-modal");
+const privacyAcceptBtn = document.getElementById("privacy-accept-btn");
+if (privacyAcceptBtn) {
+  privacyAcceptBtn.addEventListener("click", () => {
+    privacyModal.classList.add("hidden");
+  });
+}
+
 // สร้าง User ID (เก็บใน LocalStorage เพื่อให้คงที่ตลอดการใช้งาน)
 function getOrCreateUserId() {
   let userId = localStorage.getItem("taijiflow_user_id");

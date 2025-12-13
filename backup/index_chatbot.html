@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaijiFlow AI</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <!-- Stylesheets -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <!-- Scripts (ใช้ defer เพื่อให้โหลดพร้อม HTML แต่รันทีหลัง) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+
+    <!-- App Modules -->
+    <script src="js/calibration_manager.js" defer></script>
+    <script src="js/heuristics_engine.js" defer></script>
+    <script src="js/drawing_manager.js" defer></script>
+    <script src="js/data_exporter.js" defer></script>
+    <script src="js/audio_manager.js" defer></script>
+    <script src="js/scoring_manager.js" defer></script>
+    <script src="js/ui_manager.js" defer></script>
+    <script src="js/script.js" defer></script>
+  </head>
+  <body
+    class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-900"
+  >
+    <!-- Header -->
+    <h1 id="app-title" class="text-3xl font-bold mb-4 text-purple-400">
+      TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก (v0.3)
+    </h1>
+
+    <!-- Main Container -->
+    <div
+      id="main-card"
+      class="bg-gray-800 p-6 rounded-lg shadow-lg text-center w-full max-w-6xl"
+    >
+      <!-- Top Bar: Selectors + Settings + Timer -->
+      <div class="mb-4 flex flex-wrap justify-between items-center gap-4">
+        <!-- Left: Dropdowns -->
+        <div class="flex gap-4 flex-wrap">
+          <div>
+            <select
+              id="exercise-select"
+              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+            >
+              <option value="" disabled selected>-- เลือกท่าฝึก --</option>
+              <option value="rh_cw">มือขวา - ตามเข็ม</option>
+              <option value="rh_ccw">มือขวา - ทวนเข็ม</option>
+              <option value="lh_cw">มือซ้าย - ตามเข็ม</option>
+              <option value="lh_ccw">มือซ้าย - ทวนเข็ม</option>
+            </select>
+          </div>
+          <div>
+            <select
+              id="level-select"
+              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+            >
+              <option value="" disabled selected>-- เลือกระดับ --</option>
+              <option value="L1">ระดับที่ 1: ท่านั่ง</option>
+              <option value="L2">ระดับที่ 2: ท่ายืน</option>
+              <option value="L3">ระดับที่ 3: ท่ายืนย่อ</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Right: Settings Buttons -->
+        <div class="flex gap-2">
+          <button
+            id="audio-btn"
+            class="px-3 py-2 bg-green-600 text-white border border-green-700 rounded hover:bg-green-700 transition-colors"
+            title="เปิด/ปิดเสียงพูด"
+          >
+            🔊
+          </button>
+          <button
+            id="lang-btn"
+            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 font-bold transition-colors"
+          >
+            🇹🇭
+          </button>
+          <button
+            id="theme-btn"
+            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+          >
+            🌙
+          </button>
+        </div>
+      </div>
+
+      <!-- Canvas Container (Full Width) -->
+      <div
+        class="canvas-container bg-black rounded overflow-hidden shadow-xl mb-6"
+      >
+        <video
+          id="input_video"
+          style="display: none"
+          autoplay
+          playsinline
+        ></video>
+        <canvas id="output_canvas" width="1280" height="720"></canvas>
+
+        <!-- Loading Overlay -->
+        <div
+          id="loading-overlay"
+          class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80 text-white text-xl z-20 hidden rounded-lg"
+        >
+          <div class="flex flex-col items-center">
+            <svg
+              class="animate-spin h-10 w-10 text-white mb-3"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            <span id="loading-text">กำลังโหลดโมเดล AI...</span>
+          </div>
+        </div>
+
+        <!-- Start Overlay (คำแนะนำการใช้งาน) -->
+        <div
+          id="start-overlay"
+          class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-70 z-10 rounded-lg transition-opacity duration-300 p-8"
+        >
+          <h2
+            id="overlay-title"
+            class="text-white text-2xl font-bold mb-6 drop-shadow-md"
+          >
+            📋 วิธีเริ่มต้นใช้งาน
+          </h2>
+          <div class="text-white text-lg text-left space-y-3 max-w-md">
+            <p class="flex items-center gap-3">
+              <span
+                class="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
+                >1</span
+              >
+              <span id="overlay-step1"
+                >เลือก <strong>"ท่าฝึก"</strong> จากเมนูด้านบน</span
+              >
+            </p>
+            <p class="flex items-center gap-3">
+              <span
+                class="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
+                >2</span
+              >
+              <span id="overlay-step2"
+                >เลือก <strong>"ระดับ"</strong> ที่ต้องการฝึก</span
+              >
+            </p>
+            <p class="flex items-center gap-3">
+              <span
+                class="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
+                >3</span
+              >
+              <span id="overlay-step3"
+                >กดปุ่ม <strong>"🏃 เริ่มการฝึก"</strong></span
+              >
+            </p>
+          </div>
+          <p id="overlay-note" class="text-gray-400 mt-6 text-sm text-center">
+            ⏱️ บันทึกอัตโนมัติ 5 นาที | 📏 ปรับเทียบสัดส่วนอัตโนมัติทุกครั้ง
+          </p>
+        </div>
+
+        <!-- Countdown Overlay (3-2-1) -->
+        <div id="countdown-overlay" class="countdown-overlay hidden">
+          <span id="countdown-number" class="countdown-number">3</span>
+        </div>
+
+        <!-- Fullscreen Button (มุมขวาล่าง - แสดงระหว่างฝึก) -->
+        <div
+          id="fullscreen-overlay-btn"
+          class="absolute bottom-4 right-4 z-20 hidden"
+        >
+          <button
+            id="video-fullscreen-btn"
+            class="flex items-center gap-2 bg-black bg-opacity-70 px-3 py-2 rounded-full text-white font-bold hover:bg-opacity-90 transition"
+            title="เต็มจอ"
+          >
+            ⛶ <span id="fullscreen-btn-text">เต็มจอ</span>
+          </button>
+        </div>
+
+        <!-- Training Timer Overlay (มุมซ้ายล่าง - แสดงระหว่างฝึก) -->
+        <div
+          id="training-controls"
+          class="absolute bottom-4 left-4 z-20 hidden"
+        >
+          <div
+            class="flex items-center gap-2 bg-black bg-opacity-70 px-3 py-2 rounded-full"
+          >
+            <span class="text-white font-bold">⏱️</span>
+            <span id="training-timer-overlay" class="text-white font-bold"
+              >5:00</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Control Buttons (Start/Stop - Separate) -->
+      <div class="flex justify-center gap-4 mb-6">
+        <button
+          id="start-training-btn"
+          class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition text-lg opacity-50 cursor-not-allowed"
+          disabled
+        >
+          🏃 เริ่มการฝึก
+        </button>
+        <button
+          id="stop-training-btn"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition text-lg opacity-50 cursor-not-allowed"
+          disabled
+        >
+          ⏹️ หยุดการฝึก
+        </button>
+      </div>
+
+      <!-- Instructions (Hidden for now - will add more useful tips later) -->
+      <div class="instructions-box p-4 rounded text-left hidden">
+        <h3 id="instr-title" class="font-bold mb-2">💡 คำแนะนำ:</h3>
+        <ul class="list-disc list-inside text-sm space-y-1">
+          <li id="instr-1">เลือกท่าฝึกและระดับ แล้วกด 'เริ่มการฝึก'</li>
+          <li id="instr-2">ยืนให้เห็นเต็มตัว ห่างจากกล้อง 2-3 เมตร</li>
+          <li id="instr-3">ปรับเทียบสัดส่วนอัตโนมัติทุกครั้งก่อนเริ่มฝึก</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Hidden Legacy Elements (for script.js compatibility) -->
+    <div class="hidden">
+      <button id="small-calibrate-btn"></button>
+      <button id="cancel-calib-btn"></button>
+      <button id="fullscreen-btn"></button>
+      <button id="record-btn"></button>
+      <div id="level-buttons">
+        <button class="level-btn" data-level="L1"></button>
+        <button class="level-btn" data-level="L2"></button>
+        <button class="level-btn" data-level="L3"></button>
+      </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div
+      id="notification-container"
+      class="fixed top-5 right-5 z-50 flex flex-col items-end gap-3"
+    >
+      <!-- Notifications will be injected here by JavaScript -->
+    </div>
+
+    <div
+      id="taiji-chatbot-widget"
+      class="fixed bottom-6 right-6 z-50 flex flex-col items-end font-sarabun"
+    >
+      <div
+        id="chat-window"
+        class="hidden flex flex-col w-[350px] h-[500px] bg-gray-800 border border-gray-600 rounded-xl shadow-2xl mb-4 overflow-hidden transition-all duration-300 transform origin-bottom-right scale-95 opacity-0 fixed bottom-20 right-6 z-[60]"
+      >
+        <div
+          class="bg-gradient-to-r from-purple-800 to-indigo-900 p-4 flex justify-between items-center text-white shadow-md shrink-0"
+        >
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <div
+                class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-xl border-2 border-purple-400 overflow-hidden"
+              >
+                👴
+              </div>
+              <span
+                class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-gray-800 rounded-full"
+              ></span>
+            </div>
+            <div>
+              <h3 class="font-bold text-base">Grandmaster AI</h3>
+              <p class="text-xs text-purple-200">ผู้ช่วยฝึกมวยไท้เก๊กส่วนตัว</p>
+            </div>
+          </div>
+          <button
+            onclick="toggleChat()"
+            class="text-gray-300 hover:text-white focus:outline-none hover:bg-white/10 rounded-full p-1 transition"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div
+          id="chat-messages"
+          class="flex-1 p-4 overflow-y-auto bg-gray-900 space-y-4 scroll-smooth min-h-0"
+        >
+          <div class="flex gap-3">
+            <div
+              class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-lg shrink-0 border border-gray-600"
+            >
+              👴
+            </div>
+            <div class="flex flex-col gap-1 max-w-[85%]">
+              <span class="text-xs text-gray-400 ml-1">Grandmaster</span>
+              <div
+                class="bg-gray-700 text-gray-100 p-3 rounded-2xl rounded-tl-none shadow-sm text-sm leading-relaxed"
+              >
+                สวัสดี... ข้าคือ AI ปรมาจารย์เจ้าสำนัก 🧘‍♂️<br /><br />
+                เจ้ามีข้อสงสัยเรื่องการจัดระเบียบร่างกาย
+                หรือลมหายใจในการฝึกท่าไหนหรือไม่? ถามข้าได้เลย
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="p-3 bg-gray-800 border-t border-gray-700 shrink-0 z-10 relative"
+        >
+          <div class="relative flex items-center">
+            <input
+              type="text"
+              id="chat-input"
+              placeholder="พิมพ์คำถามที่นี่..."
+              class="w-full bg-gray-900 text-white text-sm rounded-full pl-4 pr-12 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-700 shadow-inner"
+              onkeypress="handleEnter(event)"
+            />
+            <button
+              onclick="sendMessage()"
+              class="absolute right-2 bg-purple-600 hover:bg-purple-500 text-white rounded-full p-2 transition-colors shadow-lg"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 transform rotate-90"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="text-center mt-2">
+            <p class="text-[10px] text-gray-500">Powered by Gemini 3.0 Pro</p>
+          </div>
+        </div>
+      </div>
+
+      <button
+        id="chat-toggle-btn"
+        onclick="toggleChat()"
+        class="group relative w-16 h-16 bg-gradient-to-br from-purple-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-600 text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-purple-500/50 focus:outline-none border-2 border-white/20"
+      >
+        <span
+          class="text-3xl transform transition-transform group-hover:rotate-12"
+          >🥋</span
+        >
+
+        <span class="absolute top-0 right-0 flex h-4 w-4">
+          <span
+            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"
+          ></span>
+          <span
+            class="relative inline-flex rounded-full h-4 w-4 bg-red-500 border-2 border-gray-900"
+          ></span>
+        </span>
+      </button>
+    </div>
+
+    <script>
+      // --- Chatbot Logic ---
+
+      function toggleChat() {
+        const windowEl = document.getElementById("chat-window");
+        const btnEl = document.getElementById("chat-toggle-btn");
+
+        if (windowEl.classList.contains("hidden")) {
+          // Open
+          windowEl.classList.remove("hidden");
+          // Small delay to allow display:flex to apply before opacity transition
+          setTimeout(() => {
+            windowEl.classList.remove("scale-95", "opacity-0");
+            windowEl.classList.add("scale-100", "opacity-100");
+            document.getElementById("chat-input").focus();
+          }, 10);
+          btnEl.classList.add("rotate-90", "scale-0"); // Hide button effect
+          setTimeout(() => btnEl.classList.add("hidden"), 200); // Actually hide button
+        } else {
+          // Close logic handled by close button inside window usually,
+          // but if we want toggle behavior:
+          closeChat();
+        }
+      }
+
+      function closeChat() {
+        const windowEl = document.getElementById("chat-window");
+        const btnEl = document.getElementById("chat-toggle-btn");
+
+        windowEl.classList.remove("scale-100", "opacity-100");
+        windowEl.classList.add("scale-95", "opacity-0");
+
+        setTimeout(() => {
+          windowEl.classList.add("hidden");
+          btnEl.classList.remove("hidden");
+          // Small delay to animate button back
+          setTimeout(() => btnEl.classList.remove("rotate-90", "scale-0"), 10);
+        }, 300);
+      }
+
+      // Override toggle for the X button inside header
+      document.querySelector(
+        '#chat-window button[onclick="toggleChat()"]'
+      ).onclick = closeChat;
+
+      function handleEnter(e) {
+        if (e.key === "Enter") sendMessage();
+      }
+
+      // -------------------------------------------------------------
+      // ⚙️ ตั้งค่า API และ Model ตรงนี้
+      // -------------------------------------------------------------
+      const API_KEY = "AIzaSyCE7OVrTtY3B4d-sIB2KHgsxBMa-T7h1gA";
+
+      // ให้ใส่ชื่อ Model ID ที่คุณเห็นใน Google AI Studio ตรงนี้
+      // เช่น "gemini-1.5-pro", "gemini-1.5-flash", หรือ "gemini-3.0-pro" (ถ้ามี)
+      const MODEL_NAME = "gemini-3-pro-preview"; // <-- ลองแก้เป็นชื่อรุ่นที่คุณต้องการใช้
+
+      async function sendMessage() {
+        const input = document.getElementById("chat-input");
+        const msg = input.value.trim();
+        if (!msg) return;
+
+        // 1. แสดงข้อความผู้ใช้
+        addMessage(msg, "user");
+        input.value = "";
+
+        // 2. แสดงสถานะกำลังคิด
+        const loadingId = addLoading();
+
+        try {
+          // 3. ยิง Request (ใช้ตัวแปร MODEL_NAME ที่เราตั้งไว้ข้างบน)
+          const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                contents: [
+                  {
+                    parts: [
+                      {
+                        // ปรับ Prompt ให้ AI รู้บทบาท
+                        text: `คุณคือปรมาจารย์มวยไท้เก๊ก (Tai Chi Grandmaster) ที่ใจดีและมีความรู้ลึกซึ้ง 
+                    ตอบคำถามสั้นๆ กระชับ เข้าใจง่าย เกี่ยวกับมวยไท้เก๊ก การจัดระเบียบร่างกาย และสุขภาพ
+                    
+                    คำถาม: ${msg}`,
+                      },
+                    ],
+                  },
+                ],
+              }),
+            }
+          );
+
+          // เช็คว่ายิงผ่านไหม (ถ้าชื่อโมเดลผิด จะตกตรงนี้)
+          if (!response.ok) {
+            const errData = await response.json();
+            throw new Error(errData.error?.message || "API Error");
+          }
+
+          const data = await response.json();
+
+          // 4. ดึงคำตอบ
+          if (data.candidates && data.candidates.length > 0) {
+            const reply = data.candidates[0].content.parts[0].text;
+            removeLoading(loadingId);
+            addMessage(reply, "bot");
+          } else {
+            throw new Error("No response content");
+          }
+        } catch (error) {
+          console.error("Error Detail:", error);
+          removeLoading(loadingId);
+          // แจ้งเตือนผู้ใช้ (และบอกใบ้ว่าอาจจะผิดที่ชื่อโมเดล)
+          addMessage(
+            `เกิดข้อผิดพลาด: ${error.message} (กรุณาเช็คชื่อ Model ID)`,
+            "bot"
+          );
+        }
+      }
+
+      function addMessage(text, sender) {
+        const chatBox = document.getElementById("chat-messages");
+        const div = document.createElement("div");
+        const time = new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        if (sender === "user") {
+          div.className = "flex justify-end gap-3";
+          div.innerHTML = `
+        <div class="flex flex-col items-end gap-1 max-w-[85%]">
+          <div class="bg-purple-600 text-white p-3 rounded-2xl rounded-tr-none shadow-md text-sm leading-relaxed">
+            ${text}
+          </div>
+          <span class="text-[10px] text-gray-500 mr-1">${time}</span>
+        </div>
+      `;
+        } else {
+          div.className = "flex gap-3";
+          div.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-lg shrink-0 border border-gray-600">👴</div>
+        <div class="flex flex-col gap-1 max-w-[85%]">
+          <span class="text-xs text-gray-400 ml-1">Grandmaster</span>
+          <div class="bg-gray-700 text-gray-100 p-3 rounded-2xl rounded-tl-none shadow-sm text-sm leading-relaxed">
+            ${text}
+          </div>
+          <span class="text-[10px] text-gray-500 ml-1">${time}</span>
+        </div>
+      `;
+        }
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function addLoading() {
+        const chatBox = document.getElementById("chat-messages");
+        const id = "loading-" + Date.now();
+        const div = document.createElement("div");
+        div.id = id;
+        div.className = "flex gap-3";
+        div.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-lg shrink-0 border border-gray-600">👴</div>
+        <div class="bg-gray-700 text-gray-400 p-3 rounded-2xl rounded-tl-none text-xs flex items-center gap-1">
+          <span>กำลังพิจารณา</span>
+          <span class="animate-bounce">.</span>
+          <span class="animate-bounce" style="animation-delay: 0.2s">.</span>
+          <span class="animate-bounce" style="animation-delay: 0.4s">.</span>
+        </div>
+    `;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return id;
+      }
+
+      function removeLoading(id) {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+      }
+    </script>
+  </body>
+</html>

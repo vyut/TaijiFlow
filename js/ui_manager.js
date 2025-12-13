@@ -19,7 +19,7 @@ class UIManager {
     // พจนานุกรมคำศัพท์ (Dictionary)
     this.translations = {
       th: {
-        app_title: "TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก (v0.3)",
+        app_title: "TaijiFlow AI: ผู้ช่วยฝึกท่าม้วนไหม (v0.4)",
         select_exercise: "เลือกท่าฝึก :",
         select_level: "เลือกระดับ :",
         l1_btn: "ระดับที่ 1: ท่านั่ง",
@@ -54,14 +54,22 @@ class UIManager {
         overlay_step2: 'เลือก "ระดับ" ที่ต้องการฝึก',
         overlay_step3: 'กดปุ่ม "🏃 เริ่มการฝึก"',
         overlay_note:
-          "⏱️ บันทึกอัตโนมัติ 5 นาที | 📏 ปรับเทียบสัดส่วนอัตโนมัติทุกครั้ง",
+          "⏱️ ฝึกท่าละ 5 นาที • ไม่บันทึกวิดีโอ | 📏 ปรับเทียบสัดส่วนอัตโนมัติทุกครั้ง",
+        privacy_title: "🔒 ความเป็นส่วนตัวของคุณ",
+        privacy_item1:
+          "วิดีโอประมวลผลภายในเครื่องเท่านั้น ไม่มีการบันทึกวิดีโอการฝึก",
+        privacy_item2:
+          "ข้อมูลท่าทางใช้เพื่อพัฒนาระบบเท่านั้น ไม่ได้ถูกส่งออกนอกเครื่อง",
+        privacy_item3:
+          "Chatbot ใช้ Gemini API (ข้อความจะถูกส่งไป Google โดยตรง)",
+        privacy_accept: "เข้าใจแล้ว ✓",
         level_placeholder: "-- เลือกระดับ --",
         level_l1: "Level 1: ท่านั่ง",
         level_l2: "Level 2: ท่ายืน",
         level_l3: "Level 3: ท่ายืนย่อ",
       },
       en: {
-        app_title: "TaijiFlow AI: Taijiquan Assistant (v0.3)",
+        app_title: "TaijiFlow AI: Silk Reeling Assistant (v0.4)",
         select_exercise: "Select Exercise:",
         select_level: "Select Level:",
         l1_btn: "Level 1: Seated",
@@ -96,7 +104,15 @@ class UIManager {
         overlay_step2: 'Select "Level" to train',
         overlay_step3: 'Press "🏃 Start Training"',
         overlay_note:
-          "⏱️ Auto-record 5 min | 📏 Auto-calibration before each session",
+          "⏱️ 5-min per exercise • No video recording | 📏 Auto-calibration before each session",
+        privacy_title: "🔒 Your Privacy",
+        privacy_item1:
+          "Video is processed locally only, no training videos are recorded",
+        privacy_item2:
+          "Pose data is used for system development, not sent externally",
+        privacy_item3:
+          "Chatbot uses Gemini API (messages sent directly to Google)",
+        privacy_accept: "I Understand ✓",
         level_placeholder: "-- Select Level --",
         level_l1: "Level 1: Seated",
         level_l2: "Level 2: Standing",
@@ -110,11 +126,16 @@ class UIManager {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) this.setTheme(savedTheme);
 
+    // Load language preference from localStorage
+    const savedLang = localStorage.getItem("language");
+    if (savedLang) this.currentLang = savedLang;
+
     this.updateText();
   }
 
   toggleLanguage() {
     this.currentLang = this.currentLang === "th" ? "en" : "th";
+    localStorage.setItem("language", this.currentLang); // Save preference
     this.updateText();
     return this.currentLang;
   }
@@ -171,6 +192,15 @@ class UIManager {
       if (el) el.innerText = t[key];
     };
 
+    // Helper to update span inside an element (for privacy list items)
+    const setTextSpan = (id, key) => {
+      const el = document.getElementById(id);
+      if (el) {
+        const span = el.querySelector("span:last-child");
+        if (span) span.innerText = t[key];
+      }
+    };
+
     setText("app-title", "app_title");
     setText("label-exercise", "select_exercise");
     setText("label-level", "select_level");
@@ -193,6 +223,14 @@ class UIManager {
     setText("overlay-step2", "overlay_step2");
     setText("overlay-step3", "overlay_step3");
     setText("overlay-note", "overlay_note");
+
+    // Privacy Modal translations
+    setText("privacy-title", "privacy_title");
+    setTextSpan("privacy-item1", "privacy_item1");
+    setTextSpan("privacy-item2", "privacy_item2");
+    setTextSpan("privacy-item3", "privacy_item3");
+    setText("privacy-accept-btn", "privacy_accept");
+
     setText("start-training-btn", "start_training_btn");
 
     // Update Dropdown Options (index 0 = placeholder, 1-4 = exercises)

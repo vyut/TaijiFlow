@@ -206,9 +206,9 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 ## 👤 Author
 
-**Your Name**  
-Master's Student, Software Engineering  
-[your.email@university.edu](mailto:your.email@university.edu)
+**Weerayuth Uarjaipra**  
+Master's Student, Software Engineering, CAMT CMU
+[weerayuth_u@cmu.ac.th](mailto:weerayuth_u@cmu.ac.th)
 
 ---
 
@@ -216,4 +216,4 @@ Master's Student, Software Engineering
 
 - MediaPipe Team (Google)
 - Taijiquan instructors and practitioners
-- Research advisors
+- Independent Study advisors

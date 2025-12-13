@@ -47,8 +47,20 @@
     <script src="js/audio_manager.js" defer></script>
     <script src="js/scoring_manager.js" defer></script>
     <script src="js/ui_manager.js" defer></script>
+    <script src="js/gesture_manager.js" defer></script>
     <script src="js/chatbot.js" defer></script>
     <script src="js/script.js" defer></script>
+
+    <!-- MediaPipe Tasks Vision for Gesture Recognition (loaded as module) -->
+    <script type="module">
+      import {
+        GestureRecognizer,
+        FilesetResolver,
+      } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8";
+      window.GestureRecognizerClass = GestureRecognizer;
+      window.FilesetResolverClass = FilesetResolver;
+      window.dispatchEvent(new Event("mediapipe-ready"));
+    </script>
   </head>
   <body
     class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-900"

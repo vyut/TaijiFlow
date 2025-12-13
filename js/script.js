@@ -16,6 +16,7 @@ const uiManager = new UIManager(); // ผู้จัดการหน้าจ
 const drawer = new DrawingManager(canvasCtx, canvasElement); // ผู้จัดการวาดภาพบน Canvas
 const scorer = new ScoringManager(); // ผู้จัดการคะแนน
 const audioManager = new AudioManager(); // ผู้จัดการเสียงพูด
+const gestureManager = new GestureManager(); // ผู้จัดการท่ามือ Gesture Control
 
 // State Variables
 let isRecording = false; // สถานะการบันทึก
@@ -175,6 +176,33 @@ audioBtn.addEventListener("click", () => {
 
 // เริ่มต้น UI
 uiManager.init();
+
+// เริ่มต้น Gesture Manager (Gesture Control)
+gestureManager.init().then((ready) => {
+  if (ready) {
+    console.log("[Main] Gesture Control พร้อมใช้งาน!");
+    uiManager.showNotification("🖐️ Gesture Control พร้อมใช้งาน", "success");
+  }
+});
+
+// ผูก Callbacks สำหรับ Gesture Control
+gestureManager.onStartTraining = () => {
+  // ตรวจสอบว่าเลือกท่าและระดับแล้ว และยังไม่ได้ฝึกอยู่
+  if (currentExercise && currentLevel && !isTrainingMode) {
+    console.log("[Gesture] 👍 Starting Training via Gesture");
+    startTrainingBtn.click(); // Trigger the start button
+  } else if (!currentExercise || !currentLevel) {
+    uiManager.showNotification("⚠️ เลือกท่าและระดับก่อน", "warning");
+  }
+};
+
+gestureManager.onStopTraining = () => {
+  // หยุดการฝึก ถ้ากำลังฝึกอยู่
+  if (isTrainingMode) {
+    console.log("[Gesture] ✋ Stopping Training via Gesture");
+    stopTrainingBtn.click(); // Trigger the stop button
+  }
+};
 
 // ฟังก์ชันเริ่ม Calibration (ใช้กับปุ่มเล็ก "วัดใหม่")
 function startCalibration() {
@@ -628,6 +656,17 @@ async function loadReferenceData() {
 
 // 4. MediaPipe Processing
 function onResults(results) {
+  const timestamp = performance.now();
+
+  // Gesture Detection - ตรวจจับท่ามือสำหรับควบคุม UI
+  if (gestureManager.getIsReady() && videoElement.readyState >= 2) {
+    gestureManager.detectGestures(
+      videoElement,
+      timestamp,
+      uiManager.currentLang
+    );
+  }
+
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 

@@ -19,17 +19,20 @@ A web-based real-time pose analysis system that helps practitioners learn and im
 | Feature | Description |
 |---------|-------------|
 | **Real-time Pose Detection** | Using MediaPipe Pose for 33 body landmarks |
+| **Gesture Control** | 👍 Thumb Up to start, ✊ Closed Fist to stop (2-sec hold) |
 | **Auto Calibration** | Automatic T-Pose calibration before each session |
 | **8 Heuristic Rules** | Path accuracy, arm rotation, elbow sinking, waist initiation, stability, smoothness, continuity, weight shift |
 | **3 Training Levels** | L1 (Seated), L2 (Standing), L3 (Bow Stance) |
 | **4 Exercise Modes** | Right/Left hand, Clockwise/Counter-clockwise |
-| **Auto Recording** | 5-minute auto-record with timer display |
+| **Session Timer** | 5-minute auto-stop with timer display |
 | **Scoring System** | 0-100% score with grade (A-F) after each session |
 | **Audio Feedback** | Voice announcements using Web Speech API (TH/EN) |
-| **Data Export** | JSON export for ML training data |
-| **Bilingual** | Thai & English |
+| **AI Chatbot** | "อาจารย์เต๋า" - Taijiquan master powered by Google Gemini API |
+| **Bilingual** | Thai & English with persistent language preference |
 | **Dark/Light Theme** | User preference saved locally |
-| **Performance Optimized** | 10 FPS heuristics check (reduced from 30 FPS) |
+| **Privacy Notice** | Clear data handling disclosure on startup |
+| **Debug Mode** | Press `D` to toggle real-time analysis overlay |
+| **Data Export** | JSON export for ML training data (Developer tool) |
 
 ---
 
@@ -67,18 +70,21 @@ Open `http://localhost:8000` in your browser.
 ```
 TaijiFlow/
 ├── index.html                # Main application
-├── data_collector.html       # Reference data recorder (for creating training data)
+├── data_collector.html       # Reference data recorder (Developer tool)
 ├── js/                       # JavaScript modules
-│   ├── script.js             # Main controller (v3.0)
+│   ├── script.js             # Main controller
 │   ├── heuristics_engine.js  # Pose analysis & 8 feedback rules
 │   ├── calibration_manager.js # Body proportion calibration
+│   ├── gesture_manager.js    # Hand gesture control (MediaPipe)
 │   ├── drawing_manager.js    # Canvas rendering
 │   ├── scoring_manager.js    # Session scoring system
 │   ├── audio_manager.js      # Voice feedback (TTS)
 │   ├── ui_manager.js         # UI, theme, language management
+│   ├── chatbot.js            # AI Chatbot (Gemini API)
 │   └── data_exporter.js      # JSON data export
 ├── css/
-│   └── styles.css            # Custom styles (purple theme)
+│   ├── styles.css            # Custom styles (purple theme)
+│   └── chatbot.css           # Chatbot popup styles
 ├── data/                     # Reference movement data (12 files needed)
 │   ├── rh_cw_L1.json         # Right hand, clockwise, Level 1
 │   ├── rh_cw_L2.json         # Right hand, clockwise, Level 2
@@ -86,6 +92,10 @@ TaijiFlow/
 │   ├── rh_ccw_L1.json        # Right hand, counter-clockwise, Level 1
 │   ├── ... (12 files total: 4 exercises × 3 levels)
 │   └── lh_ccw_L3.json        # Left hand, counter-clockwise, Level 3
+├── docs/                     # Documentation
+│   ├── HEURISTICS_RULES_MANUAL.md
+│   ├── CONFIGURATION_GUIDE.md
+│   └── CHANGELOG.md
 └── README.md
 ```
 
@@ -117,6 +127,15 @@ TaijiFlow/
 | Key | Action |
 |-----|--------|
 | `F` | Toggle Fullscreen |
+| `D` | Toggle Debug Mode |
+| `Esc` | Cancel Calibration |
+
+### Gesture Controls
+
+| Gesture | Action | Hold Time |
+|---------|--------|-----------|
+| 👍 Thumb Up | Start Training | 2 seconds |
+| ✊ Closed Fist | Stop Training | 2 seconds |
 
 ---
 
@@ -151,11 +170,13 @@ After each recorded session, you receive:
 
 | Technology | Usage |
 |------------|-------|
-| MediaPipe Pose | Real-time pose detection |
+| MediaPipe Pose | Real-time body pose detection (33 landmarks) |
+| MediaPipe Gesture | Hand gesture recognition for UI control |
+| Google Gemini API | AI Chatbot (อาจารย์เต๋า) |
 | TailwindCSS | UI styling |
 | Canvas 2D API | Rendering overlay |
 | Web Speech API | Audio feedback (TTS) |
-| LocalStorage | User preferences |
+| LocalStorage | User preferences (theme, language) |
 
 ---
 

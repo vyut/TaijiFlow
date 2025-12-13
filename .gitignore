@@ -24,4 +24,4 @@ build/
 Thumbs.db
 
 # Backup
-backup/
+.backup/

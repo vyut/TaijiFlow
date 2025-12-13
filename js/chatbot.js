@@ -212,7 +212,7 @@ class TaijiChatbot {
     // Chat Toggle Button
     const toggleBtn = document.createElement("button");
     toggleBtn.id = "chat-toggle-btn";
-    toggleBtn.innerHTML = "🤖";
+    toggleBtn.innerHTML = "☯️";
     toggleBtn.title = "ถามครูไท้เก๊ก";
     document.body.appendChild(toggleBtn);
 
@@ -227,13 +227,12 @@ class TaijiChatbot {
       </div>
       <div class="chat-messages" id="chat-messages">
         <div class="chat-welcome">
-          <p>สวัสดีครับศิษย์น้อย! ผมคืออาจารย์เต๋า 🙏</p>
+          <p>สวัสดี... มีสิ่งใดที่อยากรู้? อาจารย์พร้อมชี้แนะ</p>
           <p>ถามเกี่ยวกับ:</p>
           <ul>
-            <li>หลักการไท้เก๊ก 10 ข้อ</li>
-            <li>ท่าม้วนไหม (Silk Reeling)</li>
+            <li>หลักการมวยไท้เก๊ก 10 ข้อ</li>
             <li>ปรัชญาหยินหยาง เต๋า อู๋เหวย</li>
-            <li>วิธีฝึก และประโยชน์</li>
+            <li>ท่าม้วนไหม วิธีฝึก ประโยชน์</li>
           </ul>
         </div>
       </div>
@@ -293,7 +292,7 @@ class TaijiChatbot {
       document.getElementById("chat-input").focus();
     } else {
       container.classList.add("hidden");
-      toggleBtn.innerHTML = "🤖";
+      toggleBtn.innerHTML = "☯️";
     }
   }
 
@@ -325,7 +324,7 @@ class TaijiChatbot {
     this.isLoading = true;
 
     // Show loading
-    const loadingId = this.addMessage("bot", "กำลังใคร่ครวญ...");
+    const loadingId = this.addMessage("bot", "กำลังคิด...");
 
     try {
       const response = await this.callGeminiAPI(message);

@@ -326,7 +326,7 @@ async function startTrainingAfterCalibration() {
   // 1. Countdown 3-2-1
   await showCountdown();
 
-  // 2. เริ่มบันทึก (ไม่เต็มจออัตโนมัติแล้ว - ให้ผู้ใช้กดเอง)
+  // 2. เริ่มบันทึก (ไม่เต็มจออัตโนมัติ - ให้ผู้ใช้กดเอง)
   isTrainingMode = true;
   isRecording = true;
   sessionStartTime = Date.now();
@@ -667,13 +667,13 @@ function onResults(results) {
     );
   }
 
-  canvasCtx.save();
-  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  canvasCtx.save(); // บันทึกสถานะ
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height); // ล้างภาพก่อน
 
   // Draw Video
   // หมายเหตุ: Webcam ส่งภาพแบบ mirror มาแล้ว เวลาปกติ
   // แต่ใน Fullscreen ต้อง mirror ด้วย JS เพราะ CSS transform ไม่ทำงาน
-  canvasCtx.save();
+  canvasCtx.save(); // บันทึกสถานะ
 
   // Fullscreen: ต้อง mirror เพิ่ม เพราะ browser render ต่างออกไป
   if (isFullscreen) {
@@ -681,19 +681,20 @@ function onResults(results) {
     canvasCtx.translate(-canvasElement.width, 0);
   }
 
+  // วาดภาพ
   canvasCtx.drawImage(
-    results.image,
+    results.image,  // ภาพที่ได้จาก MediaPipe
     0,
     0,
     canvasElement.width,
     canvasElement.height
   );
-  canvasCtx.restore();
+  canvasCtx.restore(); // คืนสถานะ
 
   // DrawingManager: mirrorDisplay = false เพราะ landmarks ก็ตรงกับภาพ webcam อยู่แล้ว
 
-  if (results.poseLandmarks) {
-    if (calibrator.isActive) {
+  if (results.poseLandmarks) {  // มีข้อมูล landmarks
+    if (calibrator.isActive) {  // กำลังปรับเทียบ
       drawer.drawSkeleton(results.poseLandmarks);
 
       const calibResult = calibrator.process(results.poseLandmarks);
@@ -724,14 +725,14 @@ function onResults(results) {
           startTrainingAfterCalibration();
         }
       }
-    } else {
+    } else {  // Normal Mode
       if (referencePath.length > 0) {
-        drawer.drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4);
+        drawer.drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4);  // วาด Path Reference
       }
 
-      drawer.drawSkeleton(results.poseLandmarks);
+      drawer.drawSkeleton(results.poseLandmarks);  // วาด Skeleton
 
-      if (!calibrator.isActive && referencePath.length > 0) {
+      if (!calibrator.isActive && referencePath.length > 0) {  // ไม่ใช่ Mode ปรับเทียบ และมี Path Reference
         // Performance: เช็ค Heuristics ทุก 3 frames (~10 FPS แทน 30 FPS) เพื่อประหยัด CPU
         frameCounter++;
         const shouldCheckHeuristics =

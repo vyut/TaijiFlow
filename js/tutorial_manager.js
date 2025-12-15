@@ -1,5 +1,5 @@
 /**
- * TaijiFlow AI - Tutorial Manager
+ * TaijiFlow AI - Tutorial Manager v1.0.0
  * คู่มือการฝึกท่าม้วนไหม แบบ Popup
  */
 
@@ -163,16 +163,16 @@ class TutorialManager {
           essentials: {
             heading: "10 Taijiquan Essentials",
             items: [
-              "Empty the neck, lift the head (虚领顶劲) - Head floats up lightly",
-              "Contain chest, raise back (含胸拔背) - Don't puff out the chest",
-              "Relax the waist (松腰) - Waist is the center of rotation",
-              "Distinguish empty and full (分虚实) - Know weight distribution",
-              "Sink shoulders, drop elbows (沉肩坠肘) - Shoulders and elbows relaxed",
-              "Use mind, not force (用意不用力) - Focus on intention",
-              "Upper and lower follow (上下相随) - Body moves together",
-              "Internal and external unite (内外相合) - Mind and body as one",
-              "Continuous without break (相连不断) - Movement never stops",
-              "Stillness in motion (动中求静) - Calm mind in moving body",
+              "Empty the neck, lift the head - Head floats up lightly",
+              "Contain chest, raise back - Don't puff out the chest",
+              "Relax the waist - Waist is the center of rotation",
+              "Distinguish empty and full - Know weight distribution",
+              "Sink shoulders, drop elbows - Shoulders and elbows relaxed",
+              "Use mind, not force - Focus on intention",
+              "Upper and lower follow - Body moves together",
+              "Internal and external unite - Mind and body as one",
+              "Continuous without break - Movement never stops",
+              "Stillness in motion - Calm mind in moving body",
             ],
           },
           keyPoints: {
@@ -514,12 +514,12 @@ class TutorialManager {
             .map(
               (type) => `
             <button onclick="tutorialManager.selectExercise('${type}')" 
-                    class="exercise-type-btn px-4 py-2 rounded-lg transition-colors
-                           ${
-                             this.currentExercise === type
-                               ? "bg-purple-600 text-white"
-                               : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                           }">
+              class="exercise-type-btn px-4 py-2 rounded-lg transition-colors
+                ${
+                  this.currentExercise === type
+                    ? "bg-purple-600 text-white"
+                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                }">
               ${e.types[type].short}
             </button>
           `
@@ -533,12 +533,12 @@ class TutorialManager {
             .map(
               (level) => `
             <button onclick="tutorialManager.selectLevel('${level}')" 
-                    class="level-btn px-4 py-2 rounded-lg transition-colors
-                           ${
-                             this.currentLevel === level
-                               ? "bg-green-600 text-white"
-                               : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                           }">
+              class="level-btn px-4 py-2 rounded-lg transition-colors
+                ${
+                  this.currentLevel === level
+                    ? "bg-green-600 text-white"
+                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                }">
               ${level}
             </button>
           `
@@ -552,14 +552,14 @@ class TutorialManager {
             <!-- Image (full width for wide images) -->
             <div>
               <img id="exercise-image" 
-                   src="images/tutorial/${this.currentExercise}_${
+                src="images/tutorial/${this.currentExercise}_${
       this.currentLevel
     }.png" 
-                   alt="${e.types[this.currentExercise].name}"
-                   class="w-full rounded-lg bg-gray-700"
-                   onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 200%22><rect fill=%22%23374151%22 width=%22800%22 height=%22200%22/><text x=%22400%22 y=%22100%22 text-anchor=%22middle%22 fill=%22%239CA3AF%22 font-size=%2216%22>Image: ${
-                     this.currentExercise
-                   }_${this.currentLevel}</text></svg>'">
+                alt="${e.types[this.currentExercise].name}"
+                class="w-full rounded-lg bg-gray-700"
+                onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 200%22><rect fill=%22%23374151%22 width=%22800%22 height=%22200%22/><text x=%22400%22 y=%22100%22 text-anchor=%22middle%22 fill=%22%239CA3AF%22 font-size=%2216%22>Image: ${
+                  this.currentExercise
+                }_${this.currentLevel}</text></svg>'">
             </div>
             <!-- Description -->
             <div>

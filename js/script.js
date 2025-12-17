@@ -214,6 +214,7 @@ const cancelCalibBtn = document.getElementById("cancel-calib-btn"); // ปุ่
 // Settings Buttons
 const langBtn = document.getElementById("lang-btn"); // สลับภาษา
 const themeBtn = document.getElementById("theme-btn"); // สลับ Theme
+const ghostBtn = document.getElementById("ghost-btn"); // Ghost Overlay
 
 // -----------------------------------------------------------------------------
 // New UX Flow Elements - ปุ่มและ Overlay สำหรับ Training Flow ใหม่
@@ -298,6 +299,28 @@ audioBtn.addEventListener("click", () => {
   audioBtn.classList.toggle("bg-green-600", isEnabled);
   audioBtn.classList.toggle("bg-gray-500", !isEnabled);
 });
+
+// Ghost Overlay Toggle Button
+let showGhostOverlay = false; // State variable
+if (ghostBtn) {
+  ghostBtn.addEventListener("click", () => {
+    showGhostOverlay = !showGhostOverlay;
+
+    if (showGhostOverlay) {
+      // เริ่มเล่น Ghost
+      ghostManager.start();
+      ghostBtn.classList.add("bg-purple-600", "border-purple-700");
+      ghostBtn.classList.remove("bg-gray-700", "border-gray-600");
+      uiManager.showNotification("👻 Ghost Overlay: ON", "info", 1500);
+    } else {
+      // หยุดเล่น Ghost
+      ghostManager.stop();
+      ghostBtn.classList.remove("bg-purple-600", "border-purple-700");
+      ghostBtn.classList.add("bg-gray-700", "border-gray-600");
+      uiManager.showNotification("👻 Ghost Overlay: OFF", "info", 1500);
+    }
+  });
+}
 
 // เริ่มต้น UI
 uiManager.init();
@@ -866,6 +889,14 @@ window.addEventListener("keydown", (e) => {
       break;
 
     // -------------------------------------------------------------------------
+    // G = Ghost Overlay Toggle
+    // -------------------------------------------------------------------------
+    case "g":
+      e.preventDefault();
+      if (ghostBtn) ghostBtn.click();
+      break;
+
+    // -------------------------------------------------------------------------
     // H or ? = Open Tutorial Popup (วิธีการใช้งาน)
     // -------------------------------------------------------------------------
     case "h":
@@ -967,8 +998,11 @@ async function loadReferenceData() {
       return { x: wrist.x, y: wrist.y };
     });
 
+    // โหลด full skeleton data เข้า Ghost Manager
+    ghostManager.load(data);
+
     referenceDataLoaded = true;
-    console.log(`✅ Loaded ${referencePath.length} points.`);
+    console.log(`✅ Loaded ${referencePath.length} points (Path + Ghost).`);
   } catch (error) {
     console.warn("⚠️ Reference data not found:", error.message);
     referencePath = [];
@@ -1100,11 +1134,23 @@ function onResults(results) {
       }
     } else {
       // Normal Mode
+
+      // 1. วาด Ghost Skeleton ก่อน (ถ้าเปิดใช้งาน)
+      if (showGhostOverlay && ghostManager.isPlaying) {
+        ghostManager.update(); // อัปเดต frame
+        const ghostLandmarks = ghostManager.getCurrentFrame();
+        if (ghostLandmarks) {
+          drawer.drawGhostSkeleton(ghostLandmarks, ghostManager.opacity);
+        }
+      }
+
+      // 2. วาด Reference Path
       if (referencePath.length > 0) {
         drawer.drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4); // วาด Path Reference
       }
 
-      drawer.drawSkeleton(results.poseLandmarks); // วาด Skeleton
+      // 3. วาด User Skeleton (ทับ Ghost)
+      drawer.drawSkeleton(results.poseLandmarks);
 
       if (!calibrator.isActive && referencePath.length > 0) {
         // ไม่ใช่ Mode ปรับเทียบ และมี Path Reference

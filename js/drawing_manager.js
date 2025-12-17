@@ -137,6 +137,56 @@ class DrawingManager {
   }
 
   // ===========================================================================
+  // 👻 GHOST SKELETON: วาดร่างเงาต้นแบบ
+  // ===========================================================================
+
+  /**
+   * วาด Ghost Skeleton (ร่างเงาต้นแบบ)
+   * ใช้สำหรับแสดงท่าที่ผู้ฝึกควรทำตาม
+   *
+   * @param {Object[]} landmarks - 33 จุดจาก reference data
+   * @param {number} opacity - ความโปร่งใส (0-1), default 0.4
+   */
+  drawGhostSkeleton(landmarks, opacity = 0.4) {
+    if (!landmarks || landmarks.length < 33) return;
+
+    this.ctx.save();
+
+    // ----- Mirror Logic (เหมือน drawSkeleton) -----
+    const shouldMirror = this.mirrorDisplay;
+    if (shouldMirror) {
+      this.ctx.scale(-1, 1);
+      this.ctx.translate(-this.canvasWidth, 0);
+    }
+
+    // ----- Global Opacity -----
+    this.ctx.globalAlpha = opacity;
+
+    // ----- แปลง normalized coords เป็น pixel -----
+    const pixelLandmarks = landmarks.map((lm) => ({
+      x: lm.x * this.canvasWidth,
+      y: lm.y * this.canvasHeight,
+      z: lm.z || 0,
+      visibility: lm.visibility || 1,
+    }));
+
+    // ----- วาดเส้นเชื่อมข้อต่อ (สีฟ้าอ่อน) -----
+    drawConnectors(this.ctx, pixelLandmarks, POSE_CONNECTIONS, {
+      color: "rgba(100, 200, 255, 1)", // Light blue
+      lineWidth: 2, // บางกว่า user skeleton
+    });
+
+    // ----- วาดจุดข้อต่อ (สีขาว) -----
+    drawLandmarks(this.ctx, pixelLandmarks, {
+      color: "rgba(255, 255, 255, 1)", // White
+      lineWidth: 1,
+      radius: 3, // เล็กกว่า user skeleton
+    });
+
+    this.ctx.restore();
+  }
+
+  // ===========================================================================
   // ⭕ GESTURE FEEDBACK: วาดวงกลมความคืบหน้าท่าทาง
   // ===========================================================================
 

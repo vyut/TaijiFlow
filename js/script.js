@@ -437,7 +437,7 @@ function formatTime(ms) {
 }
 
 /**
- * อัปเดต Timer Display (ทั้งด้านบนและ overlay)
+ * อัปเดต Timer Display
  */
 function updateTrainingTimer() {
   const elapsed = Date.now() - trainingStartTime;
@@ -454,7 +454,7 @@ function updateTrainingTimer() {
 }
 
 /**
- * เริ่ม Training Session (Flow ใหม่ - Calibrate ทุกครั้ง)
+ * เริ่ม Training Session (Calibrate ทุกครั้ง)
  */
 async function startTrainingFlow() {
   // 1. ซ่อน Overlay คำแนะนำ
@@ -907,14 +907,9 @@ function onResults(results) {
 
   // Draw Video
   // หมายเหตุ: Webcam ส่งภาพแบบ mirror มาแล้ว เวลาปกติ
-  // แต่ใน Fullscreen ต้อง mirror ด้วย JS เพราะ CSS transform ไม่ทำงาน
-  canvasCtx.save(); // บันทึกสถานะ
-
-  // Fullscreen: ต้อง mirror เพิ่ม เพราะ browser render ต่างออกไป
-  if (isFullscreen) {
-    canvasCtx.scale(-1, 1);
-    canvasCtx.translate(-canvasElement.width, 0);
-  }
+  // หมายเหตุ: CSS scaleX(-1) บน canvas ทำ mirror อยู่แล้ว
+  // ใน Fullscreen (canvas-container) CSS นี้ยังคงทำงาน
+  // ดังนั้นไม่ต้อง mirror เพิ่มใน JS
 
   // วาดภาพ
   canvasCtx.drawImage(
@@ -924,7 +919,6 @@ function onResults(results) {
     canvasElement.width,
     canvasElement.height
   );
-  canvasCtx.restore(); // คืนสถานะ
 
   // DrawingManager: mirrorDisplay = false เพราะ landmarks ก็ตรงกับภาพ webcam อยู่แล้ว
 

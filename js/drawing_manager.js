@@ -65,11 +65,10 @@ class DrawingManager {
     this.ctx.save();
 
     // ----- Mirror Logic -----
-    // Fullscreen ต้อง mirror เพิ่ม (เพราะไม่ได้ผ่าน webcam mirror ของ browser)
-    // isFullscreen เป็น global variable จาก script.js
-    const shouldMirror =
-      this.mirrorDisplay ||
-      (typeof isFullscreen !== "undefined" && isFullscreen);
+    // หมายเหตุ: CSS scaleX(-1) บน canvas ทำ mirror อยู่แล้ว
+    // ใน Fullscreen (canvas-container) CSS นี้ยังคงทำงาน
+    // ดังนั้น DrawingManager ไม่ต้อง mirror เพิ่ม
+    const shouldMirror = this.mirrorDisplay;
     if (shouldMirror) {
       this.ctx.scale(-1, 1); // พลิกแนวนอน
       this.ctx.translate(-this.canvasWidth, 0); // ย้ายกลับมา
@@ -107,9 +106,7 @@ class DrawingManager {
     this.ctx.save();
 
     // ----- Mirror Logic (เหมือน drawSkeleton) -----
-    const shouldMirror =
-      this.mirrorDisplay ||
-      (typeof isFullscreen !== "undefined" && isFullscreen);
+    const shouldMirror = this.mirrorDisplay;
     if (shouldMirror) {
       this.ctx.scale(-1, 1);
       this.ctx.translate(-this.canvasWidth, 0);

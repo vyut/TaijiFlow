@@ -462,19 +462,42 @@ function updateTrainingTimer() {
 
 /**
  * เริ่ม Training Session (Calibrate ทุกครั้ง)
+ *
+ * หมายเหตุ: รองรับ PWA Standalone Mode (Add to Home Screen)
+ * - iOS Safari PWA ไม่รองรับ Fullscreen API
+ * - ใช้ feature detection และ timeout fallback
  */
 async function startTrainingFlow() {
   // 1. ซ่อน Overlay คำแนะนำ
   startOverlay.classList.add("hidden");
 
-  // 2. เข้า Fullscreen ทันที (อยู่ใน user gesture context จึงทำงานได้)
-  canvasContainer.requestFullscreen().catch(() => {
-    console.log(
-      "[Training] Fullscreen blocked by browser, continuing normally"
-    );
-  });
+  // 2. ตรวจสอบว่าอยู่ใน PWA Standalone Mode หรือไม่
+  const isStandalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true; // iOS Safari
 
-  // 3. เริ่ม Calibrate (ใน Fullscreen)
+  // 3. พยายามเข้า Fullscreen (ถ้าไม่ใช่ PWA และรองรับ API)
+  if (!isStandalone && canvasContainer.requestFullscreen) {
+    try {
+      // ใช้ Promise.race กับ timeout เพื่อป้องกันค้าง
+      const fullscreenPromise = canvasContainer.requestFullscreen();
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Fullscreen timeout")), 1000)
+      );
+
+      await Promise.race([fullscreenPromise, timeoutPromise]);
+      console.log("[Training] Entered fullscreen mode");
+    } catch (err) {
+      console.log(
+        "[Training] Fullscreen failed/timeout, continuing normally:",
+        err.message
+      );
+    }
+  } else {
+    console.log("[Training] PWA/Standalone mode detected, skipping fullscreen");
+  }
+
+  // 4. เริ่ม Calibrate (ไม่ว่า fullscreen จะสำเร็จหรือไม่)
   calibrator.start();
   audioManager.announce("calib_start");
   // รอ Calibration เสร็จ (callback จะเรียก startTrainingAfterCalibration)

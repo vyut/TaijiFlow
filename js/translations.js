@@ -98,6 +98,8 @@ const TRANSLATIONS = {
     // -------------------------------------------------------------------------
     // Category Options (ประเภทท่า - สำหรับขยายในอนาคต)
     // -------------------------------------------------------------------------
+    // Placeholder - ข้อความเริ่มต้นใน Dropdown
+    cat_placeholder: "-- เลือกหมวดหมู่ --",
     cat_silk_single: "ท่าม้วนไหม - มือเดียว",
     cat_silk_double: "ท่าม้วนไหม - มือสอง",
 
@@ -264,6 +266,7 @@ const TRANSLATIONS = {
     // -------------------------------------------------------------------------
     // Category Options
     // -------------------------------------------------------------------------
+    cat_placeholder: "-- Select Category --",
     cat_silk_single: "Silk Reeling - Single Hand",
     cat_silk_double: "Silk Reeling - Double Hand",
 

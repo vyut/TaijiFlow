@@ -460,7 +460,14 @@ async function startTrainingFlow() {
   // 1. ซ่อน Overlay คำแนะนำ
   startOverlay.classList.add("hidden");
 
-  // 2. เริ่ม Calibrate ทุกครั้ง (ไม่ใช้ค่าจาก LocalStorage)
+  // 2. เข้า Fullscreen ทันที (อยู่ใน user gesture context จึงทำงานได้)
+  canvasContainer.requestFullscreen().catch(() => {
+    console.log(
+      "[Training] Fullscreen blocked by browser, continuing normally"
+    );
+  });
+
+  // 3. เริ่ม Calibrate (ใน Fullscreen)
   calibrator.start();
   audioManager.announce("calib_start");
   // รอ Calibration เสร็จ (callback จะเรียก startTrainingAfterCalibration)
@@ -470,10 +477,10 @@ async function startTrainingFlow() {
  * เริ่ม Training หลังจาก Calibration เสร็จ
  */
 async function startTrainingAfterCalibration() {
-  // 1. Countdown 3-2-1
+  // 1. Countdown 3-2-1 (ใน Fullscreen)
   await showCountdown();
 
-  // 2. เริ่มบันทึก (ไม่เต็มจออัตโนมัติ - ให้ผู้ใช้กดเอง)
+  // 2. เริ่มบันทึก
   isTrainingMode = true;
   isRecording = true;
   sessionStartTime = Date.now();
@@ -486,16 +493,16 @@ async function startTrainingAfterCalibration() {
   audioManager.announce("record_start");
   uiManager.updateRecordButtonState(true);
 
-  // 3. อัปเดตสถานะปุ่ม (Start disabled, Stop enabled)
+  // 4. อัปเดตสถานะปุ่ม (Start disabled, Stop enabled)
   updateButtonStates(true);
 
-  // 4. แสดง Timer (ซ้ายล่าง)
+  // 5. แสดง Timer (ซ้ายล่าง)
   trainingControls.classList.remove("hidden");
   const timeStr = formatTime(TRAINING_DURATION_MS);
   if (trainingTimerTop) trainingTimerTop.textContent = timeStr;
   if (trainingTimerOverlay) trainingTimerOverlay.textContent = timeStr;
 
-  // 5. แสดงปุ่มเต็มจอ (ขวาล่าง)
+  // 6. แสดงปุ่มเต็มจอ (ขวาล่าง)
   fullscreenOverlayBtn.classList.remove("hidden");
 
   // 6. เริ่ม Timer

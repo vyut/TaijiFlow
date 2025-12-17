@@ -1,0 +1,46 @@
+@startuml TaijiFlow_Activity_Diagram_UC01
+skinparam defaultFontName "sarabun"
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+
+start
+
+:ผู้ใช้งานกดปุ่ม "ปรับเทียบสัดส่วน";
+:แสดงคำแนะนำ "ยืนตัวตรง กางแขน (T-Pose)";
+
+partition "Calibration Loop" {
+    repeat
+        :รับภาพจากกล้อง;
+        
+        if (เห็นร่างกายครบถ้วน? (ไหล่/สะโพก/เท้า)) then (ไม่ครบ)
+            :แจ้งเตือน "ถอยหลังอีกนิด!";
+        elseif (อยู่ในท่า T-Pose?) then (ไม่ใช่)
+            :แจ้งเตือน "กรุณากางแขนระดับไหล่";
+        else (ถูกต้อง)
+            :เริ่มนับความนิ่ง (Stability Check);
+            note right
+                ต้องนิ่งต่อเนื่อง 
+                90 เฟรม (3 วินาที)
+            end note
+        endif
+        
+    repeat while (นิ่งครบ 3 วินาที?) is (ยังไม่ครบ)
+    -> ครบแล้ว;
+}
+
+partition "Calculation & Save" {
+    :คำนวณ Torso Height;
+    :คำนวณ Shoulder Width;
+    :คำนวณ Arm Length;
+    :บันทึกข้อมูลลง LocalStorage;
+}
+
+:แสดงข้อความ "ปรับเทียบสำเร็จ";
+:ส่งเสียงแจ้งเตือน;
+
+stop
+@enduml
+

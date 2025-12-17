@@ -1,0 +1,38 @@
+@startuml TaijiFlow_UseCase_Diagram
+left to right direction
+skinparam packageStyle rectangle
+skinparam backgroundColor transparent
+
+' 2. ตั้งค่า Font ภาษาไทย (เลือก Font ที่รองรับ Unicode)
+' หากรันในเครื่องตัวเอง ให้เปลี่ยนเป็นชื่อ Font ที่มีในเครื่อง เช่น "Sarabun", "Tahoma"
+skinparam defaultFontName "Sarabun"
+
+actor "Trainee (ผู้ฝึก)" as trainee
+actor "Admin/Instructor (ผู้เชี่ยวชาญ)" as admin
+
+package "TaijiFlow AI System" {
+    package "Admin Tools (เครื่องมือผู้ดูแล)" {
+        usecase "UC-06: Manage Reference Data\n(จัดการท่าต้นแบบ)" as UC06
+    }
+
+    package "User Support (ระบบสนับสนุนผู้ใช้)" {
+        usecase "UC-05: Manage Settings\n(ตั้งค่าระบบ)" as UC05
+        usecase "UC-04: View Tutorial\n(ดูคู่มือการใช้งาน)" as UC04
+    }
+
+    package "Training System (ระบบการฝึกฝน)" {
+        usecase "UC-03: View Training Result\n(ดูผลการฝึก)" as UC03
+        usecase "UC-02: Perform Training\n(ฝึกท่าม้วนไหม)" as UC02
+        usecase "UC-01: Calibrate Body\n(ปรับเทียบสัดส่วน)" as UC01
+    }
+}
+
+' Relationships
+trainee -- UC01
+trainee -- UC02
+trainee -- UC03
+trainee -- UC04
+trainee -- UC05
+
+admin -- UC06
+@enduml

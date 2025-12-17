@@ -1,0 +1,35 @@
+@startuml TaijiFlow_Activity_Diagram_UC03
+skinparam defaultFontName "sarabun"
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+
+start
+:รับข้อมูล Session Data จาก UC-02;
+
+if (จำนวนเฟรม > 0 ?) then (ไม่ใช่)
+    :แสดงแจ้งเตือน "ไม่มีข้อมูลการบันทึก";
+    stop
+else (ใช่)
+    partition "Scoring Process" {
+        :คำนวณคะแนน (Weighted Score);
+        :แปลงคะแนนเป็นเกรด (Grading);
+        :จัดลำดับข้อผิดพลาด (Ranking Errors);
+    }
+
+    partition "Data Export (FR-08)" {
+        :รวบรวม Metadata และ Landmarks;
+        :สร้างไฟล์ JSON;
+        :ดาวน์โหลดไฟล์ลงเครื่องผู้ใช้;
+    }
+
+    :แสดง Popup สรุปผล (Score/Grade/Top Errors);
+endif
+
+:ผู้ใช้กดปุ่ม "ปิด";
+:รีเซ็ตระบบสู่หน้าจอหลัก;
+
+stop
+@enduml

@@ -1,0 +1,35 @@
+@startuml TaijiFlow_Activity_Diagram_UC04
+skinparam defaultFontName "sarabun"
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+
+start
+:ผู้ใช้งานกดปุ่มช่วยเหลือ (?);
+
+partition "Tutorial System" {
+    :ตรวจสอบภาษาปัจจุบัน (TH/EN);
+    :แสดงหน้าต่าง Popup (Modal);
+    
+    repeat
+        :แสดงเนื้อหาตาม Tab ปัจจุบัน;
+        if (ผู้ใช้งานเปลี่ยน Tab?) then (ใช่)
+            :โหลดเนื้อหา Tab ใหม่;
+            note right
+                - หลักการ (Principles)
+                - ท่าฝึก (Exercises)
+                - วิธีใช้ (HowTo)
+            end note
+        else (ไม่ใช่)
+        endif
+    repeat while (ผู้ใช้งานกดปิด?) is (ไม่)
+    -> ใช่ (Close);
+}
+
+:ปิดหน้าต่าง Popup;
+:กลับสู่หน้าจอหลัก;
+
+stop
+@enduml

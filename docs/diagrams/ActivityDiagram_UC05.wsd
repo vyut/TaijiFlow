@@ -1,0 +1,32 @@
+
+@startuml TaijiFlow_Activity_Diagram_UC05
+skinparam defaultFontName "sarabun"
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+
+start
+:ผู้ใช้งานเลือกกดปุ่มตั้งค่าบนหน้าจอ;
+
+' ใช้ switch เพื่อสร้างจุดตัดสินใจเดียว (Decision Node) แยกไปหลายทาง
+switch (เลือกปรับค่าใด?)
+
+case ( ปุ่มภาษา 🇹🇭/🇬🇧 )
+    :สลับค่าภาษา (Thai <-> English);
+    :อัปเดตข้อความ UI และเสียง;
+    
+case ( ปุ่มธีม 🌙/☀️ )
+    :สลับค่า Theme (Dark <-> Light);
+    :อัปเดต CSS Classes;
+    
+case ( ปุ่มเสียง 🔊/🔇 )
+    :สลับค่า Audio (Mute <-> Unmute);
+    :อัปเดตไอคอนลำโพง;
+    
+endswitch
+
+:บันทึกค่าการตั้งค่าลง LocalStorage;
+stop
+@enduml

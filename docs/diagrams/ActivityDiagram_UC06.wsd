@@ -1,0 +1,43 @@
+@startuml TaijiFlow_Activity_Diagram_UC06
+skinparam defaultFontName "sarabun"
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+
+start
+:ผู้ดูแลระบบเปิดเครื่องมือ Data Collector;
+:ระบุชื่อท่า (Exercise) และระดับ (Level);
+
+if (ตรวจสอบกล้องผ่าน?) then (ผ่าน)
+    :แสดงภาพวิดีโอและ Skeleton;
+    :ผู้ดูแลระบบกด Start Recording;
+    
+    partition "Recording Loop" {
+        repeat
+            :รับภาพจากกล้อง;
+            :บันทึก Video Chunk (WebM);
+            :บันทึก Landmarks (JSON Array);
+            :อัปเดตตัวจับเวลา;
+        repeat while (กด Stop?) is (ไม่)
+        -> ใช่ (Stop);
+    }
+
+    partition "Export Process" {
+        if (จำนวนเฟรม > 0?) then (ใช่)
+            :สร้าง Blob สำหรับวิดีโอ;
+            :สร้าง Blob สำหรับ JSON;
+            :ดาวน์โหลดไฟล์ .webm;
+            :ดาวน์โหลดไฟล์ .json;
+            :แสดงข้อความ "บันทึกเสร็จสิ้น";
+        else (ไม่ใช่)
+            :แจ้งเตือน "ไม่มีข้อมูล";
+        endif
+    }
+else (ไม่ผ่าน)
+    :แจ้งเตือน Error กล้อง;
+endif
+
+stop
+@enduml

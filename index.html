@@ -210,10 +210,10 @@ Version: 0.4 (2024-12-17)
               class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
             >
               <option value="" disabled selected>-- เลือกท่าฝึก --</option>
-              <option value="rh_cw">มือขวา - ตามเข็ม</option>
-              <option value="rh_ccw">มือขวา - ทวนเข็ม</option>
-              <option value="lh_cw">มือซ้าย - ตามเข็ม</option>
-              <option value="lh_ccw">มือซ้าย - ทวนเข็ม</option>
+              <option value="rh_cw">1. มือขวา - ตามเข็ม</option>
+              <option value="rh_ccw">2. มือขวา - ทวนเข็ม</option>
+              <option value="lh_cw">3. มือซ้าย - ตามเข็ม</option>
+              <option value="lh_ccw">4. มือซ้าย - ทวนเข็ม</option>
             </select>
           </div>
           <div>
@@ -222,15 +222,16 @@ Version: 0.4 (2024-12-17)
               class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
             >
               <option value="" disabled selected>-- เลือกระดับ --</option>
-              <option value="L1">ระดับที่ 1: ท่านั่ง</option>
-              <option value="L2">ระดับที่ 2: ท่ายืน</option>
-              <option value="L3">ระดับที่ 3: ท่ายืนย่อ</option>
+              <option value="L1">1. ท่านั่ง</option>
+              <option value="L2">2. ท่ายืน</option>
+              <option value="L3">3. ท่ายืนย่อ</option>
             </select>
           </div>
         </div>
 
         <!-- Right: Settings Buttons -->
         <div class="flex gap-2">
+          <!-- Audio Button -->
           <button
             id="audio-btn"
             class="px-3 py-2 bg-green-600 text-white border border-green-700 rounded hover:bg-green-700 transition-colors"
@@ -238,12 +239,22 @@ Version: 0.4 (2024-12-17)
           >
             🔊
           </button>
+          <!-- Ghost Overlay Button -->
+          <button
+            id="ghost-btn"
+            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+            title="แสดง Ghost (G)"
+          >
+            👻
+          </button>
+          <!-- Language Button -->
           <button
             id="lang-btn"
             class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 font-bold transition-colors"
           >
             🇹🇭
           </button>
+          <!-- Theme Button -->
           <button
             id="theme-btn"
             class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
@@ -257,14 +268,6 @@ Version: 0.4 (2024-12-17)
             title="คู่มือการฝึก (H)"
           >
             ❓
-          </button>
-          <!-- Ghost Overlay Button -->
-          <button
-            id="ghost-btn"
-            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
-            title="แสดง Ghost (G)"
-          >
-            👻
           </button>
         </div>
       </div>

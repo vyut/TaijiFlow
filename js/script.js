@@ -106,6 +106,13 @@ const HEURISTICS_CHECK_INTERVAL = 3;
 let frameCounter = 0;
 
 // -----------------------------------------------------------------------------
+// FPS Tracking - สำหรับ Debug Overlay (NFR)
+// -----------------------------------------------------------------------------
+let lastFpsTime = performance.now();
+let fpsFrameCount = 0;
+let currentFps = 0;
+
+// -----------------------------------------------------------------------------
 // Fullscreen State
 // -----------------------------------------------------------------------------
 let isFullscreen = false; // ใช้สำหรับ Mirror canvas ใน Fullscreen
@@ -893,6 +900,17 @@ async function loadReferenceData() {
 function onResults(results) {
   const timestamp = performance.now();
 
+  // -------------------------------------------------------------------------
+  // FPS Calculation - คำนวณทุก 1 วินาที
+  // -------------------------------------------------------------------------
+  fpsFrameCount++;
+  const elapsed = timestamp - lastFpsTime;
+  if (elapsed >= 1000) {
+    currentFps = Math.round((fpsFrameCount * 1000) / elapsed);
+    fpsFrameCount = 0;
+    lastFpsTime = timestamp;
+  }
+
   // Gesture Detection - ตรวจจับท่ามือสำหรับควบคุม UI
   if (gestureManager.getIsReady() && videoElement.readyState >= 2) {
     gestureManager.detectGestures(
@@ -989,7 +1007,14 @@ function onResults(results) {
 
           // 1.2 Debug Overlay (กด D เพื่อเปิด)
           if (engine.debugMode) {
-            drawer.drawDebugOverlay(engine.getDebugInfo());
+            // รวม debugInfo จาก engine กับค่า performance อื่นๆ
+            const debugInfo = {
+              fps: currentFps,
+              frameCount: frameCounter,
+              score: scorer.getCurrentScore().toFixed(1) + "%",
+              ...engine.getDebugInfo(),
+            };
+            drawer.drawDebugOverlay(debugInfo);
           }
         }
 

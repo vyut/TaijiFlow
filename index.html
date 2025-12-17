@@ -1,3 +1,49 @@
+<!--
+================================================================================
+TaijiFlow AI - Main Application (index.html)
+================================================================================
+
+ไฟล์หลักของแอปพลิเคชัน TaijiFlow AI สำหรับฝึกท่าม้วนไหม
+
+โครงสร้างหลัก:
+  1. HEAD
+    - Meta tags และ Favicon
+    - Stylesheets (TailwindCSS, Google Fonts, Custom CSS)
+    - External Scripts (MediaPipe Pose, Camera, Drawing, Gesture)
+    - App Modules (JS files with defer)
+
+  2. BODY
+    - Privacy Modal: แจ้งความเป็นส่วนตัว (แสดงทุกครั้งที่โหลด)
+    - Header: ชื่อและเวอร์ชัน
+    - Main Card:
+      - Top Bar: Dropdowns (Exercise/Level) + Settings (Audio/Language/Theme)
+      - Canvas Container: Video + Skeleton + Overlays
+      - Control Buttons: Start/Stop Training
+      - Instructions (hidden)
+    - Hidden Legacy Elements: สำหรับ backward compatibility กับ script.js
+    - Notification Container: Toast notifications
+
+  3. OVERLAYS (inside Canvas Container)
+    - Loading: แสดงระหว่างโหลด AI Model
+    - Start: คำแนะนำการใช้งาน (แสดงก่อนเริ่มฝึก)
+    - Countdown: 3-2-1 (แสดงก่อนเริ่มฝึก)
+    - Fullscreen Button: มุมขวาล่าง (แสดงระหว่างฝึก)
+    - Training Controls: Timer + Stop Button มุมซ้ายล่าง (แสดงระหว่างฝึก)
+
+Dependencies:
+  - MediaPipe: Pose Detection, Camera Utils, Drawing Utils, Gesture Recognition
+  - TailwindCSS: Styling (CDN)
+  - Google Fonts: Sarabun
+  - Custom: css/styles.css, css/chatbot.css
+
+Related Files:
+  - js/script.js: Main controller
+  - js/translations.js: i18n strings
+  - js/ui_manager.js: UI state management
+
+Version: 0.4 (2024-12-17)
+================================================================================
+-->
 <!DOCTYPE html>
 <html lang="th">
   <head>
@@ -17,41 +63,64 @@
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/chatbot.css" />
 
-    <!-- Scripts (ใช้ defer เพื่อให้โหลดพร้อม HTML แต่รันทีหลัง) -->
+    <!-- MediaPipe -->
     <script
       src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
       crossorigin="anonymous"
       defer
     ></script>
+    <!-- MediaPipe Drawing Utils -->
     <script
       src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
       crossorigin="anonymous"
       defer
     ></script>
+    <!-- MediaPipe Pose -->
     <script
       src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"
       crossorigin="anonymous"
       defer
     ></script>
-    <script
+    <!-- MediaPipe Gesture Recognition -->
+    <!-- <script
       src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js"
       crossorigin="anonymous"
       defer
-    ></script>
+    ></script> -->
 
-    <!-- App Modules -->
+    <!-- =========================================================================
+        App Modules - โหลดเรียงตาม Dependencies (ไฟล์ที่ถูกพึ่งพาก่อน)
+        หมายเหตุ: defer = โหลดพร้อม HTML แต่รันหลัง DOM พร้อม
+        ========================================================================= -->
+    <!-- 1. Core Managers - ไม่พึ่งพาไฟล์อื่น -->
     <script src="js/calibration_manager.js" defer></script>
+    // T-Pose Calibration
     <script src="js/heuristics_engine.js" defer></script>
+    // 8 กฎวิเคราะห์ท่า
     <script src="js/drawing_manager.js" defer></script>
+    // วาด Skeleton/Path
     <script src="js/data_exporter.js" defer></script>
+    // Export JSON/CSV
     <script src="js/audio_manager.js" defer></script>
+    // เสียงพูด TTS
     <script src="js/scoring_manager.js" defer></script>
+    // คำนวณคะแนน
+
+    <!-- 2. UI/Translation - พึ่งพา Core Managers -->
     <script src="js/translations.js" defer></script>
+    // i18n TH/EN
     <script src="js/ui_manager.js" defer></script>
+    // จัดการ UI State
     <script src="js/gesture_manager.js" defer></script>
+    // ควบคุมด้วยท่ามือ
     <script src="js/tutorial_manager.js" defer></script>
+    // Popup Tutorial
     <script src="js/chatbot.js" defer></script>
+    // Gemini Chatbot
+
+    <!-- 3. Main Controller - พึ่งพาทั้งหมดข้างบน -->
     <script src="js/script.js" defer></script>
+    // Entry Point หลัก
 
     <!-- MediaPipe Tasks Vision for Gesture Recognition (loaded as module) -->
     <script type="module">
@@ -112,12 +181,25 @@
     <!-- Main Container -->
     <div
       id="main-card"
-      class="bg-gray-800 p-6 rounded-lg shadow-lg text-center w-full max-w-6xl"
+      class="bg-gray-800 p-6 rounded-lg shadow-lg text-right w-full max-w-6xl"
     >
       <!-- Top Bar: Selectors + Settings + Timer -->
       <div class="mb-4 flex flex-wrap justify-between items-center gap-4">
         <!-- Left: Dropdowns -->
         <div class="flex gap-4 flex-wrap">
+          <!-- Category Dropdown (สำหรับขยายในอนาคต) -->
+          <div>
+            <select
+              id="category-select"
+              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+            >
+              <option value="silk_single" selected>
+                ท่าม้วนไหม - มือเดียว
+              </option>
+              <!-- อนาคต: เพิ่ม options เช่น silk_double, standing_post ฯลฯ -->
+            </select>
+          </div>
+          <!-- Exercise Dropdown -->
           <div>
             <select
               id="exercise-select"

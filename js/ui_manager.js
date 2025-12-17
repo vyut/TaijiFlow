@@ -540,6 +540,15 @@ class UIManager {
     setText("start-training-btn", "start_training_btn");
 
     // -------------------------------------------------------------------------
+    // Update Dropdown: Category Select (ประเภทท่า)
+    // -------------------------------------------------------------------------
+    const catSelect = document.getElementById("category-select");
+    if (catSelect && catSelect.options.length >= 1) {
+      catSelect.options[0].text = t["cat_silk_single"]; // ม้วนไหม - มือเดียว
+      // อนาคต: catSelect.options[1].text = t["cat_silk_double"];
+    }
+
+    // -------------------------------------------------------------------------
     // Update Dropdown: Exercise Select
     // -------------------------------------------------------------------------
     // Dropdown มี Options หลายตัว ต้องอัปเดตทีละ Option

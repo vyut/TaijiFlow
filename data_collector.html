@@ -1,3 +1,45 @@
+<!--
+================================================================================
+TaijiFlow AI - Reference Data Collector (data_collector.html)
+================================================================================
+
+เครื่องมือบันทึกข้อมูลท่าม้วนไหมอ้างอิง (Reference Path)
+
+วัตถุประสงค์:
+  - บันทึกท่าต้นแบบจากผู้เชี่ยวชาญ
+  - สร้างไฟล์ JSON สำหรับใช้เป็น Reference Path ใน Main App
+  - บันทึกวิดีโอ WebM สำหรับ Backup
+
+การใช้งาน:
+  1. เลือกท่าฝึก (rh_cw, rh_ccw, lh_cw, lh_ccw)
+  2. เลือกระดับ (L1: นั่ง, L2: ยืน, L3: ยืนย่อ)
+  3. กด "เริ่มบันทึก" และนับถอยหลัง 3-2-1
+  4. ทำท่าให้สมบูรณ์แบบ (30 วินาที)
+  5. ไฟล์ JSON และ WebM จะถูกดาวน์โหลดอัตโนมัติ
+  6. ย้ายไฟล์ JSON ไปที่ /data/
+
+โครงสร้าง:
+  1. HEAD: Styles + MediaPipe Scripts
+  2. BODY:
+     - Exercise/Level Selection
+     - Status Bar: Recording indicator + Timer
+     - Canvas Container: Video + Skeleton + Countdown
+     - Filename Preview
+     - Control Buttons: Start/Stop
+     - Instructions
+
+Optimizations:
+  - บันทึกทุก 3 frames (30fps → 10fps) เพื่อลดขนาดไฟล์
+  - ปัดทศนิยมเหลือ 3 ตำแหน่ง (0.123 แทน 0.123456789)
+  - Minify JSON (ไม่มี whitespace)
+
+Output Files:
+  - {exercise}_{level}.json: Landmarks data → ใช้ใน Main App
+  - {exercise}_{level}_{timestamp}.webm: Video backup
+
+Version: 0.4 (2024-12-17)
+================================================================================
+-->
 <!DOCTYPE html>
 <html lang="th">
   <head>

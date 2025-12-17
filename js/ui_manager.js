@@ -546,7 +546,7 @@ class UIManager {
     if (catSelect && catSelect.options.length >= 2) {
       catSelect.options[0].text = t["cat_placeholder"]; // -- เลือกหมวดหมู่ --
       catSelect.options[1].text = t["cat_silk_single"]; // ม้วนไหม - มือเดียว
-      catSelect.options[2].text = t["cat_silk_double"]; // ม้วนไหม - มือสอง
+      catSelect.options[2].text = t["cat_silk_double"]; // ม้วนไหม - สองมือ
     }
 
     // -------------------------------------------------------------------------

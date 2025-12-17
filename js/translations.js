@@ -101,7 +101,7 @@ const TRANSLATIONS = {
     // Placeholder - ข้อความเริ่มต้นใน Dropdown
     cat_placeholder: "-- เลือกหมวดหมู่ --",
     cat_silk_single: "ท่าม้วนไหม - มือเดียว",
-    cat_silk_double: "ท่าม้วนไหม - มือสอง",
+    cat_silk_double: "ท่าม้วนไหม - สองมือ",
 
     // -------------------------------------------------------------------------
     // Level Buttons

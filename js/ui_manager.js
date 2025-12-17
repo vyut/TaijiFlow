@@ -525,6 +525,10 @@ class UIManager {
     setText("overlay-step3", "overlay_step3");
     setText("overlay-note", "overlay_note");
 
+    // Video Overlay Buttons (แสดงระหว่างฝึก)
+    setText("stop-btn-text", "stop_btn");
+    setText("fullscreen-btn-text", "fullscreen_overlay");
+
     // Privacy Modal
     setText("privacy-title", "privacy_title");
     setTextSpan("privacy-item1", "privacy_item1");

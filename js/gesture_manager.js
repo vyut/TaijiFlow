@@ -204,13 +204,17 @@ class GestureManager {
 
   /**
    * Create gesture feedback UI overlay
+   * -------------------------------------------------------------------------
+   * หมายเหตุ: ต้อง append ใน .canvas-container เพื่อให้แสดงใน Fullscreen ด้วย
+   * -------------------------------------------------------------------------
    */
   createUI() {
     // สร้าง overlay สำหรับแสดง feedback
     this.overlayEl = document.createElement("div");
     this.overlayEl.id = "gesture-overlay";
+    // ใช้ absolute แทน fixed เพื่อให้อยู่ใน container
     this.overlayEl.className =
-      "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 hidden";
+      "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 hidden";
     this.overlayEl.innerHTML = `
       <div class="bg-black/80 backdrop-blur-sm rounded-2xl p-8 text-center shadow-2xl border border-purple-500/50">
         <div id="gesture-icon" class="text-6xl mb-4">👍</div>
@@ -221,7 +225,15 @@ class GestureManager {
         <div id="gesture-hold-text" class="text-gray-400 text-sm mt-2">ค้างไว้ 2 วินาที</div>
       </div>
     `;
-    document.body.appendChild(this.overlayEl);
+
+    // Append ใน canvas-container เพื่อให้แสดงใน Fullscreen
+    const canvasContainer = document.querySelector(".canvas-container");
+    if (canvasContainer) {
+      canvasContainer.appendChild(this.overlayEl);
+    } else {
+      // Fallback ถ้าหา container ไม่เจอ
+      document.body.appendChild(this.overlayEl);
+    }
 
     this.progressEl = document.getElementById("gesture-progress");
     this.gestureTextEl = document.getElementById("gesture-text");

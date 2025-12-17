@@ -123,6 +123,10 @@ const TRANSLATIONS = {
     cancel_btn: "❌ ยกเลิก",
     // ปุ่มเต็มจอ (F = Fullscreen Hotkey)
     fullscreen_btn: "เต็มจอ (F)",
+    // ปุ่มเต็มจอบน Video Overlay (ไม่มี hotkey)
+    fullscreen_overlay: "เต็มจอ",
+    // ปุ่มจอปกติ (เมื่ออยู่ใน Fullscreen)
+    fullscreen_exit: "จอปกติ",
     // ปุ่มบันทึก - เริ่มบันทึก Session (R = Record Hotkey)
     record_btn_start: "⏺️ บันทึก (R)",
     // ปุ่มบันทึก - หยุดบันทึก Session
@@ -131,6 +135,8 @@ const TRANSLATIONS = {
     start_training_btn: "🏃 เริ่มการฝึก",
     // ปุ่มหยุดการฝึก
     stop_training_btn: "⏹️ หยุดการฝึก",
+    // ปุ่มหยุด (Overlay บน Video)
+    stop_btn: "หยุด",
 
     // -------------------------------------------------------------------------
     // Instructions Section
@@ -166,8 +172,7 @@ const TRANSLATIONS = {
     // ขั้นตอนที่ 3
     overlay_step3: 'กดปุ่ม "🏃 เริ่มการฝึก"',
     // หมายเหตุ
-    overlay_note:
-      "⏱️ ฝึกท่าละ 5 นาที • ไม่บันทึกวิดีโอ | 📏 ปรับเทียบสัดส่วนอัตโนมัติทุกครั้ง",
+    overlay_note: "⏱️ ฝึกท่าละ 5 นาที • กด 🛑 เพื่อหยุดก่อนเวลา",
 
     // -------------------------------------------------------------------------
     // Alert Messages (ข้อความแจ้งเตือน)
@@ -261,10 +266,13 @@ const TRANSLATIONS = {
     re_calibrate_btn: "📏 Re-Calibrate",
     cancel_btn: "❌ Cancel",
     fullscreen_btn: "(F)ullscreen",
+    fullscreen_overlay: "Fullscreen",
+    fullscreen_exit: "Normal",
     record_btn_start: "⏺️ Record (R)",
     record_btn_stop: "⏹️ Stop Recording",
     start_training_btn: "🏃 Start Training",
     stop_training_btn: "⏹️ Stop Training",
+    stop_btn: "Stop",
 
     // -------------------------------------------------------------------------
     // Instructions Section
@@ -288,8 +296,7 @@ const TRANSLATIONS = {
     overlay_step1: 'Select "Exercise" from the menu above',
     overlay_step2: 'Select "Level" to train',
     overlay_step3: 'Press "🏃 Start Training"',
-    overlay_note:
-      "⏱️ 5-min per exercise • No video recording | 📏 Auto-calibration before each session",
+    overlay_note: "⏱️ 5 min per exercise • Press 🛑 to stop early",
 
     // -------------------------------------------------------------------------
     // Alert Messages

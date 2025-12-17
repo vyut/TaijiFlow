@@ -55,20 +55,20 @@ class CalibrationManager {
     // =========================================================================
     this.texts = {
       th: {
-        tpose: "กรุณายืนตัวตรง กางแขน (T-Pose)",
+        tpose: "กรุณายืนกางแขน (T-Pose)",
         backUp: "ถอยหลังอีกนิด! (ให้เห็นทั้งตัว)",
         armsUp: "กางแขนระดับไหล่ (T-Pose)",
         holdStill: "อยู่นิ่งๆ...",
         complete: "✅ ปรับเทียบเสร็จสมบูรณ์!",
-        cancel: "(กดปุ่ม 'ยกเลิก' หากต้องการหยุด)",
+        cancel: "ถอยหลังให้เห็นเต็มตัว",
       },
       en: {
-        tpose: "Stand straight, arms out (T-Pose)",
+        tpose: "Stand with arms out (T-Pose)",
         backUp: "Step back! (Full body visible)",
         armsUp: "Raise arms to shoulder level (T-Pose)",
         holdStill: "Hold still...",
         complete: "✅ Calibration complete!",
-        cancel: "(Press 'Cancel' to stop)",
+        cancel: "Step back for full body view",
       },
     };
   }

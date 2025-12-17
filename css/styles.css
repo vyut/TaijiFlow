@@ -64,6 +64,25 @@ canvas:-moz-full-screen {
   transform: scaleX(-1);
 }
 
+/* --- Canvas Container Fullscreen (ใช้ container เพื่อให้ overlay แสดงด้วย) --- */
+.canvas-container:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  background: black;
+}
+
+.canvas-container:-webkit-full-screen {
+  width: 100vw;
+  height: 100vh;
+  background: black;
+}
+
+.canvas-container:-moz-full-screen {
+  width: 100vw;
+  height: 100vh;
+  background: black;
+}
+
 /* --- App Title Purple Gradient --- */
 #app-title {
   background: linear-gradient(135deg, #a855f7, #6366f1);

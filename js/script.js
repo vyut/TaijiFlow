@@ -599,10 +599,15 @@ stopTrainingBtn.addEventListener("click", () => {
   }
 });
 
+// -----------------------------------------------------------------------------
+// Fullscreen: ใช้ canvas-container แทน canvas เพื่อให้ overlay แสดงด้วย
+// -----------------------------------------------------------------------------
+const canvasContainer = document.querySelector(".canvas-container");
+
 // Video Fullscreen Button (ปุ่ม Overlay บนวิดีโอ)
 videoFullscreenBtn.addEventListener("click", () => {
   if (!document.fullscreenElement) {
-    canvasElement.requestFullscreen().catch((err) => {
+    canvasContainer.requestFullscreen().catch((err) => {
       console.warn("Fullscreen error:", err);
     });
   } else {
@@ -612,7 +617,7 @@ videoFullscreenBtn.addEventListener("click", () => {
 
 fullscreenBtn.addEventListener("click", () => {
   if (!document.fullscreenElement) {
-    canvasElement.requestFullscreen().catch((err) => {
+    canvasContainer.requestFullscreen().catch((err) => {
       console.error(`Error enabling fullscreen: ${err.message}`);
     });
   } else {
@@ -624,7 +629,31 @@ fullscreenBtn.addEventListener("click", () => {
 document.addEventListener("fullscreenchange", () => {
   isFullscreen = !!document.fullscreenElement;
   console.log(`Fullscreen: ${isFullscreen}`);
+
+  // อัปเดต Fullscreen Button Text ตามสถานะ
+  const btnText = document.getElementById("fullscreen-btn-text");
+  if (btnText) {
+    const lang = uiManager?.currentLang || "th";
+    if (isFullscreen) {
+      btnText.textContent = TRANSLATIONS[lang]?.fullscreen_exit || "จอปกติ";
+    } else {
+      // เมื่อออก fullscreen: แสดง "เต็มจอ"
+      btnText.textContent = TRANSLATIONS[lang]?.fullscreen_overlay || "เต็มจอ";
+    }
+  }
 });
+
+// -----------------------------------------------------------------------------
+// Stop Training Overlay Button (ปุ่มหยุดบน Video Overlay)
+// -----------------------------------------------------------------------------
+const stopOverlayBtn = document.getElementById("stop-training-overlay-btn");
+if (stopOverlayBtn) {
+  stopOverlayBtn.addEventListener("click", () => {
+    if (isTrainingMode) {
+      endTrainingSession();
+    }
+  });
+}
 
 recordBtn.addEventListener("click", () => {
   isRecording = !isRecording;

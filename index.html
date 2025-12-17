@@ -93,34 +93,35 @@ Version: 0.4 (2024-12-17)
         หมายเหตุ: defer = โหลดพร้อม HTML แต่รันหลัง DOM พร้อม
         ========================================================================= -->
     <!-- 1. Core Managers - ไม่พึ่งพาไฟล์อื่น -->
+    <!-- T-Pose Calibration -->
     <script src="js/calibration_manager.js" defer></script>
-    // T-Pose Calibration
+    <!-- 8 กฎวิเคราะห์ท่า -->
     <script src="js/heuristics_engine.js" defer></script>
-    // 8 กฎวิเคราะห์ท่า
+    <!-- วาด Skeleton/Path -->
     <script src="js/drawing_manager.js" defer></script>
-    // วาด Skeleton/Path
+    <!-- Export JSON/CSV -->
     <script src="js/data_exporter.js" defer></script>
-    // Export JSON/CSV
+    <!-- เสียงพูด TTS -->
     <script src="js/audio_manager.js" defer></script>
-    // เสียงพูด TTS
+    <!-- คำนวณคะแนน -->
     <script src="js/scoring_manager.js" defer></script>
-    // คำนวณคะแนน
 
     <!-- 2. UI/Translation - พึ่งพา Core Managers -->
+    <!-- i18n TH/EN -->
     <script src="js/translations.js" defer></script>
-    // i18n TH/EN
+    <!-- จัดการ UI State -->
     <script src="js/ui_manager.js" defer></script>
-    // จัดการ UI State
+    <!-- จัดการ UI State -->
     <script src="js/gesture_manager.js" defer></script>
-    // ควบคุมด้วยท่ามือ
+    <!-- จัดการ UI State -->
     <script src="js/tutorial_manager.js" defer></script>
-    // Popup Tutorial
+    <!-- Popup Tutorial -->
     <script src="js/chatbot.js" defer></script>
-    // Gemini Chatbot
+    <!-- Gemini Chatbot -->
 
     <!-- 3. Main Controller - พึ่งพาทั้งหมดข้างบน -->
     <script src="js/script.js" defer></script>
-    // Entry Point หลัก
+    <!-- Entry Point หลัก -->
 
     <!-- MediaPipe Tasks Vision for Gesture Recognition (loaded as module) -->
     <script type="module">

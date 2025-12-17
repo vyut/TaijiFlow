@@ -174,7 +174,7 @@ const TRANSLATIONS = {
     // คำอธิบายหน้าจอ Overlay
     overlay_desc: "*กดเพื่อเริ่มวัดตัวก่อนการฝึก",
     // หัวข้อ How-to Section
-    overlay_how_to: "📋 วิธีเริ่มต้นใช้งาน",
+    overlay_how_to: "วิธีเริ่มต้นใช้งาน",
     // ขั้นตอนที่ 1
     overlay_step1: 'เลือก "ท่าฝึก" จากเมนูด้านบน',
     // ขั้นตอนที่ 2
@@ -310,8 +310,8 @@ const TRANSLATIONS = {
     // -------------------------------------------------------------------------
     overlay_title: "Ready to Train?",
     overlay_desc: "*Press to calibrate your body proportions",
-    overlay_how_to: "📋 How to Start",
-    overlay_step1: 'Select "Exercise" from the menu above',
+    overlay_how_to: "How to Start",
+    overlay_step1: 'Select "Exercise" from menu above',
     overlay_step2: 'Select "Level" to train',
     overlay_step3: 'Press "🏃 Start Training"',
     overlay_note: "⏱️ 5 min per exercise • Press 🛑 to stop early",

@@ -545,7 +545,7 @@ class UIManager {
     const catSelect = document.getElementById("category-select");
     if (catSelect && catSelect.options.length >= 1) {
       catSelect.options[0].text = t["cat_silk_single"]; // ม้วนไหม - มือเดียว
-      // อนาคต: catSelect.options[1].text = t["cat_silk_double"];
+      catSelect.options[1].text = t["cat_silk_double"]; // ม้วนไหม - มือสอง
     }
 
     // -------------------------------------------------------------------------

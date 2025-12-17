@@ -99,7 +99,7 @@ const TRANSLATIONS = {
     // Category Options (ประเภทท่า - สำหรับขยายในอนาคต)
     // -------------------------------------------------------------------------
     cat_silk_single: "ท่าม้วนไหม - มือเดียว",
-    // อนาคต: cat_silk_double, cat_standing_post, etc.
+    cat_silk_double: "ท่าม้วนไหม - มือสอง",
 
     // -------------------------------------------------------------------------
     // Level Buttons
@@ -265,6 +265,7 @@ const TRANSLATIONS = {
     // Category Options
     // -------------------------------------------------------------------------
     cat_silk_single: "Silk Reeling - Single Hand",
+    cat_silk_double: "Silk Reeling - Double Hand",
 
     // -------------------------------------------------------------------------
     // Level Buttons

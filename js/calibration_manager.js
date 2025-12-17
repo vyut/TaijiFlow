@@ -56,19 +56,19 @@ class CalibrationManager {
     this.texts = {
       th: {
         tpose: "กรุณายืนกางแขน (T-Pose)",
-        backUp: "ถอยหลังอีกนิด! (ให้เห็นทั้งตัว)",
-        armsUp: "กางแขนระดับไหล่ (T-Pose)",
+        backUp: "กรุณายืนกางแขน (T-Pose)",
+        armsUp: "กางแขนระดับไหล่",
         holdStill: "อยู่นิ่งๆ...",
         complete: "✅ ปรับเทียบเสร็จสมบูรณ์!",
-        cancel: "ถอยหลังให้เห็นเต็มตัว",
+        cancel: "ถอยหลังอีกนิด! (ให้เห็นทั้งตัว)",
       },
       en: {
         tpose: "Stand with arms out (T-Pose)",
-        backUp: "Step back! (Full body visible)",
-        armsUp: "Raise arms to shoulder level (T-Pose)",
+        backUp: "Stand with arms out (T-Pose)",
+        armsUp: "Raise arms to shoulder level",
         holdStill: "Hold still...",
         complete: "✅ Calibration complete!",
-        cancel: "Step back for full body view",
+        cancel: "Step back! (Full body visible)",
       },
     };
   }

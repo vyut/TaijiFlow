@@ -295,6 +295,16 @@ audioBtn.addEventListener("click", () => {
 // เริ่มต้น UI
 uiManager.init();
 
+// -----------------------------------------------------------------------------
+// Sync ภาษาจาก localStorage กับ Components อื่น
+// -----------------------------------------------------------------------------
+// หลังจาก uiManager.init() โหลดภาษาจาก localStorage แล้ว
+// ต้อง sync กับ AudioManager, CalibrationManager และ ธง
+const initLang = uiManager.currentLang || "th";
+langBtn.innerText = initLang === "th" ? "🇹🇭" : "🇺🇸";
+audioManager.setLanguage(initLang);
+calibrator.setLanguage(initLang);
+
 // เริ่มต้น Gesture Manager (Gesture Control)
 gestureManager.init().then((ready) => {
   if (ready) {

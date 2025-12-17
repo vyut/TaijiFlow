@@ -332,8 +332,20 @@ gestureManager.onStartTraining = () => {
 };
 
 gestureManager.onStopTraining = () => {
-  // หยุดการฝึก ถ้ากำลังฝึกอยู่
-  if (isTrainingMode) {
+  // 1. หยุด Calibration ถ้ากำลัง Calibrate อยู่
+  if (calibrator.isActive) {
+    console.log("[Gesture] ✋ Cancelling Calibration via Gesture");
+    calibrator.cancel();
+    loadReferenceData(); // คืนค่า Path เดิม
+    startOverlay.classList.remove("hidden"); // แสดง Overlay กลับมา
+    // ออกจาก Fullscreen ถ้าอยู่
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+    uiManager.showNotification("🛑 ยกเลิกการ Calibrate", "info");
+  }
+  // 2. หยุดการฝึก ถ้ากำลังฝึกอยู่
+  else if (isTrainingMode) {
     console.log("[Gesture] ✋ Stopping Training via Gesture");
     stopTrainingBtn.click(); // Trigger the stop button
   }

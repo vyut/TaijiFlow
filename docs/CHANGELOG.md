@@ -46,11 +46,41 @@
 - `tpose` - "กรุณายืนกางแขน (T-Pose)"
 - `cancel` - "ถอยหลังให้เห็นเต็มตัว" (เดิม "กดปุ่มยกเลิก")
 
+### 📱 PWA Support (Add to Home Screen)
+
+#### Added
+- **Standalone Mode Detection** - ตรวจจับ PWA mode ด้วย `display-mode: standalone`
+- **Timeout Fallback** - ถ้า fullscreen ไม่ตอบสนองใน 1 วินาที → ข้ามไป
+- รองรับ iOS Safari PWA และ Opera ที่ไม่รองรับ Fullscreen API
+
+### 🖐️ Gesture Control
+
+#### Added
+- **Cancel Calibration** - ใช้ท่ามือ ✊ Closed Fist ยกเลิก Calibration ได้
+- ออกจาก Fullscreen และแสดง Overlay กลับมาอัตโนมัติ
+
+### 🔧 Debug Overlay (กด D)
+
+#### Added
+- `fps` - Frames Per Second (NFR Performance)
+- `frameCount` - จำนวน Frame ทั้งหมด
+- `score` - คะแนน Real-time
+
+### 🗂️ Category Dropdown
+
+#### Added
+- **Category Select** - dropdown ใหม่สำหรับเลือกประเภทท่า
+- `cat_silk_single` - ท่าม้วนไหม - มือเดียว (default)
+- `cat_silk_double` - ท่าม้วนไหม - สองมือ (disabled, สำหรับอนาคต)
+
 ### 📚 Documentation
 
 #### Updated
-- เพิ่ม comments ใหม่ใน `script.js`, `drawing_manager.js`, `gesture_manager.js`
-- อธิบาย mirror logic และ fullscreen flow
+- **CHANGELOG.md** - เพิ่ม v0.4 พร้อมรายละเอียดครบ
+- **TRAINING_FLOW.md** - (ใหม่) Training Flow พร้อม Mermaid diagrams
+- **index.html** - เพิ่ม File Header อธิบายโครงสร้าง
+- **data_collector.html** - เพิ่ม File Header อธิบายการใช้งาน
+- **App Modules** - เพิ่ม comments อธิบายแต่ละ module
 
 ---
 

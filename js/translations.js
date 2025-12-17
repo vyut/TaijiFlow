@@ -191,14 +191,14 @@ const TRANSLATIONS = {
     ex_placeholder: "-- เลือกท่าฝึก --",
     // Right Hand Clockwise - มือขวา หมุนตามเข็มนาฬิกา
     // หมุนแบบ 順纏 (Shùn Chán / Forward Reeling)
-    ex_rh_cw: "มือขวา - ตามเข็ม",
+    ex_rh_cw: "ท่าที่ 1: มือขวา - ตามเข็ม",
     // Right Hand Counter-Clockwise - มือขวา หมุนทวนเข็มนาฬิกา
     // หมุนแบบ 逆纏 (Nì Chán / Reverse Reeling)
-    ex_rh_ccw: "มือขวา - ทวนเข็ม",
+    ex_rh_ccw: "ท่าที่ 2: มือขวา - ทวนเข็ม",
     // Left Hand Clockwise - มือซ้าย หมุนตามเข็มนาฬิกา
-    ex_lh_cw: "มือซ้าย - ตามเข็ม",
+    ex_lh_cw: "ท่าที่ 3: มือซ้าย - ตามเข็ม",
     // Left Hand Counter-Clockwise - มือซ้าย หมุนทวนเข็มนาฬิกา
-    ex_lh_ccw: "มือซ้าย - ทวนเข็ม",
+    ex_lh_ccw: "ท่าที่ 4: มือซ้าย - ทวนเข็ม",
 
     // -------------------------------------------------------------------------
     // Level Options (ตัวเลือกระดับ)
@@ -206,11 +206,11 @@ const TRANSLATIONS = {
     // Placeholder - ข้อความเริ่มต้นใน Dropdown
     level_placeholder: "-- เลือกระดับ --",
     // Level 1: Seated Position
-    level_l1: "Level 1: ท่านั่ง",
+    level_l1: "ระดับที่ 1: ท่านั่ง",
     // Level 2: Standing Position
-    level_l2: "Level 2: ท่ายืน",
+    level_l2: "ระดับที่ 2: ท่ายืน",
     // Level 3: Bow Stance (弓步)
-    level_l3: "Level 3: ท่ายืนย่อ",
+    level_l3: "ระดับที่ 3: ท่ายืนย่อ",
 
     // -------------------------------------------------------------------------
     // Privacy Modal (หน้าต่างความเป็นส่วนตัว)

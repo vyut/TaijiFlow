@@ -1,47 +1,118 @@
-// =================================================================
-//  TaijiFlow AI - Main Controller (script.js) v3.0 (New UX Flow)
-// =================================================================
+/**
+ * ============================================================================
+ * TaijiFlow AI - Main Controller v3.0
+ * ============================================================================
+ *
+ * ไฟล์ควบคุมหลักของแอปพลิเคชัน (Main Controller / Entry Point)
+ *
+ * @description
+ *   ไฟล์นี้เป็น "สมอง" ของแอปพลิเคชัน ทำหน้าที่:
+ *   - เชื่อมต่อ Modules ทั้งหมดเข้าด้วยกัน
+ *   - จัดการ User Interactions (ปุ่ม, Dropdown, Keyboard)
+ *   - ควบคุม Training Flow (เริ่ม → Calibrate → Countdown → ฝึก → สรุป)
+ *   - ประมวลผลจาก MediaPipe และส่งไปยัง Heuristics Engine
+ *   - บันทึกข้อมูล Session สำหรับ Export
+ *
+ * ============================================================================
+ * Flow การทำงานหลัก
+ * ============================================================================
+ *
+ *   1. User เลือกท่าฝึก + ระดับ
+ *   2. กดปุ่ม "เริ่มการฝึก"
+ *   3. ระบบ Calibrate สัดส่วนร่างกายอัตโนมัติ
+ *   4. แสดง Countdown 3-2-1
+ *   5. เริ่มบันทึก + วิเคราะห์ท่าทาง (5 นาที)
+ *   6. สรุปผลคะแนน + Export Data
+ *   7. กลับหน้าแรก
+ *
+ * ============================================================================
+ * โครงสร้างไฟล์ (5 Sections)
+ * ============================================================================
+ *
+ *   Section 1: Setup & Variables (บรรทัด 1-84)
+ *     - DOM Elements, Manager Instances, State Variables
+ *
+ *   Section 2: UI Event Listeners (บรรทัด 85-600)
+ *     - ปุ่ม, Dropdown, Keyboard Shortcuts
+ *     - Training Flow Functions
+ *
+ *   Section 3: Data Loading (บรรทัด 601-655)
+ *     - โหลด Reference Path จาก JSON
+ *
+ *   Section 4: MediaPipe Processing (บรรทัด 656-805)
+ *     - onResults() - ประมวลผลทุก Frame
+ *
+ *   Section 5: Initialization (บรรทัด 806-903)
+ *     - เริ่มต้น Pose Model, Camera
+ *
+ * ============================================================================
+ * @author TaijiFlow AI Team
+ * @since 1.0.0
+ * @version 3.0 (New UX Flow)
+ * ============================================================================
+ */
 
-// 1. Setup & Variables
-const videoElement = document.getElementById("input_video");
-const canvasElement = document.getElementById("output_canvas");
-const canvasCtx = canvasElement.getContext("2d");
-const loadingOverlay = document.getElementById("loading-overlay");
-const startOverlay = document.getElementById("start-overlay");
+// =============================================================================
+// SECTION 1: SETUP & VARIABLES
+// =============================================================================
 
-// Instances
-const engine = new HeuristicsEngine(); // สมองกลสำหรับวิเคราะห์ท่าทาง
-const calibrator = new CalibrationManager(); // ผู้จัดการปรับเทียบ
-const uiManager = new UIManager(); // ผู้จัดการหน้าจอและภาษา
-const drawer = new DrawingManager(canvasCtx, canvasElement); // ผู้จัดการวาดภาพบน Canvas
-const scorer = new ScoringManager(); // ผู้จัดการคะแนน
-const audioManager = new AudioManager(); // ผู้จัดการเสียงพูด
-const gestureManager = new GestureManager(); // ผู้จัดการท่ามือ Gesture Control
+// -----------------------------------------------------------------------------
+// DOM Elements - อ้างอิง HTML Elements
+// -----------------------------------------------------------------------------
+const videoElement = document.getElementById("input_video"); // <video> สำหรับ Webcam
+const canvasElement = document.getElementById("output_canvas"); // <canvas> สำหรับวาดภาพ
+const canvasCtx = canvasElement.getContext("2d"); // Context สำหรับวาด
+const loadingOverlay = document.getElementById("loading-overlay"); // หน้าจอ Loading
+const startOverlay = document.getElementById("start-overlay"); // หน้าจอเริ่มต้น
 
-// State Variables
-let isRecording = false; // สถานะการบันทึก
-let isTrainingMode = false; // สถานะ Training Mode (auto-record)
-let currentExercise = null; // เก็บชื่อท่าที่กำลังฝึก (null = ยังไม่เลือก)
-let currentLevel = null; // เก็บระดับความยาก (null = ยังไม่เลือก)
-let referencePath = []; // เก็บข้อมูลเส้นทางต้นแบบที่โหลดมาจากไฟล์ JSON
-let sessionLog = []; // เก็บประวัติข้อผิดพลาดที่เกิดขึ้นระหว่างการฝึก (สำหรับ Report แบบสรุป)
-let sessionStartTime = 0;
-let recordedSessionData = []; // เก็บข้อมูลดิบทั้งหมดแบบเฟรมต่อเฟรม (สำหรับนำไปใช้กับ Machine Learning)
-let currentSessionId = null; // Unique ID สำหรับแต่ละ Session
+// -----------------------------------------------------------------------------
+// Manager Instances - สร้าง Instance ของแต่ละ Module
+// -----------------------------------------------------------------------------
+// แต่ละ Manager รับผิดชอบงานเฉพาะทาง (Single Responsibility Principle)
+const engine = new HeuristicsEngine(); // วิเคราะห์ท่าทางตามหลักไท่จี๋
+const calibrator = new CalibrationManager(); // ปรับเทียบสัดส่วนร่างกาย
+const uiManager = new UIManager(); // จัดการ UI และภาษา
+const drawer = new DrawingManager(canvasCtx, canvasElement); // วาดภาพบน Canvas
+const scorer = new ScoringManager(); // คำนวณคะแนน
+const audioManager = new AudioManager(); // เสียงพูดแจ้งเตือน
+const gestureManager = new GestureManager(); // ควบคุมด้วยท่ามือ
 
-// Training Timer Variables
-const TRAINING_DURATION_MS = 5 * 60 * 1000; // 5 นาที
-let trainingTimerId = null;
-let trainingStartTime = 0;
+// -----------------------------------------------------------------------------
+// State Variables - ตัวแปรเก็บสถานะ
+// -----------------------------------------------------------------------------
+let isRecording = false; // กำลังบันทึก Session อยู่หรือไม่
+let isTrainingMode = false; // อยู่ใน Training Mode หรือไม่
+let currentExercise = null; // ท่าที่เลือก (rh_cw, rh_ccw, lh_cw, lh_ccw)
+let currentLevel = null; // ระดับที่เลือก (L1, L2, L3)
+let referencePath = []; // เส้นทางต้นแบบจาก JSON
+let sessionLog = []; // ประวัติข้อผิดพลาด (สำหรับสรุป)
+let sessionStartTime = 0; // เวลาเริ่ม Session (Unix timestamp)
+let recordedSessionData = []; // ข้อมูลดิบทุก Frame (สำหรับ ML)
+let currentSessionId = null; // ID ของ Session ปัจจุบัน
 
-// Performance Optimization: เช็ค Heuristics ทุก N frames (ลดจาก 30 FPS เป็น ~10 FPS)
-const HEURISTICS_CHECK_INTERVAL = 3; // เช็คทุก 3 frames = ~10 FPS
+// -----------------------------------------------------------------------------
+// Training Timer - ตัวแปรสำหรับนับเวลา
+// -----------------------------------------------------------------------------
+const TRAINING_DURATION_MS = 5 * 60 * 1000; // 5 นาที = 300,000 ms
+let trainingTimerId = null; // ID ของ setInterval
+let trainingStartTime = 0; // เวลาเริ่มฝึก
+
+// -----------------------------------------------------------------------------
+// Performance Optimization - ลด CPU Load
+// -----------------------------------------------------------------------------
+// เช็ค Heuristics ทุก 3 frames แทนทุก frame
+// ~30 FPS → ~10 FPS สำหรับ Heuristics = ประหยัด CPU ~70%
+const HEURISTICS_CHECK_INTERVAL = 3;
 let frameCounter = 0;
 
-// Fullscreen State - ใช้กลับ mirror ตอน fullscreen
-let isFullscreen = false;
+// -----------------------------------------------------------------------------
+// Fullscreen State
+// -----------------------------------------------------------------------------
+let isFullscreen = false; // ใช้สำหรับ Mirror canvas ใน Fullscreen
 
-// Privacy Modal - ปิด popup เมื่อกด Accept
+// -----------------------------------------------------------------------------
+// Privacy Modal - Popup ความเป็นส่วนตัว
+// -----------------------------------------------------------------------------
 const privacyModal = document.getElementById("privacy-modal");
 const privacyAcceptBtn = document.getElementById("privacy-accept-btn");
 if (privacyAcceptBtn) {
@@ -49,11 +120,24 @@ if (privacyAcceptBtn) {
     privacyModal.classList.add("hidden");
   });
 }
+// -----------------------------------------------------------------------------
+// Helper Functions - ฟังก์ชันช่วยสร้าง ID และดึงข้อมูล
+// -----------------------------------------------------------------------------
 
-// สร้าง User ID (เก็บใน LocalStorage เพื่อให้คงที่ตลอดการใช้งาน)
+/**
+ * สร้างหรือดึง User ID จาก LocalStorage
+ *
+ * @description
+ *   สร้าง ID ที่ไม่ซ้ำกันสำหรับแต่ละผู้ใช้
+ *   เก็บใน LocalStorage เพื่อให้คงที่ตลอดการใช้งาน
+ *   ใช้สำหรับ Track ข้อมูลการฝึกของแต่ละคน
+ *
+ * @returns {string} User ID (เช่น "user_lxyz123ab")
+ */
 function getOrCreateUserId() {
   let userId = localStorage.getItem("taijiflow_user_id");
   if (!userId) {
+    // สร้าง ID ใหม่: "user_" + timestamp(base36) + random(5 chars)
     userId =
       "user_" +
       Date.now().toString(36) +
@@ -63,14 +147,30 @@ function getOrCreateUserId() {
   return userId;
 }
 
-// สร้าง Session ID ใหม่ทุกครั้งที่เริ่มบันทึก
+/**
+ * สร้าง Session ID ใหม่
+ *
+ * @description
+ *   สร้าง ID ที่ไม่ซ้ำกันสำหรับแต่ละ Session การฝึก
+ *   เรียกทุกครั้งที่เริ่มบันทึกใหม่
+ *
+ * @returns {string} Session ID (เช่น "sess_lxyz123ab")
+ */
 function generateSessionId() {
   return (
     "sess_" + Date.now().toString(36) + Math.random().toString(36).substr(2, 5)
   );
 }
 
-// ดึงข้อมูล Platform
+/**
+ * ดึงข้อมูล Platform/Device
+ *
+ * @description
+ *   เก็บข้อมูลอุปกรณ์สำหรับ Analytics และ Debug
+ *   ช่วยให้เข้าใจว่าผู้ใช้ใช้อุปกรณ์ใดบ้าง
+ *
+ * @returns {Object} ข้อมูล Platform
+ */
 function getPlatformInfo() {
   const ua = navigator.userAgent;
   return {
@@ -83,32 +183,50 @@ function getPlatformInfo() {
   };
 }
 
-// 2. UI Event Listeners
-const exerciseSelect = document.getElementById("exercise-select");
-const levelSelect = document.getElementById("level-select"); // New: dropdown instead of buttons
-const levelButtons = document.querySelectorAll(".level-btn"); // Keep for hidden elements
-const fullscreenBtn = document.getElementById("fullscreen-btn");
-const recordBtn = document.getElementById("record-btn");
+// =============================================================================
+// SECTION 2: UI EVENT LISTENERS
+// =============================================================================
 
-const smallCalibrateBtn = document.getElementById("small-calibrate-btn"); // ปุ่มเล็ก (วัดใหม่)
-const cancelCalibBtn = document.getElementById("cancel-calib-btn");
+// -----------------------------------------------------------------------------
+// DOM Elements - ปุ่มและ Controls ต่างๆ
+// -----------------------------------------------------------------------------
 
-const langBtn = document.getElementById("lang-btn");
-const themeBtn = document.getElementById("theme-btn");
+// Dropdown Selects
+const exerciseSelect = document.getElementById("exercise-select"); // เลือกท่าฝึก
+const levelSelect = document.getElementById("level-select"); // เลือกระดับ (New UI)
+const levelButtons = document.querySelectorAll(".level-btn"); // ปุ่มระดับ (Legacy)
 
-// New UX Flow Elements
-const startTrainingBtn = document.getElementById("start-training-btn");
-const stopTrainingBtn = document.getElementById("stop-training-btn"); // New: separate stop button
-const countdownOverlay = document.getElementById("countdown-overlay");
-const countdownNumber = document.getElementById("countdown-number");
-const trainingControls = document.getElementById("training-controls");
-const trainingTimer = document.getElementById("training-timer");
-const trainingTimerTop = document.getElementById("training-timer"); // Timer at top bar
-const trainingTimerOverlay = document.getElementById("training-timer-overlay"); // Timer on video overlay
-const recordIndicator = document.getElementById("recordIndicator");
-const stopEarlyBtn = document.getElementById("stop-early-btn");
-const fullscreenOverlayBtn = document.getElementById("fullscreen-overlay-btn");
-const videoFullscreenBtn = document.getElementById("video-fullscreen-btn");
+// Action Buttons
+const fullscreenBtn = document.getElementById("fullscreen-btn"); // ปุ่มเต็มจอ
+const recordBtn = document.getElementById("record-btn"); // ปุ่มบันทึก (Legacy)
+
+// Calibration Buttons
+const smallCalibrateBtn = document.getElementById("small-calibrate-btn"); // ปุ่ม "วัดใหม่"
+const cancelCalibBtn = document.getElementById("cancel-calib-btn"); // ปุ่มยกเลิก
+
+// Settings Buttons
+const langBtn = document.getElementById("lang-btn"); // สลับภาษา
+const themeBtn = document.getElementById("theme-btn"); // สลับ Theme
+
+// -----------------------------------------------------------------------------
+// New UX Flow Elements - ปุ่มและ Overlay สำหรับ Training Flow ใหม่
+// -----------------------------------------------------------------------------
+const startTrainingBtn = document.getElementById("start-training-btn"); // ปุ่มเริ่มฝึก
+const stopTrainingBtn = document.getElementById("stop-training-btn"); // ปุ่มหยุดฝึก
+const countdownOverlay = document.getElementById("countdown-overlay"); // Overlay 3-2-1
+const countdownNumber = document.getElementById("countdown-number"); // ตัวเลขนับถอยหลัง
+const trainingControls = document.getElementById("training-controls"); // กล่อง Timer ซ้ายล่าง
+const trainingTimer = document.getElementById("training-timer"); // Timer Display
+const trainingTimerTop = document.getElementById("training-timer"); // Timer บน Top Bar
+const trainingTimerOverlay = document.getElementById("training-timer-overlay"); // Timer บน Video
+const recordIndicator = document.getElementById("recordIndicator"); // สัญญาณบันทึก
+const stopEarlyBtn = document.getElementById("stop-early-btn"); // ปุ่มหยุดก่อนเวลา
+const fullscreenOverlayBtn = document.getElementById("fullscreen-overlay-btn"); // Container ปุ่มเต็มจอ
+const videoFullscreenBtn = document.getElementById("video-fullscreen-btn"); // ปุ่มเต็มจอบน Video
+
+// -----------------------------------------------------------------------------
+// Validation Functions
+// -----------------------------------------------------------------------------
 
 // ฟังก์ชันตรวจสอบว่าเลือกท่าและระดับครบหรือยัง
 function checkSelectionComplete() {
@@ -253,12 +371,31 @@ levelButtons.forEach((btn) => {
   });
 });
 
-// ============================================================
-// Training Flow Functions (New UX)
-// ============================================================
+// =============================================================================
+// TRAINING FLOW FUNCTIONS (New UX)
+// =============================================================================
+//
+// Flow: เลือกท่า → เริ่มฝึก → Calibrate → Countdown → บันทึก 5 นาที → สรุปผล
+//
+// Functions:
+//   - showCountdown()                  : แสดง 3-2-1
+//   - formatTime()                     : แปลง ms เป็น mm:ss
+//   - updateTrainingTimer()            : อัปเดต Timer Display
+//   - startTrainingFlow()              : เริ่ม Training (รวม Calibrate)
+//   - startTrainingAfterCalibration()  : เริ่มหลัง Calibrate เสร็จ
+//   - endTrainingSession()             : จบ Session + สรุปผล
+//   - resetToHomeScreen()              : Reset กลับหน้าแรก
+// =============================================================================
 
 /**
  * แสดง Countdown 3-2-1 ก่อนเริ่มบันทึก
+ *
+ * @description
+ *   แสดง Overlay พร้อมตัวเลขนับถอยหลัง 3, 2, 1
+ *   ให้ผู้ฝึกเตรียมตัวก่อนเริ่มบันทึก
+ *   ใช้ Promise เพื่อให้ await ได้
+ *
+ * @returns {Promise} Resolves เมื่อนับถอยหลังเสร็จ
  */
 function showCountdown() {
   return new Promise((resolve) => {
@@ -599,10 +736,34 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-// 3. Data Loading Function
+// =============================================================================
+// SECTION 3: DATA LOADING
+// =============================================================================
+//
+// โหลด Reference Path จากไฟล์ JSON
+// ไฟล์อยู่ใน folder: data/{exercise}_{level}.json
+// ตัวอย่าง: data/rh_cw_L2.json = มือขวา ตามเข็ม ระดับ 2
+// =============================================================================
+
 let referenceDataLoaded = false; // สถานะการโหลด Reference Data
 
+/**
+ * โหลด Reference Path Data
+ *
+ * @description
+ *   โหลดข้อมูลเส้นทางต้นแบบจากไฟล์ JSON
+ *   ใช้สำหรับเปรียบเทียบกับท่าทางของผู้ฝึก
+ *
+ *   โครงสร้างไฟล์ JSON:
+ *   [
+ *     { "landmarks": [{ x, y, z, visibility }, ...] },
+ *     ...
+ *   ]
+ *
+ *   ดึงเฉพาะตำแหน่ง Wrist (index 16) มาสร้าง Path
+ */
 async function loadReferenceData() {
+  // ถ้ายังไม่ได้เลือกท่าหรือระดับ ไม่ต้องโหลด
   // ถ้ายังไม่ได้เลือกท่าหรือระดับ ไม่ต้องโหลด
   if (!currentExercise || !currentLevel) {
     referencePath = [];
@@ -654,7 +815,35 @@ async function loadReferenceData() {
   }
 }
 
-// 4. MediaPipe Processing
+// =============================================================================
+// SECTION 4: MEDIAPIPE PROCESSING
+// =============================================================================
+//
+// onResults() - ฟังก์ชันหลักที่ถูกเรียกทุก Frame (~30 FPS)
+// รับ Pose Landmarks จาก MediaPipe แล้วประมวลผล
+//
+// Flow ภายใน onResults:
+//   1. Gesture Detection (ควบคุมด้วยท่ามือ)
+//   2. วาด Video Frame ลง Canvas
+//   3. ถ้ากำลัง Calibrate → วาด Skeleton + Calibration Overlay
+//   4. ถ้า Normal Mode → วาด Path + Skeleton + วิเคราะห์ท่าทาง
+//   5. ถ้ากำลัง Recording → เก็บข้อมูลลง recordedSessionData
+// =============================================================================
+
+/**
+ * MediaPipe onResults Callback
+ *
+ * @description
+ *   ฟังก์ชันหลักที่ถูกเรียกทุก Frame จาก MediaPipe Pose
+ *   ทำหน้าที่:
+ *   - วาดภาพ Video + Skeleton ลง Canvas
+ *   - วิเคราะห์ท่าทางด้วย Heuristics Engine
+ *   - บันทึกข้อมูล Session
+ *
+ * @param {Object} results - ผลลัพธ์จาก MediaPipe Pose
+ *   @param {ImageData} results.image - ภาพจาก Webcam
+ *   @param {Array} results.poseLandmarks - พิกัด 33 จุดบนร่างกาย
+ */
 function onResults(results) {
   const timestamp = performance.now();
 
@@ -683,7 +872,7 @@ function onResults(results) {
 
   // วาดภาพ
   canvasCtx.drawImage(
-    results.image,  // ภาพที่ได้จาก MediaPipe
+    results.image, // ภาพที่ได้จาก MediaPipe
     0,
     0,
     canvasElement.width,
@@ -693,8 +882,10 @@ function onResults(results) {
 
   // DrawingManager: mirrorDisplay = false เพราะ landmarks ก็ตรงกับภาพ webcam อยู่แล้ว
 
-  if (results.poseLandmarks) {  // มีข้อมูล landmarks
-    if (calibrator.isActive) {  // กำลังปรับเทียบ
+  if (results.poseLandmarks) {
+    // มีข้อมูล landmarks
+    if (calibrator.isActive) {
+      // กำลังปรับเทียบ
       drawer.drawSkeleton(results.poseLandmarks);
 
       const calibResult = calibrator.process(results.poseLandmarks);
@@ -725,14 +916,16 @@ function onResults(results) {
           startTrainingAfterCalibration();
         }
       }
-    } else {  // Normal Mode
+    } else {
+      // Normal Mode
       if (referencePath.length > 0) {
-        drawer.drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4);  // วาด Path Reference
+        drawer.drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4); // วาด Path Reference
       }
 
-      drawer.drawSkeleton(results.poseLandmarks);  // วาด Skeleton
+      drawer.drawSkeleton(results.poseLandmarks); // วาด Skeleton
 
-      if (!calibrator.isActive && referencePath.length > 0) {  // ไม่ใช่ Mode ปรับเทียบ และมี Path Reference
+      if (!calibrator.isActive && referencePath.length > 0) {
+        // ไม่ใช่ Mode ปรับเทียบ และมี Path Reference
         // Performance: เช็ค Heuristics ทุก 3 frames (~10 FPS แทน 30 FPS) เพื่อประหยัด CPU
         frameCounter++;
         const shouldCheckHeuristics =
@@ -804,35 +997,75 @@ function onResults(results) {
   canvasCtx.restore();
 }
 
-// 5. Initialization
+// =============================================================================
+// SECTION 5: INITIALIZATION
+// =============================================================================
+//
+// เริ่มต้น MediaPipe Pose Model และ Camera
+// ทำงานเมื่อ Script โหลดเสร็จ
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// MediaPipe Pose Model
+// -----------------------------------------------------------------------------
+// สร้าง Instance ของ MediaPipe Pose
+// ใช้ CDN สำหรับโหลด Model Files
 const pose = new Pose({
   locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
 });
 
+// ตั้งค่า Pose Model
+// - modelComplexity: 0=Lite, 1=Full, 2=Heavy (ความแม่นยำ)
+// - smoothLandmarks: ทำให้จุดนิ่งขึ้น ลดการกระตุก
+// - minDetectionConfidence: ความมั่นใจขั้นต่ำในการตรวจจับ
+// - minTrackingConfidence: ความมั่นใจขั้นต่ำในการติดตาม
 pose.setOptions({
-  modelComplexity: 1,
-  smoothLandmarks: true,
-  minDetectionConfidence: 0.5,
-  minTrackingConfidence: 0.5,
+  modelComplexity: 1, // Full Model (สมดุลระหว่างความแม่นยำและความเร็ว)
+  smoothLandmarks: true, // เปิด Smoothing
+  minDetectionConfidence: 0.5, // 50% ขึ้นไปถึงจะยอมรับ
+  minTrackingConfidence: 0.5, // 50% ขึ้นไปถึงจะติดตามต่อ
 });
+
+// ผูก Callback Function
 pose.onResults(onResults);
 
+// แสดง Loading Overlay ระหว่างโหลด
 loadingOverlay.classList.remove("hidden");
 
+// -----------------------------------------------------------------------------
+// Camera Setup
+// -----------------------------------------------------------------------------
+// สร้าง Camera Instance จาก MediaPipe Camera Utils
+// onFrame จะถูกเรียกทุก Frame (~30 FPS)
 const camera = new Camera(videoElement, {
   onFrame: async () => {
+    // ส่งภาพจาก Video ไปให้ Pose Model ประมวลผล
     await pose.send({ image: videoElement });
+    // ซ่อน Loading หลังจากได้ผลลัพธ์ Frame แรก
     loadingOverlay.classList.add("hidden");
   },
-  width: 1280,
-  height: 720,
+  width: 1280, // ความกว้าง (px)
+  height: 720, // ความสูง (px) - 720p HD
 });
 
-// ฟังก์ชันแสดง Error สำหรับกล้อง
+// -----------------------------------------------------------------------------
+// Camera Error Handling
+// -----------------------------------------------------------------------------
+
+/**
+ * แสดง Error Message สำหรับปัญหากล้อง
+ *
+ * @param {string} errorType - ประเภท Error
+ *   - "not_allowed" = ไม่ได้รับอนุญาต
+ *   - "not_found" = ไม่พบกล้อง
+ *   - "not_readable" = กล้องถูกใช้งานอยู่
+ *   - "unknown" = ไม่ทราบสาเหตุ
+ */
 function showCameraError(errorType) {
   loadingOverlay.classList.add("hidden");
   startOverlay.classList.remove("hidden");
 
+  // ข้อความ Error แยกตามประเภทและภาษา
   const messages = {
     not_allowed: {
       th: "❌ ไม่ได้รับอนุญาตใช้กล้อง\n\nกรุณาอนุญาตการเข้าถึงกล้องใน Browser Settings แล้วรีเฟรชหน้า",
@@ -856,7 +1089,7 @@ function showCameraError(errorType) {
   const msg = messages[errorType] || messages.unknown;
   const errorText = lang === "th" ? msg.th : msg.en;
 
-  // แสดง Alert
+  // แสดง Notification
   uiManager.showNotification(errorText.split("\n")[0], "error", 10000);
 
   // แสดงบน Overlay
@@ -868,15 +1101,20 @@ function showCameraError(errorType) {
   console.error("Camera Error:", errorType);
 }
 
-// เริ่มต้นกล้องพร้อม Error Handling
+/**
+ * เริ่มต้น Camera พร้อม Error Handling
+ *
+ * @description
+ *   พยายามเริ่มกล้อง ถ้าเกิด Error จะจำแนกประเภทและแสดงข้อความ
+ */
 async function initCamera() {
   try {
     await camera.start();
-    console.log("Camera started successfully");
+    console.log("✅ Camera started successfully");
   } catch (error) {
-    console.error("Camera initialization failed:", error);
+    console.error("❌ Camera initialization failed:", error);
 
-    // จำแนกประเภท Error
+    // จำแนกประเภท Error จาก Error Name
     if (
       error.name === "NotAllowedError" ||
       error.name === "PermissionDeniedError"
@@ -898,5 +1136,13 @@ async function initCamera() {
   }
 }
 
+// =============================================================================
+// START APPLICATION
+// =============================================================================
+// โหลด Reference Data และเริ่มกล้อง
 loadReferenceData();
 initCamera();
+
+// =============================================================================
+// END OF FILE: script.js
+// =============================================================================

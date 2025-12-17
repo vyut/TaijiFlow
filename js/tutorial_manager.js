@@ -361,15 +361,11 @@ class TutorialManager {
    * Create Tutorial UI elements
    */
   createUI() {
-    // Tutorial Button
-    const btn = document.createElement("button");
-    btn.id = "tutorial-btn";
-    btn.innerHTML = "❓";
-    btn.title = "คู่มือการฝึก";
-    btn.className =
-      "fixed top-4 right-4 z-40 w-10 h-10 rounded-full bg-purple-600 hover:bg-purple-700 text-white text-xl shadow-lg transition-all";
-    btn.onclick = () => this.open();
-    document.body.appendChild(btn);
+    // Tutorial Button - ใช้ปุ่มที่มีอยู่ใน HTML แทนสร้างใหม่
+    const btn = document.getElementById("tutorial-btn");
+    if (btn) {
+      btn.onclick = () => this.open();
+    }
 
     // Tutorial Container (Modal)
     const container = document.createElement("div");

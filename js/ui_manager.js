@@ -839,9 +839,11 @@ class UIManager {
     notification.classList.add(bgColor);
 
     // กำหนด HTML Content
+    // หมายเหตุ: แปลง \n เป็น <br> เพื่อรองรับ multi-line notifications
+    const formattedMessage = message.replace(/\n/g, "<br>");
     notification.innerHTML = `
         <span class="text-2xl">${icon}</span>
-        <span class="font-medium">${message}</span>
+        <span class="font-medium">${formattedMessage}</span>
     `;
 
     // -------------------------------------------------------------------------

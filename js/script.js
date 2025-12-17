@@ -794,14 +794,23 @@ recordBtn.addEventListener("click", () => {
 
 // --- Keyboard Shortcuts ---
 window.addEventListener("keydown", (e) => {
+  // ไม่ทำงานถ้ากำลังพิมพ์ใน input/textarea
+  if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
   // ใช้ e.key เพื่อความทันสมัยและอ่านง่าย
   switch (e.key.toLowerCase()) {
+    // -------------------------------------------------------------------------
+    // F = Fullscreen Toggle
+    // -------------------------------------------------------------------------
     case "f":
-      e.preventDefault(); // ป้องกันพฤติกรรม default ของเบราว์เซอร์
+      e.preventDefault();
       fullscreenBtn.click();
       break;
+
+    // -------------------------------------------------------------------------
+    // D = Debug Mode Toggle
+    // -------------------------------------------------------------------------
     case "d":
-      // Toggle Debug Mode
       e.preventDefault();
       engine.setDebugMode(!engine.debugMode);
       uiManager.showNotification(
@@ -810,8 +819,89 @@ window.addEventListener("keydown", (e) => {
         1500
       );
       break;
+
+    // -------------------------------------------------------------------------
+    // Space = Start/Stop Training
+    // -------------------------------------------------------------------------
+    case " ":
+      e.preventDefault();
+      if (calibrator.isActive) {
+        // กำลัง Calibrate → ยกเลิก
+        calibrator.cancel();
+        loadReferenceData();
+        startOverlay.classList.remove("hidden");
+        if (document.fullscreenElement) document.exitFullscreen();
+        uiManager.showNotification("🛑 ยกเลิกการ Calibrate", "info");
+      } else if (isTrainingMode) {
+        // กำลังฝึก → หยุด
+        stopTrainingBtn.click();
+      } else if (currentExercise && currentLevel) {
+        // พร้อมฝึก → เริ่ม
+        startTrainingBtn.click();
+      }
+      break;
+
+    // -------------------------------------------------------------------------
+    // M = Mute/Unmute Audio
+    // -------------------------------------------------------------------------
+    case "m":
+      e.preventDefault();
+      audioBtn.click(); // Toggle audio button
+      break;
+
+    // -------------------------------------------------------------------------
+    // L = Language Toggle (TH/EN)
+    // -------------------------------------------------------------------------
+    case "l":
+      e.preventDefault();
+      langBtn.click(); // Toggle language button
+      break;
+
+    // -------------------------------------------------------------------------
+    // T = Theme Toggle (Dark/Light)
+    // -------------------------------------------------------------------------
+    case "t":
+      e.preventDefault();
+      themeBtn.click(); // Toggle theme button
+      break;
+
+    // -------------------------------------------------------------------------
+    // H or ? = Open Tutorial Popup (วิธีการใช้งาน)
+    // -------------------------------------------------------------------------
+    case "h":
+    case "?":
+      e.preventDefault();
+      tutorialManager.open(uiManager.currentLang);
+      break;
+
+    // -------------------------------------------------------------------------
+    // K = Show Keyboard Shortcuts
+    // -------------------------------------------------------------------------
+    case "k":
+      e.preventDefault();
+      const shortcuts = [
+        "⌨️ คีย์ลัด",
+        "━━━━━━━━━━━━",
+        "",
+        "Space = เริ่ม/หยุด",
+        "F = เต็มจอ",
+        "D = Debug Mode",
+        "",
+        "M = เปิด/ปิดเสียง",
+        "L = เปลี่ยนภาษา",
+        "T = เปลี่ยน Theme",
+        "",
+        "H = วิธีใช้งาน",
+        "K = คีย์ลัด (นี้)",
+        "Esc = ยกเลิก",
+      ].join("\n");
+      uiManager.showNotification(shortcuts, "info", 5000);
+      break;
+
+    // -------------------------------------------------------------------------
+    // Escape = Cancel Calibration
+    // -------------------------------------------------------------------------
     case "escape":
-      // Secret key: ยกเลิก Calibration และกลับหน้าแรก
       if (calibrator.isActive) {
         e.preventDefault();
         calibrator.cancel();
@@ -820,7 +910,6 @@ window.addEventListener("keydown", (e) => {
         uiManager.showNotification("ยกเลิกการปรับเทียบ", "info", 2000);
       }
       break;
-    // ลบ R key ออก เพราะการบันทึกเป็นอัตโนมัติแล้ว
   }
 });
 

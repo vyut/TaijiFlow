@@ -187,6 +187,49 @@ class DrawingManager {
   }
 
   // ===========================================================================
+  // 🎭 SILHOUETTE: วาดเงาผู้ฝึก
+  // ===========================================================================
+
+  /**
+   * วาด Silhouette (เงาร่างผู้ฝึก) จาก segmentation mask
+   *
+   * @param {CanvasImageSource} mask - Segmentation mask จาก MediaPipe
+   * @param {string} color - สีเงา (CSS color)
+   * @param {HTMLVideoElement} video - Video element (สำหรับขนาด)
+   */
+  drawSilhouette(mask, color, video) {
+    if (!mask) return;
+
+    this.ctx.save();
+
+    // ----- สร้าง temporary canvas สำหรับ mask processing -----
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = this.canvasWidth;
+    tempCanvas.height = this.canvasHeight;
+    const tempCtx = tempCanvas.getContext("2d");
+
+    // ----- วาด mask ลง temp canvas -----
+    tempCtx.drawImage(mask, 0, 0, this.canvasWidth, this.canvasHeight);
+
+    // ----- ใช้ mask เป็น clip path -----
+    // วิธีนี้: วาด mask แล้วใช้ composite-destination-in
+    this.ctx.globalCompositeOperation = "source-over";
+
+    // วาดสีทึบเต็มจอ
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+    // ใช้ mask เพื่อ "ตัด" เฉพาะส่วนที่เป็นคน
+    this.ctx.globalCompositeOperation = "destination-in";
+    this.ctx.drawImage(mask, 0, 0, this.canvasWidth, this.canvasHeight);
+
+    // Reset composite operation
+    this.ctx.globalCompositeOperation = "source-over";
+
+    this.ctx.restore();
+  }
+
+  // ===========================================================================
   // ⭕ GESTURE FEEDBACK: วาดวงกลมความคืบหน้าท่าทาง
   // ===========================================================================
 

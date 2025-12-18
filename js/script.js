@@ -215,6 +215,7 @@ const cancelCalibBtn = document.getElementById("cancel-calib-btn"); // ปุ่
 const langBtn = document.getElementById("lang-btn"); // สลับภาษา
 const themeBtn = document.getElementById("theme-btn"); // สลับ Theme
 const ghostBtn = document.getElementById("ghost-btn"); // Ghost Overlay
+const silhouetteBtn = document.getElementById("silhouette-btn"); // Silhouette Overlay
 
 // -----------------------------------------------------------------------------
 // New UX Flow Elements - ปุ่มและ Overlay สำหรับ Training Flow ใหม่
@@ -318,6 +319,39 @@ if (ghostBtn) {
       ghostBtn.classList.remove("bg-purple-600", "border-purple-700");
       ghostBtn.classList.add("bg-gray-700", "border-gray-600");
       uiManager.showNotification("👻 Ghost Overlay: OFF", "info", 1500);
+    }
+  });
+}
+
+// Silhouette Overlay Toggle Button
+let showSilhouette = false; // State variable
+if (silhouetteBtn) {
+  silhouetteBtn.addEventListener("click", async () => {
+    // Initialize on first use
+    if (!silhouetteManager.isReady) {
+      silhouetteBtn.disabled = true;
+      silhouetteBtn.innerText = "⏳";
+      const success = await silhouetteManager.init();
+      silhouetteBtn.disabled = false;
+      silhouetteBtn.innerText = "🎭";
+      if (!success) {
+        uiManager.showNotification("❌ ไม่สามารถโหลด Silhouette", "error");
+        return;
+      }
+    }
+
+    showSilhouette = !showSilhouette;
+
+    if (showSilhouette) {
+      silhouetteManager.enable();
+      silhouetteBtn.classList.add("bg-purple-600", "border-purple-700");
+      silhouetteBtn.classList.remove("bg-gray-700", "border-gray-600");
+      uiManager.showNotification("🎭 Silhouette: ON", "info", 1500);
+    } else {
+      silhouetteManager.disable();
+      silhouetteBtn.classList.remove("bg-purple-600", "border-purple-700");
+      silhouetteBtn.classList.add("bg-gray-700", "border-gray-600");
+      uiManager.showNotification("🎭 Silhouette: OFF", "info", 1500);
     }
   });
 }
@@ -897,6 +931,14 @@ window.addEventListener("keydown", (e) => {
       break;
 
     // -------------------------------------------------------------------------
+    // S = Silhouette Overlay Toggle
+    // -------------------------------------------------------------------------
+    case "s":
+      e.preventDefault();
+      if (silhouetteBtn) silhouetteBtn.click();
+      break;
+
+    // -------------------------------------------------------------------------
     // H or ? = Open Tutorial Popup (วิธีการใช้งาน)
     // -------------------------------------------------------------------------
     case "h":
@@ -1055,7 +1097,7 @@ async function loadReferenceData() {
  *   @param {ImageData} results.image - ภาพจาก Webcam
  *   @param {Array} results.poseLandmarks - พิกัด 33 จุดบนร่างกาย
  */
-function onResults(results) {
+async function onResults(results) {
   const timestamp = performance.now();
 
   // -------------------------------------------------------------------------
@@ -1135,6 +1177,20 @@ function onResults(results) {
     } else {
       // Normal Mode
 
+      // 0. วาด Silhouette (ถ้าเปิดใช้งาน) - ใช้ segmentationMask จาก Pose
+      if (
+        showSilhouette &&
+        silhouetteManager.isEnabled &&
+        results.segmentationMask
+      ) {
+        silhouetteManager.drawSilhouetteFromMask(
+          drawer.ctx,
+          results.segmentationMask,
+          drawer.canvasWidth,
+          drawer.canvasHeight
+        );
+      }
+
       // 1. วาด Ghost Skeleton ก่อน (ถ้าเปิดใช้งาน)
       if (showGhostOverlay && ghostManager.isPlaying) {
         ghostManager.update(); // อัปเดต frame
@@ -1149,8 +1205,10 @@ function onResults(results) {
         drawer.drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4); // วาด Path Reference
       }
 
-      // 3. วาด User Skeleton (ทับ Ghost)
-      drawer.drawSkeleton(results.poseLandmarks);
+      // 3. วาด User Skeleton (ทับ Ghost) - ถ้าไม่ได้ใช้ Silhouette
+      if (!showSilhouette) {
+        drawer.drawSkeleton(results.poseLandmarks);
+      }
 
       if (!calibrator.isActive && referencePath.length > 0) {
         // ไม่ใช่ Mode ปรับเทียบ และมี Path Reference
@@ -1257,6 +1315,8 @@ const pose = new Pose({
 pose.setOptions({
   modelComplexity: 1, // Full Model (สมดุลระหว่างความแม่นยำและความเร็ว)
   smoothLandmarks: true, // เปิด Smoothing
+  enableSegmentation: true, // เปิด Segmentation (สำหรับ Silhouette)
+  smoothSegmentation: true, // ทำให้ mask นิ่งขึ้น
   minDetectionConfidence: 0.5, // 50% ขึ้นไปถึงจะยอมรับ
   minTrackingConfidence: 0.5, // 50% ขึ้นไปถึงจะติดตามต่อ
 });

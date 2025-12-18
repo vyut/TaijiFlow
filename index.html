@@ -87,6 +87,12 @@ Version: 0.4 (2024-12-17)
       crossorigin="anonymous"
       defer
     ></script> -->
+    <!-- MediaPipe Selfie Segmentation (for Silhouette) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
 
     <!-- =========================================================================
         App Modules - โหลดเรียงตาม Dependencies (ไฟล์ที่ถูกพึ่งพาก่อน)
@@ -107,6 +113,8 @@ Version: 0.4 (2024-12-17)
     <script src="js/scoring_manager.js" defer></script>
     <!-- Ghost Overlay -->
     <script src="js/ghost_manager.js" defer></script>
+    <!-- Silhouette Overlay -->
+    <script src="js/silhouette_manager.js" defer></script>
 
     <!-- 2. UI/Translation - พึ่งพา Core Managers -->
     <!-- i18n TH/EN -->
@@ -246,6 +254,14 @@ Version: 0.4 (2024-12-17)
             title="แสดง Ghost (G)"
           >
             👻
+          </button>
+          <!-- Silhouette Overlay Button -->
+          <button
+            id="silhouette-btn"
+            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+            title="แสดงเงา (S)"
+          >
+            🎭
           </button>
           <!-- Language Button -->
           <button

@@ -247,22 +247,51 @@ Version: 0.4 (2024-12-17)
           >
             🔊
           </button>
-          <!-- Ghost Overlay Button -->
-          <button
-            id="ghost-btn"
-            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
-            title="แสดง Ghost (G)"
-          >
-            👻
-          </button>
-          <!-- Silhouette Overlay Button -->
-          <button
-            id="silhouette-btn"
-            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
-            title="แสดงเงา (S)"
-          >
-            🎭
-          </button>
+          <!-- Display Options Dropdown -->
+          <div class="relative" id="display-dropdown-container">
+            <button
+              id="display-btn"
+              class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+              title="ตั้งค่าการแสดงผล"
+            >
+              👁️
+            </button>
+            <!-- Dropdown Menu -->
+            <div
+              id="display-menu"
+              class="hidden absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-50"
+            >
+              <div
+                class="p-2 text-sm text-gray-400 border-b border-gray-600"
+                data-i18n="display_options"
+              >
+                Display
+              </div>
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  id="check-skeleton"
+                  class="mr-2"
+                  checked
+                />
+                <span>🦴 Skeleton (B)</span>
+              </label>
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+              >
+                <input type="checkbox" id="check-silhouette" class="mr-2" />
+                <span>🎭 Silhouette (S)</span>
+              </label>
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+              >
+                <input type="checkbox" id="check-ghost" class="mr-2" />
+                <span>👻 Ghost (G)</span>
+              </label>
+            </div>
+          </div>
           <!-- Language Button -->
           <button
             id="lang-btn"

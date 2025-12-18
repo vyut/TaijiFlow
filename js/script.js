@@ -214,8 +214,13 @@ const cancelCalibBtn = document.getElementById("cancel-calib-btn"); // ปุ่
 // Settings Buttons
 const langBtn = document.getElementById("lang-btn"); // สลับภาษา
 const themeBtn = document.getElementById("theme-btn"); // สลับ Theme
-const ghostBtn = document.getElementById("ghost-btn"); // Ghost Overlay
-const silhouetteBtn = document.getElementById("silhouette-btn"); // Silhouette Overlay
+
+// Display Dropdown Elements
+const displayBtn = document.getElementById("display-btn");
+const displayMenu = document.getElementById("display-menu");
+const checkSkeleton = document.getElementById("check-skeleton");
+const checkSilhouette = document.getElementById("check-silhouette");
+const checkGhost = document.getElementById("check-ghost");
 
 // -----------------------------------------------------------------------------
 // New UX Flow Elements - ปุ่มและ Overlay สำหรับ Training Flow ใหม่
@@ -301,57 +306,54 @@ audioBtn.addEventListener("click", () => {
   audioBtn.classList.toggle("bg-gray-500", !isEnabled);
 });
 
-// Ghost Overlay Toggle Button
-let showGhostOverlay = false; // State variable
-if (ghostBtn) {
-  ghostBtn.addEventListener("click", () => {
-    showGhostOverlay = !showGhostOverlay;
+// Skeleton Display State (เปิดเป็น default)
+let showSkeleton = true;
+let showGhostOverlay = false;
+let showSilhouette = false;
 
-    if (showGhostOverlay) {
-      // เริ่มเล่น Ghost
-      ghostManager.start();
-      ghostBtn.classList.add("bg-purple-600", "border-purple-700");
-      ghostBtn.classList.remove("bg-gray-700", "border-gray-600");
-      uiManager.showNotification("👻 Ghost Overlay: ON", "info", 1500);
-    } else {
-      // หยุดเล่น Ghost
-      ghostManager.stop();
-      ghostBtn.classList.remove("bg-purple-600", "border-purple-700");
-      ghostBtn.classList.add("bg-gray-700", "border-gray-600");
-      uiManager.showNotification("👻 Ghost Overlay: OFF", "info", 1500);
+// Display Dropdown Toggle
+if (displayBtn && displayMenu) {
+  displayBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    displayMenu.classList.toggle("hidden");
+  });
+
+  // ปิด dropdown เมื่อคลิกข้างนอก
+  document.addEventListener("click", (e) => {
+    if (!displayMenu.contains(e.target) && e.target !== displayBtn) {
+      displayMenu.classList.add("hidden");
     }
   });
 }
 
-// Silhouette Overlay Toggle Button
-let showSilhouette = false; // State variable
-if (silhouetteBtn) {
-  silhouetteBtn.addEventListener("click", async () => {
-    // Initialize on first use
-    if (!silhouetteManager.isReady) {
-      silhouetteBtn.disabled = true;
-      silhouetteBtn.innerText = "⏳";
-      const success = await silhouetteManager.init();
-      silhouetteBtn.disabled = false;
-      silhouetteBtn.innerText = "🎭";
-      if (!success) {
-        uiManager.showNotification("❌ ไม่สามารถโหลด Silhouette", "error");
-        return;
-      }
-    }
+// Checkbox: Skeleton
+if (checkSkeleton) {
+  checkSkeleton.checked = showSkeleton;
+  checkSkeleton.addEventListener("change", () => {
+    showSkeleton = checkSkeleton.checked;
+  });
+}
 
-    showSilhouette = !showSilhouette;
-
+// Checkbox: Silhouette
+if (checkSilhouette) {
+  checkSilhouette.addEventListener("change", () => {
+    showSilhouette = checkSilhouette.checked;
     if (showSilhouette) {
       silhouetteManager.enable();
-      silhouetteBtn.classList.add("bg-purple-600", "border-purple-700");
-      silhouetteBtn.classList.remove("bg-gray-700", "border-gray-600");
-      uiManager.showNotification("🎭 Silhouette: ON", "info", 1500);
     } else {
       silhouetteManager.disable();
-      silhouetteBtn.classList.remove("bg-purple-600", "border-purple-700");
-      silhouetteBtn.classList.add("bg-gray-700", "border-gray-600");
-      uiManager.showNotification("🎭 Silhouette: OFF", "info", 1500);
+    }
+  });
+}
+
+// Checkbox: Ghost
+if (checkGhost) {
+  checkGhost.addEventListener("change", () => {
+    showGhostOverlay = checkGhost.checked;
+    if (showGhostOverlay) {
+      ghostManager.start();
+    } else {
+      ghostManager.stop();
     }
   });
 }
@@ -927,7 +929,10 @@ window.addEventListener("keydown", (e) => {
     // -------------------------------------------------------------------------
     case "g":
       e.preventDefault();
-      if (ghostBtn) ghostBtn.click();
+      if (checkGhost) {
+        checkGhost.checked = !checkGhost.checked;
+        checkGhost.dispatchEvent(new Event("change"));
+      }
       break;
 
     // -------------------------------------------------------------------------
@@ -935,7 +940,21 @@ window.addEventListener("keydown", (e) => {
     // -------------------------------------------------------------------------
     case "s":
       e.preventDefault();
-      if (silhouetteBtn) silhouetteBtn.click();
+      if (checkSilhouette) {
+        checkSilhouette.checked = !checkSilhouette.checked;
+        checkSilhouette.dispatchEvent(new Event("change"));
+      }
+      break;
+
+    // -------------------------------------------------------------------------
+    // B = Skeleton (Bones) Toggle
+    // -------------------------------------------------------------------------
+    case "b":
+      e.preventDefault();
+      if (checkSkeleton) {
+        checkSkeleton.checked = !checkSkeleton.checked;
+        checkSkeleton.dispatchEvent(new Event("change"));
+      }
       break;
 
     // -------------------------------------------------------------------------
@@ -1205,8 +1224,8 @@ async function onResults(results) {
         drawer.drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4); // วาด Path Reference
       }
 
-      // 3. วาด User Skeleton (ทับ Ghost) - ถ้าไม่ได้ใช้ Silhouette
-      if (!showSilhouette) {
+      // 3. วาด User Skeleton (ถ้าเปิด)
+      if (showSkeleton) {
         drawer.drawSkeleton(results.poseLandmarks);
       }
 

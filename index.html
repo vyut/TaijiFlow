@@ -201,7 +201,44 @@ Version: 0.4 (2024-12-17)
       <div class="mb-4 flex flex-wrap justify-between items-center gap-4">
         <!-- Left: Dropdowns -->
         <div class="flex gap-4 flex-wrap">
-                    <!-- Display Options Dropdown -->
+          <!-- Category Dropdown (สำหรับขยายในอนาคต) -->
+          <div>
+            <select
+              id="category-select"
+              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+            >
+              <option value="" disabled>-- เลือกหมวดหมู่ --</option>
+              <option value="silk_single" selected>
+                ท่าม้วนไหม - มือเดียว
+              </option>
+              <option value="silk_double" disabled>ท่าม้วนไหม - สองมือ</option>
+            </select>
+          </div>
+          <!-- Exercise Dropdown -->
+          <div>
+            <select
+              id="exercise-select"
+              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+            >
+              <option value="" disabled selected>-- เลือกท่าฝึก --</option>
+              <option value="rh_cw">1. มือขวา - ตามเข็ม</option>
+              <option value="rh_ccw">2. มือขวา - ทวนเข็ม</option>
+              <option value="lh_cw">3. มือซ้าย - ตามเข็ม</option>
+              <option value="lh_ccw">4. มือซ้าย - ทวนเข็ม</option>
+            </select>
+          </div>
+          <div>
+            <select
+              id="level-select"
+              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+            >
+              <option value="" disabled selected>-- เลือกระดับ --</option>
+              <option value="L1">1. ท่านั่ง</option>
+              <option value="L2">2. ท่ายืน</option>
+              <option value="L3">3. ท่ายืนย่อ</option>
+            </select>
+          </div>
+          <!-- Display Options Dropdown -->
           <div class="relative" id="display-dropdown-container">
             <button
               id="display-btn"
@@ -245,43 +282,6 @@ Version: 0.4 (2024-12-17)
                 <span style="color: white">👻 Ghost (G)</span>
               </label>
             </div>
-          </div>
-          <!-- Category Dropdown (สำหรับขยายในอนาคต) -->
-          <div>
-            <select
-              id="category-select"
-              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
-            >
-              <option value="" disabled>-- เลือกหมวดหมู่ --</option>
-              <option value="silk_single" selected>
-                ท่าม้วนไหม - มือเดียว
-              </option>
-              <option value="silk_double" disabled>ท่าม้วนไหม - สองมือ</option>
-            </select>
-          </div>
-          <!-- Exercise Dropdown -->
-          <div>
-            <select
-              id="exercise-select"
-              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
-            >
-              <option value="" disabled selected>-- เลือกท่าฝึก --</option>
-              <option value="rh_cw">1. มือขวา - ตามเข็ม</option>
-              <option value="rh_ccw">2. มือขวา - ทวนเข็ม</option>
-              <option value="lh_cw">3. มือซ้าย - ตามเข็ม</option>
-              <option value="lh_ccw">4. มือซ้าย - ทวนเข็ม</option>
-            </select>
-          </div>
-          <div>
-            <select
-              id="level-select"
-              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
-            >
-              <option value="" disabled selected>-- เลือกระดับ --</option>
-              <option value="L1">1. ท่านั่ง</option>
-              <option value="L2">2. ท่ายืน</option>
-              <option value="L3">3. ท่ายืนย่อ</option>
-            </select>
           </div>
         </div>
 

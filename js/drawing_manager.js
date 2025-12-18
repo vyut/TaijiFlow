@@ -182,6 +182,40 @@ class DrawingManager {
   }
 
   // ===========================================================================
+  // 🎬 GHOST SILHOUETTE VIDEO: วาดเงาคนสอนจากวิดีโอ
+  // ===========================================================================
+
+  /**
+   * วาดเงาคนสอนจาก silhouette video
+   *
+   * @param {HTMLVideoElement} video - Video element ที่มี silhouette
+   * @param {number} opacity - ความโปร่งใส (0-1)
+   */
+  drawSilhouetteVideo(video, opacity = 0.4) {
+    if (!video || video.readyState < 2) return; // ยังโหลดไม่เสร็จ
+
+    this.ctx.save();
+
+    // ----- Mirror Logic (เหมือน drawSkeleton) -----
+    const shouldMirror = this.mirrorDisplay;
+    if (shouldMirror) {
+      this.ctx.scale(-1, 1);
+      this.ctx.translate(-this.canvasWidth, 0);
+    }
+
+    // ----- Global Opacity -----
+    this.ctx.globalAlpha = opacity;
+
+    // ----- วาด video ลง canvas -----
+    // Silhouette video เป็นขาวบนพื้นดำ
+    // ใช้ globalCompositeOperation = 'lighter' เพื่อให้เงาดูโดดเด่น
+    this.ctx.globalCompositeOperation = "lighter";
+    this.ctx.drawImage(video, 0, 0, this.canvasWidth, this.canvasHeight);
+
+    this.ctx.restore();
+  }
+
+  // ===========================================================================
   // 🎭 SILHOUETTE: วาดเงาผู้ฝึก
   // ===========================================================================
 

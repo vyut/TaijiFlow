@@ -272,6 +272,14 @@ Version: 0.4 (2024-12-17)
       let timerInterval;
       let frameCounter = 0; // For frame rate optimization (record every 3rd frame)
 
+      // Silhouette Recording
+      let silhouetteMediaRecorder;
+      let silhouetteChunks = [];
+      const silhouetteCanvas = document.createElement("canvas");
+      silhouetteCanvas.width = 1280;
+      silhouetteCanvas.height = 720;
+      const silhouetteCtx = silhouetteCanvas.getContext("2d");
+
       // =============================================================
       // Update Filename Preview when selection changes
       // =============================================================
@@ -297,6 +305,8 @@ Version: 0.4 (2024-12-17)
       pose.setOptions({
         modelComplexity: 1,
         smoothLandmarks: true,
+        enableSegmentation: true, // เปิดใช้ segmentation mask สำหรับ silhouette
+        smoothSegmentation: true,
         minDetectionConfidence: 0.5,
         minTrackingConfidence: 0.5,
       });
@@ -361,6 +371,33 @@ Version: 0.4 (2024-12-17)
               timestamp: Date.now() - startTime,
               landmarks: roundedLandmarks,
             });
+
+            // วาด Silhouette ลง offscreen canvas (ขาวบนพื้นดำ)
+            if (results.segmentationMask) {
+              silhouetteCtx.clearRect(
+                0,
+                0,
+                silhouetteCanvas.width,
+                silhouetteCanvas.height
+              );
+              silhouetteCtx.fillStyle = "black";
+              silhouetteCtx.fillRect(
+                0,
+                0,
+                silhouetteCanvas.width,
+                silhouetteCanvas.height
+              );
+
+              // วาด segmentation mask เป็นสีขาว
+              silhouetteCtx.globalCompositeOperation = "source-over";
+              silhouetteCtx.drawImage(
+                results.segmentationMask,
+                0,
+                0,
+                silhouetteCanvas.width,
+                silhouetteCanvas.height
+              );
+            }
           }
         }
         canvasCtx.restore();
@@ -423,6 +460,24 @@ Version: 0.4 (2024-12-17)
         };
         mediaRecorder.start();
 
+        // Silhouette recording at 30 FPS
+        silhouetteChunks = [];
+        const silhouetteStream = silhouetteCanvas.captureStream(30);
+        console.log(
+          "📊 silhouetteStream tracks:",
+          silhouetteStream.getTracks().length
+        );
+
+        silhouetteMediaRecorder = new MediaRecorder(silhouetteStream, options);
+        silhouetteMediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) silhouetteChunks.push(event.data);
+        };
+        silhouetteMediaRecorder.start();
+        console.log(
+          "✅ silhouetteMediaRecorder started, state:",
+          silhouetteMediaRecorder.state
+        );
+
         startTime = Date.now();
         stopBtn.disabled = false;
         stopBtn.classList.remove("opacity-50", "cursor-not-allowed");
@@ -454,15 +509,27 @@ Version: 0.4 (2024-12-17)
         if (!isRecording) return;
 
         isRecording = false;
-        mediaRecorder.stop();
         clearInterval(timerInterval);
-
         statusText.innerText = "⏳ กำลังบันทึกไฟล์...";
 
-        setTimeout(() => {
-          downloadData();
-          resetUI();
-        }, 500);
+        // รอให้ทั้ง 2 recorders หยุดสมบูรณ์ก่อน download
+        let stoppedCount = 0;
+
+        function onRecorderStopped() {
+          stoppedCount++;
+          console.log(`📊 Recorder stopped: ${stoppedCount}/2`);
+          if (stoppedCount === 2) {
+            // ทั้ง 2 recorder หยุดแล้ว จึง download
+            downloadData();
+            resetUI();
+          }
+        }
+
+        mediaRecorder.onstop = onRecorderStopped;
+        silhouetteMediaRecorder.onstop = onRecorderStopped;
+
+        mediaRecorder.stop();
+        silhouetteMediaRecorder.stop();
       }
 
       // =============================================================
@@ -471,10 +538,12 @@ Version: 0.4 (2024-12-17)
       function downloadData() {
         const exercise = exerciseSelect.value;
         const level = levelSelect.value;
-        const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+
+        console.log("📊 Debug - recordedChunks:", recordedChunks.length);
+        console.log("📊 Debug - silhouetteChunks:", silhouetteChunks.length);
 
         // 1. Download JSON (Landmarks) - ใช้ชื่อตามท่าและระดับ
-        const jsonString = JSON.stringify(recordedLandmarks); // Optimization 3: Minify JSON (ไม่ใส่ null, 2 -> ไม่มี whitespace)
+        const jsonString = JSON.stringify(recordedLandmarks);
         const jsonBlob = new Blob([jsonString], { type: "application/json" });
         const jsonUrl = URL.createObjectURL(jsonBlob);
         const jsonLink = document.createElement("a");
@@ -482,16 +551,40 @@ Version: 0.4 (2024-12-17)
         jsonLink.download = `${exercise}_${level}.json`;
         jsonLink.click();
 
-        // 2. Download Video (WebM) - เก็บ timestamp ไว้หา backup
-        const videoBlob = new Blob(recordedChunks, { type: "video/webm" });
-        const videoUrl = URL.createObjectURL(videoBlob);
-        const videoLink = document.createElement("a");
-        videoLink.href = videoUrl;
-        videoLink.download = `${exercise}_${level}_${timestamp}.webm`;
-        videoLink.click();
+        // 2. Download Original Video (WebM) - delay เพื่อ browser ไม่ block
+        setTimeout(() => {
+          if (recordedChunks.length > 0) {
+            const videoBlob = new Blob(recordedChunks, { type: "video/webm" });
+            const videoUrl = URL.createObjectURL(videoBlob);
+            const videoLink = document.createElement("a");
+            videoLink.href = videoUrl;
+            videoLink.download = `${exercise}_${level}.webm`;
+            videoLink.click();
+            console.log("✅ Downloaded original video");
+          } else {
+            console.warn("⚠️ No video chunks!");
+          }
+        }, 500);
+
+        // 3. Download Silhouette Video (WebM) - delay เพิ่มเติม
+        setTimeout(() => {
+          if (silhouetteChunks.length > 0) {
+            const silhouetteBlob = new Blob(silhouetteChunks, {
+              type: "video/webm",
+            });
+            const silhouetteUrl = URL.createObjectURL(silhouetteBlob);
+            const silhouetteLink = document.createElement("a");
+            silhouetteLink.href = silhouetteUrl;
+            silhouetteLink.download = `${exercise}_${level}_silhouette.webm`;
+            silhouetteLink.click();
+            console.log("✅ Downloaded silhouette video");
+          } else {
+            console.warn("⚠️ No silhouette chunks!");
+          }
+        }, 1000);
 
         console.log(
-          `✅ บันทึกเสร็จ: ${exercise}_${level}.json (${recordedLandmarks.length} frames)`
+          `✅ บันทึกเสร็จ: ${exercise}_${level} (${recordedLandmarks.length} frames)`
         );
       }
 

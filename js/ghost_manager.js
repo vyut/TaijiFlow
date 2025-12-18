@@ -35,6 +35,13 @@ class GhostManager {
     this.lastUpdateTime = 0; // For calculating deltaTime
 
     // -------------------------------------------------------------------------
+    // Silhouette Video (เงาคนสอน)
+    // -------------------------------------------------------------------------
+    this.silhouetteVideo = null; // <video> element สำหรับเล่นเงา
+    this.silhouetteLoaded = false; // โหลดสำเร็จหรือยัง
+    this.useSilhouette = true; // ใช้ silhouette แทน skeleton
+
+    // -------------------------------------------------------------------------
     // Visual Settings
     // -------------------------------------------------------------------------
     this.opacity = 0.4; // Ghost transparency (0-1)
@@ -71,10 +78,50 @@ class GhostManager {
   }
 
   /**
+   * โหลด silhouette video
+   * @param {string} url - path ไปยังไฟล์ silhouette.webm
+   * @returns {Promise<boolean>} success
+   */
+  async loadSilhouetteVideo(url) {
+    return new Promise((resolve) => {
+      this.silhouetteVideo = document.createElement("video");
+      this.silhouetteVideo.src = url;
+      this.silhouetteVideo.loop = true;
+      this.silhouetteVideo.muted = true;
+      this.silhouetteVideo.playsInline = true;
+
+      this.silhouetteVideo.onloadeddata = () => {
+        this.silhouetteLoaded = true;
+        console.log(`[Ghost] Silhouette video loaded: ${url}`);
+        resolve(true);
+      };
+
+      this.silhouetteVideo.onerror = () => {
+        console.warn(`[Ghost] Silhouette video not found: ${url}`);
+        this.silhouetteLoaded = false;
+        resolve(false);
+      };
+
+      this.silhouetteVideo.load();
+    });
+  }
+
+  /**
+   * ดึง video element สำหรับวาด
+   * @returns {HTMLVideoElement|null}
+   */
+  getSilhouetteVideo() {
+    if (this.silhouetteLoaded && this.isPlaying) {
+      return this.silhouetteVideo;
+    }
+    return null;
+  }
+
+  /**
    * เริ่มเล่น Ghost
    */
   start() {
-    if (this.frames.length === 0) {
+    if (this.frames.length === 0 && !this.silhouetteLoaded) {
       console.warn("[Ghost] No data loaded");
       return;
     }
@@ -84,6 +131,12 @@ class GhostManager {
     this.elapsedTime = 0;
     this.lastUpdateTime = performance.now();
 
+    // เล่น silhouette video ถ้ามี
+    if (this.silhouetteLoaded && this.silhouetteVideo) {
+      this.silhouetteVideo.currentTime = 0;
+      this.silhouetteVideo.play();
+    }
+
     console.log("[Ghost] Playback started");
   }
 
@@ -92,6 +145,12 @@ class GhostManager {
    */
   stop() {
     this.isPlaying = false;
+
+    // หยุด silhouette video
+    if (this.silhouetteVideo) {
+      this.silhouetteVideo.pause();
+    }
+
     console.log("[Ghost] Playback stopped");
   }
 

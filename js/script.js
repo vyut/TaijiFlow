@@ -1075,8 +1075,17 @@ async function loadReferenceData() {
     // โหลด full skeleton data เข้า Ghost Manager
     ghostManager.load(data);
 
+    // โหลด silhouette video (ถ้ามี)
+    const silhouetteUrl = `data/${currentExercise}_${currentLevel}_silhouette.webm`;
+    await ghostManager.loadSilhouetteVideo(silhouetteUrl);
+
     referenceDataLoaded = true;
     console.log(`✅ Loaded ${referencePath.length} points (Path + Ghost).`);
+
+    // ถ้า Ghost checkbox เปิดอยู่ ให้ restart ghost playback
+    if (showGhostOverlay) {
+      ghostManager.start();
+    }
   } catch (error) {
     console.warn("⚠️ Reference data not found:", error.message);
     referencePath = [];
@@ -1223,12 +1232,21 @@ async function onResults(results) {
         );
       }
 
-      // 1. วาด Ghost Skeleton ก่อน (ถ้าเปิดใช้งาน)
+      // 1. วาด Ghost (เงาคนสอน) ถ้าเปิดใช้งาน
       if (showGhostOverlay && ghostManager.isPlaying) {
         ghostManager.update(); // อัปเดต frame
-        const ghostLandmarks = ghostManager.getCurrentFrame();
-        if (ghostLandmarks) {
-          drawer.drawGhostSkeleton(ghostLandmarks, ghostManager.opacity);
+
+        // Priority: Silhouette Video > Ghost Skeleton
+        const silhouetteVideo = ghostManager.getSilhouetteVideo();
+        if (silhouetteVideo) {
+          // มี silhouette video - วาดเงา
+          drawer.drawSilhouetteVideo(silhouetteVideo, ghostManager.opacity);
+        } else {
+          // ไม่มี silhouette video - ใช้ skeleton แทน
+          const ghostLandmarks = ghostManager.getCurrentFrame();
+          if (ghostLandmarks) {
+            drawer.drawGhostSkeleton(ghostLandmarks, ghostManager.opacity);
+          }
         }
       }
 

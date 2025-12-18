@@ -896,20 +896,36 @@ checkWeightShift(leftHip, rightHip, leftAnkle, rightAnkle) {
 
 ## 🎮 Level Configuration
 
+แต่ละระดับมีจำนวนกฎที่ตรวจสอบแตกต่างกัน เพื่อให้เหมาะกับความสามารถของผู้ฝึก:
+
+### สรุประดับความยาก
+
+| ระดับ | จำนวนกฎ | กลุ่มเป้าหมาย | ท่า |
+|-------|:-------:|--------------|-----|
+| **L1** | **3 กฎ** | ผู้เริ่มต้น/สูงอายุ | นั่ง |
+| **L2** | **6 กฎ** | ระดับกลาง | ยืน |
+| **L3** | **8 กฎ** | ระดับสูง | ยืนย่อ |
+
+### ตารางละเอียด
+
 ```
    ┌────────────────┬─────┬─────┬─────┐
    │     Rule       │ L1  │ L2  │ L3  │
    │                │(นั่ง)│(ยืน) │(ย่อ) │
    ├────────────────┼─────┼─────┼─────┤
    │ Path Accuracy  │  ✅  │  ✅  │  ✅  │
-   │ Arm Rotation   │  ✅  │  ✅  │  ✅  │
+   │ Arm Rotation   │  ❌  │  ✅  │  ✅  │
    │ Elbow Sinking  │  ✅  │  ✅  │  ✅  │
-   │ Waist Initiation│ ✅  │  ✅  │  ✅  │
+   │ Waist Initiation│ ❌  │  ✅  │  ✅  │
    │ Vertical Stab. │  ❌  │  ✅  │  ✅  │
-   │ Smoothness     │  ✅  │  ✅  │  ✅  │
+   │ Smoothness     │  ❌  │  ❌  │  ✅  │
    │ Continuity     │  ✅  │  ✅  │  ✅  │
    │ Weight Shift   │  ❌  │  ❌  │  ✅  │
    └────────────────┴─────┴─────┴─────┘
+   
+   L1 (3 กฎ): Path, Elbow, Continuity
+   L2 (6 กฎ): + Rotation, Waist, Stability
+   L3 (8 กฎ): + Smoothness, Weight (ครบทุกกฎ)
 ```
 
 ---

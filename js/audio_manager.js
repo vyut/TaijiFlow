@@ -161,9 +161,9 @@ class AudioManager {
     // เก็บ Timestamp ของการพูดล่าสุด (Unix Timestamp in ms)
     this.lastSpeakTime = 0;
 
-    // กำหนดระยะ Cooldown 2 วินาที
+    // กำหนดระยะ Cooldown 5 วินาที
     // เหตุผล: ให้ผู้ฝึกมีเวลาปรับท่าตามคำแนะนำก่อนได้รับคำแนะนำถัดไป
-    this.cooldownMs = 2000;
+    this.cooldownMs = 5000;
 
     // -------------------------------------------------------------------------
     // Language Settings

@@ -98,12 +98,19 @@ let trainingTimerId = null; // ID ของ setInterval
 let trainingStartTime = 0; // เวลาเริ่มฝึก
 
 // -----------------------------------------------------------------------------
-// Performance Optimization - ลด CPU Load
+// Performance Optimization - ลด CPU Load & Feedback Frequency
 // -----------------------------------------------------------------------------
-// เช็ค Heuristics ทุก 3 frames แทนทุก frame
-// ~30 FPS → ~10 FPS สำหรับ Heuristics = ประหยัด CPU ~70%
-const HEURISTICS_CHECK_INTERVAL = 3;
+// เช็ค Heuristics ทุก 9 frames แทนทุก frame
+// ~30 FPS → ~3 FPS สำหรับ Heuristics = feedback ไม่กระพริบถี่เกินไป
+const HEURISTICS_CHECK_INTERVAL = 9;
 let frameCounter = 0;
+
+// -----------------------------------------------------------------------------
+// Feedback Display Cooldown - ให้ feedback ค้างไว้ให้อ่านได้
+// -----------------------------------------------------------------------------
+const FEEDBACK_DISPLAY_COOLDOWN_MS = 5000; // 5 วินาที
+let lastDisplayedFeedbacks = []; // feedback ล่าสุดที่แสดง
+let lastFeedbackDisplayTime = 0; // เวลาที่แสดง feedback ล่าสุด
 
 // -----------------------------------------------------------------------------
 // FPS Tracking - สำหรับ Debug Overlay (NFR)
@@ -626,7 +633,7 @@ function endTrainingSession() {
 
   // 5. สรุปคะแนนและ Export Data (wrap ใน try-catch เพื่อไม่ให้ crash)
   try {
-    const summary = scorer.getSessionSummary();
+    const summary = scorer.getSummary();
     const grade = ScoringManager.getGrade(summary.score, uiManager.currentLang);
 
     // Export Data (ถ้ามีข้อมูล)
@@ -652,8 +659,8 @@ function endTrainingSession() {
       DataExporter.exportFullSession(fullDataset);
     }
 
-    // แสดง Score Popup
-    uiManager.showScoreSummary(summary.score, grade.label, summary.totalErrors);
+    // แสดง Score Popup (ส่ง summary object และ grade object)
+    uiManager.showScoreSummary(summary, grade);
   } catch (error) {
     console.error("Error in endTrainingSession:", error);
     // ยังคงแสดง notification แจ้งเตือน
@@ -1235,8 +1242,8 @@ async function onResults(results) {
         drawer.drawSkeleton(results.poseLandmarks);
       }
 
-      if (!calibrator.isActive && referencePath.length > 0) {
-        // ไม่ใช่ Mode ปรับเทียบ และมี Path Reference
+      if (isTrainingMode && !calibrator.isActive && referencePath.length > 0) {
+        // Training Mode เท่านั้น + ไม่ใช่ Mode ปรับเทียบ + มี Path Reference
         // Performance: เช็ค Heuristics ทุก 3 frames (~10 FPS แทน 30 FPS) เพื่อประหยัด CPU
         frameCounter++;
         const shouldCheckHeuristics =
@@ -1253,7 +1260,20 @@ async function onResults(results) {
             currentExercise, // ส่งชื่อท่า
             currentLevel // ส่งเลเวล (L1, L2, L3)
           );
-          drawer.drawFeedbackPanel(feedbacks);
+
+          // 1.0 Feedback Display Cooldown - ให้ข้อความค้างไว้ให้อ่านได้
+          const now = Date.now();
+          if (feedbacks.length > 0) {
+            // มี feedback ใหม่
+            if (now - lastFeedbackDisplayTime >= FEEDBACK_DISPLAY_COOLDOWN_MS) {
+              // ครบ cooldown แล้ว - อัพเดท feedback ใหม่
+              lastDisplayedFeedbacks = feedbacks;
+              lastFeedbackDisplayTime = now;
+            }
+            // ถ้ายังไม่ครบ cooldown จะใช้ lastDisplayedFeedbacks ที่มีอยู่
+          }
+          // แสดง feedback (ใช้ค่าล่าสุดที่ไม่เปลี่ยนถี่เกินไป)
+          drawer.drawFeedbackPanel(lastDisplayedFeedbacks);
 
           // 1.1 พูดแจ้งเตือนเมื่อมีข้อผิดพลาด (มี Cooldown ป้องกันพูดซ้ำเร็วเกินไป)
           audioManager.speakFeedback(feedbacks);

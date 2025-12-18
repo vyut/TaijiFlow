@@ -294,13 +294,19 @@ class DrawingManager {
   drawFeedbackPanel(feedbacks) {
     if (!feedbacks || feedbacks.length === 0) return;
 
+    // ----- Flip canvas กลับเพื่อให้ข้อความไม่ mirror -----
+    this.ctx.save();
+    this.ctx.scale(-1, 1);
+    this.ctx.translate(-this.canvasWidth, 0);
+
     // ----- Position & Size -----
-    const boxX = 20,
-      boxY = 20,
-      padding = 15,
+    // ตอนนี้ canvas flip กลับแล้ว วาดปกติที่ซ้ายบน
+    const padding = 15,
       lineHeight = 30;
     const boxWidth = 450;
     const boxHeight = feedbacks.length * lineHeight + padding * 2;
+    const boxX = 20; // ซ้ายบน (ไม่ต้อง flip)
+    const boxY = 20;
 
     // ----- พื้นหลังกล่อง -----
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
@@ -320,6 +326,8 @@ class DrawingManager {
         boxY + padding + index * lineHeight
       );
     });
+
+    this.ctx.restore();
   }
 
   // ===========================================================================

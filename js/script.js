@@ -397,6 +397,11 @@ gestureManager.onStopTraining = () => {
     calibrator.cancel();
     loadReferenceData(); // คืนค่า Path เดิม
     startOverlay.classList.remove("hidden"); // แสดง Overlay กลับมา
+    // Reset button states
+    startTrainingBtn.disabled = false;
+    startTrainingBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    stopTrainingBtn.disabled = true;
+    stopTrainingBtn.classList.add("opacity-50", "cursor-not-allowed");
     // ออกจาก Fullscreen ถ้าอยู่
     if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -571,6 +576,13 @@ async function startTrainingFlow() {
   // 4. เริ่ม Calibrate (ไม่ว่า fullscreen จะสำเร็จหรือไม่)
   calibrator.start();
   audioManager.announce("calib_start");
+
+  // 5. อัปเดตสถานะปุ่ม: Disable Start, Enable Stop
+  startTrainingBtn.disabled = true;
+  startTrainingBtn.classList.add("opacity-50", "cursor-not-allowed");
+  stopTrainingBtn.disabled = false;
+  stopTrainingBtn.classList.remove("opacity-50", "cursor-not-allowed");
+
   // รอ Calibration เสร็จ (callback จะเรียก startTrainingAfterCalibration)
 }
 
@@ -712,7 +724,25 @@ startTrainingBtn.addEventListener("click", () => {
 
 // Event Listener สำหรับปุ่มหยุดการฝึก (Separate button)
 stopTrainingBtn.addEventListener("click", () => {
-  if (isTrainingMode) {
+  // 1. หยุด Calibration ถ้ากำลัง Calibrate อยู่
+  if (calibrator.isActive) {
+    console.log("[Stop] ✋ Cancelling Calibration via Stop Button");
+    calibrator.cancel();
+    loadReferenceData();
+    startOverlay.classList.remove("hidden");
+    // Reset button states
+    startTrainingBtn.disabled = false;
+    startTrainingBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    stopTrainingBtn.disabled = true;
+    stopTrainingBtn.classList.add("opacity-50", "cursor-not-allowed");
+    // ออกจาก Fullscreen ถ้าอยู่
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+    uiManager.showNotification("🛑 ยกเลิกการ Calibrate", "info");
+  }
+  // 2. หยุดการฝึก ถ้ากำลังฝึกอยู่
+  else if (isTrainingMode) {
     endTrainingSession();
   }
 });

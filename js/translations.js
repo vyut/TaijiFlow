@@ -191,6 +191,8 @@ const TRANSLATIONS = {
     overlay_step3: 'กดปุ่ม "🏃 เริ่มการฝึก"',
     // หมายเหตุ
     overlay_note: "⏱️ ฝึกท่าละ 5 นาที • กด 🛑 เพื่อหยุดก่อนเวลา",
+    // Feedback Link
+    feedback_link: "📝 ช่วยพัฒนาแอป • ตอบแบบสอบถาม",
 
     // -------------------------------------------------------------------------
     // Alert Messages (ข้อความแจ้งเตือน)
@@ -331,6 +333,7 @@ const TRANSLATIONS = {
     overlay_step2: 'Select "Level" to train',
     overlay_step3: 'Press "🏃 Start Training"',
     overlay_note: "⏱️ 5 min per exercise • Press 🛑 to stop early",
+    feedback_link: "📝 Help improve this app • Give Feedback",
 
     // -------------------------------------------------------------------------
     // Alert Messages

@@ -1018,8 +1018,33 @@ class UIManager {
         <!-- Top Errors Section (Optional) -->
         ${topErrorsHtml}
         
+        <!-- Feedback Section -->
+        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+          <p class="text-xs text-gray-500 mb-2">
+            ${
+              isThaiLang
+                ? "📝 ช่วยพัฒนาแอป ตอบแบบสอบถาม"
+                : "📝 Help improve this app"
+            }
+          </p>
+          <img 
+            src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://docs.google.com/forms/d/e/1FAIpQLSf3uXhHZogHZAR5apQ0QUAwlhiI6yvBLNHorPw7ydY3QEtklQ/viewform"
+            alt="QR Feedback"
+            class="mx-auto mb-2 rounded"
+            width="100"
+            height="100"
+          />
+          <a 
+            href="https://docs.google.com/forms/d/e/1FAIpQLSf3uXhHZogHZAR5apQ0QUAwlhiI6yvBLNHorPw7ydY3QEtklQ/viewform" 
+            target="_blank"
+            class="inline-block px-4 py-2 bg-purple-600 text-white text-sm rounded-full hover:bg-purple-700 transition"
+          >
+            ${isThaiLang ? "📋 ตอบแบบสอบถาม" : "📋 Give Feedback"}
+          </a>
+        </div>
+        
         <!-- Close Button -->
-        <button id="close-score-popup" class="mt-6 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition font-bold">
+        <button id="close-score-popup" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition font-bold">
           ${isThaiLang ? "ปิด" : "Close"}
         </button>
       </div>

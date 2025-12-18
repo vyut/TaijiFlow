@@ -406,6 +406,7 @@ gestureManager.onStopTraining = () => {
     if (document.fullscreenElement) {
       document.exitFullscreen();
     }
+    audioManager.announce("calib_cancel"); // เสียงแจ้ง
     uiManager.showNotification("🛑 ยกเลิกการ Calibrate", "info");
   }
   // 2. หยุดการฝึก ถ้ากำลังฝึกอยู่
@@ -547,37 +548,11 @@ async function startTrainingFlow() {
   // 1. ซ่อน Overlay คำแนะนำ
   startOverlay.classList.add("hidden");
 
-  // 2. ตรวจสอบว่าอยู่ใน PWA Standalone Mode หรือไม่
-  const isStandalone =
-    window.matchMedia("(display-mode: standalone)").matches ||
-    window.navigator.standalone === true; // iOS Safari
-
-  // 3. พยายามเข้า Fullscreen (ถ้าไม่ใช่ PWA และรองรับ API)
-  if (!isStandalone && canvasContainer.requestFullscreen) {
-    try {
-      // ใช้ Promise.race กับ timeout เพื่อป้องกันค้าง
-      const fullscreenPromise = canvasContainer.requestFullscreen();
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Fullscreen timeout")), 1000)
-      );
-
-      await Promise.race([fullscreenPromise, timeoutPromise]);
-      console.log("[Training] Entered fullscreen mode");
-    } catch (err) {
-      console.log(
-        "[Training] Fullscreen failed/timeout, continuing normally:",
-        err.message
-      );
-    }
-  } else {
-    console.log("[Training] PWA/Standalone mode detected, skipping fullscreen");
-  }
-
-  // 4. เริ่ม Calibrate (ไม่ว่า fullscreen จะสำเร็จหรือไม่)
+  // 2. เริ่ม Calibrate
   calibrator.start();
   audioManager.announce("calib_start");
 
-  // 5. อัปเดตสถานะปุ่ม: Disable Start, Enable Stop
+  // 3. อัปเดตสถานะปุ่ม: Disable Start, Enable Stop
   startTrainingBtn.disabled = true;
   startTrainingBtn.classList.add("opacity-50", "cursor-not-allowed");
   stopTrainingBtn.disabled = false;
@@ -739,6 +714,7 @@ stopTrainingBtn.addEventListener("click", () => {
     if (document.fullscreenElement) {
       document.exitFullscreen();
     }
+    audioManager.announce("calib_cancel"); // เสียงแจ้ง
     uiManager.showNotification("🛑 ยกเลิกการ Calibrate", "info");
   }
   // 2. หยุดการฝึก ถ้ากำลังฝึกอยู่

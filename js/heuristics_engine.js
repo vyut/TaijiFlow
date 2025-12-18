@@ -288,7 +288,11 @@ class HeuristicsEngine {
 
     // Rule 1: Path Accuracy - เส้นทางตรงตามท่าต้นแบบ
     if (config.checkPath && referencePath && referencePath.length > 0) {
-      const err = this.checkPathAccuracy(activeWrist, referencePath);
+      const err = this.checkPathAccuracy(
+        activeWrist,
+        referencePath,
+        currentExercise
+      );
       if (err) allErrors.push({ msg: err, rule: "Path Accuracy" });
     }
 
@@ -441,23 +445,48 @@ class HeuristicsEngine {
    * ตรวจสอบว่าข้อมืออยู่ใกล้เส้นทางต้นแบบหรือไม่
    *
    * Algorithm:
-   *   1. หาระยะห่างที่ใกล้ที่สุดจากข้อมือไปยังทุกจุดบนเส้นทาง
-   *   2. เปรียบเทียบกับ Dynamic Threshold
-   *   3. ถ้าเกิน Threshold = ผิด
+   *   1. ใช้ Ghost position ก่อน (ถ้ามี) - เปรียบเทียบ ณ เวลาเดียวกัน
+   *   2. Fallback: ใช้ระยะห่างใกล้สุดจากเส้นทางต้นแบบ
+   *   3. เปรียบเทียบกับ Dynamic Threshold
    *
    * @param {Object} userWrist - ตำแหน่งข้อมือผู้ใช้ {x, y}
    * @param {Object[]} referencePath - เส้นทางต้นแบบ [{x, y}]
+   * @param {string} currentExercise - ท่าที่ฝึก ('rh_cw', 'lh_cw', etc.)
    * @returns {string|null} ข้อความผิดพลาด หรือ null ถ้าถูกต้อง
    */
-  checkPathAccuracy(userWrist, referencePath) {
+  checkPathAccuracy(userWrist, referencePath, currentExercise = "rh_cw") {
     if (!userWrist) return null;
 
-    // หาระยะห่างที่ใกล้ที่สุดจากข้อมือไปยังจุดใดบนเส้นทาง
+    // =========================================================================
+    // ใช้ Ghost Position แทน Static Path (ถ้ามี)
+    // เปรียบเทียบตำแหน่ง Ghost ณ เวลาเดียวกัน แทนจุดใกล้สุดบนเส้นนิ่ง
+    // =========================================================================
     let minDistance = Infinity;
-    for (const refPoint of referencePath) {
-      const d = this.calculateDistance(userWrist, refPoint);
-      if (d < minDistance) minDistance = d;
+
+    // ลองใช้ Ghost position ก่อน (ถ้า Ghost กำลังเล่นอยู่)
+    if (typeof ghostManager !== "undefined" && ghostManager.isPlaying) {
+      const ghostFrame = ghostManager.getCurrentFrame();
+      if (ghostFrame && ghostFrame.length > 0) {
+        // เลือก wrist ตามท่า (rh = มือขวา landmark 16, lh = มือซ้าย landmark 15)
+        const isRightHand = currentExercise.startsWith("rh");
+        const ghostWristIndex = isRightHand ? 16 : 15;
+        const ghostWrist = ghostFrame[ghostWristIndex];
+        if (ghostWrist) {
+          minDistance = this.calculateDistance(userWrist, ghostWrist);
+        }
+      }
     }
+
+    // Fallback: ถ้าไม่มี Ghost ให้ใช้ path เดิม
+    if (minDistance === Infinity && referencePath && referencePath.length > 0) {
+      for (const refPoint of referencePath) {
+        const d = this.calculateDistance(userWrist, refPoint);
+        if (d < minDistance) minDistance = d;
+      }
+    }
+
+    // ถ้ายังไม่มีข้อมูลเปรียบเทียบ ให้ผ่าน
+    if (minDistance === Infinity) return null;
 
     // Dynamic Threshold: ปรับตามความกว้างไหล่ (พร้อม min/max caps)
     let threshold = this.CONFIG.PATH_THRESHOLD_DEFAULT;
@@ -479,8 +508,9 @@ class HeuristicsEngine {
     }
 
     // ตัดสิน: ถ้าห่างเกิน Threshold = ผิด
+    // ข้อความใหม่: "ขยับให้เหมือนต้นแบบ" / "Adjust position to match guide"
     return minDistance > threshold
-      ? "⚠️ เส้นทางไม่แม่นยำ (Path Deviation)"
+      ? "⚠️ ขยับให้เหมือนต้นแบบ (Adjust to match guide)"
       : null;
   }
 

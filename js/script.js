@@ -225,9 +225,10 @@ const themeBtn = document.getElementById("theme-btn"); // สลับ Theme
 // Display Dropdown Elements
 const displayBtn = document.getElementById("display-btn");
 const displayMenu = document.getElementById("display-menu");
+const checkGhost = document.getElementById("check-ghost");
+const checkPath = document.getElementById("check-path");
 const checkSkeleton = document.getElementById("check-skeleton");
 const checkSilhouette = document.getElementById("check-silhouette");
-const checkGhost = document.getElementById("check-ghost");
 
 // -----------------------------------------------------------------------------
 // New UX Flow Elements - ปุ่มและ Overlay สำหรับ Training Flow ใหม่
@@ -313,10 +314,12 @@ audioBtn.addEventListener("click", () => {
   audioBtn.classList.toggle("bg-gray-500", !isEnabled);
 });
 
-// Skeleton Display State (เปิดเป็น default)
-let showSkeleton = true;
-let showGhostOverlay = false;
-let showSilhouette = false;
+// Display State Variables
+// ลำดับ: Ghost, Path, Skeleton, Silhouette
+let showGhostOverlay = true; // เปิดเป็น default (เงาครูฝึก)
+let showPath = false; // ปิดเป็น default (เส้นทาง)
+let showSkeleton = false; // ปิดเป็น default (โครงผู้ฝึก)
+let showSilhouette = false; // ปิดเป็น default (เงาผู้ฝึก)
 
 // Display Dropdown Toggle
 if (displayBtn && displayMenu) {
@@ -333,34 +336,44 @@ if (displayBtn && displayMenu) {
   });
 }
 
-// Checkbox: Skeleton
-if (checkSkeleton) {
-  checkSkeleton.checked = showSkeleton;
-  checkSkeleton.addEventListener("change", () => {
-    showSkeleton = checkSkeleton.checked;
-  });
-}
-
-// Checkbox: Silhouette
-if (checkSilhouette) {
-  checkSilhouette.addEventListener("change", () => {
-    showSilhouette = checkSilhouette.checked;
-    if (showSilhouette) {
-      silhouetteManager.enable();
-    } else {
-      silhouetteManager.disable();
-    }
-  });
-}
-
-// Checkbox: Ghost
+// Checkbox: Ghost (เงาครูฝึก)
 if (checkGhost) {
+  checkGhost.checked = showGhostOverlay; // Sync with default
   checkGhost.addEventListener("change", () => {
     showGhostOverlay = checkGhost.checked;
     if (showGhostOverlay) {
       ghostManager.start();
     } else {
       ghostManager.stop();
+    }
+  });
+}
+
+// Checkbox: Path (เส้นทาง)
+if (checkPath) {
+  checkPath.checked = showPath; // Sync with default
+  checkPath.addEventListener("change", () => {
+    showPath = checkPath.checked;
+  });
+}
+
+// Checkbox: Skeleton (โครงผู้ฝึก)
+if (checkSkeleton) {
+  checkSkeleton.checked = showSkeleton; // Sync with default
+  checkSkeleton.addEventListener("change", () => {
+    showSkeleton = checkSkeleton.checked;
+  });
+}
+
+// Checkbox: Silhouette (เงาผู้ฝึก)
+if (checkSilhouette) {
+  checkSilhouette.checked = showSilhouette; // Sync with default
+  checkSilhouette.addEventListener("change", () => {
+    showSilhouette = checkSilhouette.checked;
+    if (showSilhouette) {
+      silhouetteManager.enable();
+    } else {
+      silhouetteManager.disable();
     }
   });
 }
@@ -949,18 +962,18 @@ window.addEventListener("keydown", (e) => {
       break;
 
     // -------------------------------------------------------------------------
-    // S = Silhouette Overlay Toggle
+    // P = Path Overlay Toggle (เส้นทาง)
     // -------------------------------------------------------------------------
-    case "s":
+    case "p":
       e.preventDefault();
-      if (checkSilhouette) {
-        checkSilhouette.checked = !checkSilhouette.checked;
-        checkSilhouette.dispatchEvent(new Event("change"));
+      if (checkPath) {
+        checkPath.checked = !checkPath.checked;
+        checkPath.dispatchEvent(new Event("change"));
       }
       break;
 
     // -------------------------------------------------------------------------
-    // B = Skeleton (Bones) Toggle
+    // B = Skeleton (Bones) Toggle (โครงผู้ฝึก)
     // -------------------------------------------------------------------------
     case "b":
       e.preventDefault();
@@ -971,18 +984,28 @@ window.addEventListener("keydown", (e) => {
       break;
 
     // -------------------------------------------------------------------------
-    // H or ? = Open Tutorial Popup (วิธีการใช้งาน)
+    // S = Silhouette Overlay Toggle (เงาผู้ฝึก)
     // -------------------------------------------------------------------------
-    case "h":
+    case "s":
+      e.preventDefault();
+      if (checkSilhouette) {
+        checkSilhouette.checked = !checkSilhouette.checked;
+        checkSilhouette.dispatchEvent(new Event("change"));
+      }
+      break;
+
+    // -------------------------------------------------------------------------
+    // ? = Open Tutorial Popup (วิธีการใช้งาน)
+    // -------------------------------------------------------------------------
     case "?":
       e.preventDefault();
       tutorialManager.open(uiManager.currentLang);
       break;
 
     // -------------------------------------------------------------------------
-    // K = Show Keyboard Shortcuts
+    // / = Show Keyboard Shortcuts
     // -------------------------------------------------------------------------
-    case "k":
+    case "/":
       e.preventDefault();
       const shortcuts = [
         "⌨️ คีย์ลัด",
@@ -992,12 +1015,17 @@ window.addEventListener("keydown", (e) => {
         "F = เต็มจอ",
         "D = Debug Mode",
         "",
+        "G = Ghost (เงาต้นแบบ)",
+        "P = Path (เส้นทางต้นแบบ)",
+        "B = Skeleton (โครงผู้ฝึก)",
+        "S = Silhouette (เงาผู้ฝึก)",
+        "",
         "M = เปิด/ปิดเสียง",
         "L = เปลี่ยนภาษา",
         "T = เปลี่ยน Theme",
         "",
-        "H = วิธีใช้งาน",
-        "K = คีย์ลัด (นี้)",
+        "? = วิธีใช้งาน",
+        "/ = คีย์ลัด (นี้)",
         "Esc = ยกเลิก",
       ].join("\n");
       uiManager.showNotification(shortcuts, "info", 5000);
@@ -1250,8 +1278,8 @@ async function onResults(results) {
         }
       }
 
-      // 2. วาด Reference Path
-      if (referencePath.length > 0) {
+      // 2. วาด Reference Path (ถ้าเปิด)
+      if (showPath && referencePath.length > 0) {
         drawer.drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4); // วาด Path Reference
       }
 

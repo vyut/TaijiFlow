@@ -258,28 +258,37 @@ Version: 0.4 (2024-12-17)
               >
                 Display Option
               </div>
+              <!-- 1. Ghost (เงาครูฝึก) - Default ON -->
               <label
                 class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                title="Show instructor shadow guide"
               >
-                <input
-                  type="checkbox"
-                  id="check-skeleton"
-                  class="mr-2"
-                  checked
-                />
+                <input type="checkbox" id="check-ghost" class="mr-2" checked />
+                <span style="color: white">👻 Ghost (G)</span>
+              </label>
+              <!-- 2. Path (เส้นทาง) - Default OFF -->
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                title="Show reference wrist path"
+              >
+                <input type="checkbox" id="check-path" class="mr-2" />
+                <span style="color: white">🟢 Path (P)</span>
+              </label>
+              <!-- 3. Skeleton (โครงผู้ฝึก) - Default OFF -->
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                title="Show your skeleton overlay"
+              >
+                <input type="checkbox" id="check-skeleton" class="mr-2" />
                 <span style="color: white">🦴 Skeleton (B)</span>
               </label>
+              <!-- 4. Silhouette (เงาผู้ฝึก) - Default OFF -->
               <label
                 class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                title="Show your silhouette overlay"
               >
                 <input type="checkbox" id="check-silhouette" class="mr-2" />
                 <span style="color: white">🎭 Silhouette (S)</span>
-              </label>
-              <label
-                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
-              >
-                <input type="checkbox" id="check-ghost" class="mr-2" />
-                <span style="color: white">👻 Ghost (G)</span>
               </label>
             </div>
           </div>

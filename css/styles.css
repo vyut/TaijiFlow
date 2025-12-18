@@ -194,3 +194,21 @@ body.light .instructions-box strong {
   color: white;
   animation: status-pulse 1s infinite;
 }
+
+/* --- Privacy Popup Light Mode --- */
+body:not(.dark) #privacy-modal > div {
+  background: white !important;
+  border-color: rgba(139, 92, 246, 0.3) !important;
+}
+
+body:not(.dark) #privacy-modal h2 {
+  color: #7c3aed !important;
+}
+
+body:not(.dark) #privacy-modal ul {
+  color: #4b5563 !important;
+}
+
+body:not(.dark) #privacy-modal li span:last-child {
+  color: #374151 !important;
+}

@@ -397,6 +397,9 @@ class UIManager {
       // -----------------------------------------------------------------------
       // Dark Mode
       // -----------------------------------------------------------------------
+      // เพิ่ม dark class สำหรับ CSS selectors (body.dark)
+      body.classList.add("dark");
+
       // เปลี่ยน Body Background
       body.classList.remove("bg-f3f4f6");
       body.classList.add("bg-gray-900");
@@ -416,6 +419,9 @@ class UIManager {
       // -----------------------------------------------------------------------
       // Light Mode
       // -----------------------------------------------------------------------
+      // ลบ dark class
+      body.classList.remove("dark");
+
       // เปลี่ยน Body Background
       body.classList.remove("bg-gray-900");
       body.classList.add("bg-f3f4f6");

@@ -56,7 +56,7 @@ class HeuristicsEngine {
 
       // ----- Rule 2: Arm Rotation (การหมุนแขน) -----
       // ตรวจทิศทางการหงาย/คว่ำฝ่ามือ ขณะเคลื่อนที่ขึ้น/ลง
-      ARM_MOTION_THRESHOLD: 0.005, // ขยับขึ้นลงอย่างน้อย 0.5% จึงเช็คการหมุน
+      ARM_MOTION_THRESHOLD: 0.015, // ขยับขึ้นลงอย่างน้อย 1.5% จึงเช็คการหมุน (เดิม 0.005)
 
       // ----- Rule 3: Elbow Sinking (ศอกจม) -----
       // หลัก "沉肩坠肘" (ชิ่นเจียน จุ้ยโจ่ว) - ผ่อนไหล่ลง ศอกตก
@@ -76,8 +76,8 @@ class HeuristicsEngine {
 
       // ----- Rule 6: Smoothness (ความลื่นไหล) -----
       // หลัก "如抽丝" (ดังเช่นดึงเส้นไหม) - เคลื่อนไหวสม่ำเสมอ ไม่กระตุก
-      SMOOTHNESS_THRESHOLD_DEFAULT: 0.02, // Acceleration ไม่เกิน 0.02 units/sec²
-      SMOOTHNESS_CALIBRATION_RATIO: 0.05, // 5% ของความยาวแขน
+      SMOOTHNESS_THRESHOLD_DEFAULT: 0.05, // Acceleration ไม่เกิน 0.05 units/sec² (เดิม 0.02)
+      SMOOTHNESS_CALIBRATION_RATIO: 0.08, // 8% ของความยาวแขน (เดิม 0.05)
 
       // ----- Rule 7: Continuity (ความต่อเนื่อง) -----
       // หลัก "绵绵不断" (เหมียนเหมียนปู้ต้วน) - ต่อเนื่องไม่ขาดตอน

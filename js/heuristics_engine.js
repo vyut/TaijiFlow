@@ -192,6 +192,22 @@ class HeuristicsEngine {
       Smoothness: 7, // เคลื่อนไหวสะดุด
       Continuity: 8, // หยุดนิ่ง
     };
+
+    // =========================================================================
+    // 🎮 CURRENT STATE: สถานะปัจจุบัน (สำหรับ RulesConfigManager)
+    // =========================================================================
+    // เริ่มต้นเป็น null/empty - รอจนกว่าจะเลือก Level
+    this.currentLevel = null;
+    this.currentRulesConfig = {
+      checkPath: false,
+      checkRotation: false,
+      checkElbow: false,
+      checkWaist: false,
+      checkStability: false,
+      checkSmooth: false,
+      checkContinuity: false,
+      checkWeight: false,
+    };
   }
 
   // ===========================================================================
@@ -251,8 +267,15 @@ class HeuristicsEngine {
     // Guard: ถ้าไม่มี landmarks ให้ return เลย
     if (!landmarks) return [];
 
-    // ดึง Config ของ Level ปัจจุบัน (fallback เป็น L3 ถ้าไม่รู้จัก)
-    const config = this.RULES_CONFIG[currentLevel] || this.RULES_CONFIG["L3"];
+    // ดึง Config ปัจจุบัน (ใช้ currentRulesConfig ที่ RulesConfigManager สามารถแก้ไขได้)
+    // ถ้า level เปลี่ยน ให้อัพเดท currentRulesConfig
+    if (currentLevel && currentLevel !== this.currentLevel) {
+      this.currentLevel = currentLevel;
+      this.currentRulesConfig = { ...this.RULES_CONFIG[currentLevel] } || {
+        ...this.RULES_CONFIG["L3"],
+      };
+    }
+    const config = this.currentRulesConfig;
 
     // ----- 2. ดึง Keypoints จาก MediaPipe Pose Landmarks -----
     // MediaPipe Pose มี 33 จุด ดูรายละเอียดได้ที่:

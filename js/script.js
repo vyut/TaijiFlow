@@ -70,6 +70,7 @@ const startOverlay = document.getElementById("start-overlay"); // หน้า�
 // -----------------------------------------------------------------------------
 // แต่ละ Manager รับผิดชอบงานเฉพาะทาง (Single Responsibility Principle)
 const engine = new HeuristicsEngine(); // วิเคราะห์ท่าทางตามหลักไท่จี๋
+const rulesConfigManager = new RulesConfigManager(engine); // ปรับค่ากฎ (Rules Settings UI)
 const calibrator = new CalibrationManager(); // ปรับเทียบสัดส่วนร่างกาย
 const uiManager = new UIManager(); // จัดการ UI และภาษา
 const drawer = new DrawingManager(canvasCtx, canvasElement); // วาดภาพบน Canvas
@@ -471,6 +472,10 @@ exerciseSelect.addEventListener("change", (e) => {
 // Level Select (Dropdown - New UI)
 levelSelect.addEventListener("change", (e) => {
   currentLevel = e.target.value || null;
+  // อัพเดท Rules Settings Panel ให้ตรงกับ Level
+  if (currentLevel) {
+    rulesConfigManager.onLevelChange(currentLevel);
+  }
   loadReferenceData();
   checkSelectionComplete();
 });
@@ -480,6 +485,10 @@ levelButtons.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     currentLevel = e.target.dataset.level;
     uiManager.updateLevelButtons(currentLevel);
+    // อัพเดท Rules Settings Panel ให้ตรงกับ Level
+    if (currentLevel) {
+      rulesConfigManager.onLevelChange(currentLevel);
+    }
     loadReferenceData();
     checkSelectionComplete();
   });

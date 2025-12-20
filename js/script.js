@@ -174,6 +174,45 @@ function toggleDebugOverlay(show) {
   }
 }
 
+// Feedback Overlay Elements
+const feedbackOverlay = document.getElementById("feedback-overlay");
+const feedbackContent = document.getElementById("feedback-content");
+
+/**
+ * อัพเดท Feedback Overlay (HTML version - ไม่ถูก CSS mirror)
+ * @param {string[]} feedbacks - Array ของข้อความ feedback
+ */
+function updateFeedbackOverlay(feedbacks) {
+  if (!feedbackContent) return;
+
+  if (!feedbacks || feedbacks.length === 0) {
+    // ซ่อน overlay ถ้าไม่มี feedback
+    if (feedbackOverlay) feedbackOverlay.classList.add("hidden");
+    return;
+  }
+
+  // แสดง overlay
+  if (feedbackOverlay) feedbackOverlay.classList.remove("hidden");
+
+  // แปลง array เป็น HTML
+  const html = feedbacks.map((text) => `<div>${text}</div>`).join("");
+
+  feedbackContent.innerHTML = html;
+}
+
+/**
+ * แสดง/ซ่อน Feedback Overlay
+ * @param {boolean} show - true = แสดง, false = ซ่อน
+ */
+function toggleFeedbackOverlay(show) {
+  if (!feedbackOverlay) return;
+  if (show) {
+    feedbackOverlay.classList.remove("hidden");
+  } else {
+    feedbackOverlay.classList.add("hidden");
+  }
+}
+
 /**
  * สร้างหรือดึง User ID จาก LocalStorage
  *
@@ -682,6 +721,10 @@ function endTrainingSession() {
   trainingControls.classList.add("hidden");
   trainingControls.classList.remove("flex");
   fullscreenOverlayBtn.classList.add("hidden");
+
+  // 3.1 ซ่อน HTML overlays
+  toggleFeedbackOverlay(false);
+  toggleDebugOverlay(false);
 
   // 4. ออกจาก Fullscreen
   if (document.fullscreenElement) {
@@ -1367,8 +1410,8 @@ async function onResults(results) {
             }
             // ถ้ายังไม่ครบ cooldown จะใช้ lastDisplayedFeedbacks ที่มีอยู่
           }
-          // แสดง feedback (ใช้ค่าล่าสุดที่ไม่เปลี่ยนถี่เกินไป)
-          drawer.drawFeedbackPanel(lastDisplayedFeedbacks);
+          // แสดง feedback (ใช้ค่าล่าสุดที่ไม่เปลี่ยนถี่เกินไป) - ใช้ HTML overlay
+          updateFeedbackOverlay(lastDisplayedFeedbacks);
 
           // 1.1 พูดแจ้งเตือนเมื่อมีข้อผิดพลาด (มี Cooldown ป้องกันพูดซ้ำเร็วเกินไป)
           audioManager.speakFeedback(feedbacks);

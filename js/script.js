@@ -139,6 +139,41 @@ if (privacyAcceptBtn) {
 // Helper Functions - ฟังก์ชันช่วยสร้าง ID และดึงข้อมูล
 // -----------------------------------------------------------------------------
 
+// Debug Overlay Elements
+const debugOverlay = document.getElementById("debug-overlay");
+const debugContent = document.getElementById("debug-content");
+
+/**
+ * อัพเดท Debug Overlay (HTML version - ไม่ถูก CSS mirror)
+ * @param {Object} debugInfo - ข้อมูล debug ที่จะแสดง
+ */
+function updateDebugOverlay(debugInfo) {
+  if (!debugContent || !debugInfo) return;
+
+  // แปลง object เป็น HTML
+  const html = Object.entries(debugInfo)
+    .map(([key, value]) => {
+      const displayKey = key.replace(/([A-Z])/g, " $1").trim();
+      return `<div>${displayKey}: <strong>${value}</strong></div>`;
+    })
+    .join("");
+
+  debugContent.innerHTML = html;
+}
+
+/**
+ * แสดง/ซ่อน Debug Overlay
+ * @param {boolean} show - true = แสดง, false = ซ่อน
+ */
+function toggleDebugOverlay(show) {
+  if (!debugOverlay) return;
+  if (show) {
+    debugOverlay.classList.remove("hidden");
+  } else {
+    debugOverlay.classList.add("hidden");
+  }
+}
+
 /**
  * สร้างหรือดึง User ID จาก LocalStorage
  *
@@ -907,6 +942,11 @@ window.addEventListener("keydown", (e) => {
     case "d":
       e.preventDefault();
       engine.setDebugMode(!engine.debugMode);
+      // แสดง/ซ่อน HTML debug overlay
+      toggleDebugOverlay(engine.debugMode);
+      // Sync checkbox ใน Rules Settings
+      const debugCheckbox = document.getElementById("debug-toggle");
+      if (debugCheckbox) debugCheckbox.checked = engine.debugMode;
       uiManager.showNotification(
         `Debug Mode: ${engine.debugMode ? "ON" : "OFF"}`,
         "info",
@@ -1333,7 +1373,7 @@ async function onResults(results) {
           // 1.1 พูดแจ้งเตือนเมื่อมีข้อผิดพลาด (มี Cooldown ป้องกันพูดซ้ำเร็วเกินไป)
           audioManager.speakFeedback(feedbacks);
 
-          // 1.2 Debug Overlay (กด D เพื่อเปิด)
+          // 1.2 Debug Overlay (กด D เพื่อเปิด) - ใช้ HTML overlay แทน canvas
           if (engine.debugMode) {
             // รวม debugInfo จาก engine กับค่า performance อื่นๆ
             const debugInfo = {
@@ -1342,7 +1382,7 @@ async function onResults(results) {
               score: scorer.getCurrentScore().toFixed(1) + "%",
               ...engine.getDebugInfo(),
             };
-            drawer.drawDebugOverlay(debugInfo);
+            updateDebugOverlay(debugInfo);
           }
         }
 

@@ -138,6 +138,7 @@ class RulesConfigManager {
     this.bindThresholdInputs();
     this.bindThresholdButtons();
     this.bindResetButton();
+    this.bindDebugToggle();
     this.syncUIWithEngine();
     console.log("[RulesConfig] Initialized");
   }
@@ -267,6 +268,27 @@ class RulesConfigManager {
     });
   }
 
+  // ===========================================================================
+  // Debug Toggle
+  // ===========================================================================
+  bindDebugToggle() {
+    const debugToggle = document.getElementById("debug-toggle");
+    if (!debugToggle) return;
+
+    debugToggle.addEventListener("change", () => {
+      if (this.engine) {
+        this.engine.setDebugMode(debugToggle.checked);
+        // แสดง/ซ่อน HTML debug overlay
+        if (typeof toggleDebugOverlay === "function") {
+          toggleDebugOverlay(debugToggle.checked);
+        }
+        console.log(
+          `[RulesConfig] Debug Mode: ${debugToggle.checked ? "ON" : "OFF"}`
+        );
+      }
+    });
+  }
+
   resetToDefaults() {
     // Reset thresholds in engine
     if (this.engine && this.engine.CONFIG) {
@@ -313,6 +335,12 @@ class RulesConfigManager {
         }
       });
     });
+
+    // Sync debug toggle
+    const debugToggle = document.getElementById("debug-toggle");
+    if (debugToggle && this.engine) {
+      debugToggle.checked = this.engine.debugMode || false;
+    }
   }
 
   // ===========================================================================

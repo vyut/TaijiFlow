@@ -376,45 +376,54 @@ class DrawingManager {
   drawDebugOverlay(debugInfo) {
     if (!debugInfo || Object.keys(debugInfo).length === 0) return;
 
-    // ----- Position & Size -----
-    const boxX = this.canvasWidth - 300; // มุมขวาบน
-    const boxY = 20;
-    const padding = 10;
-    const lineHeight = 22;
+    // ----- Save current state และ flip กลับเพื่อแก้ปัญหา mirror -----
+    this.ctx.save();
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform เป็น identity (ไม่ mirror)
+
+    // ----- Position & Size (มุมขวาบนของหน้าจอจริง) -----
+    const boxWidth = 320;
+    const boxX = this.canvasWidth - boxWidth - 15; // ชิดขวา เว้นขอบ 15px
+    const boxY = 15; // ชิดบน
+    const padding = 12;
+    const lineHeight = 26; // ระยะห่างบรรทัด
     const entries = Object.entries(debugInfo);
-    const boxWidth = 280;
-    const boxHeight = entries.length * lineHeight + padding * 2 + 25;
+    const boxHeight = entries.length * lineHeight + padding * 2 + 35;
 
     // ----- พื้นหลังกล่อง -----
-    this.ctx.fillStyle = "rgba(0, 0, 50, 0.85)"; // สีน้ำเงินเข้ม
-    this.ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 8);
+    this.ctx.fillStyle = "rgba(0, 0, 40, 0.95)"; // สีน้ำเงินเข้มมาก ทึบมาก
+    this.ctx.beginPath();
+    this.ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 10);
     this.ctx.fill();
 
     // ----- ขอบ -----
     this.ctx.strokeStyle = "#00FFFF"; // สีฟ้า
     this.ctx.lineWidth = 2;
-    this.ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 8);
+    this.ctx.beginPath();
+    this.ctx.roundRect(boxX, boxY, boxWidth, boxHeight, 10);
     this.ctx.stroke();
 
     // ----- หัวข้อ -----
-    this.ctx.font = 'bold 14px "Consolas", monospace';
+    this.ctx.font = 'bold 18px "Consolas", "Monaco", monospace';
     this.ctx.fillStyle = "#00FFFF";
     this.ctx.textAlign = "left";
     this.ctx.textBaseline = "top";
-    this.ctx.fillText("🔧 DEBUG MODE", boxX + padding, boxY + padding);
+    this.ctx.fillText("🐞 DEBUG MODE", boxX + padding, boxY + padding);
 
     // ----- ค่าตัวแปร -----
-    this.ctx.font = '12px "Consolas", monospace';
+    this.ctx.font = 'bold 15px "Consolas", "Monaco", monospace';
     this.ctx.fillStyle = "#00FF00"; // สีเขียว
 
     entries.forEach(([key, value], index) => {
-      // แปลง camelCase เป็น "camel Case"
+      // แปลง camelCase เป็น "camel Case" และตัดให้สั้น
       const displayKey = key.replace(/([A-Z])/g, " $1").trim();
       this.ctx.fillText(
         `${displayKey}: ${value}`,
         boxX + padding,
-        boxY + padding + 25 + index * lineHeight
+        boxY + padding + 30 + index * lineHeight
       );
     });
+
+    // ----- Restore state -----
+    this.ctx.restore();
   }
 }

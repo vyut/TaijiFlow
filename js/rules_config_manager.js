@@ -136,7 +136,7 @@ class RulesConfigManager {
     this.bindDropdownToggle();
     this.bindRuleCheckboxes();
     this.bindThresholdInputs();
-    this.bindThresholdButtons();
+    // bindThresholdButtons removed - ปุ่ม ▲▼ ถูกลบออกแล้ว
     this.bindResetButton();
     this.bindDebugToggle();
     this.syncUIWithEngine();

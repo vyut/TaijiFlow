@@ -316,6 +316,17 @@ Version: 0.4 (2024-12-17)
                 ⚙️ Rules Settings
               </div>
 
+              <!-- Debug Mode Toggle (ย้ายขึ้นบนสุด) -->
+              <div class="p-2 border-b border-gray-700 bg-gray-750">
+                <label class="flex items-center justify-between cursor-pointer">
+                  <span style="color: white">🐞 Debug Mode</span>
+                  <input type="checkbox" id="debug-toggle" class="mr-2" />
+                </label>
+                <div class="text-xs text-gray-500 mt-1">
+                  แสดงค่า threshold และ velocity (กด D)
+                </div>
+              </div>
+
               <!-- Rule 1: Path Accuracy -->
               <div class="rule-item p-2 border-b border-gray-700">
                 <label class="flex items-center cursor-pointer">
@@ -331,24 +342,10 @@ Version: 0.4 (2024-12-17)
                       value="0.08"
                       step="0.01"
                       min="0.01"
-                      max="0.5"
+                      max="0.20"
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
-                    <button
-                      class="threshold-up px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-path"
-                      data-step="0.01"
-                    >
-                      ▲
-                    </button>
-                    <button
-                      class="threshold-down px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-path"
-                      data-step="0.01"
-                    >
-                      ▼
-                    </button>
-                    <div class="text-gray-500">(0.08)</div>
+                    <div class="text-gray-500">(0.01-0.20)</div>
                   </div>
                 </div>
               </div>
@@ -370,25 +367,11 @@ Version: 0.4 (2024-12-17)
                       id="threshold-rotation"
                       value="0.015"
                       step="0.005"
-                      min="0.001"
-                      max="0.1"
+                      min="0.005"
+                      max="0.05"
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
-                    <button
-                      class="threshold-up px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-rotation"
-                      data-step="0.005"
-                    >
-                      ▲
-                    </button>
-                    <button
-                      class="threshold-down px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-rotation"
-                      data-step="0.005"
-                    >
-                      ▼
-                    </button>
-                    <div class="text-gray-500">(0.015)</div>
+                    <div class="text-gray-500">(0.005-0.05)</div>
                   </div>
                 </div>
               </div>
@@ -407,25 +390,11 @@ Version: 0.4 (2024-12-17)
                       id="threshold-elbow"
                       value="0.01"
                       step="0.005"
-                      min="0.001"
-                      max="0.1"
+                      min="0.005"
+                      max="0.05"
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
-                    <button
-                      class="threshold-up px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-elbow"
-                      data-step="0.005"
-                    >
-                      ▲
-                    </button>
-                    <button
-                      class="threshold-down px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-elbow"
-                      data-step="0.005"
-                    >
-                      ▼
-                    </button>
-                    <div class="text-gray-500">(0.01)</div>
+                    <div class="text-gray-500">(0.005-0.05)</div>
                   </div>
                 </div>
               </div>
@@ -451,21 +420,7 @@ Version: 0.4 (2024-12-17)
                       max="10"
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
-                    <button
-                      class="threshold-up px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-hip-vel"
-                      data-step="0.5"
-                    >
-                      ▲
-                    </button>
-                    <button
-                      class="threshold-down px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-hip-vel"
-                      data-step="0.5"
-                    >
-                      ▼
-                    </button>
-                    <span class="text-gray-500">(2.0)</span>
+                    <span class="text-gray-500">(0.5-10.0)</span>
                   </div>
                   <div class="flex items-center gap-1">
                     <span>S/H Ratio:</span>
@@ -478,21 +433,7 @@ Version: 0.4 (2024-12-17)
                       max="10"
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
-                    <button
-                      class="threshold-up px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-sh-ratio"
-                      data-step="0.5"
-                    >
-                      ▲
-                    </button>
-                    <button
-                      class="threshold-down px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-sh-ratio"
-                      data-step="0.5"
-                    >
-                      ▼
-                    </button>
-                    <span class="text-gray-500">(3.0)</span>
+                    <span class="text-gray-500">(1.0-10.0)</span>
                   </div>
                 </div>
               </div>
@@ -515,24 +456,10 @@ Version: 0.4 (2024-12-17)
                       value="0.05"
                       step="0.01"
                       min="0.01"
-                      max="0.2"
+                      max="0.15"
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
-                    <button
-                      class="threshold-up px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-stability"
-                      data-step="0.01"
-                    >
-                      ▲
-                    </button>
-                    <button
-                      class="threshold-down px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-stability"
-                      data-step="0.01"
-                    >
-                      ▼
-                    </button>
-                    <div class="text-gray-500">(0.05)</div>
+                    <div class="text-gray-500">(0.01-0.15)</div>
                   </div>
                 </div>
               </div>
@@ -555,24 +482,10 @@ Version: 0.4 (2024-12-17)
                       value="0.05"
                       step="0.01"
                       min="0.01"
-                      max="0.2"
+                      max="0.15"
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
-                    <button
-                      class="threshold-up px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-smooth"
-                      data-step="0.01"
-                    >
-                      ▲
-                    </button>
-                    <button
-                      class="threshold-down px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-smooth"
-                      data-step="0.01"
-                    >
-                      ▼
-                    </button>
-                    <div class="text-gray-500">(0.05)</div>
+                    <div class="text-gray-500">(0.01-0.15)</div>
                   </div>
                 </div>
               </div>
@@ -590,26 +503,12 @@ Version: 0.4 (2024-12-17)
                       type="number"
                       id="threshold-motion"
                       value="0.001"
-                      step="0.0005"
-                      min="0.0001"
+                      step="0.001"
+                      min="0.001"
                       max="0.01"
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
-                    <button
-                      class="threshold-up px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-motion"
-                      data-step="0.0005"
-                    >
-                      ▲
-                    </button>
-                    <button
-                      class="threshold-down px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-motion"
-                      data-step="0.0005"
-                    >
-                      ▼
-                    </button>
-                    <span class="text-gray-500">(0.001)</span>
+                    <span class="text-gray-500">(0.001-0.01)</span>
                   </div>
                   <div class="flex items-center gap-1">
                     <span>Pause:</span>
@@ -622,21 +521,7 @@ Version: 0.4 (2024-12-17)
                       max="60"
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
-                    <button
-                      class="threshold-up px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-pause"
-                      data-step="5"
-                    >
-                      ▲
-                    </button>
-                    <button
-                      class="threshold-down px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-pause"
-                      data-step="5"
-                    >
-                      ▼
-                    </button>
-                    <span class="text-gray-500">(15)</span>
+                    <span class="text-gray-500">(5-60)</span>
                   </div>
                 </div>
               </div>
@@ -658,37 +543,12 @@ Version: 0.4 (2024-12-17)
                       id="threshold-weight"
                       value="0.1"
                       step="0.05"
-                      min="0.01"
-                      max="0.5"
+                      min="0.05"
+                      max="0.30"
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
-                    <button
-                      class="threshold-up px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-weight"
-                      data-step="0.05"
-                    >
-                      ▲
-                    </button>
-                    <button
-                      class="threshold-down px-1 bg-gray-600 rounded hover:bg-gray-500"
-                      data-target="threshold-weight"
-                      data-step="0.05"
-                    >
-                      ▼
-                    </button>
-                    <div class="text-gray-500">(0.1)</div>
+                    <div class="text-gray-500">(0.05-0.30)</div>
                   </div>
-                </div>
-              </div>
-
-              <!-- Debug Mode Toggle -->
-              <div class="p-2 border-t border-gray-700">
-                <label class="flex items-center justify-between cursor-pointer">
-                  <span style="color: white">🐞 Debug Mode</span>
-                  <input type="checkbox" id="debug-toggle" class="mr-2" />
-                </label>
-                <div class="text-xs text-gray-500 mt-1">
-                  แสดงค่า threshold และ velocity (กด D)
                 </div>
               </div>
 

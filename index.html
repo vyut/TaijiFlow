@@ -284,13 +284,22 @@ Version: 0.4 (2024-12-17)
                 <input type="checkbox" id="check-skeleton" class="mr-2" />
                 <span style="color: white">🦴 Skeleton (B)</span>
               </label>
-              <!-- 4. Silhouette (เงาผู้ฝึก) - Default OFF -->
               <label
                 class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
                 title="Show your silhouette overlay"
               >
                 <input type="checkbox" id="check-silhouette" class="mr-2" />
                 <span style="color: white">🎭 Silhouette (S)</span>
+              </label>
+              <!-- Divider -->
+              <div class="border-t border-gray-600 my-1"></div>
+              <!-- Debug Mode -->
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                title="Show debug information (threshold values)"
+              >
+                <input type="checkbox" id="check-debug" class="mr-2" />
+                <span style="color: white">🐞 Debug (D)</span>
               </label>
             </div>
           </div>
@@ -314,17 +323,6 @@ Version: 0.4 (2024-12-17)
                 style="color: white"
               >
                 ⚙️ Rules Settings
-              </div>
-
-              <!-- Debug Mode Toggle (ย้ายขึ้นบนสุด) -->
-              <div class="p-2 border-b border-gray-700 bg-gray-750">
-                <label class="flex items-center justify-between cursor-pointer">
-                  <span style="color: white">🐞 Debug Mode</span>
-                  <input type="checkbox" id="debug-toggle" class="mr-2" />
-                </label>
-                <div class="text-xs text-gray-500 mt-1">
-                  แสดงค่า threshold และ velocity (กด D)
-                </div>
               </div>
 
               <!-- Rule 1: Path Accuracy -->

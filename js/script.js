@@ -988,7 +988,7 @@ window.addEventListener("keydown", (e) => {
       // แสดง/ซ่อน HTML debug overlay
       toggleDebugOverlay(engine.debugMode);
       // Sync checkbox ใน Rules Settings
-      const debugCheckbox = document.getElementById("debug-toggle");
+      const debugCheckbox = document.getElementById("check-debug");
       if (debugCheckbox) debugCheckbox.checked = engine.debugMode;
       uiManager.showNotification(
         `Debug Mode: ${engine.debugMode ? "ON" : "OFF"}`,

@@ -272,7 +272,7 @@ class RulesConfigManager {
   // Debug Toggle
   // ===========================================================================
   bindDebugToggle() {
-    const debugToggle = document.getElementById("debug-toggle");
+    const debugToggle = document.getElementById("check-debug");
     if (!debugToggle) return;
 
     debugToggle.addEventListener("change", () => {
@@ -337,7 +337,7 @@ class RulesConfigManager {
     });
 
     // Sync debug toggle
-    const debugToggle = document.getElementById("debug-toggle");
+    const debugToggle = document.getElementById("check-debug");
     if (debugToggle && this.engine) {
       debugToggle.checked = this.engine.debugMode || false;
     }

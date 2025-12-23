@@ -829,6 +829,31 @@ function resetToHomeScreen() {
   if (trainingTimerTop) trainingTimerTop.textContent = "00:00";
   if (trainingTimerOverlay) trainingTimerOverlay.textContent = "5:00";
 
+  // Reset Display Options to defaults
+  showGhostOverlay = true;
+  showPath = false;
+  showSkeleton = false;
+  showSilhouette = false;
+
+  // Sync checkboxes with display state
+  if (checkGhost) checkGhost.checked = true;
+  if (checkPath) checkPath.checked = false;
+  if (checkSkeleton) checkSkeleton.checked = false;
+  if (checkSilhouette) checkSilhouette.checked = false;
+
+  // Reset Debug Mode
+  if (typeof engine !== "undefined") {
+    engine.setDebugMode(false);
+  }
+  const debugCheckbox = document.getElementById("check-debug");
+  if (debugCheckbox) debugCheckbox.checked = false;
+  toggleDebugOverlay(false);
+
+  // Reset Rules Settings to defaults
+  if (typeof rulesManager !== "undefined") {
+    rulesManager.resetToDefaults();
+  }
+
   startOverlay.classList.remove("hidden");
   uiManager.updateRecordButtonState(false);
 }

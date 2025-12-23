@@ -750,6 +750,11 @@ function endTrainingSession() {
   toggleFeedbackOverlay(false);
   toggleDebugOverlay(false);
 
+  // 3.2 หยุด Ghost playback
+  if (typeof ghostManager !== "undefined" && ghostManager.isPlaying) {
+    ghostManager.stop();
+  }
+
   // 4. ออกจาก Fullscreen
   if (document.fullscreenElement) {
     document.exitFullscreen();

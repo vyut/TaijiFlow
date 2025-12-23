@@ -470,7 +470,7 @@ calibrator.setLanguage(initLang);
 gestureManager.init().then((ready) => {
   if (ready) {
     console.log("[Main] Gesture Control พร้อมใช้งาน!");
-    uiManager.showNotification("🖐️ Gesture Control พร้อมใช้งาน", "success");
+    // uiManager.showNotification("🖐️ Gesture Control พร้อมใช้งาน", "success");
   }
 });
 
@@ -756,7 +756,7 @@ function endTrainingSession() {
         all_errors: sessionLog,
         frames: recordedSessionData,
       };
-      DataExporter.exportFullSession(fullDataset);
+      // DataExporter.exportFullSession(fullDataset);
     }
 
     // แสดง Score Popup (ส่ง summary object และ grade object)
@@ -954,7 +954,7 @@ recordBtn.addEventListener("click", () => {
         // === ข้อมูลดิบ (Raw Data) ===
         raw_data: recordedSessionData,
       };
-      DataExporter.exportFullSession(fullDataset);
+      // DataExporter.exportFullSession(fullDataset);
 
       // แสดงผลคะแนน
       uiManager.showScoreSummary(scoreSummary, gradeInfo);

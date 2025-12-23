@@ -83,7 +83,7 @@ const TRANSLATIONS = {
     // Header & Title
     // -------------------------------------------------------------------------
     // ชื่อแอปพลิเคชัน แสดงที่ Header
-    app_title: "TaijiFlow AI: ผู้ช่วยฝึกท่าม้วนไหม (v0.4)",
+    app_title: "TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก (v0.5)",
 
     // -------------------------------------------------------------------------
     // Selection Controls (Dropdown Labels)
@@ -109,7 +109,7 @@ const TRANSLATIONS = {
     // Placeholder - ข้อความเริ่มต้นใน Dropdown
     cat_placeholder: "-- เลือกหมวดหมู่ --",
     cat_silk_single: "ท่าม้วนไหม - มือเดียว",
-    cat_silk_double: "ท่าม้วนไหม - สองมือ",
+    // cat_silk_double: "ท่าม้วนไหม - สองมือ",
 
     // -------------------------------------------------------------------------
     // Level Buttons
@@ -264,7 +264,7 @@ const TRANSLATIONS = {
     // -------------------------------------------------------------------------
     // Header & Title
     // -------------------------------------------------------------------------
-    app_title: "TaijiFlow AI: Silk Reeling Assistant (v0.4)",
+    app_title: "TaijiFlow AI: Taijiquan Assistant (v0.5)",
 
     // -------------------------------------------------------------------------
     // Selection Controls
@@ -286,7 +286,7 @@ const TRANSLATIONS = {
     // -------------------------------------------------------------------------
     cat_placeholder: "-- Select Category --",
     cat_silk_single: "Silk Reeling - Single Hand",
-    cat_silk_double: "Silk Reeling - Double Hand",
+    // cat_silk_double: "Silk Reeling - Double Hand",
 
     // -------------------------------------------------------------------------
     // Level Buttons

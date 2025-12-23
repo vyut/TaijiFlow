@@ -276,13 +276,24 @@ function getPlatformInfo() {
  * ตรวจสอบว่าเป็น Mobile/Tablet หรือไม่
  * ใช้สำหรับข้าม export ไฟล์บนอุปกรณ์ที่มี memory จำกัด
  *
+ * หมายเหตุ: iPadOS 13+ รายงานตัวเองเป็น desktop Safari
+ * ต้องใช้ maxTouchPoints เพิ่มเติมในการตรวจจับ
+ *
  * @returns {boolean} true = Mobile/Tablet, false = Desktop
  */
 function isMobileDevice() {
   const ua = navigator.userAgent;
-  return /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(
-    ua
-  );
+
+  // ตรวจจับ Mobile/Tablet ทั่วไป
+  const isMobile =
+    /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+
+  // ตรวจจับ iPad ที่รายงานตัวเองเป็น Mac (iPadOS 13+)
+  // iPad จะมี maxTouchPoints > 1 แต่ Mac ปกติจะมี 0
+  const isIPadOS =
+    navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+
+  return isMobile || isIPadOS;
 }
 
 // =============================================================================

@@ -416,8 +416,8 @@ audioBtn.addEventListener("click", () => {
 // Display State Variables
 // ลำดับ: Ghost, Path, Skeleton, Silhouette
 let showGhostOverlay = true; // เปิดเป็น default (เงาครูฝึก)
-let showPath = false; // ปิดเป็น default (เส้นทาง)
-let showSkeleton = false; // ปิดเป็น default (โครงผู้ฝึก)
+let showPath = false; // ปิดเป็น default (เส้นทาง - ไม่ใช้แล้วหลังเปลี่ยนเป็น Shape-Based)
+let showSkeleton = true; // เปิดเป็น default (โครงผู้ฝึก)
 let showSilhouette = false; // ปิดเป็น default (เงาผู้ฝึก)
 
 // Display Dropdown Toggle
@@ -832,13 +832,13 @@ function resetToHomeScreen() {
   // Reset Display Options to defaults
   showGhostOverlay = true;
   showPath = false;
-  showSkeleton = false;
+  showSkeleton = true; // เปิดเป็น default (โครงผู้ฝึก)
   showSilhouette = false;
 
   // Sync checkboxes with display state
   if (checkGhost) checkGhost.checked = true;
   if (checkPath) checkPath.checked = false;
-  if (checkSkeleton) checkSkeleton.checked = false;
+  if (checkSkeleton) checkSkeleton.checked = true;
   if (checkSilhouette) checkSilhouette.checked = false;
 
   // Reset Debug Mode

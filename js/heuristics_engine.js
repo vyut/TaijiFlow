@@ -47,12 +47,16 @@ class HeuristicsEngine {
     //   - ms: มิลลิวินาที
     // =========================================================================
     this.CONFIG = {
-      // ----- Rule 1: Path Accuracy (เส้นทางที่ถูกต้อง) -----
-      // ตรวจว่าข้อมือห่างจากเส้นทางต้นแบบเกินไปหรือไม่
-      PATH_THRESHOLD_DEFAULT: 0.08, // 8% ของหน้าจอ (ค่า default เมื่อไม่มี calibration)
-      PATH_THRESHOLD_CALIBRATION_RATIO: 0.4, // 40% ของความกว้างไหล่
-      PATH_THRESHOLD_MIN: 0.02, // ขั้นต่ำ 2% (ป้องกันเข้มงวดเกินไป)
-      PATH_THRESHOLD_MAX: 0.25, // ขั้นสูง 25% (ป้องกันหลวมเกินไป)
+      // ----- Rule 1: Path Shape (รูปทรงเส้นทาง) -----
+      // ตรวจว่าเส้นทางที่ผู้ฝึกวาดเป็นวงโค้ง (ไม่เช็คตำแหน่ง)
+      SHAPE_CONSISTENCY_THRESHOLD: 0.6, // 60% ขึ้นไป = เป็นวงโค้ง (0.0-1.0)
+      SHAPE_ANALYSIS_FRAMES: 30, // วิเคราะห์ 30 frames ล่าสุด (~1 วินาที)
+
+      // (เก็บไว้เผื่อใช้ในอนาคต - Position-Based)
+      // PATH_THRESHOLD_DEFAULT: 0.08,
+      // PATH_THRESHOLD_CALIBRATION_RATIO: 0.4,
+      // PATH_THRESHOLD_MIN: 0.02,
+      // PATH_THRESHOLD_MAX: 0.25,
 
       // ----- Rule 2: Arm Rotation (การหมุนแขน) -----
       // ตรวจทิศทางการหงาย/คว่ำฝ่ามือ ขณะเคลื่อนที่ขึ้น/ลง
@@ -89,10 +93,10 @@ class HeuristicsEngine {
       WEIGHT_BUFFER_RATIO: 0.1, // Buffer 10% ของความกว้างการยืน
 
       // ----- Feedback Display -----
-      FEEDBACK_HOLD_TIME_MS: 1500, // แสดงข้อความค้าง 1.5 วินาที
+      FEEDBACK_HOLD_TIME_MS: 1000, // แสดงข้อความค้าง 1.0 วินาที
 
       // ----- History Settings -----
-      WRIST_HISTORY_LENGTH: 10, // เก็บประวัติข้อมือ 10 เฟรมล่าสุด
+      WRIST_HISTORY_LENGTH: 60, // เก็บประวัติข้อมือ 60 เฟรมล่าสุด (รองรับ Shape Analysis)
     };
 
     // =========================================================================
@@ -306,18 +310,40 @@ class HeuristicsEngine {
     const activePinky = isRightHandExercise ? rightPinky : leftPinky;
 
     // =========================================================================
+    // 📋 เก็บประวัติ Wrist Position (ใช้ร่วมกันโดย Rule 1, 6, 7)
+    // =========================================================================
+    if (activeWrist) {
+      this.wristHistory.push({
+        x: activeWrist.x,
+        y: activeWrist.y,
+        t: timestamp,
+      });
+      // จำกัดขนาด buffer
+      if (this.wristHistory.length > this.CONFIG.WRIST_HISTORY_LENGTH) {
+        this.wristHistory.shift();
+      }
+    }
+
+    // =========================================================================
     // 📋 ตรวจสอบทุกกฎตาม Level Config และเก็บใส่ allErrors
     // =========================================================================
 
-    // Rule 1: Path Accuracy - เส้นทางตรงตามท่าต้นแบบ
-    if (config.checkPath && referencePath && referencePath.length > 0) {
-      const err = this.checkPathAccuracy(
-        activeWrist,
-        referencePath,
-        currentExercise
-      );
+    // Rule 1: Path Shape - เส้นทางเป็นวงโค้ง
+    // (เปลี่ยนจาก Position-Based เป็น Shape-Based)
+    if (config.checkPath) {
+      const err = this.checkPathShape(currentExercise);
       if (err) allErrors.push({ msg: err, rule: "Path Accuracy" });
     }
+
+    // (เก็บไว้เผื่อใช้ในอนาคต - Position-Based)
+    // if (config.checkPath && referencePath && referencePath.length > 0) {
+    //   const err = this.checkPathAccuracy(
+    //     activeWrist,
+    //     referencePath,
+    //     currentExercise
+    //   );
+    //   if (err) allErrors.push({ msg: err, rule: "Path Accuracy" });
+    // }
 
     // Rule 2: Arm Rotation - หมุนฝ่ามือถูกทิศ (หงาย/คว่ำ)
     if (config.checkRotation) {
@@ -462,35 +488,105 @@ class HeuristicsEngine {
   // ===========================================================================
 
   // ---------------------------------------------------------------------------
-  // Rule 1: Path Accuracy - เส้นทางแม่นยำ
+  // Rule 1: Path Shape - รูปทรงเส้นทาง (Shape-Based)
   // ---------------------------------------------------------------------------
   /**
-   * ตรวจสอบว่าข้อมืออยู่ใกล้เส้นทางต้นแบบหรือไม่
+   * ตรวจสอบว่าเส้นทางที่ผู้ฝึกวาดเป็นวงโค้งหรือไม่
    *
-   * Algorithm:
-   *   1. ใช้ Ghost position ก่อน (ถ้ามี) - เปรียบเทียบ ณ เวลาเดียวกัน
-   *   2. Fallback: ใช้ระยะห่างใกล้สุดจากเส้นทางต้นแบบ
-   *   3. เปรียบเทียบกับ Dynamic Threshold
+   * Algorithm (Direction Consistency):
+   *   1. เก็บ wrist history ตามจำนวน SHAPE_ANALYSIS_FRAMES
+   *   2. คำนวณ cross product ทุก 3 จุดติดกันเพื่อหาทิศทางหมุน
+   *   3. ถ้าทิศทางหมุน (CW/CCW) สม่ำเสมอ >= threshold = ผ่าน
    *
-   * @param {Object} userWrist - ตำแหน่งข้อมือผู้ใช้ {x, y}
-   * @param {Object[]} referencePath - เส้นทางต้นแบบ [{x, y}]
+   * ข้อดี:
+   *   - ไม่ขึ้นกับตำแหน่งบนหน้าจอ
+   *   - ไม่ขึ้นกับขนาดวงกลม (เล็ก/ใหญ่ = ถูก)
+   *   - ไม่ขึ้นกับความเร็ว (ช้า/เร็ว = ถูก)
+   *
    * @param {string} currentExercise - ท่าที่ฝึก ('rh_cw', 'lh_cw', etc.)
    * @returns {string|null} ข้อความผิดพลาด หรือ null ถ้าถูกต้อง
    */
+  checkPathShape(currentExercise = "rh_cw") {
+    const minFrames = this.CONFIG.SHAPE_ANALYSIS_FRAMES;
+    const threshold = this.CONFIG.SHAPE_CONSISTENCY_THRESHOLD;
+
+    // ต้องมี frame เพียงพอก่อนวิเคราะห์
+    if (this.wristHistory.length < minFrames) {
+      return null;
+    }
+
+    // ใช้เฉพาะ N frames ล่าสุด
+    const recentHistory = this.wristHistory.slice(-minFrames);
+
+    // นับทิศทางหมุน (clockwise vs counter-clockwise)
+    let clockwiseTurns = 0;
+    let counterClockwiseTurns = 0;
+
+    for (let i = 2; i < recentHistory.length; i++) {
+      const p1 = recentHistory[i - 2];
+      const p2 = recentHistory[i - 1];
+      const p3 = recentHistory[i];
+
+      // Cross product: ถ้า > 0 = CW, < 0 = CCW (ใน screen coords ที่ Y กลับหัว)
+      const cross =
+        (p2.x - p1.x) * (p3.y - p2.y) - (p2.y - p1.y) * (p3.x - p2.x);
+
+      if (cross > 0.0001) {
+        // threshold เล็กๆ ป้องกัน noise
+        clockwiseTurns++;
+      } else if (cross < -0.0001) {
+        counterClockwiseTurns++;
+      }
+      // ถ้าใกล้ 0 = เส้นตรง ไม่นับ
+    }
+
+    // คำนวณ consistency
+    const total = clockwiseTurns + counterClockwiseTurns;
+    if (total === 0) {
+      // ไม่มีการหมุนเลย (เส้นตรง หรือ ยังไม่ขยับ)
+      return null;
+    }
+
+    const consistency = Math.max(clockwiseTurns, counterClockwiseTurns) / total;
+
+    // Debug Mode
+    if (this.debugMode) {
+      this.debugInfo.shapeConsistency = consistency.toFixed(2);
+      this.debugInfo.shapeThreshold = threshold.toFixed(2);
+      this.debugInfo.cwTurns = clockwiseTurns;
+      this.debugInfo.ccwTurns = counterClockwiseTurns;
+    }
+
+    // ตัดสิน: ถ้า consistency ต่ำกว่า threshold = ไม่เป็นวงโค้ง
+    if (consistency < threshold) {
+      return "⚠️ เคลื่อนไหวมือให้เป็นวงโค้ง (Move your hand in a circle)";
+    }
+
+    // ตรวจทิศทางหมุน (CW vs CCW)
+    // หมายเหตุ: วิดีโอถูก mirror กลับซ้ายขวา
+    // ดังนั้น CW จากมุมมองผู้ใช้ = CCW จากมุมมองกล้อง
+    const expectedCW = currentExercise.includes("cw");
+    const actualCW = counterClockwiseTurns > clockwiseTurns; // สลับเพราะ mirror
+    if (expectedCW !== actualCW) {
+      return "⚠️ หมุนมือผิดทิศทาง (Wrong direction)";
+    }
+
+    return null;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Rule 1 (เก่า): Path Accuracy - Position-Based (เก็บไว้เผื่อใช้ในอนาคต)
+  // ---------------------------------------------------------------------------
+  /*
   checkPathAccuracy(userWrist, referencePath, currentExercise = "rh_cw") {
     if (!userWrist) return null;
 
-    // =========================================================================
-    // ใช้ Ghost Position แทน Static Path (ถ้ามี)
-    // เปรียบเทียบตำแหน่ง Ghost ณ เวลาเดียวกัน แทนจุดใกล้สุดบนเส้นนิ่ง
-    // =========================================================================
     let minDistance = Infinity;
 
     // ลองใช้ Ghost position ก่อน (ถ้า Ghost กำลังเล่นอยู่)
     if (typeof ghostManager !== "undefined" && ghostManager.isPlaying) {
       const ghostFrame = ghostManager.getCurrentFrame();
       if (ghostFrame && ghostFrame.length > 0) {
-        // เลือก wrist ตามท่า (rh = มือขวา landmark 16, lh = มือซ้าย landmark 15)
         const isRightHand = currentExercise.startsWith("rh");
         const ghostWristIndex = isRightHand ? 16 : 15;
         const ghostWrist = ghostFrame[ghostWristIndex];
@@ -508,34 +604,29 @@ class HeuristicsEngine {
       }
     }
 
-    // ถ้ายังไม่มีข้อมูลเปรียบเทียบ ให้ผ่าน
     if (minDistance === Infinity) return null;
 
-    // Dynamic Threshold: ปรับตามความกว้างไหล่ (พร้อม min/max caps)
     let threshold = this.CONFIG.PATH_THRESHOLD_DEFAULT;
     if (this.calibrationData) {
       const calibThreshold =
         this.calibrationData.shoulderWidth *
         this.CONFIG.PATH_THRESHOLD_CALIBRATION_RATIO;
-      // Clamp ให้อยู่ในขอบเขตที่เหมาะสม
       threshold = Math.max(
         this.CONFIG.PATH_THRESHOLD_MIN,
         Math.min(this.CONFIG.PATH_THRESHOLD_MAX, calibThreshold)
       );
     }
 
-    // Debug: เก็บค่าสำหรับแสดง Overlay (กด D เพื่อเปิด)
     if (this.debugMode) {
       this.debugInfo.pathDistance = minDistance.toFixed(3);
       this.debugInfo.pathThreshold = threshold.toFixed(3);
     }
 
-    // ตัดสิน: ถ้าห่างเกิน Threshold = ผิด
-    // ข้อความใหม่: "ขยับให้เหมือนต้นแบบ" / "Adjust position to match guide"
     return minDistance > threshold
       ? "⚠️ ขยับให้เหมือนต้นแบบ (Adjust to match guide)"
       : null;
   }
+  */
 
   // ---------------------------------------------------------------------------
   // Rule 2: Arm Rotation - การหมุนฝ่ามือ
@@ -736,13 +827,7 @@ class HeuristicsEngine {
   checkSmoothness(wrist, timestamp) {
     if (!wrist) return null;
 
-    // เก็บ wrist พร้อม timestamp
-    const currentTime = timestamp || Date.now();
-    this.wristHistory.push({ x: wrist.x, y: wrist.y, t: currentTime });
-
-    if (this.wristHistory.length > this.CONFIG.WRIST_HISTORY_LENGTH)
-      this.wristHistory.shift();
-
+    // wristHistory ถูก populate แล้วใน analyze()
     // ต้องมี 3 จุดขึ้นไปเพื่อคำนวณ acceleration
     if (this.wristHistory.length < 3) return null;
 

@@ -17,99 +17,124 @@
 
 ---
 
-## Rule 1: Path Accuracy
+## Rule 1: Path Accuracy (Shape-Based)
 
 ### 🎯 วัตถุประสงค์
-ตรวจสอบว่า**ข้อมือผู้ใช้เคลื่อนที่ตามเส้นทางต้นแบบ**หรือไม่
+ตรวจสอบว่า**เส้นทางที่ผู้ใช้วาดเป็นวงโค้ง**และ**หมุนถูกทิศทาง**หรือไม่
 
-### � Algorithm ทีละขั้นตอน
+### 📝 Implementation Notes (v3.1)
+
+> **เปลี่ยนจาก Position-Based เป็น Shape-Based**
+> 
+> เดิม: วัดระยะห่างระหว่างข้อมือกับ Ghost/Reference Path
+> 
+> ใหม่: วิเคราะห์ว่าเส้นทางที่วาดเป็นวงกลมหรือไม่ + ตรวจทิศทางหมุน
+> 
+> **เหตุผล:** สอดคล้องกับหลักท่าม้วนไหมที่อนุญาตให้ขนาดวงกลมและความเร็วต่างกันได้
+
+### 🔄 Algorithm ทีละขั้นตอน
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  checkPathAccuracy(userWrist, referencePath)                │
+│  checkPathShape(currentExercise)                            │
 └─────────────────────────────────────────────────────────────┘
                           │
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ ขั้นที่ 1: ตรวจสอบข้อมูลเบื้องต้น                               │
-│ - มี userWrist และ referencePath หรือไม่?                   │
-│ → ถ้าไม่ครบ: return null                                    │
+│ - ต้องมี wristHistory อย่างน้อย 30 frames (~1 วินาที)        │
+│ → ถ้าไม่พอ: return null (รอเก็บข้อมูลเพิ่ม)                   │
 └─────────────────────────────────────────────────────────────┘
                           │
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ ขั้นที่ 2: หาระยะห่างที่ใกล้ที่สุด                               │
+│ ขั้นที่ 2: คำนวณ Direction Consistency                        │
 │                                                             │
-│   minDistance = Infinity                                    │
-│   for each refPoint in referencePath:                       │
-│       d = calculateDistance(userWrist, refPoint)            │
-│       if d < minDistance: minDistance = d                   │
+│   สำหรับทุก 3 จุดติดกัน (p1, p2, p3):                        │
+│     cross = (p2-p1) × (p3-p2)  (Cross Product)             │
+│                                                             │
+│     ถ้า cross > 0.0001 → clockwiseTurns++                   │
+│     ถ้า cross < -0.0001 → counterClockwiseTurns++           │
+│                                                             │
+│   consistency = max(CW, CCW) / (CW + CCW)                  │
 └─────────────────────────────────────────────────────────────┘
                           │
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ ขั้นที่ 3: คำนวณ Dynamic Threshold                            │
+│ ขั้นที่ 3: ตรวจว่าเป็นวงโค้งหรือไม่                             │
 │                                                             │
-│   ถ้ามี calibrationData:                                    │
-│     threshold = shoulderWidth × 0.4                         │
-│     threshold = clamp(threshold, 0.02, 0.25)               │
-│   ถ้าไม่มี:                                                  │
-│     threshold = 0.08 (default)                              │
+│   ถ้า consistency < 0.6 (60%)                               │
+│     → "⚠️ เคลื่อนไหวมือให้เป็นวงโค้ง"                          │
 └─────────────────────────────────────────────────────────────┘
                           │
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ ขั้นที่ 4: เปรียบเทียบและส่ง Feedback                          │
+│ ขั้นที่ 4: ตรวจทิศทางหมุน (CW vs CCW)                         │
 │                                                             │
-│   ถ้า minDistance > threshold                               │
-│     → "⚠️ เส้นทางไม่แม่นยำ"                                   │
-│   ถ้า minDistance ≤ threshold                               │
-│     → null (ถูกต้อง)                                        │
+│   expectedCW = ท่าที่เลือกมี "cw" หรือไม่                      │
+│   actualCW = counterClockwiseTurns > clockwiseTurns         │
+│   (สลับเพราะวิดีโอ Mirror)                                    │
+│                                                             │
+│   ถ้า expectedCW ≠ actualCW → "⚠️ หมุนมือผิดทิศทาง"          │
+│   ถ้าถูกต้อง → null                                         │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### �📊 แผนภาพ
+### 📊 แผนภาพ Cross Product
 
 ```
-        Reference Path (เส้นทางต้นแบบ)
-              ╭────────╮
-             ╱          ╲
-            ●            ●
-           ╱   ○ User    ╲
-          ●    ↑          ●
-          │ minDistance   │
-          ●               ●
-           ╲             ╱
-            ●           ●
-             ╲         ╱
-              ╰───────╯
-              
-   ○ = ตำแหน่งข้อมือผู้ใช้
-   ● = จุดบน Reference Path
-   ↑ = ระยะห่างที่ใกล้ที่สุด (minDistance)
+   Cross Product ใช้ตรวจทิศทางการหมุน
+   
+   p1 ──→ p2 ──→ p3
+   
+   Cross = (p2.x - p1.x) × (p3.y - p2.y) 
+         - (p2.y - p1.y) × (p3.x - p2.x)
+   
+   ใน Screen Coordinates (Y กลับหัว):
+   Cross > 0 = หมุนตามเข็ม (CW)
+   Cross < 0 = หมุนทวนเข็ม (CCW)
 ```
 
 ### 💻 โค้ด
 
 ```javascript
-checkPathAccuracy(userWrist, referencePath) {
-  // หาระยะห่างที่ใกล้ที่สุดไปยังทุกจุดใน reference path
-  let minDistance = Infinity;
-  for (const refPoint of referencePath) {
-    const d = this.calculateDistance(userWrist, refPoint);
-    if (d < minDistance) minDistance = d;
+checkPathShape(currentExercise = "rh_cw") {
+  const minFrames = this.CONFIG.SHAPE_ANALYSIS_FRAMES;  // 30
+  const threshold = this.CONFIG.SHAPE_CONSISTENCY_THRESHOLD;  // 0.6
+
+  if (this.wristHistory.length < minFrames) return null;
+
+  const recentHistory = this.wristHistory.slice(-minFrames);
+  let clockwiseTurns = 0, counterClockwiseTurns = 0;
+
+  for (let i = 2; i < recentHistory.length; i++) {
+    const p1 = recentHistory[i - 2];
+    const p2 = recentHistory[i - 1];
+    const p3 = recentHistory[i];
+    const cross = (p2.x - p1.x) * (p3.y - p2.y) - (p2.y - p1.y) * (p3.x - p2.x);
+
+    if (cross > 0.0001) clockwiseTurns++;
+    else if (cross < -0.0001) counterClockwiseTurns++;
   }
-  
-  // Dynamic Threshold พร้อม min/max caps
-  let threshold = 0.08; // 8% of screen (default)
-  if (this.calibrationData) {
-    threshold = this.calibrationData.shoulderWidth * 0.4;
-    threshold = Math.max(0.02, Math.min(0.25, threshold));
+
+  const total = clockwiseTurns + counterClockwiseTurns;
+  if (total === 0) return null;
+
+  const consistency = Math.max(clockwiseTurns, counterClockwiseTurns) / total;
+
+  // ตรวจว่าเป็นวงโค้ง
+  if (consistency < threshold) {
+    return "⚠️ เคลื่อนไหวมือให้เป็นวงโค้ง (Move your hand in a circle)";
   }
-  
-  return minDistance > threshold
-    ? "⚠️ เส้นทางไม่แม่นยำ"
-    : null;
+
+  // ตรวจทิศทาง (สลับเพราะ video mirror)
+  const expectedCW = currentExercise.includes("cw");
+  const actualCW = counterClockwiseTurns > clockwiseTurns;
+  if (expectedCW !== actualCW) {
+    return "⚠️ หมุนมือผิดทิศทาง (Wrong direction)";
+  }
+
+  return null;
 }
 ```
 
@@ -117,10 +142,16 @@ checkPathAccuracy(userWrist, referencePath) {
 
 | Parameter | ค่า | คำอธิบาย |
 |-----------|-----|----------|
-| `PATH_THRESHOLD_DEFAULT` | 0.08 | 8% ของหน้าจอ |
-| `PATH_THRESHOLD_CALIBRATION_RATIO` | 0.4 | 40% ของความกว้างไหล่ |
-| `PATH_THRESHOLD_MIN` | 0.02 | ขั้นต่ำ |
-| `PATH_THRESHOLD_MAX` | 0.25 | ขั้นสูง |
+| `SHAPE_CONSISTENCY_THRESHOLD` | 0.6 | 60% ขึ้นไป = เป็นวงโค้ง |
+| `SHAPE_ANALYSIS_FRAMES` | 30 | วิเคราะห์ 30 frames (~1 วินาที) |
+
+### ✅ ข้อดีของ Shape-Based
+
+| เดิม (Position-Based) | ใหม่ (Shape-Based) |
+|-----------------------|-------------------|
+| ❌ ต้องยืนตรงกับ Ghost | ✅ ยืนตรงไหนก็ได้ |
+| ❌ ต้องทำวงเท่า Ghost | ✅ วงเล็ก/ใหญ่ก็ได้ |
+| ❌ ต้องเร็วเท่า Ghost | ✅ ช้า/เร็วก็ได้ |
 
 ---
 

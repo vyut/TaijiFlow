@@ -27,7 +27,7 @@ class RulesConfigManager {
     // =========================================================================
     this.defaults = {
       // Thresholds
-      PATH_THRESHOLD_DEFAULT: 0.08,
+      SHAPE_CONSISTENCY_THRESHOLD: 0.6, // Rule 1: Path Shape (0.0-1.0)
       ARM_MOTION_THRESHOLD: 0.015,
       ELBOW_TOLERANCE_DEFAULT: 0.01,
       MIN_HIP_VELOCITY_DEG_SEC: 2.0,
@@ -48,7 +48,10 @@ class RulesConfigManager {
         checkboxId: "rule-path",
         configKey: "checkPath",
         thresholds: [
-          { inputId: "threshold-path", configKey: "PATH_THRESHOLD_DEFAULT" },
+          {
+            inputId: "threshold-path",
+            configKey: "SHAPE_CONSISTENCY_THRESHOLD",
+          },
         ],
       },
       {

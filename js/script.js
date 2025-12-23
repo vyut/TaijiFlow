@@ -272,6 +272,19 @@ function getPlatformInfo() {
   };
 }
 
+/**
+ * ตรวจสอบว่าเป็น Mobile/Tablet หรือไม่
+ * ใช้สำหรับข้าม export ไฟล์บนอุปกรณ์ที่มี memory จำกัด
+ *
+ * @returns {boolean} true = Mobile/Tablet, false = Desktop
+ */
+function isMobileDevice() {
+  const ua = navigator.userAgent;
+  return /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(
+    ua
+  );
+}
+
 // =============================================================================
 // SECTION 2: UI EVENT LISTENERS
 // =============================================================================
@@ -756,7 +769,14 @@ function endTrainingSession() {
         all_errors: sessionLog,
         frames: recordedSessionData,
       };
-      // DataExporter.exportFullSession(fullDataset);
+      // Export เฉพาะบน Desktop (Mobile/Tablet มี memory จำกัด ทำให้วิดีโอค้าง)
+      if (!isMobileDevice()) {
+        DataExporter.exportFullSession(fullDataset);
+      } else {
+        console.log(
+          "[Export] Skipped on mobile device to prevent memory issues"
+        );
+      }
     }
 
     // แสดง Score Popup (ส่ง summary object และ grade object)
@@ -954,7 +974,14 @@ recordBtn.addEventListener("click", () => {
         // === ข้อมูลดิบ (Raw Data) ===
         raw_data: recordedSessionData,
       };
-      // DataExporter.exportFullSession(fullDataset);
+      // Export เฉพาะบน Desktop (Mobile/Tablet มี memory จำกัด ทำให้วิดีโอค้าง)
+      if (!isMobileDevice()) {
+        DataExporter.exportFullSession(fullDataset);
+      } else {
+        console.log(
+          "[Export] Skipped on mobile device to prevent memory issues"
+        );
+      }
 
       // แสดงผลคะแนน
       uiManager.showScoreSummary(scoreSummary, gradeInfo);

@@ -10,14 +10,38 @@
 
 #### Added
 - **Instructor Thumbnail (มุมขวาบน)** - แสดงเงาครูฝึก (silhouette) ในรูปแบบ thumbnail
-  - ขนาด 200×133px มุมขวาบน
-  - พื้นโปร่งใส (ใช้ `globalCompositeOperation = 'lighter'`)
+  - Responsive sizing (20% ของ container, min 150px, max 400px)
+  - พื้นโปร่งใส (ใช้ CSS `mix-blend-mode: lighten`)
   - Keyboard shortcut: `I`
   - Default: ON
 
 #### Changed
 - **Ghost Overlay** - เปลี่ยน default เป็น OFF (ใช้ Instructor Thumbnail แทน)
 - **Display Menu** - เพิ่มตัวเลือก `🎬 Instructor (I)` หลัง Ghost
+
+---
+
+### 🌐 Localized Feedback Messages
+
+#### Changed
+- **Feedback Messages** - แยกภาษา TH/EN ตามการตั้งค่า
+  - TH: `⚠️ ศอกลอย`
+  - EN: `⚠️ Elbow too high`
+- **Audio Mappings** - อัปเดตให้รองรับทั้ง Thai และ English keys
+- เพิ่ม `setLang()` และ `getMessage()` methods ใน HeuristicsEngine
+
+---
+
+### 📊 Simple Ratio Scoring (v3.0)
+
+#### Changed
+- **Scoring Algorithm** - เปลี่ยนจาก Weighted Penalty เป็น Simple Ratio
+  - สูตรใหม่: `Score = (CorrectFrames / TotalFrames) × 100`
+  - ตัวอย่าง: 81 ถูก / 113 ทั้งหมด = 71.7%
+- **Duration Display** - แก้ไข bug และเปลี่ยน format
+  - แก้ไข: `startTime` ไม่ถูก set (แสดง 0:00)
+  - Format: `mm:ss` (เช่น `0:25`, `1:30`)
+  - ลบ frames count ออก
 
 ---
 

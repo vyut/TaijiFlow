@@ -692,6 +692,52 @@ function updateTrainingTimer() {
 }
 
 /**
+ * สร้าง Dynamic Path วงกลมจากสัดส่วนผู้ฝึก
+ * @param {Object[]} landmarks - 33 จุดจาก MediaPipe Pose
+ * @param {string} exercise - ท่าที่เลือก (rh_cw, rh_ccw, lh_cw, lh_ccw)
+ * @returns {Object[]} - Array ของจุด {x, y} เป็นวงกลม
+ */
+function generateDynamicPath(landmarks, exercise) {
+  if (!landmarks || landmarks.length < 25) return [];
+
+  // 1. เลือกมือซ้าย/ขวา
+  const isRightHand = exercise.startsWith("rh");
+  const shoulder = isRightHand ? landmarks[12] : landmarks[11];
+  const hip = isRightHand ? landmarks[24] : landmarks[23];
+  const wrist = isRightHand ? landmarks[16] : landmarks[15];
+
+  // 2. คำนวณ center (ด้านหน้า-ข้างลำตัว ระดับหน้าอก)
+  const bodyCenter = (landmarks[11].x + landmarks[12].x) / 2;
+  const centerX = (shoulder.x + bodyCenter) / 2;
+  const centerY = shoulder.y + (hip.y - shoulder.y) * 0.3;
+
+  // 3. คำนวณ radius (~85% ของความยาวแขน)
+  const armLength = Math.hypot(shoulder.x - wrist.x, shoulder.y - wrist.y);
+  const radius = armLength * 0.85;
+
+  // 4. Generate circle points (72 จุด, ทุก 5°)
+  const points = [];
+  const numPoints = 72;
+  const direction = exercise.includes("cw") ? 1 : -1;
+
+  for (let i = 0; i < numPoints; i++) {
+    const angle = (i * 5 * direction * Math.PI) / 180;
+    points.push({
+      x: centerX + radius * Math.cos(angle),
+      y: centerY + radius * Math.sin(angle),
+    });
+  }
+
+  console.log(
+    `[DynamicPath] Generated ${points.length} points, ` +
+      `center=(${centerX.toFixed(2)}, ${centerY.toFixed(2)}), ` +
+      `radius=${radius.toFixed(2)}`
+  );
+
+  return points;
+}
+
+/**
  * เริ่ม Training Session (Calibrate ทุกครั้ง)
  *
  * หมายเหตุ: รองรับ PWA Standalone Mode (Add to Home Screen)
@@ -1301,11 +1347,8 @@ async function loadReferenceData() {
       throw new Error("Invalid data format");
     }
 
-    referencePath = data.map((frame) => {
-      const wrist = frame.landmarks[16];
-      if (!wrist) throw new Error("Missing wrist landmark");
-      return { x: wrist.x, y: wrist.y };
-    });
+    // หมายเหตุ: referencePath ไม่ได้โหลดจาก JSON แล้ว
+    // ใช้ generateDynamicPath() สร้างจากสัดส่วนผู้ฝึกแทน
 
     // โหลด full skeleton data เข้า Ghost Manager
     ghostManager.load(data);
@@ -1315,7 +1358,7 @@ async function loadReferenceData() {
     await ghostManager.loadSilhouetteVideo(silhouetteUrl);
 
     referenceDataLoaded = true;
-    console.log(`✅ Loaded ${referencePath.length} points (Path + Ghost).`);
+    console.log(`✅ Loaded Ghost + Silhouette data.`);
 
     // ถ้า Ghost checkbox เปิดอยู่ ให้ restart ghost playback
     if (showGhostOverlay) {
@@ -1446,6 +1489,7 @@ async function onResults(results) {
         cancelCalibBtn.classList.add("hidden");
 
         // ถ้าเลือกท่าและระดับครบแล้ว → เริ่ม Training อัตโนมัติ
+        // หมายเหตุ: Dynamic Path จะสร้างในเฟรมแรกของการฝึก (ไม่ใช่ตอน calibrate)
         if (currentExercise && currentLevel) {
           startTrainingAfterCalibration();
         }
@@ -1525,9 +1569,22 @@ async function onResults(results) {
         }
       }
 
-      // 2. วาด Reference Path (ถ้าเปิด)
+      // 2. สร้าง Dynamic Path (เฟรมแรกของการฝึกเท่านั้น)
+      if (
+        isTrainingMode &&
+        referencePath.length === 0 &&
+        currentExercise &&
+        results.poseLandmarks
+      ) {
+        referencePath = generateDynamicPath(
+          results.poseLandmarks,
+          currentExercise
+        );
+      }
+
+      // 2.5. วาด Reference Path (ถ้าเปิด)
       if (showPath && referencePath.length > 0) {
-        drawer.drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4); // วาด Path Reference
+        drawer.drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4);
       }
 
       // 3. วาด User Skeleton (ถ้าเปิด)

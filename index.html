@@ -260,15 +260,20 @@ Version: 0.4 (2024-12-17)
               >
                 Display Option
               </div>
-              <!-- 1. Ghost (เงาครูฝึก) - Default OFF -->
+
+              <!-- ===== 📚 Reference Section ===== -->
+              <div class="px-3 py-1 text-xs text-center text-gray-400 bg-gray-750">
+                📚 ต้นแบบ
+              </div>
+              <!-- Path - Default ON -->
               <label
                 class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
-                title="Show instructor shadow on main video"
+                title="Show dynamic path guide"
               >
-                <input type="checkbox" id="check-ghost" class="mr-2" />
-                <span style="color: white">👻 Ghost (G)</span>
+                <input type="checkbox" id="check-path" class="mr-2" checked />
+                <span style="color: white">🟢 Path (P)</span>
               </label>
-              <!-- 2. Instructor Thumbnail - Default ON -->
+              <!-- Instructor Thumbnail - Default ON -->
               <label
                 class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
                 title="Show instructor shadow in corner thumbnail"
@@ -281,22 +286,35 @@ Version: 0.4 (2024-12-17)
                 />
                 <span style="color: white">🎬 Instructor (I)</span>
               </label>
-              <!-- 2. Path (เส้นทาง) - Default OFF -->
+              <!-- Ghost - Default OFF -->
               <label
                 class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
-                title="Show reference wrist path"
+                title="Show instructor shadow on main video"
               >
-                <input type="checkbox" id="check-path" class="mr-2" />
-                <span style="color: white">🟢 Path (P)</span>
+                <input type="checkbox" id="check-ghost" class="mr-2" />
+                <span style="color: white">👻 Ghost (G)</span>
               </label>
-              <!-- 3. Skeleton (โครงผู้ฝึก) - Default OFF -->
+
+              <!-- ===== 👤 You Section ===== -->
+              <div
+                class="px-3 py-1 text-center text-xs text-gray-400 bg-gray-750 border-t border-gray-600"
+              >
+                👤 ผู้ฝึก
+              </div>
+              <!-- Skeleton - Default ON -->
               <label
                 class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
                 title="Show your skeleton overlay"
               >
-                <input type="checkbox" id="check-skeleton" class="mr-2" />
+                <input
+                  type="checkbox"
+                  id="check-skeleton"
+                  class="mr-2"
+                  checked
+                />
                 <span style="color: white">🦴 Skeleton (B)</span>
               </label>
+              <!-- Silhouette - Default OFF -->
               <label
                 class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
                 title="Show your silhouette overlay"
@@ -304,8 +322,13 @@ Version: 0.4 (2024-12-17)
                 <input type="checkbox" id="check-silhouette" class="mr-2" />
                 <span style="color: white">🎭 Silhouette (S)</span>
               </label>
-              <!-- Divider -->
-              <div class="border-t border-gray-600 my-1"></div>
+
+              <!-- ===== 🛠️ Developer Section ===== -->
+              <div
+                class="px-3 py-1 text-center text-xs text-gray-400 bg-gray-750 border-t border-gray-600"
+              >
+                🛠️ Developer
+              </div>
               <!-- Debug Mode -->
               <label
                 class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
@@ -335,7 +358,7 @@ Version: 0.4 (2024-12-17)
                 class="p-2 text-sm text-center border-b border-gray-600 sticky top-0 bg-gray-800"
                 style="color: white"
               >
-                ⚙️ Rules Settings
+                Rules Settings
               </div>
 
               <!-- Rule 1: Path Shape -->

@@ -423,7 +423,7 @@ audioBtn.addEventListener("click", () => {
 // ลำดับ: Ghost, Instructor, Path, Skeleton, Silhouette
 let showGhostOverlay = false; // ปิดเป็น default (เงาครูฝึกบนวิดีโอหลัก)
 let showInstructor = true; // เปิดเป็น default (เงาครูฝึก thumbnail มุมขวาบน)
-let showPath = false; // ปิดเป็น default (เส้นทาง - ไม่ใช้แล้วหลังเปลี่ยนเป็น Shape-Based)
+let showPath = true; // เปิดเป็น default (เส้น Dynamic Path นำทาง)
 let showSkeleton = true; // เปิดเป็น default (โครงผู้ฝึก)
 let showSilhouette = false; // ปิดเป็น default (เงาผู้ฝึก)
 

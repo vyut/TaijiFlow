@@ -1019,7 +1019,7 @@ class UIManager {
         <!-- Duration Info -->
         <p class="text-sm text-gray-500">${
           isThaiLang ? "ระยะเวลา:" : "Duration:"
-        } ${summary.durationSeconds}s | ${summary.totalFrames} frames</p>
+        } ${summary.durationFormatted || summary.durationSeconds + "s"}</p>
         
         <!-- Top Errors Section (Optional) -->
         ${topErrorsHtml}

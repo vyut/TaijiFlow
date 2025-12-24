@@ -730,7 +730,7 @@ async function startTrainingAfterCalibration() {
   currentSessionId = generateSessionId();
   sessionLog = [];
   recordedSessionData = [];
-  scorer.reset();
+  scorer.start(); // เริ่มนับคะแนน (reset + set startTime)
 
   audioManager.announce("record_start");
   uiManager.updateRecordButtonState(true);
@@ -884,8 +884,13 @@ function resetToHomeScreen() {
   }
 
   // Clear Instructor Thumbnail canvas
-  if (instructorCtx) {
-    instructorCtx.clearRect(0, 0, 300, 200);
+  if (instructorCtx && instructorThumbnail) {
+    instructorCtx.clearRect(
+      0,
+      0,
+      instructorThumbnail.width,
+      instructorThumbnail.height
+    );
   }
 
   startOverlay.classList.remove("hidden");

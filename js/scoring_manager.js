@@ -1,41 +1,22 @@
 /**
  * ============================================================================
- * TaijiFlow AI - Scoring Manager v2.0
+ * TaijiFlow AI - Scoring Manager v3.0
  * ============================================================================
  *
- * ระบบให้คะแนนแบบถ่วงน้ำหนัก (Weighted Scoring System)
+ * ระบบให้คะแนนแบบ Simple Ratio
  *
  * @description
- *   คำนวณคะแนนการฝึกโดยพิจารณาความรุนแรงของข้อผิดพลาด
- *   ใช้กลยุทธ์ "Weighted Max" เพื่อไม่ให้ผิดหลายข้อพร้อมกันถูกลงโทษมากเกินไป
+ *   คำนวณคะแนนจากอัตราส่วนเฟรมที่ถูกต้อง
+ *   สูตร: Score = (CorrectFrames / TotalFrames) × 100
  *
  * ============================================================================
  * สูตรการคำนวณ
  * ============================================================================
  *
- *   1. แต่ละ Frame คำนวณ Penalty:
- *      Penalty = MaxWeight + (SumOfOtherWeights × 20%)
+ *   Score = (เฟรมถูก / เฟรมทั้งหมด) × 100
  *
- *      ตัวอย่าง: Frame มี 3 Errors (1.0, 0.5, 0.2)
- *      Penalty = 1.0 + ((0.5 + 0.2) × 0.2) = 1.0 + 0.14 = 1.14
- *
- *   2. คะแนนสุดท้าย:
- *      Score = 100 - (AveragePenalty × 100)
- *
- *      ตัวอย่าง: 1000 frames, Total Penalty = 200
- *      Average = 200/1000 = 0.2
- *      Score = 100 - (0.2 × 100) = 80 คะแนน
- *
- * ============================================================================
- * ตารางน้ำหนักความรุนแรง
- * ============================================================================
- *
- *   | ระดับ     | Weight | ตัวอย่าง                     |
- *   |-----------|--------|------------------------------|
- *   | Critical  | 1.0    | Path Deviation, Off Balance  |
- *   | High      | 0.8    | Start with Waist             |
- *   | Moderate  | 0.5    | Incorrect Arm Rotation       |
- *   | Minor     | 0.2    | Elbow too high, Head Unstable|
+ *   ตัวอย่าง: 81 ถูก, 32 ผิด (รวม 113)
+ *   Score = (81 / 113) × 100 = 71.7%
  *
  * ============================================================================
  * เกณฑ์การตัดเกรด
@@ -210,21 +191,14 @@ class ScoringManager {
 
   /**
    * คำนวณคะแนนปัจจุบัน (0-100%)
-   * สูตร: 100 - (Average Penalty Rate * 100)
+   * สูตร Simple Ratio: (ถูก / ทั้งหมด) × 100
    */
   getCurrentScore() {
     if (this.totalFrames === 0) return 100;
 
-    // หาค่าเฉลี่ยความเสียหายต่อเฟรม
-    const averagePenalty = this.weightedErrorSum / this.totalFrames;
-
-    // แปลงเป็นคะแนนเต็ม 100
-    // ถ้า averagePenalty = 1.0 (ผิดร้ายแรงตลอด) -> คะแนน = 0
-    // ถ้า averagePenalty = 0.0 (ไม่ผิดเลย) -> คะแนน = 100
-    let score = 100 - averagePenalty * 100;
-
-    // ป้องกันคะแนนติดลบ (กรณีผิดซ้ำซ้อนจน Penalty > 1.0)
-    score = Math.max(0, score);
+    // Simple Ratio: เฟรมถูก / เฟรมทั้งหมด
+    const correctFrames = this.totalFrames - this.errorFrames;
+    const score = (correctFrames / this.totalFrames) * 100;
 
     return Math.round(score * 10) / 10; // ปัดเศษทศนิยม 1 ตำแหน่ง
   }
@@ -233,9 +207,19 @@ class ScoringManager {
    * สรุปผลการฝึก (Summary Report)
    */
   getSummary() {
-    const duration = this.endTime
-      ? (this.endTime - this.startTime) / 1000
-      : (Date.now() - this.startTime) / 1000;
+    // คำนวณระยะเวลา (ถ้า startTime เป็น null ให้เป็น 0)
+    let duration = 0;
+    if (this.startTime) {
+      const endTime = this.endTime || Date.now();
+      duration = (endTime - this.startTime) / 1000;
+    }
+
+    // Format duration เป็น mm:ss
+    const minutes = Math.floor(duration / 60);
+    const seconds = Math.floor(duration % 60);
+    const durationFormatted = `${minutes}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
 
     // เรียงลำดับ Error ตามจำนวนครั้ง (มากไปน้อย) เพื่อแสดง Top Errors
     const sortedErrors = Object.entries(this.errorCounts)
@@ -248,6 +232,7 @@ class ScoringManager {
       errorFrames: this.errorFrames, // Backward compatibility with V1
       correctFrames: this.totalFrames - this.errorFrames, // Backward compatibility with V1
       durationSeconds: Math.round(duration * 10) / 10,
+      durationFormatted: durationFormatted, // mm:ss format
       topErrors: sortedErrors.slice(0, 3), // ส่งคืนแค่ 3 อันดับแรก
       allErrors: sortedErrors,
     };

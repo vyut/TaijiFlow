@@ -748,7 +748,8 @@ async function startTrainingFlow() {
   // 1. ซ่อน Overlay คำแนะนำ
   startOverlay.classList.add("hidden");
 
-  // 2. เริ่ม Calibrate
+  // 2. เริ่ม Calibrate (กำหนด Level ก่อน เพื่อ visibility requirement)
+  calibrator.setLevel(currentLevel); // L1-L2 ไม่ต้องเห็นข้อเท้า, L3 ต้องเห็นทั้งตัว
   calibrator.start();
   audioManager.announce("calib_start");
 

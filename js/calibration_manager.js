@@ -43,6 +43,7 @@ class CalibrationManager {
     this.isComplete = false; // Calibrate เสร็จแล้วหรือยัง
     this.calibrationData = null; // ข้อมูลสัดส่วนที่วัดได้ { torsoHeight, shoulderWidth, armLength }
     this.lang = "th"; // ภาษาปัจจุบัน (th/en)
+    this.currentLevel = null; // Level ที่เลือก (L1, L2, L3) - ใช้กำหนด visibility requirement
 
     // --- Stability Timer ---
     // นับจำนวนเฟรมที่ยืนนิ่งต่อเนื่อง เพื่อป้องกันการวัดขณะเคลื่อนไหว
@@ -91,6 +92,16 @@ class CalibrationManager {
    */
   getText(key) {
     return this.texts[this.lang][key] || this.texts.th[key];
+  }
+
+  /**
+   * ตั้งค่า Level สำหรับกำหนด visibility requirement
+   * L1-L2: ไม่ต้องเห็นข้อเท้า
+   * L3: ต้องเห็นทั้งตัว (รวมข้อเท้า)
+   * @param {string} level - 'L1', 'L2', หรือ 'L3'
+   */
+  setLevel(level) {
+    this.currentLevel = level;
   }
 
   // ===========================================================================
@@ -201,8 +212,13 @@ class CalibrationManager {
     if (!this.isActive || this.isComplete) return null;
 
     // ----- Step 1: ตรวจ Visibility -----
-    // ต้องเห็น: ไหล่ (11,12), สะโพก (23,24), ข้อเท้า (27,28)
-    const requiredIndices = [11, 12, 23, 24, 27, 28];
+    // L1-L2: ไหล่ (11,12), สะโพก (23,24) - ไม่ต้องเห็นข้อเท้า
+    // L3: เพิ่มข้อเท้า (27,28) - ต้องเห็นทั้งตัว
+    const requiredIndices =
+      this.currentLevel === "L3"
+        ? [11, 12, 23, 24, 27, 28] // L3: เห็นทั้งตัว
+        : [11, 12, 23, 24]; // L1-L2: ครึ่งบน
+
     const isVisible = requiredIndices.every(
       (index) => landmarks[index] && landmarks[index].visibility > 0.5
     );

@@ -325,9 +325,14 @@ const themeBtn = document.getElementById("theme-btn"); // สลับ Theme
 const displayBtn = document.getElementById("display-btn");
 const displayMenu = document.getElementById("display-menu");
 const checkGhost = document.getElementById("check-ghost");
+const checkInstructor = document.getElementById("check-instructor");
 const checkPath = document.getElementById("check-path");
 const checkSkeleton = document.getElementById("check-skeleton");
 const checkSilhouette = document.getElementById("check-silhouette");
+const instructorThumbnail = document.getElementById("instructor-thumbnail");
+const instructorCtx = instructorThumbnail
+  ? instructorThumbnail.getContext("2d")
+  : null;
 
 // -----------------------------------------------------------------------------
 // New UX Flow Elements - ปุ่มและ Overlay สำหรับ Training Flow ใหม่
@@ -414,8 +419,9 @@ audioBtn.addEventListener("click", () => {
 });
 
 // Display State Variables
-// ลำดับ: Ghost, Path, Skeleton, Silhouette
-let showGhostOverlay = true; // เปิดเป็น default (เงาครูฝึก)
+// ลำดับ: Ghost, Instructor, Path, Skeleton, Silhouette
+let showGhostOverlay = false; // ปิดเป็น default (เงาครูฝึกบนวิดีโอหลัก)
+let showInstructor = true; // เปิดเป็น default (เงาครูฝึก thumbnail มุมขวาบน)
 let showPath = false; // ปิดเป็น default (เส้นทาง - ไม่ใช้แล้วหลังเปลี่ยนเป็น Shape-Based)
 let showSkeleton = true; // เปิดเป็น default (โครงผู้ฝึก)
 let showSilhouette = false; // ปิดเป็น default (เงาผู้ฝึก)
@@ -446,6 +452,25 @@ if (checkGhost) {
       ghostManager.stop();
     }
   });
+}
+
+// Checkbox: Instructor Thumbnail (เงาครูฝึกมุมขวาบน)
+if (checkInstructor) {
+  checkInstructor.checked = showInstructor; // Sync with default
+  checkInstructor.addEventListener("change", () => {
+    toggleInstructor(checkInstructor.checked);
+  });
+}
+
+// Toggle Instructor Thumbnail visibility
+function toggleInstructor(show) {
+  showInstructor = show;
+  if (instructorThumbnail) {
+    instructorThumbnail.classList.toggle("hidden", !show);
+  }
+  if (checkInstructor) {
+    checkInstructor.checked = show;
+  }
 }
 
 // Checkbox: Path (เส้นทาง)
@@ -830,13 +855,15 @@ function resetToHomeScreen() {
   if (trainingTimerOverlay) trainingTimerOverlay.textContent = "5:00";
 
   // Reset Display Options to defaults
-  showGhostOverlay = true;
+  showGhostOverlay = false; // ปิดเป็น default
+  showInstructor = true; // เปิดเป็น default
   showPath = false;
   showSkeleton = true; // เปิดเป็น default (โครงผู้ฝึก)
   showSilhouette = false;
 
   // Sync checkboxes with display state
-  if (checkGhost) checkGhost.checked = true;
+  if (checkGhost) checkGhost.checked = false;
+  if (checkInstructor) checkInstructor.checked = true;
   if (checkPath) checkPath.checked = false;
   if (checkSkeleton) checkSkeleton.checked = true;
   if (checkSilhouette) checkSilhouette.checked = false;
@@ -852,6 +879,11 @@ function resetToHomeScreen() {
   // Reset Rules Settings to defaults
   if (typeof rulesManager !== "undefined") {
     rulesManager.resetToDefaults();
+  }
+
+  // Clear Instructor Thumbnail canvas
+  if (instructorCtx) {
+    instructorCtx.clearRect(0, 0, 300, 200);
   }
 
   startOverlay.classList.remove("hidden");
@@ -1119,6 +1151,14 @@ window.addEventListener("keydown", (e) => {
         checkGhost.checked = !checkGhost.checked;
         checkGhost.dispatchEvent(new Event("change"));
       }
+      break;
+
+    // -------------------------------------------------------------------------
+    // I = Instructor Thumbnail Toggle
+    // -------------------------------------------------------------------------
+    case "i":
+      e.preventDefault();
+      toggleInstructor(!showInstructor);
       break;
 
     // -------------------------------------------------------------------------
@@ -1435,6 +1475,46 @@ async function onResults(results) {
           if (ghostLandmarks) {
             drawer.drawGhostSkeleton(ghostLandmarks, ghostManager.opacity);
           }
+        }
+      }
+
+      // 1.5. วาด Instructor Thumbnail (มุมขวาบน) ถ้าเปิดใช้งาน
+      if (showInstructor && instructorCtx && isTrainingMode) {
+        // ต้องการ silhouette video โดยตรง (ไม่ขึ้นกับ Ghost overlay)
+        const silhouetteVideo = ghostManager.silhouetteVideo;
+        if (silhouetteVideo && silhouetteVideo.readyState >= 2) {
+          // เล่น video ถ้ายังไม่เล่น
+          if (silhouetteVideo.paused) {
+            silhouetteVideo.play().catch(() => {});
+          }
+
+          // ดึงขนาดจริงของ canvas (responsive)
+          const canvasRect = instructorThumbnail.getBoundingClientRect();
+          const w = canvasRect.width;
+          const h = canvasRect.height;
+
+          // Set canvas resolution ให้ตรงกับขนาดแสดงผล
+          if (
+            instructorThumbnail.width !== w ||
+            instructorThumbnail.height !== h
+          ) {
+            instructorThumbnail.width = w;
+            instructorThumbnail.height = h;
+          }
+
+          // Clear canvas (transparent)
+          instructorCtx.clearRect(0, 0, w, h);
+
+          // Mirror flip เพราะ video เดิมถูก mirror
+          instructorCtx.save();
+          instructorCtx.scale(-1, 1);
+          instructorCtx.translate(-w, 0);
+
+          // ใช้ lighter mode ให้พื้นดำโปร่งใส
+          instructorCtx.globalCompositeOperation = "lighter";
+          instructorCtx.drawImage(silhouetteVideo, 0, 0, w, h);
+
+          instructorCtx.restore();
         }
       }
 

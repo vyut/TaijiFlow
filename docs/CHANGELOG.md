@@ -4,6 +4,23 @@
 
 ---
 
+## [v0.6] - 2024-12-24
+
+### 🎬 Instructor Thumbnail
+
+#### Added
+- **Instructor Thumbnail (มุมขวาบน)** - แสดงเงาครูฝึก (silhouette) ในรูปแบบ thumbnail
+  - ขนาด 200×133px มุมขวาบน
+  - พื้นโปร่งใส (ใช้ `globalCompositeOperation = 'lighter'`)
+  - Keyboard shortcut: `I`
+  - Default: ON
+
+#### Changed
+- **Ghost Overlay** - เปลี่ยน default เป็น OFF (ใช้ Instructor Thumbnail แทน)
+- **Display Menu** - เพิ่มตัวเลือก `🎬 Instructor (I)` หลัง Ghost
+
+---
+
 ## [v0.5] - 2024-12-23
 
 ### 🔄 Rule 1: Shape-Based Path Analysis

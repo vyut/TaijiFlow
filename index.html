@@ -260,13 +260,26 @@ Version: 0.4 (2024-12-17)
               >
                 Display Option
               </div>
-              <!-- 1. Ghost (เงาครูฝึก) - Default ON -->
+              <!-- 1. Ghost (เงาครูฝึก) - Default OFF -->
               <label
                 class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
-                title="Show instructor shadow guide"
+                title="Show instructor shadow on main video"
               >
-                <input type="checkbox" id="check-ghost" class="mr-2" checked />
+                <input type="checkbox" id="check-ghost" class="mr-2" />
                 <span style="color: white">👻 Ghost (G)</span>
+              </label>
+              <!-- 2. Instructor Thumbnail - Default ON -->
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                title="Show instructor shadow in corner thumbnail"
+              >
+                <input
+                  type="checkbox"
+                  id="check-instructor"
+                  class="mr-2"
+                  checked
+                />
+                <span style="color: white">🎬 Instructor (I)</span>
               </label>
               <!-- 2. Path (เส้นทาง) - Default OFF -->
               <label
@@ -610,6 +623,9 @@ Version: 0.4 (2024-12-17)
           playsinline
         ></video>
         <canvas id="output_canvas" width="1280" height="720"></canvas>
+
+        <!-- Instructor Thumbnail (มุมขวาบน) -->
+        <canvas id="instructor-thumbnail"></canvas>
 
         <!-- Feedback Overlay (HTML - ไม่ถูก CSS mirror) -->
         <div

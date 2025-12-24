@@ -228,6 +228,54 @@ class HeuristicsEngine {
   }
 
   /**
+   * ตั้งค่าภาษาสำหรับ Feedback Messages
+   * @param {string} lang - "th" หรือ "en"
+   */
+  setLang(lang) {
+    this.lang = lang;
+  }
+
+  /**
+   * ดึงข้อความ Feedback ตามภาษาปัจจุบัน
+   * @param {string} key - Key ของข้อความ
+   * @returns {string} ข้อความตามภาษา
+   */
+  getMessage(key) {
+    const isEn = this.lang === "en";
+    const messages = {
+      // Rule 1: Path Shape
+      moveInCircle: isEn
+        ? "⚠️ Move your hand in a circle"
+        : "⚠️ เคลื่อนไหวมือให้เป็นวงโค้ง",
+      wrongDirection: isEn ? "⚠️ Wrong direction" : "⚠️ หมุนมือผิดทิศทาง",
+
+      // Rule 2: Rotation
+      incorrectRotation: isEn
+        ? "⚠️ Incorrect Arm Rotation"
+        : "⚠️ หมุนแขนไม่ถูกต้อง",
+
+      // Rule 3: Elbow
+      elbowTooHigh: isEn ? "⚠️ Elbow too high" : "⚠️ ศอกลอย",
+
+      // Rule 4: Waist
+      startWithWaist: isEn ? "⚠️ Start with Waist" : "⚠️ ใช้เอวนำ",
+
+      // Rule 5: Stability
+      headUnstable: isEn ? "⚠️ Head Unstable" : "⚠️ ศีรษะไม่นิ่ง",
+
+      // Rule 6: Smoothness
+      notSmooth: isEn ? "⚠️ Not Smooth" : "⚠️ การเคลื่อนไหวสะดุด",
+
+      // Rule 7: Continuity
+      keepMoving: isEn ? "⚠️ Keep Moving" : "⚠️ อย่าหยุดนิ่ง",
+
+      // Rule 8: Weight
+      offBalance: isEn ? "⚠️ Off Balance" : "⚠️ เสียสมดุล",
+    };
+    return messages[key] || key;
+  }
+
+  /**
    * ดึงข้อมูล Debug สำหรับแสดง Overlay
    * @returns {Object} { pathDistance, pathThreshold, wristVelocity, acceleration }
    */
@@ -559,7 +607,7 @@ class HeuristicsEngine {
 
     // ตัดสิน: ถ้า consistency ต่ำกว่า threshold = ไม่เป็นวงโค้ง
     if (consistency < threshold) {
-      return "⚠️ เคลื่อนไหวมือให้เป็นวงโค้ง (Move your hand in a circle)";
+      return this.getMessage("moveInCircle");
     }
 
     // ตรวจทิศทางหมุน (CW vs CCW)
@@ -568,7 +616,7 @@ class HeuristicsEngine {
     const expectedCW = currentExercise.includes("cw");
     const actualCW = counterClockwiseTurns > clockwiseTurns; // สลับเพราะ mirror
     if (expectedCW !== actualCW) {
-      return "⚠️ หมุนมือผิดทิศทาง (Wrong direction)";
+      return this.getMessage("wrongDirection");
     }
 
     return null;
@@ -687,7 +735,7 @@ class HeuristicsEngine {
 
     // Step 4: เปรียบเทียบและส่ง Feedback
     if (isSupinationExpected !== isActuallySupinated) {
-      return "⚠️ หมุนแขนไม่ถูกต้อง (Incorrect Arm Rotation)";
+      return this.getMessage("incorrectRotation");
     }
 
     return null;
@@ -717,7 +765,7 @@ class HeuristicsEngine {
     // ตรวจ: ศอกอยู่สูงกว่าไหล่มากไป (elbow.y < shoulder.y - tolerance)
     // หมายเหตุ: Y ใน screen coords = ค่าน้อย = อยู่สูง
     if (elbow.y < shoulder.y - tolerance) {
-      return "⚠️ ศอกลอย (Elbow too high)";
+      return this.getMessage("elbowTooHigh");
     }
     return null;
   }
@@ -774,7 +822,7 @@ class HeuristicsEngine {
     const MIN_HIP_VELOCITY = this.CONFIG.MIN_HIP_VELOCITY_DEG_SEC;
 
     if (hipVel > MIN_HIP_VELOCITY && shoulderVel > hipVel * RATIO_THRESHOLD) {
-      return "⚠️ ใช้เอวนำ (Start with Waist)";
+      return this.getMessage("startWithWaist");
     }
     return null;
   }
@@ -811,7 +859,7 @@ class HeuristicsEngine {
         this.CONFIG.STABILITY_THRESHOLD_CALIBRATION_RATIO;
     }
 
-    if (displacement > threshold) return "⚠️ ศีรษะไม่นิ่ง (Head Unstable)";
+    if (displacement > threshold) return this.getMessage("headUnstable");
     return null;
   }
 
@@ -858,7 +906,7 @@ class HeuristicsEngine {
       this.debugInfo.acceleration = acceleration.toFixed(3);
     }
 
-    if (acceleration > threshold) return "⚠️ การเคลื่อนไหวสะดุด (Not Smooth)";
+    if (acceleration > threshold) return this.getMessage("notSmooth");
     return null;
   }
 
@@ -886,7 +934,7 @@ class HeuristicsEngine {
 
     // หยุดเกิน 0.5 วินาที = แจ้งเตือน
     if (this.pauseCounter > this.CONFIG.PAUSE_FRAME_THRESHOLD) {
-      return "⚠️ อย่าหยุดนิ่ง (Keep Moving)";
+      return this.getMessage("keepMoving");
     }
     return null;
   }
@@ -917,7 +965,7 @@ class HeuristicsEngine {
       hipCenter < leftBoundary + buffer ||
       hipCenter > rightBoundary - buffer
     ) {
-      return "⚠️ เสียสมดุล (Off Balance)";
+      return this.getMessage("offBalance");
     }
     return null;
   }

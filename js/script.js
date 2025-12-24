@@ -401,6 +401,7 @@ langBtn.addEventListener("click", () => {
   const newLang = uiManager.toggleLanguage();
   audioManager.setLanguage(newLang); // Sync เสียงพูดกับภาษา
   calibrator.setLanguage(newLang); // Sync Calibration text กับภาษา
+  engine.setLang(newLang); // Sync Feedback messages กับภาษา
   langBtn.innerText = newLang === "th" ? "🇹🇭" : "🇺🇸"; // แสดงแค่ธงภาษาปัจจุบัน
 });
 
@@ -514,6 +515,7 @@ const initLang = uiManager.currentLang || "th";
 langBtn.innerText = initLang === "th" ? "🇹🇭" : "🇺🇸";
 audioManager.setLanguage(initLang);
 calibrator.setLanguage(initLang);
+engine.setLang(initLang); // Sync Feedback messages กับภาษา
 
 // เริ่มต้น Gesture Manager (Gesture Control)
 gestureManager.init().then((ready) => {

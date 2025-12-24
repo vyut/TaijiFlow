@@ -18,7 +18,7 @@
  *   ghost.update(deltaTime);
  *   drawer.drawGhostSkeleton(ghost.getCurrentFrame());
  *
- * Version: 0.1 (2024-12-17)
+ * Version: 0.2 (2024-12-24)
  * ================================================================================
  */
 

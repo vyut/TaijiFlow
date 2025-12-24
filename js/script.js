@@ -29,20 +29,20 @@
  * โครงสร้างไฟล์ (5 Sections)
  * ============================================================================
  *
- *   Section 1: Setup & Variables (บรรทัด 1-84)
+ *   Section 1: Setup & Variables (บรรทัด 56-299)
  *     - DOM Elements, Manager Instances, State Variables
  *
- *   Section 2: UI Event Listeners (บรรทัด 85-600)
+ *   Section 2: UI Event Listeners (บรรทัด 300-1303)
  *     - ปุ่ม, Dropdown, Keyboard Shortcuts
  *     - Training Flow Functions
  *
- *   Section 3: Data Loading (บรรทัด 601-655)
- *     - โหลด Reference Path จาก JSON
+ *   Section 3: Data Loading (บรรทัด 1304-1391)
+ *     - โหลด Reference Data (Ghost, Silhouette)
  *
- *   Section 4: MediaPipe Processing (บรรทัด 656-805)
+ *   Section 4: MediaPipe Processing (บรรทัด 1392-1689)
  *     - onResults() - ประมวลผลทุก Frame
  *
- *   Section 5: Initialization (บรรทัด 806-903)
+ *   Section 5: Initialization (บรรทัด 1690-1840)
  *     - เริ่มต้น Pose Model, Camera
  *
  * ============================================================================

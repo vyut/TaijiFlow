@@ -213,88 +213,13 @@ function toggleFeedbackOverlay(show) {
   }
 }
 
-/**
- * สร้างหรือดึง User ID จาก LocalStorage
- *
- * @description
- *   สร้าง ID ที่ไม่ซ้ำกันสำหรับแต่ละผู้ใช้
- *   เก็บใน LocalStorage เพื่อให้คงที่ตลอดการใช้งาน
- *   ใช้สำหรับ Track ข้อมูลการฝึกของแต่ละคน
- *
- * @returns {string} User ID (เช่น "user_lxyz123ab")
- */
-function getOrCreateUserId() {
-  let userId = localStorage.getItem("taijiflow_user_id");
-  if (!userId) {
-    // สร้าง ID ใหม่: "user_" + timestamp(base36) + random(5 chars)
-    userId =
-      "user_" +
-      Date.now().toString(36) +
-      Math.random().toString(36).substr(2, 5);
-    localStorage.setItem("taijiflow_user_id", userId);
-  }
-  return userId;
-}
-
-/**
- * สร้าง Session ID ใหม่
- *
- * @description
- *   สร้าง ID ที่ไม่ซ้ำกันสำหรับแต่ละ Session การฝึก
- *   เรียกทุกครั้งที่เริ่มบันทึกใหม่
- *
- * @returns {string} Session ID (เช่น "sess_lxyz123ab")
- */
-function generateSessionId() {
-  return (
-    "sess_" + Date.now().toString(36) + Math.random().toString(36).substr(2, 5)
-  );
-}
-
-/**
- * ดึงข้อมูล Platform/Device
- *
- * @description
- *   เก็บข้อมูลอุปกรณ์สำหรับ Analytics และ Debug
- *   ช่วยให้เข้าใจว่าผู้ใช้ใช้อุปกรณ์ใดบ้าง
- *
- * @returns {Object} ข้อมูล Platform
- */
-function getPlatformInfo() {
-  const ua = navigator.userAgent;
-  return {
-    userAgent: ua,
-    platform: navigator.platform,
-    isMobile: /Android|iPhone|iPad|iPod/i.test(ua),
-    screenWidth: window.screen.width,
-    screenHeight: window.screen.height,
-    language: navigator.language,
-  };
-}
-
-/**
- * ตรวจสอบว่าเป็น Mobile/Tablet หรือไม่
- * ใช้สำหรับข้าม export ไฟล์บนอุปกรณ์ที่มี memory จำกัด
- *
- * หมายเหตุ: iPadOS 13+ รายงานตัวเองเป็น desktop Safari
- * ต้องใช้ maxTouchPoints เพิ่มเติมในการตรวจจับ
- *
- * @returns {boolean} true = Mobile/Tablet, false = Desktop
- */
-function isMobileDevice() {
-  const ua = navigator.userAgent;
-
-  // ตรวจจับ Mobile/Tablet ทั่วไป
-  const isMobile =
-    /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(ua);
-
-  // ตรวจจับ iPad ที่รายงานตัวเองเป็น Mac (iPadOS 13+)
-  // iPad จะมี maxTouchPoints > 1 แต่ Mac ปกติจะมี 0
-  const isIPadOS =
-    navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
-
-  return isMobile || isIPadOS;
-}
+// -----------------------------------------------------------------------------
+// NOTE: Session/User ID Functions ย้ายไปอยู่ที่ js/session_manager.js แล้ว
+//   - getOrCreateUserId()
+//   - generateSessionId()
+//   - getPlatformInfo()
+//   - isMobileDevice()
+// -----------------------------------------------------------------------------
 
 // =============================================================================
 // SECTION 2: UI EVENT LISTENERS
@@ -691,51 +616,9 @@ function updateTrainingTimer() {
   }
 }
 
-/**
- * สร้าง Dynamic Path วงกลมจากสัดส่วนผู้ฝึก
- * @param {Object[]} landmarks - 33 จุดจาก MediaPipe Pose
- * @param {string} exercise - ท่าที่เลือก (rh_cw, rh_ccw, lh_cw, lh_ccw)
- * @returns {Object[]} - Array ของจุด {x, y} เป็นวงกลม
- */
-function generateDynamicPath(landmarks, exercise) {
-  if (!landmarks || landmarks.length < 25) return [];
-
-  // 1. เลือกมือซ้าย/ขวา
-  const isRightHand = exercise.startsWith("rh");
-  const shoulder = isRightHand ? landmarks[12] : landmarks[11];
-  const hip = isRightHand ? landmarks[24] : landmarks[23];
-  const wrist = isRightHand ? landmarks[16] : landmarks[15];
-
-  // 2. คำนวณ center (ด้านหน้า-ข้างลำตัว ระดับหน้าอก)
-  const bodyCenter = (landmarks[11].x + landmarks[12].x) / 2;
-  const centerX = (shoulder.x + bodyCenter) / 2;
-  const centerY = shoulder.y + (hip.y - shoulder.y) * 0.3;
-
-  // 3. คำนวณ radius (~85% ของความยาวแขน)
-  const armLength = Math.hypot(shoulder.x - wrist.x, shoulder.y - wrist.y);
-  const radius = armLength * 0.85;
-
-  // 4. Generate circle points (72 จุด, ทุก 5°)
-  const points = [];
-  const numPoints = 72;
-  const direction = exercise.includes("cw") ? 1 : -1;
-
-  for (let i = 0; i < numPoints; i++) {
-    const angle = (i * 5 * direction * Math.PI) / 180;
-    points.push({
-      x: centerX + radius * Math.cos(angle),
-      y: centerY + radius * Math.sin(angle),
-    });
-  }
-
-  console.log(
-    `[DynamicPath] Generated ${points.length} points, ` +
-      `center=(${centerX.toFixed(2)}, ${centerY.toFixed(2)}), ` +
-      `radius=${radius.toFixed(2)}`
-  );
-
-  return points;
-}
+// -----------------------------------------------------------------------------
+// NOTE: generateDynamicPath() ย้ายไปอยู่ที่ js/path_generator.js แล้ว
+// -----------------------------------------------------------------------------
 
 /**
  * เริ่ม Training Session (Calibrate ทุกครั้ง)

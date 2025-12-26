@@ -6,6 +6,60 @@
 
 ## [v0.6] - 2024-12-24
 
+### 🔧 Code Refactoring
+
+#### Added
+- **path_generator.js** (85 lines) - แยก `generateDynamicPath()` ออกจาก script.js
+- **session_manager.js** (115 lines) - แยก session/user ID functions
+  - `getOrCreateUserId()`
+  - `generateSessionId()`
+  - `getPlatformInfo()`
+  - `isMobileDevice()`
+
+#### Changed
+- **script.js** - ลดจาก 1,840 → 1,723 lines (-6%)
+- **index.html** - อัปเดต version เป็น v0.6, เพิ่ม script tags ใหม่
+- **ghost_manager.js** - อัปเดต version เป็น v0.2
+
+---
+
+### 📚 Code Documentation
+
+#### Added
+- **docs/SYSTEM_OVERVIEW.md** - ภาพรวมสถาปัตยกรรม, Data Flow, Dependencies
+- **docs/code/** folder - รวมเอกสารโค้ดทั้งหมด
+  - `README.md` - Index ของเอกสารโค้ด
+  - `SCRIPT_JS.md` - Main Controller (66 functions)
+  - `HEURISTICS_ENGINE.md` - 8 Rules + Methods
+  - `CALIBRATION_MANAGER.md` - T-Pose + Metrics
+  - `SCORING_MANAGER.md` - Simple Ratio + Grades
+  - `AUDIO_MANAGER.md` - TTS System
+  - `DRAWING_MANAGER.md` - Canvas Drawing
+  - `UTILITY_FILES.md` - Path, Session, Ghost, UI
+
+---
+
+### 🎯 Level-Based Calibration
+
+#### Changed
+- **calibration_manager.js** - เพิ่ม level-based visibility requirements
+  - L1-L2: ไม่ต้องเห็นข้อเท้า (upper body only)
+  - L3: ต้องเห็นทั้งตัว (full body including ankles)
+- เพิ่ม `setLevel()` method
+
+---
+
+### 📺 Display Menu Reorganization
+
+#### Changed
+- **index.html** - จัดเรียง Display Options เป็น 3 sections:
+  - 📚 ต้นแบบ: Instructor, Ghost, Path
+  - 👤 ผู้ฝึก: Skeleton, Silhouette
+  - 🛠️ Developer: Debug
+- **Path** - เปลี่ยน default เป็น ON
+
+---
+
 ### 🎬 Instructor Thumbnail
 
 #### Added

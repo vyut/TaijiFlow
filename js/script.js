@@ -29,20 +29,20 @@
  * โครงสร้างไฟล์ (5 Sections)
  * ============================================================================
  *
- *   Section 1: Setup & Variables (บรรทัด 56-299)
+ *   Section 1: Setup & Variables (บรรทัด 56-222)
  *     - DOM Elements, Manager Instances, State Variables
  *
- *   Section 2: UI Event Listeners (บรรทัด 300-1303)
+ *   Section 2: UI Event Listeners (บรรทัด 223-1185)
  *     - ปุ่ม, Dropdown, Keyboard Shortcuts
  *     - Training Flow Functions
  *
- *   Section 3: Data Loading (บรรทัด 1304-1391)
+ *   Section 3: Data Loading (บรรทัด 1186-1273)
  *     - โหลด Reference Data (Ghost, Silhouette)
  *
- *   Section 4: MediaPipe Processing (บรรทัด 1392-1689)
+ *   Section 4: MediaPipe Processing (บรรทัด 1274-1571)
  *     - onResults() - ประมวลผลทุก Frame
  *
- *   Section 5: Initialization (บรรทัด 1690-1840)
+ *   Section 5: Initialization (บรรทัด 1572-1722)
  *     - เริ่มต้น Pose Model, Camera
  *
  * ============================================================================
@@ -796,7 +796,7 @@ function resetToHomeScreen() {
   // Sync checkboxes with display state
   if (checkGhost) checkGhost.checked = false;
   if (checkInstructor) checkInstructor.checked = true;
-  if (checkPath) checkPath.checked = false;
+  if (checkPath) checkPath.checked = true;
   if (checkSkeleton) checkSkeleton.checked = true;
   if (checkSilhouette) checkSilhouette.checked = false;
 

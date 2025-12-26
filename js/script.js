@@ -416,14 +416,26 @@ if (checkSkeleton) {
 }
 
 // Checkbox: Silhouette (เงาผู้ฝึก)
+// Performance: เปิด/ปิด Segmentation ตามการใช้งาน Silhouette
 if (checkSilhouette) {
   checkSilhouette.checked = showSilhouette; // Sync with default
   checkSilhouette.addEventListener("change", () => {
     showSilhouette = checkSilhouette.checked;
+
+    // 🔧 Dynamic Segmentation Toggle - เพิ่ม/ลด performance
+    pose.setOptions({
+      enableSegmentation: showSilhouette,
+      smoothSegmentation: showSilhouette,
+    });
+
     if (showSilhouette) {
       silhouetteManager.enable();
+      console.log("⚠️ Silhouette enabled - enableSegmentation: true");
     } else {
       silhouetteManager.disable();
+      console.log(
+        "✅ Silhouette disabled - enableSegmentation: false (+5-10 fps)"
+      );
     }
   });
 }
@@ -1594,8 +1606,8 @@ const pose = new Pose({
 pose.setOptions({
   modelComplexity: 1, // Full Model (สมดุลระหว่างความแม่นยำและความเร็ว)
   smoothLandmarks: true, // เปิด Smoothing
-  enableSegmentation: true, // เปิด Segmentation (สำหรับ Silhouette)
-  smoothSegmentation: true, // ทำให้ mask นิ่งขึ้น
+  enableSegmentation: false, // 🔧 ปิด default (เปิดเมื่อใช้ Silhouette) - เพิ่ม +5-10 fps
+  smoothSegmentation: false, // 🔧 ปิด default
   minDetectionConfidence: 0.5, // 50% ขึ้นไปถึงจะยอมรับ
   minTrackingConfidence: 0.5, // 50% ขึ้นไปถึงจะติดตามต่อ
 });

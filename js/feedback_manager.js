@@ -15,11 +15,19 @@ class FeedbackManager {
     this.bindEvents();
   }
 
+  // ดึงภาษาปัจจุบันจาก uiManager
+  getLang() {
+    return window.uiManager?.currentLang || "th";
+  }
+
   createButton() {
     const btn = document.createElement("button");
     btn.id = "feedback-btn";
     btn.innerHTML = "📝";
-    btn.title = "ช่วยพัฒนาแอป - ตอบแบบสอบถาม";
+    btn.title =
+      this.getLang() === "th"
+        ? "ช่วยพัฒนาแอป TaijiFlow AI ให้ดียิ่งขึ้น"
+        : "Help improve TaijiFlow AI";
     document.body.appendChild(btn);
   }
 
@@ -30,21 +38,31 @@ class FeedbackManager {
   }
 
   showPopup() {
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(
-      this.formUrl
-    )}`;
+    const isThaiLang = this.getLang() === "th";
+    // ใช้ไฟล์ QR ที่เก็บใน local เพื่อโหลดเร็วขึ้น (ไม่ต้องรอ API)
+    const qrPath = "images/qr_feedback.png";
 
     const popup = document.createElement("div");
     popup.id = "feedback-popup";
     popup.className = "feedback-overlay";
     popup.innerHTML = `
       <div class="feedback-modal">
-        <h3>📝 แบบสอบถาม</h3>
-        <p class="feedback-desc">ช่วยพัฒนาแอป TaijiFlow AI ให้ดียิ่งขึ้น</p>
-        <img src="${qrUrl}" alt="QR Feedback" class="feedback-qr" width="150" height="150" />
-        <p class="feedback-hint">สแกน QR Code หรือคลิกปุ่มด้านล่าง</p>
-        <a href="${this.formUrl}" target="_blank" class="feedback-link">🔗 เปิดแบบสอบถาม</a>
-        <button class="feedback-close">ปิด</button>
+        <h3>${isThaiLang ? "📝 แบบสอบถาม" : "📝 Feedback"}</h3>
+        <p class="feedback-desc">${
+          isThaiLang
+            ? "ช่วยพัฒนาแอป TaijiFlow AI ให้ดียิ่งขึ้น"
+            : "Help improve TaijiFlow AI"
+        }</p>
+        <img src="${qrPath}" alt="QR Feedback" class="feedback-qr" width="150" height="150" />
+        <p class="feedback-hint">${
+          isThaiLang
+            ? "สแกน QR Code หรือคลิกปุ่มด้านล่าง"
+            : "Scan QR Code or click button below"
+        }</p>
+        <a href="${this.formUrl}" target="_blank" class="feedback-link">${
+      isThaiLang ? "🔗 เปิดแบบสอบถาม" : "🔗 Open Feedback Form"
+    }</a>
+        <button class="feedback-close">${isThaiLang ? "ปิด" : "Close"}</button>
       </div>
     `;
 

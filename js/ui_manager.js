@@ -1029,12 +1029,12 @@ class UIManager {
           <p class="text-xs text-gray-500 mb-2">
             ${
               isThaiLang
-                ? "📝 ช่วยพัฒนาแอป ตอบแบบสอบถาม"
-                : "📝 Help improve this app"
+                ? "📝 ช่วยพัฒนาแอป TaijiFlow AI ให้ดียิ่งขึ้น"
+                : "📝 Help improve TaijiFlow AI"
             }
           </p>
           <img 
-            src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://docs.google.com/forms/d/e/1FAIpQLSf3uXhHZogHZAR5apQ0QUAwlhiI6yvBLNHorPw7ydY3QEtklQ/viewform"
+            src="images/qr_feedback.png"
             alt="QR Feedback"
             class="mx-auto mb-2 rounded"
             width="100"

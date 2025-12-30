@@ -26,6 +26,24 @@ partition "System Initialization" {
     endif
 }
 
+:ผู้ใช้กดปุ่ม Start Training;
+
+partition "Calibration (<<include>> UC-01)" {
+    :เริ่ม Calibration;
+    :รอผู้ใช้ยืน T-Pose;
+    :ตรวจสอบและบันทึกสัดส่วน;
+    note right
+        ดูรายละเอียดใน
+        Activity Diagram UC-01
+    end note
+}
+
+partition "Countdown & Start" {
+    :แสดง Countdown 3-2-1;
+    :แสดงปุ่ม Fullscreen (ผู้ใช้กดเองได้);
+    :เริ่มนับเวลาฝึก (Timer);
+}
+
 partition "Main Training Loop (Real-time)" {
     repeat
         :รับภาพจากกล้อง (Frame Input);
@@ -48,13 +66,12 @@ partition "Main Training Loop (Real-time)" {
 
         :บันทึกคะแนนและข้อมูลเฟรม (Logging);
 
-    repeat while (ผู้ใช้กดหยุด หรือ ทำท่าจบ?) is (ไม่)
-    -> ใช่ (Stop/Gesture);
+    repeat while (ผู้ใช้กดหยุด หรือ หมดเวลา?) is (ไม่)
+    -> ใช่ (Stop/Timeout);
 }
 
-:คำนวณคะแนนสรุป (0-100);
-:แสดงหน้าต่างสรุปผล (Summary Popup);
-:บันทึกข้อมูล Raw Data (Background);
+:ออกจาก Fullscreen (ถ้าอยู่);
+:ส่งข้อมูลไป UC-03 (View Result);
 
 stop
 @enduml

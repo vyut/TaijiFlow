@@ -14,15 +14,27 @@ if (จำนวนเฟรม > 0 ?) then (ไม่ใช่)
     stop
 else (ใช่)
     partition "Scoring Process" {
-        :คำนวณคะแนน (Weighted Score);
+        :คำนวณคะแนน (Simple Ratio);
+        note right
+            Score = (CorrectFrames / TotalFrames) × 100
+            Grade: A(≥85), B(≥70), C(≥55), D(≥40), F(<40)
+        end note
         :แปลงคะแนนเป็นเกรด (Grading);
         :จัดลำดับข้อผิดพลาด (Ranking Errors);
     }
 
-    partition "Data Export (FR-08)" {
-        :รวบรวม Metadata และ Landmarks;
-        :สร้างไฟล์ JSON;
-        :ดาวน์โหลดไฟล์ลงเครื่องผู้ใช้;
+    partition "Data Export (Optional)" {
+        if (isMobileDevice?) then (ใช่ - Mobile/Tablet)
+            :ข้าม Export (ป้องกันค้าง);
+            note right
+                Mobile/Tablet มี memory จำกัด
+                การ Export อาจทำให้วิดีโอค้าง
+            end note
+        else (ไม่ใช่ - Desktop)
+            :รวบรวม Metadata และ Landmarks;
+            :สร้างไฟล์ JSON;
+            :ดาวน์โหลดไฟล์ลงเครื่องผู้ใช้;
+        endif
     }
 
     :แสดง Popup สรุปผล (Score/Grade/Top Errors);

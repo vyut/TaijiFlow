@@ -27,12 +27,20 @@ package "TaijiFlow AI System" {
     }
 }
 
-' Relationships
-trainee -- UC01
+' Actor Relationships
 trainee -- UC02
-trainee -- UC03
 trainee -- UC04
 trainee -- UC05
 
 admin -- UC06
+
+' Include Relationships
+UC02 ..> UC01 : <<include>>
+UC02 ..> UC03 : <<include>>
+
+' note right of UC02
+'   UC-02 includes:
+'   - UC-01 ก่อนเริ่มฝึก (Calibration)
+'   - UC-03 หลังจบการฝึก (View Result)
+' end note
 @enduml

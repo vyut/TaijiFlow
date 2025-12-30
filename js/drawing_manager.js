@@ -426,4 +426,172 @@ class DrawingManager {
     // ----- Restore state -----
     this.ctx.restore();
   }
+
+  // ===========================================================================
+  // 🔵 TRAIL VISUALIZATION: วาดเส้นทางการเคลื่อนไหว
+  // ===========================================================================
+
+  /**
+   * วาดเส้นทางการเคลื่อนไหวของมือ (Wrist Trail)
+   * แสดง Trail พร้อม Fade effect และสีตาม Circularity Score
+   *
+   * @param {Object[]} trailHistory - Array ของ {x, y, timestamp}
+   * @param {number|null} circularityScore - คะแนนความกลม (0-100) หรือ null
+   */
+  drawTrail(trailHistory, circularityScore = null) {
+    if (!trailHistory || trailHistory.length < 2) return;
+
+    this.ctx.save();
+
+    // ----- กำหนดสีตาม Circularity Score -----
+    let trailColor;
+    if (circularityScore === null) {
+      trailColor = "#3b82f6"; // Blue - กำลังวิเคราะห์
+    } else if (circularityScore >= 80) {
+      trailColor = "#22c55e"; // Green - วงกลมดี
+    } else if (circularityScore >= 50) {
+      trailColor = "#eab308"; // Yellow - ปานกลาง
+    } else {
+      trailColor = "#ef4444"; // Red - วงกลมเบี้ยว
+    }
+
+    // ----- วาด Trail ด้วย Fade Effect -----
+    this.ctx.lineCap = "round";
+    this.ctx.lineJoin = "round";
+    this.ctx.lineWidth = 4;
+
+    for (let i = 1; i < trailHistory.length; i++) {
+      const prev = trailHistory[i - 1];
+      const curr = trailHistory[i];
+
+      // Fade: จุดเก่า → จาง, จุดใหม่ → เข้ม
+      const opacity = (i / trailHistory.length) * 0.8 + 0.2;
+
+      // แปลง normalized coords เป็น pixel
+      const x1 = prev.x * this.canvasWidth;
+      const y1 = prev.y * this.canvasHeight;
+      const x2 = curr.x * this.canvasWidth;
+      const y2 = curr.y * this.canvasHeight;
+
+      // วาดเส้นแต่ละส่วน
+      this.ctx.beginPath();
+      this.ctx.strokeStyle = trailColor;
+      this.ctx.globalAlpha = opacity;
+      this.ctx.moveTo(x1, y1);
+      this.ctx.lineTo(x2, y2);
+      this.ctx.stroke();
+    }
+
+    this.ctx.globalAlpha = 1.0;
+    this.ctx.restore();
+  }
+
+  /**
+   * แสดง Circularity Score Indicator
+   * แสดงเป็นกล่องที่มุมขวาล่าง
+   *
+   * @param {number} score - คะแนน 0-100
+   * @param {string} lang - ภาษา "th" หรือ "en"
+   */
+  drawCircularityIndicator(score, lang = "th") {
+    if (score === null || score === undefined) return;
+
+    this.ctx.save();
+
+    // ----- กำหนดข้อความและสี -----
+    let labelText, bgColor;
+    if (score >= 80) {
+      labelText = lang === "th" ? "วงกลมดี" : "Good Circle";
+      bgColor = "rgba(34, 197, 94, 0.85)"; // Green
+    } else if (score >= 50) {
+      labelText = lang === "th" ? "ปรับปรุงได้" : "Can Improve";
+      bgColor = "rgba(234, 179, 8, 0.85)"; // Yellow
+    } else {
+      labelText = lang === "th" ? "วงกลมเบี้ยว" : "Poor Circle";
+      bgColor = "rgba(239, 68, 68, 0.85)"; // Red
+    }
+
+    // ----- วาดกล่องพื้นหลัง -----
+    const boxWidth = 160;
+    const boxHeight = 50;
+    // หมายเหตุ: Canvas มี CSS scaleX(-1) mirror อยู่
+    // วาดที่ซ้าย (x=20) → จะแสดงที่ขวาบนหน้าจอ
+    const boxX = 20;
+    const boxY = this.canvasHeight - boxHeight - 80; // ล่าง - margin (เหนือ timer)
+
+    this.ctx.fillStyle = bgColor;
+    // ใช้ fillRect ธรรมดาแทน roundRect เพื่อ browser compatibility
+    this.ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
+
+    // ----- วาดข้อความ -----
+    this.ctx.fillStyle = "#FFFFFF";
+    this.ctx.font = 'bold 14px "Sarabun", sans-serif';
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+
+    // บรรทัดที่ 1: Score
+    this.ctx.fillText(
+      `🔵 ${Math.round(score)}%`,
+      boxX + boxWidth / 2,
+      boxY + 18
+    );
+
+    // บรรทัดที่ 2: Label
+    this.ctx.font = '12px "Sarabun", sans-serif';
+    this.ctx.fillText(labelText, boxX + boxWidth / 2, boxY + 36);
+
+    this.ctx.restore();
+  }
+
+  // ===========================================================================
+  // 📊 CIRCULARITY CALCULATION: คำนวณความกลมของ Trail
+  // ===========================================================================
+
+  /**
+   * คำนวณ Circularity Score ของ Trail
+   * Score สูง = วงกลมสมบูรณ์, Score ต่ำ = วงกลมเบี้ยว
+   *
+   * @param {Object[]} trailHistory - Array ของ {x, y}
+   * @returns {number|null} คะแนน 0-100 หรือ null ถ้าข้อมูลไม่พอ
+   */
+  static calculateCircularity(trailHistory) {
+    const MIN_POINTS = 30;
+    if (!trailHistory || trailHistory.length < MIN_POINTS) return null;
+
+    // ----- Step 1: หาจุดศูนย์กลาง (Centroid) -----
+    const sumX = trailHistory.reduce((sum, p) => sum + p.x, 0);
+    const sumY = trailHistory.reduce((sum, p) => sum + p.y, 0);
+    const center = {
+      x: sumX / trailHistory.length,
+      y: sumY / trailHistory.length,
+    };
+
+    // ----- Step 2: หารัศมีเฉลี่ย -----
+    const distances = trailHistory.map((p) =>
+      Math.sqrt(Math.pow(p.x - center.x, 2) + Math.pow(p.y - center.y, 2))
+    );
+    const avgRadius =
+      distances.reduce((sum, d) => sum + d, 0) / distances.length;
+
+    // ถ้ารัศมีเล็กมาก (ไม่ขยับ) ให้ return null
+    if (avgRadius < 0.02) return null;
+
+    // ----- Step 3: หา Variance ของรัศมี -----
+    const squaredDiffs = distances.map((d) => Math.pow(d - avgRadius, 2));
+    const variance = Math.sqrt(
+      squaredDiffs.reduce((sum, d) => sum + d, 0) / squaredDiffs.length
+    );
+
+    // ----- Step 4: แปลงเป็น Score (0-100) -----
+    // Normalized variance = variance / avgRadius
+    // ยิ่ง variance ต่ำ = ยิ่งกลม = score สูง
+    // ปรับ: ใช้ตัวคูณ 1.0 แทน 2.0 เพื่อให้ผ่อนคลายขึ้น
+    const normalizedVariance = variance / avgRadius;
+    const score = Math.max(0, Math.min(100, (1 - normalizedVariance) * 100));
+
+    // Debug: แสดงค่าใน console
+    // console.log(`Circularity: variance=${variance.toFixed(4)}, avgRadius=${avgRadius.toFixed(4)}, normalized=${normalizedVariance.toFixed(4)}, score=${score.toFixed(1)}`);
+
+    return Math.round(score);
+  }
 }

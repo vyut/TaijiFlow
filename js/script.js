@@ -351,6 +351,12 @@ let showInstructor = true; // เปิดเป็น default (เงาคร�
 let showPath = true; // เปิดเป็น default (เส้น Dynamic Path นำทาง)
 let showSkeleton = true; // เปิดเป็น default (โครงผู้ฝึก)
 let showSilhouette = false; // ปิดเป็น default (เงาผู้ฝึก)
+let showTrail = false; // ปิดเป็น default (เส้นทางการเคลื่อนไหว)
+
+// Trail Visualization State
+const TRAIL_LENGTH = 60; // เก็บ 60 จุด (~2 วินาที ที่ 30fps)
+let trailHistory = []; // Array ของ {x, y, timestamp}
+let circularityScore = null; // คะแนนความกลม (0-100)
 
 // Display Dropdown Toggle
 if (displayBtn && displayMenu) {
@@ -437,6 +443,22 @@ if (checkSilhouette) {
         "✅ Silhouette disabled - enableSegmentation: false (+5-10 fps)"
       );
     }
+  });
+}
+
+// Checkbox: Trail (เส้นทางการเคลื่อนไหว)
+const checkTrail = document.getElementById("check-trail");
+if (checkTrail) {
+  checkTrail.checked = showTrail; // Sync with default
+  checkTrail.addEventListener("change", () => {
+    showTrail = checkTrail.checked;
+
+    if (!showTrail) {
+      // Reset trail data เมื่อปิด
+      trailHistory = [];
+      circularityScore = null;
+    }
+    console.log(`🔵 Trail: ${showTrail ? "enabled" : "disabled"}`);
   });
 }
 
@@ -1144,6 +1166,17 @@ window.addEventListener("keydown", (e) => {
       break;
 
     // -------------------------------------------------------------------------
+    // R = Trail Visualization Toggle (เส้นทางการเคลื่อนไหว)
+    // -------------------------------------------------------------------------
+    case "r":
+      e.preventDefault();
+      if (checkTrail) {
+        checkTrail.checked = !checkTrail.checked;
+        checkTrail.dispatchEvent(new Event("change"));
+      }
+      break;
+
+    // -------------------------------------------------------------------------
     // ? = Open Tutorial Popup (วิธีการใช้งาน)
     // -------------------------------------------------------------------------
     case "?":
@@ -1486,6 +1519,47 @@ async function onResults(results) {
       // 3. วาด User Skeleton (ถ้าเปิด)
       if (showSkeleton) {
         drawer.drawSkeleton(results.poseLandmarks);
+      }
+
+      // 4. Trail Visualization (ถ้าเปิด)
+      if (showTrail && isTrainingMode && !calibrator.isActive) {
+        try {
+          // หาตำแหน่ง Wrist ที่ใช้
+          const isRightHand = currentExercise.includes("rh");
+          const wristIndex = isRightHand ? 16 : 15; // Right: 16, Left: 15
+          const wrist = results.poseLandmarks[wristIndex];
+
+          if (wrist && wrist.visibility > 0.5) {
+            // เก็บตำแหน่งลง History
+            trailHistory.push({
+              x: wrist.x,
+              y: wrist.y,
+              timestamp: Date.now(),
+            });
+
+            // จำกัดขนาด History
+            while (trailHistory.length > TRAIL_LENGTH) {
+              trailHistory.shift();
+            }
+
+            // คำนวณ Circularity (ทุก 5 เฟรม เพื่อ performance)
+            if (trailHistory.length >= 30 && frameCounter % 5 === 0) {
+              circularityScore =
+                DrawingManager.calculateCircularity(trailHistory);
+            }
+
+            // วาด Trail และ Indicator
+            drawer.drawTrail(trailHistory, circularityScore);
+            if (circularityScore !== null) {
+              drawer.drawCircularityIndicator(
+                circularityScore,
+                uiManager.currentLang
+              );
+            }
+          }
+        } catch (err) {
+          console.error("Trail error:", err);
+        }
       }
 
       if (isTrainingMode && !calibrator.isActive && referencePath.length > 0) {

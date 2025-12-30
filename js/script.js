@@ -1540,7 +1540,7 @@ async function onResults(results) {
 
             if (trailHistory.length > 0) {
               const last = trailHistory[trailHistory.length - 1];
-              const SMOOTH_FACTOR = 0.4; // 0 = ไม่ smooth, 1 = ไม่ขยับ
+              const SMOOTH_FACTOR = 0.4; // 0 = ไม่ smooth, 0.4 = ปานกลาง, 0.7 = smooth มาก, 1 = ไม่ขยับ
               smoothX = last.x * SMOOTH_FACTOR + wrist.x * (1 - SMOOTH_FACTOR);
               smoothY = last.y * SMOOTH_FACTOR + wrist.y * (1 - SMOOTH_FACTOR);
             }

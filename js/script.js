@@ -1542,20 +1542,8 @@ async function onResults(results) {
               trailHistory.shift();
             }
 
-            // คำนวณ Circularity (ทุก 5 เฟรม เพื่อ performance)
-            if (trailHistory.length >= 30 && frameCounter % 5 === 0) {
-              circularityScore =
-                DrawingManager.calculateCircularity(trailHistory);
-            }
-
-            // วาด Trail และ Indicator
-            drawer.drawTrail(trailHistory, circularityScore);
-            if (circularityScore !== null) {
-              drawer.drawCircularityIndicator(
-                circularityScore,
-                uiManager.currentLang
-              );
-            }
+            // วาด Trail (Fading Dots)
+            drawer.drawTrail(trailHistory);
           }
         } catch (err) {
           console.error("Trail error:", err);

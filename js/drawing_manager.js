@@ -433,56 +433,40 @@ class DrawingManager {
 
   /**
    * วาดเส้นทางการเคลื่อนไหวของมือ (Wrist Trail)
-   * แสดง Trail พร้อม Fade effect และสีตาม Circularity Score
+   * แสดง Trail แบบ Fading Dots - เหมือนคลื่นในน้ำ
    *
    * @param {Object[]} trailHistory - Array ของ {x, y, timestamp}
-   * @param {number|null} circularityScore - คะแนนความกลม (0-100) หรือ null
    */
-  drawTrail(trailHistory, circularityScore = null) {
+  drawTrail(trailHistory) {
     if (!trailHistory || trailHistory.length < 2) return;
 
     this.ctx.save();
 
-    // ----- กำหนดสีตาม Circularity Score -----
-    let trailColor;
-    if (circularityScore === null) {
-      trailColor = "#3b82f6"; // Blue - กำลังวิเคราะห์
-    } else if (circularityScore >= 80) {
-      trailColor = "#22c55e"; // Green - วงกลมดี
-    } else if (circularityScore >= 50) {
-      trailColor = "#eab308"; // Yellow - ปานกลาง
-    } else {
-      trailColor = "#ef4444"; // Red - วงกลมเบี้ยว
-    }
+    // ----- สี Trail -----
+    const trailColor = { r: 59, g: 130, b: 246 }; // Blue (#3b82f6)
 
-    // ----- วาด Trail ด้วย Fade Effect -----
-    this.ctx.lineCap = "round";
-    this.ctx.lineJoin = "round";
-    this.ctx.lineWidth = 4;
+    // ----- วาดแต่ละจุดเป็น Fading Dots -----
+    for (let i = 0; i < trailHistory.length; i++) {
+      const point = trailHistory[i];
+      const progress = i / trailHistory.length; // 0 (เก่า) → 1 (ใหม่)
 
-    for (let i = 1; i < trailHistory.length; i++) {
-      const prev = trailHistory[i - 1];
-      const curr = trailHistory[i];
+      // ยิ่งใหม่ยิ่งเข้ม, ยิ่งเก่ายิ่งจาง
+      const opacity = progress * 0.85 + 0.1;
 
-      // Fade: จุดเก่า → จาง, จุดใหม่ → เข้ม
-      const opacity = (i / trailHistory.length) * 0.8 + 0.2;
+      // ยิ่งใหม่ยิ่งใหญ่, ยิ่งเก่ายิ่งเล็ก
+      const radius = progress * 6 + 2;
 
       // แปลง normalized coords เป็น pixel
-      const x1 = prev.x * this.canvasWidth;
-      const y1 = prev.y * this.canvasHeight;
-      const x2 = curr.x * this.canvasWidth;
-      const y2 = curr.y * this.canvasHeight;
+      const x = point.x * this.canvasWidth;
+      const y = point.y * this.canvasHeight;
 
-      // วาดเส้นแต่ละส่วน
+      // วาดวงกลม
       this.ctx.beginPath();
-      this.ctx.strokeStyle = trailColor;
-      this.ctx.globalAlpha = opacity;
-      this.ctx.moveTo(x1, y1);
-      this.ctx.lineTo(x2, y2);
-      this.ctx.stroke();
+      this.ctx.arc(x, y, radius, 0, Math.PI * 2);
+      this.ctx.fillStyle = `rgba(${trailColor.r}, ${trailColor.g}, ${trailColor.b}, ${opacity})`;
+      this.ctx.fill();
     }
 
-    this.ctx.globalAlpha = 1.0;
     this.ctx.restore();
   }
 

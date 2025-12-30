@@ -433,7 +433,7 @@ class DrawingManager {
 
   /**
    * วาดเส้นทางการเคลื่อนไหวของมือ (Wrist Trail)
-   * แสดง Trail แบบ Fading Dots - เหมือนคลื่นในน้ำ
+   * แสดง Trail เส้นเดียว + Glow ที่ปลาย
    *
    * @param {Object[]} trailHistory - Array ของ {x, y, timestamp}
    */
@@ -442,30 +442,60 @@ class DrawingManager {
 
     this.ctx.save();
 
-    // ----- สี Trail -----
-    const trailColor = { r: 59, g: 130, b: 246 }; // Blue (#3b82f6)
+    // ----- สี Trail (Cyan - สีพลังงาน) -----
+    const baseColor = { r: 100, g: 200, b: 255 };
 
-    // ----- วาดแต่ละจุดเป็น Fading Dots -----
-    for (let i = 0; i < trailHistory.length; i++) {
-      const point = trailHistory[i];
-      const progress = i / trailHistory.length; // 0 (เก่า) → 1 (ใหม่)
+    // ----- วาดเส้น Trail เดียว (Fading Line) -----
+    this.ctx.lineCap = "round";
+    this.ctx.lineJoin = "round";
 
-      // ยิ่งใหม่ยิ่งเข้ม, ยิ่งเก่ายิ่งจาง
-      const opacity = progress * 0.85 + 0.1;
-
-      // ยิ่งใหม่ยิ่งใหญ่, ยิ่งเก่ายิ่งเล็ก
-      const radius = progress * 6 + 2;
+    for (let i = 1; i < trailHistory.length; i++) {
+      const prev = trailHistory[i - 1];
+      const curr = trailHistory[i];
+      const progress = i / trailHistory.length; // 0 → 1
 
       // แปลง normalized coords เป็น pixel
-      const x = point.x * this.canvasWidth;
-      const y = point.y * this.canvasHeight;
+      const x1 = prev.x * this.canvasWidth;
+      const y1 = prev.y * this.canvasHeight;
+      const x2 = curr.x * this.canvasWidth;
+      const y2 = curr.y * this.canvasHeight;
 
-      // วาดวงกลม
+      // ยิ่งใหม่ยิ่งเข้ม + หนา
+      const opacity = progress * 0.7 + 0.1;
+      const lineWidth = progress * 4 + 1;
+
       this.ctx.beginPath();
-      this.ctx.arc(x, y, radius, 0, Math.PI * 2);
-      this.ctx.fillStyle = `rgba(${trailColor.r}, ${trailColor.g}, ${trailColor.b}, ${opacity})`;
-      this.ctx.fill();
+      this.ctx.moveTo(x1, y1);
+      this.ctx.lineTo(x2, y2);
+      this.ctx.strokeStyle = `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, ${opacity})`;
+      this.ctx.lineWidth = lineWidth;
+      this.ctx.stroke();
     }
+
+    // ----- วาด Glow ที่ปลาย (จุดปัจจุบัน) -----
+    const lastPoint = trailHistory[trailHistory.length - 1];
+    const x = lastPoint.x * this.canvasWidth;
+    const y = lastPoint.y * this.canvasHeight;
+
+    // Glow effect
+    const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, 15);
+    gradient.addColorStop(
+      0,
+      `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, 0.9)`
+    );
+    gradient.addColorStop(
+      0.5,
+      `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, 0.3)`
+    );
+    gradient.addColorStop(
+      1,
+      `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, 0)`
+    );
+
+    this.ctx.beginPath();
+    this.ctx.arc(x, y, 15, 0, Math.PI * 2);
+    this.ctx.fillStyle = gradient;
+    this.ctx.fill();
 
     this.ctx.restore();
   }

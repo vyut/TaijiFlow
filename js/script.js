@@ -354,7 +354,11 @@ let showSilhouette = false; // ปิดเป็น default (เงาผู้
 let showTrail = false; // ปิดเป็น default (เส้นทางการเคลื่อนไหว)
 
 // Trail Visualization State
-const TRAIL_LENGTH = 60; // เก็บ 60 จุด (~2 วินาที ที่ 30fps)
+// 🔧 CONFIG: ปรับความยาว Trail (จำนวนจุด)
+// - 20 = สั้น (~0.7 วินาที) → หายเร็ว
+// - 40 = ปานกลาง (~1.3 วินาที)
+// - 60 = ยาว (~2 วินาที) → หายช้า
+const TRAIL_LENGTH = 60;
 let trailHistory = []; // Array ของ {x, y, timestamp}
 let circularityScore = null; // คะแนนความกลม (0-100)
 
@@ -1530,10 +1534,21 @@ async function onResults(results) {
           const wrist = results.poseLandmarks[wristIndex];
 
           if (wrist && wrist.visibility > 0.5) {
-            // เก็บตำแหน่งลง History
+            // Smoothing: ใช้ Exponential Moving Average เพื่อลด noise
+            let smoothX = wrist.x;
+            let smoothY = wrist.y;
+
+            if (trailHistory.length > 0) {
+              const last = trailHistory[trailHistory.length - 1];
+              const SMOOTH_FACTOR = 0.4; // 0 = ไม่ smooth, 1 = ไม่ขยับ
+              smoothX = last.x * SMOOTH_FACTOR + wrist.x * (1 - SMOOTH_FACTOR);
+              smoothY = last.y * SMOOTH_FACTOR + wrist.y * (1 - SMOOTH_FACTOR);
+            }
+
+            // เก็บตำแหน่งที่ smooth แล้วลง History
             trailHistory.push({
-              x: wrist.x,
-              y: wrist.y,
+              x: smoothX,
+              y: smoothY,
               timestamp: Date.now(),
             });
 

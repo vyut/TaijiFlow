@@ -47,16 +47,21 @@ function generateDynamicPath(landmarks, exercise) {
   const hip = isRightHand ? landmarks[24] : landmarks[23];
   const wrist = isRightHand ? landmarks[16] : landmarks[15];
 
-  // 2. คำนวณ center (ด้านหน้า-ข้างลำตัว ระดับหน้าอก)
-  //    - X: ระหว่างไหล่กับกึ่งกลางลำตัว
-  //    - Y: ลงจากไหล่ 30% ของระยะไหล่-สะโพก
-  const bodyCenter = (landmarks[11].x + landmarks[12].x) / 2;
-  const centerX = (shoulder.x + bodyCenter) / 2;
-  const centerY = shoulder.y + (hip.y - shoulder.y) * 0.3;
+  // 2. คำนวณ center (ข้างลำตัว ระดับสะโพก-ท้อง)
+  //    - X: ข้างลำตัว ใกล้สะโพก (มือขวา = ขวา, มือซ้าย = ซ้าย)
+  //    - Y: ระหว่างสะโพกกับไหล่ (60% ลงจากไหล่ = ใกล้สะโพก)
+  const shoulderWidth = Math.abs(landmarks[12].x - landmarks[11].x);
+  // X: ไหล่ + offset ออกไปข้างนอก (ตามฝั่งมือ)
+  const sideOffset = shoulderWidth * 0.3; // 30% ของความกว้างไหล่
+  const centerX = isRightHand
+    ? shoulder.x + sideOffset // มือขวา: ไปทางขวา
+    : shoulder.x - sideOffset; // มือซ้าย: ไปทางซ้าย
+  // Y: ลงจากไหล่ 60% ของระยะไหล่-สะโพก (ใกล้ระดับสะโพก)
+  const centerY = shoulder.y + (hip.y - shoulder.y) * 0.6;
 
-  // 3. คำนวณ radius (~85% ของความยาวแขน)
+  // 3. คำนวณ radius (~80% ของความยาวแขน)
   const armLength = Math.hypot(shoulder.x - wrist.x, shoulder.y - wrist.y);
-  const radius = armLength * 0.85;
+  const radius = armLength * 0.8;
 
   // 4. Generate circle points (72 จุด, ทุก 5°)
   const points = [];

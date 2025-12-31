@@ -1,6 +1,32 @@
 /**
- * TaijiFlow AI - Feedback Manager
+ * ============================================================================
+ * TaijiFlow AI - Feedback Manager v1.0
+ * ============================================================================
+ *
  * จัดการปุ่มและ Popup สำหรับแบบสอบถาม
+ *
+ * @description
+ *   แสดงปุ่ม Feedback มุมขวาล่างของหน้าจอ
+ *   เมื่อกดจะแสดง Popup พร้อม QR Code ลิงก์ไป Google Form
+ *
+ * 📋 หน้าที่หลัก:
+ *   - createButton() - สร้างปุ่ม 📝 มุมขวาล่าง
+ *   - showPopup() - แสดง Popup พร้อม QR Code
+ *   - getLang() - ดึงภาษาปัจจุบันจาก uiManager
+ *
+ * 📊 การใช้งาน:
+ *   // สร้าง Instance (ทำอัตโนมัติตอนโหลดไฟล์)
+ *   window.feedbackManager = new FeedbackManager();
+ *
+ * 🌐 Multi-language:
+ *   - รองรับ TH/EN
+ *   - ดึงภาษาจาก uiManager.currentLang
+ *
+ * ============================================================================
+ * @author TaijiFlow AI Team
+ * @since 1.0.0
+ * @version 1.0 (2024-12-30)
+ * ============================================================================
  */
 
 class FeedbackManager {
@@ -10,6 +36,7 @@ class FeedbackManager {
     this.init();
   }
 
+  // เริ่มต้น - สร้างปุ่มและ bind events
   init() {
     this.createButton();
     this.bindEvents();
@@ -20,6 +47,7 @@ class FeedbackManager {
     return window.uiManager?.currentLang || "th";
   }
 
+  // สร้างปุ่ม 📝 มุมขวาล่างของหน้าจอ
   createButton() {
     const btn = document.createElement("button");
     btn.id = "feedback-btn";
@@ -31,12 +59,14 @@ class FeedbackManager {
     document.body.appendChild(btn);
   }
 
+  // ผูก click event สำหรับเปิด popup
   bindEvents() {
     document.getElementById("feedback-btn").addEventListener("click", () => {
       this.showPopup();
     });
   }
 
+  // แสดง Popup พร้อม QR Code และลิงก์ไป Google Form
   showPopup() {
     const isThaiLang = this.getLang() === "th";
     // ใช้ไฟล์ QR ที่เก็บใน local เพื่อโหลดเร็วขึ้น (ไม่ต้องรอ API)

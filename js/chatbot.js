@@ -1,7 +1,41 @@
 /**
+ * ============================================================================
  * TaijiFlow AI - Chatbot Manager v1.1
+ * ============================================================================
+ *
  * ผู้ช่วยตอบคำถามเกี่ยวกับมวยไท้เก๊กและท่าม้วนไหม
- * ใช้ Gemini API
+ *
+ * @description
+ *   Chatbot ที่ใช้ Gemini API เป็น Backend
+ *   ตอบคำถามเกี่ยวกับไท้เก๊กแบบเสมือนมีครูคอยแนะนำ
+ *
+ * 📋 หน้าที่หลัก:
+ *   - แสดง/ซ่อน Chat Panel
+ *   - รับคำถามจากผู้ใช้ ส่งไป Gemini API
+ *   - แสดงคำตอบในรูปแบบ Formatted Markdown
+ *   - เก็บประวัติการสนทนา (Context)
+ *
+ * 🎯 บุคลิก Chatbot:
+ *   - ชื่อ: อาจารย์เต๋า (Master Dao)
+ *   - เชี่ยวชาญ: ปรัชญาไท้เก๊ก, พลังม้วนไหม, หลักการ 10 ข้อ
+ *   - น้ำเสียง: นุ่มนวล ใจเย็น ลึกซึ้ง
+ *
+ * 📊 การใช้งาน:
+ *   // สร้าง Instance (ทำอัตโนมัติตอนโหลดไฟล์)
+ *   window.taijiChatbot = new TaijiChatbot();
+ *
+ *   // เปิด/ปิด Chat
+ *   taijiChatbot.toggleChat();
+ *
+ * ⚠️ ข้อจำกัด:
+ *   - ต้องมี Gemini API Key (ผู้ใช้ต้องสมัครเอง)
+ *   - ข้อความจะถูกส่งไป Google โดยตรง
+ *
+ * ============================================================================
+ * @author TaijiFlow AI Team
+ * @since 1.0.0
+ * @version 1.1 (2024-12-31)
+ * ============================================================================
  */
 
 class TaijiChatbot {
@@ -203,11 +237,13 @@ class TaijiChatbot {
     this.init();
   }
 
+  // เริ่มต้น Chatbot - สร้าง UI และ bind events
   init() {
     this.createUI();
     this.bindEvents();
   }
 
+  // สร้าง UI elements ทั้งหมด (toggle button, chat container, input area)
   createUI() {
     // Chat Toggle Button
     const toggleBtn = document.createElement("button");
@@ -250,6 +286,7 @@ class TaijiChatbot {
     document.body.appendChild(chatContainer);
   }
 
+  // ผูก Event Listeners สำหรับปุ่มต่างๆ
   bindEvents() {
     // Toggle chat
     document.getElementById("chat-toggle-btn").addEventListener("click", () => {
@@ -281,6 +318,7 @@ class TaijiChatbot {
       });
   }
 
+  // เปิด/ปิด Chat Panel
   toggleChat() {
     this.isOpen = !this.isOpen;
     const container = document.getElementById("chat-container");
@@ -296,6 +334,7 @@ class TaijiChatbot {
     }
   }
 
+  // บันทึก API Key ลง localStorage
   saveApiKey() {
     const keyInput = document.getElementById("api-key-input");
     const key = keyInput.value.trim();
@@ -307,6 +346,7 @@ class TaijiChatbot {
     }
   }
 
+  // ส่งข้อความไปยัง Gemini API และแสดงคำตอบ
   async sendMessage() {
     const input = document.getElementById("chat-input");
     const message = input.value.trim();
@@ -337,6 +377,7 @@ class TaijiChatbot {
     this.isLoading = false;
   }
 
+  // เรียก Gemini API พร้อม context และ system prompt
   async callGeminiAPI(userMessage) {
     // ใช้ gemini-2.0-flash-exp (ฟรี, ล่าสุด)
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${this.apiKey}`;
@@ -388,6 +429,7 @@ class TaijiChatbot {
     return data.candidates[0].content.parts[0].text;
   }
 
+  // เพิ่มข้อความใหม่ลงใน chat และ return message ID
   addMessage(role, content) {
     const messagesContainer = document.getElementById("chat-messages");
     const msgId = `msg-${Date.now()}`;
@@ -407,6 +449,7 @@ class TaijiChatbot {
     return msgId;
   }
 
+  // อัปเดตข้อความที่มีอยู่ (ใช้สำหรับ loading -> response)
   updateMessage(msgId, content) {
     const msgDiv = document.getElementById(msgId);
     if (msgDiv) {
@@ -422,6 +465,7 @@ class TaijiChatbot {
     }
   }
 
+  // แปลง Markdown เป็น HTML (bold, italic, headers, lists)
   formatMessage(text) {
     // Enhanced markdown formatting
     return text

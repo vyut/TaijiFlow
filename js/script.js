@@ -790,8 +790,14 @@ function endTrainingSession() {
       }
     }
 
-    // แสดง Score Popup (ส่ง summary object และ grade object)
-    uiManager.showScoreSummary(summary, grade);
+    // แสดง Score Popup (ใช้ ScorePopupManager แยกไฟล์)
+    scorePopupManager.show(summary, grade, uiManager.currentLang);
+    uiManager.showNotification(
+      `${uiManager.getText("alert_data_saved")} (${
+        summary.totalFrames
+      } frames)`,
+      "success"
+    );
   } catch (error) {
     console.error("Error in endTrainingSession:", error);
     // ยังคงแสดง notification แจ้งเตือน
@@ -1031,8 +1037,14 @@ recordBtn.addEventListener("click", () => {
         );
       }
 
-      // แสดงผลคะแนน
-      uiManager.showScoreSummary(scoreSummary, gradeInfo);
+      // แสดงผลคะแนน (ใช้ ScorePopupManager แยกไฟล์)
+      scorePopupManager.show(scoreSummary, gradeInfo, uiManager.currentLang);
+      uiManager.showNotification(
+        `${uiManager.getText("alert_data_saved")} (${
+          scoreSummary.totalFrames
+        } frames)`,
+        "success"
+      );
     } else {
       uiManager.showNotification(uiManager.getText("alert_no_data"), "warning");
     }

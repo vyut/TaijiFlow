@@ -289,6 +289,27 @@ const videoFullscreenBtn = document.getElementById("video-fullscreen-btn"); // �
 // ฟังก์ชันตรวจสอบว่าเลือกท่าและระดับครบหรือยัง
 function checkSelectionComplete() {
   const isComplete = currentExercise !== null && currentLevel !== null;
+
+  // -------------------------------------------------------------------------
+  // Interactive Highlight - แสดงกรอบสีม่วงเพื่อบอกว่าต้องเลือก
+  // -------------------------------------------------------------------------
+  const exerciseSelect = document.getElementById("exercise-select");
+  const levelSelect = document.getElementById("level-select");
+
+  // Highlight Exercise dropdown ถ้ายังไม่เลือก
+  if (!currentExercise) {
+    exerciseSelect.classList.add("highlight-required");
+  } else {
+    exerciseSelect.classList.remove("highlight-required");
+  }
+
+  // Highlight Level dropdown ถ้าเลือกท่าแล้วแต่ยังไม่เลือกระดับ
+  if (currentExercise && !currentLevel) {
+    levelSelect.classList.add("highlight-required");
+  } else {
+    levelSelect.classList.remove("highlight-required");
+  }
+
   if (isComplete) {
     // Enable start button
     startTrainingBtn.disabled = false;
@@ -1903,6 +1924,7 @@ async function initCamera() {
 // =============================================================================
 // โหลด Reference Data และเริ่มกล้อง
 loadReferenceData();
+checkSelectionComplete(); // เรียกเพื่อแสดง highlight ตั้งแต่เริ่มต้น
 initCamera();
 
 // =============================================================================

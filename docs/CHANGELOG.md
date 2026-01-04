@@ -20,6 +20,22 @@
 - **script.js** - เพิ่ม Low Light check ใน Calibration block และ Training loop
 - **translations.js** - เพิ่ม `alert_low_light` และ `alert_low_light_calibration` (TH/EN)
 
+### 🎨 UX Enhancements
+
+#### Added
+- **Tooltips (Consistency)** - เพิ่ม tooltip ให้ครบทุก element:
+  - Category, Exercise, Level dropdowns
+  - Language, Theme buttons
+- **Interactive Highlight** - กรอบสีม่วงบน dropdown ที่ยังไม่เลือก:
+  - Exercise dropdown: highlight ตอนเปิดเว็บครั้งแรก
+  - Level dropdown: highlight หลังเลือกท่าแล้ว
+  - หายไปเมื่อเลือกครบ
+
+#### Changed
+- **styles.css** - เพิ่ม `.highlight-required` class
+- **script.js** - เพิ่ม highlight logic ใน `checkSelectionComplete()`
+- **index.html** - เพิ่ม `title` attributes บน dropdowns และ buttons
+
 ---
 
 ## [v0.6] - 2024-12-24

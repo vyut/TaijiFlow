@@ -107,6 +107,29 @@
 
 ---
 
+## 8. Low Light Warning (v0.7)
+
+| # | Test | Steps | Expected | Result | Notes |
+|---|------|-------|----------|:------:|-------|
+| 8.1 | Low Light (Calibration) | บังกล้องจนมืด → Start | เตือน "แสงไม่เพียงพอ" + เสียง | ☐ | |
+| 8.2 | Low Light (Training) | เริ่มฝึกปกติ → บังกล้อง | เตือน notification + เสียง | ☐ | |
+| 8.3 | Cooldown 30s | บังกล้อง 2 ครั้งใน 20 วินาที | เตือนแค่ครั้งเดียว | ☐ | |
+| 8.4 | Light Restored | บังกล้อง → เอาออก | ไม่มี error, ฝึกต่อได้ | ☐ | |
+
+---
+
+## 9. UX Enhancements (v0.7)
+
+| # | Feature | Steps | Expected | Result | Notes |
+|---|---------|-------|----------|:------:|-------|
+| 9.1 | Tooltips - Dropdowns | Hover บน dropdown | แสดง tooltip 2 ภาษา | ☐ | |
+| 9.2 | Tooltips - Buttons | Hover บน ปุ่ม Lang/Theme | แสดง tooltip | ☐ | |
+| 9.3 | Highlight - Exercise | เปิดเว็บ ยังไม่เลือกท่า | Exercise มีกรอบม่วง | ☐ | |
+| 9.4 | Highlight - Level | เลือกท่าแล้ว ไม่เลือกระดับ | Level มีกรอบม่วง | ☐ | |
+| 9.5 | Highlight - Removed | เลือกท่า + ระดับ ครบ | ไม่มีกรอบม่วง | ☐ | |
+
+---
+
 ## Summary
 
 | Category | Pass | Fail | Total |
@@ -118,7 +141,9 @@
 | Audio | /4 | /4 | 4 |
 | Edge Cases | /5 | /5 | 5 |
 | Performance | /3 | /3 | 3 |
-| **Total** | **/43** | **/43** | **43** |
+| Low Light Warning | /4 | /4 | 4 |
+| UX Enhancements | /5 | /5 | 5 |
+| **Total** | **/52** | **/52** | **52** |
 
 ---
 

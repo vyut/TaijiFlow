@@ -205,6 +205,8 @@ const TRANSLATIONS = {
     alert_report_saved: "บันทึกรายงานผลการฝึกเรียบร้อยแล้ว!",
     // แจ้งเมื่อบันทึกข้อมูลสำเร็จ
     alert_data_saved: "บันทึกข้อมูลสำเร็จ!",
+    // แจ้งเมื่อแสงไม่เพียงพอ
+    alert_low_light: "⚠️ แสงไม่เพียงพอ กรุณาเปิดไฟหรือเลี่ยงแสงย้อน",
 
     // -------------------------------------------------------------------------
     // Exercise Options (ตัวเลือกท่าฝึก)
@@ -342,6 +344,9 @@ const TRANSLATIONS = {
     alert_no_data: "No recorded data found.",
     alert_report_saved: "Session report saved successfully!",
     alert_data_saved: "Data saved successfully!",
+    // Low light warning
+    alert_low_light:
+      "⚠️ Low lighting detected. Please turn on lights or avoid backlighting for better pose detection.",
 
     // -------------------------------------------------------------------------
     // Exercise Options

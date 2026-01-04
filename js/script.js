@@ -121,6 +121,13 @@ let fpsFrameCount = 0;
 let currentFps = 0;
 
 // -----------------------------------------------------------------------------
+// Low Light Warning - เตือนเมื่อแสงไม่เพียงพอ
+// -----------------------------------------------------------------------------
+const LOW_LIGHT_THRESHOLD = 0.5; // visibility ต่ำกว่านี้จะเตือน (0-1)
+const LOW_LIGHT_WARNING_COOLDOWN = 10000; // cooldown 10 วินาที
+let lastLowLightWarningTime = 0; // เวลาที่เตือนล่าสุด
+
+// -----------------------------------------------------------------------------
 // Fullscreen State
 // -----------------------------------------------------------------------------
 let isFullscreen = false; // ใช้สำหรับ Mirror canvas ใน Fullscreen
@@ -1636,6 +1643,39 @@ async function onResults(results) {
             return sum + (results.poseLandmarks[i]?.visibility || 0);
           }, 0);
           const avgVisibility = visibilitySum / keyIndices.length;
+
+          // ⚠️ Low Light Warning - เตือนเมื่อแสงไม่เพียงพอ
+          // -------------------------------------------------------------------------
+          // เหตุผล: MediaPipe Pose ต้องการแสงเพียงพอเพื่อตรวจจับ landmarks ได้แม่นยำ
+          //        ถ้า avgVisibility ต่ำ หมายความว่า:
+          //        - แสงน้อยเกินไป
+          //        - มีแสงย้อน (backlighting)
+          //        - กล้องถูกบังบางส่วน
+          //
+          // Logic:
+          //   1. เช็คว่า avgVisibility < LOW_LIGHT_THRESHOLD (0.5)
+          //   2. เช็คว่าเกิน cooldown แล้ว (10 วินาที) เพื่อไม่เตือนซ้ำถี่เกินไป
+          //   3. แสดง notification (ภาพ) + พูดเตือน (เสียง)
+          // -------------------------------------------------------------------------
+          const now = Date.now();
+          if (
+            avgVisibility < LOW_LIGHT_THRESHOLD &&
+            now - lastLowLightWarningTime > LOW_LIGHT_WARNING_COOLDOWN
+          ) {
+            lastLowLightWarningTime = now;
+
+            // แสดง notification บนหน้าจอ (สีเหลือง = warning)
+            uiManager.showNotification(
+              uiManager.getText("alert_low_light"),
+              "warning",
+              5000
+            );
+
+            // พูดเตือนด้วยเสียง (TTS) - ใช้ข้อความสั้นกว่าเพื่อไม่รบกวน
+            // หมายเหตุ: ใช้ข้อความเดียวกับ notification แต่ AudioManager
+            //          จะพูดเฉพาะเมื่อเปิดเสียงอยู่ (audioEnabled = true)
+            audioManager.speak(uiManager.getText("alert_low_light"));
+          }
 
           // เก็บ Snapshot ของเฟรมนี้
           recordedSessionData.push({

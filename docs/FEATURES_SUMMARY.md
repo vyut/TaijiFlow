@@ -233,7 +233,8 @@
 | F-13 | Display Options | UI | 1 (grouped) |
 | F-14 | Tutorial System | UI | 1 |
 | F-15 | AI Chatbot | Optional | 1 |
-| **Total** | | | **~35 FRs** |
+| F-16 | Low Light Warning | Support | 1 |
+| **Total** | | | **~36 FRs** |
 
 ---
 

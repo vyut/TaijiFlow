@@ -48,20 +48,21 @@ function generateDynamicPath(landmarks, exercise) {
   const wrist = isRightHand ? landmarks[16] : landmarks[15];
 
   // 2. คำนวณ center (ข้างลำตัว ระดับสะโพก-ท้อง)
-  //    - X: ข้างลำตัว ใกล้สะโพก (มือขวา = ขวา, มือซ้าย = ซ้าย)
+  //    - X: ข้างลำตัว ห่างออกไป (มือขวา = ขวา, มือซ้าย = ซ้าย)
   //    - Y: ระหว่างสะโพกกับไหล่ (60% ลงจากไหล่ = ใกล้สะโพก)
   const shoulderWidth = Math.abs(landmarks[12].x - landmarks[11].x);
-  // X: ไหล่ + offset ออกไปข้างนอก (ตามฝั่งมือ)
-  const sideOffset = shoulderWidth * 0.3; // 30% ของความกว้างไหล่
+  // X: ไหล่ + offset ออกไปข้างนอก (เพิ่มเป็น 70% ให้ห่างจากลำตัวมากขึ้น)
+  // หมายเหตุ: สลับทิศเพราะ Canvas ถูก Mirror (-1, 1) ใน script.js
+  const sideOffset = shoulderWidth * 0.7; // 70% ของความกว้างไหล่
   const centerX = isRightHand
-    ? shoulder.x + sideOffset // มือขวา: ไปทางขวา
-    : shoulder.x - sideOffset; // มือซ้าย: ไปทางซ้าย
-  // Y: ลงจากไหล่ 60% ของระยะไหล่-สะโพก (ใกล้ระดับสะโพก)
-  const centerY = shoulder.y + (hip.y - shoulder.y) * 0.6;
+    ? shoulder.x - sideOffset // มือขวา: landmark อยู่ซ้าย (เพราะ mirror) → ลบเพื่อไปซ้ายบนจอ
+    : shoulder.x + sideOffset; // มือซ้าย: landmark อยู่ขวา (เพราะ mirror) → บวกเพื่อไปขวาบนจอ
+  // Y: ลงจากไหล่ 40% ของระยะไหล่-สะโพก (ตรงกลางระหว่างไหล่กับสะโพก)
+  const centerY = shoulder.y + (hip.y - shoulder.y) * 0.4;
 
-  // 3. คำนวณ radius (~80% ของความยาวแขน)
-  const armLength = Math.hypot(shoulder.x - wrist.x, shoulder.y - wrist.y);
-  const radius = armLength * 0.8;
+  // 3. คำนวณ radius ให้ครอบคลุมจากไหล่ถึงสะโพก (~45% ของระยะไหล่-สะโพก)
+  const torsoHeight = Math.abs(hip.y - shoulder.y);
+  const radius = torsoHeight * 0.45;
 
   // 4. Generate circle points (72 จุด, ทุก 5°)
   const points = [];

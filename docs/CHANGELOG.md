@@ -6,18 +6,19 @@
 
 ## [v0.7] - 2026-01-04
 
-### ⚠️ Low Light Warning
+### ⚠️ Low Light Warning (Option C: Hybrid)
 
 #### Added
-- **Low Light Detection** - แสดงคำเตือนเมื่อแสงไม่เพียงพอ
-  - ตรวจสอบค่าเฉลี่ย visibility ของ landmarks สำคัญ (ไหล่, ศอก, ข้อมือ, สะโพก)
-  - เตือนเมื่อ avgVisibility < 0.5
-  - Cooldown 10 วินาที ป้องกันการเตือนซ้ำถี่เกินไป
-  - รองรับทั้งภาษาไทยและอังกฤษ
+- **Low Light Detection** - ตรวจสอบแสงใน 2 จุด:
+  1. **Calibration (Block)** - ถ้าแสงไม่พอจะยกเลิก calibration และบังคับให้แก้ไขก่อน
+  2. **Training (Warn)** - ถ้าแสงเปลี่ยนระหว่างฝึก จะเตือนด้วย notification + เสียง
+- ตรวจจาก avgVisibility ของ landmarks สำคัญ (ไหล่, ศอก, ข้อมือ, สะโพก)
+- Threshold: avgVisibility < 0.5
+- Training cooldown: 30 วินาที (ลดการรบกวน)
 
 #### Changed
-- **script.js** - เพิ่ม constants `LOW_LIGHT_THRESHOLD`, `LOW_LIGHT_WARNING_COOLDOWN`
-- **translations.js** - เพิ่ม `alert_low_light` (TH/EN)
+- **script.js** - เพิ่ม Low Light check ใน Calibration block และ Training loop
+- **translations.js** - เพิ่ม `alert_low_light` และ `alert_low_light_calibration` (TH/EN)
 
 ---
 

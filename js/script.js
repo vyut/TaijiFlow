@@ -124,7 +124,7 @@ let currentFps = 0;
 // Low Light Warning - เตือนเมื่อแสงไม่เพียงพอ
 // -----------------------------------------------------------------------------
 const LOW_LIGHT_THRESHOLD = 0.5; // visibility ต่ำกว่านี้จะเตือน (0-1)
-const LOW_LIGHT_WARNING_COOLDOWN = 10000; // cooldown 10 วินาที
+const LOW_LIGHT_WARNING_COOLDOWN = 30000; // cooldown 30 วินาที (เพิ่มจาก 10s เพื่อลดการรบกวน)
 let lastLowLightWarningTime = 0; // เวลาที่เตือนล่าสุด
 
 // -----------------------------------------------------------------------------
@@ -1417,6 +1417,34 @@ async function onResults(results) {
       // กำลังปรับเทียบ
       drawer.drawSkeleton(results.poseLandmarks);
 
+      // ---------------------------------------------------------------------
+      // Low Light Check ระหว่าง Calibration (ทุกเฟรม)
+      // ---------------------------------------------------------------------
+      // เหตุผล: ถ้าแสงไม่เพียงพอ → ตรวจจับ T-Pose ไม่ได้ → Calibration ไม่เสร็จ
+      // วิธี: เตือนผู้ใช้ทันทีเมื่อแสงต่ำเกินไป (มี cooldown ป้องกันเตือนซ้ำ)
+      // ---------------------------------------------------------------------
+      const keyIndices = [11, 12, 13, 14, 15, 16, 23, 24]; // ไหล่, ศอก, ข้อมือ, สะโพก
+      const visibilitySum = keyIndices.reduce(
+        (sum, i) => sum + (results.poseLandmarks[i]?.visibility || 0),
+        0
+      );
+      const avgVisibility = visibilitySum / keyIndices.length;
+      const now = Date.now();
+
+      if (
+        avgVisibility < LOW_LIGHT_THRESHOLD &&
+        now - lastLowLightWarningTime > LOW_LIGHT_WARNING_COOLDOWN
+      ) {
+        // แสงไม่พอ → เตือนผู้ใช้ (ไม่ยกเลิก calibration ทันที แต่เตือนให้แก้ไข)
+        lastLowLightWarningTime = now;
+        uiManager.showNotification(
+          uiManager.getText("alert_low_light_calibration"),
+          "warning",
+          6000
+        );
+        audioManager.speak(uiManager.getText("alert_low_light_calibration"));
+      }
+
       const calibResult = calibrator.process(results.poseLandmarks);
       calibrator.drawOverlay(
         canvasCtx,
@@ -1425,6 +1453,8 @@ async function onResults(results) {
       );
 
       if (calibResult && calibResult.status === "complete") {
+        // Calibration สำเร็จ → บันทึกและเริ่มฝึก
+        // หมายเหตุ: Low Light check ทำไปแล้วระหว่าง Calibration (ถ้าแสงไม่พอจะเตือนไปแล้ว)
         engine.setCalibration(calibResult.data);
         calibrator.saveToStorage(); // บันทึก Calibration Data ลง LocalStorage
         audioManager.announce("calib_success"); // พูดแจ้งเตือน
@@ -1704,6 +1734,23 @@ async function onResults(results) {
             }
           }
         }
+      }
+    }
+  } else {
+    // -------------------------------------------------------------------------
+    // ไม่พบ poseLandmarks (กล้องถูกบังหรือไม่เห็นคน)
+    // -------------------------------------------------------------------------
+    // ถ้าอยู่ใน Calibration และไม่เห็นตัวเลย → เตือนผู้ใช้
+    if (calibrator.isActive) {
+      const now = Date.now();
+      if (now - lastLowLightWarningTime > LOW_LIGHT_WARNING_COOLDOWN) {
+        lastLowLightWarningTime = now;
+        uiManager.showNotification(
+          uiManager.getText("alert_low_light_calibration"),
+          "warning",
+          6000
+        );
+        audioManager.speak(uiManager.getText("alert_low_light_calibration"));
       }
     }
   }

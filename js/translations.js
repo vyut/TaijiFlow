@@ -207,6 +207,8 @@ const TRANSLATIONS = {
     alert_data_saved: "บันทึกข้อมูลสำเร็จ!",
     // แจ้งเมื่อแสงไม่เพียงพอ
     alert_low_light: "⚠️ แสงไม่เพียงพอ กรุณาเปิดไฟหรือเลี่ยงแสงย้อน",
+    // แจ้งเมื่อแสงไม่เพียงพอตอน Calibration (block)
+    alert_low_light_calibration: "⚠️ แสงไม่เพียงพอ กรุณาปรับแสงแล้วลองวัดใหม่",
 
     // -------------------------------------------------------------------------
     // Exercise Options (ตัวเลือกท่าฝึก)
@@ -347,6 +349,9 @@ const TRANSLATIONS = {
     // Low light warning
     alert_low_light:
       "⚠️ Low lighting detected. Please turn on lights or avoid backlighting for better pose detection.",
+    // Low light warning during Calibration (blocks)
+    alert_low_light_calibration:
+      "⚠️ Low lighting detected. Please adjust lighting and try calibration again.",
 
     // -------------------------------------------------------------------------
     // Exercise Options

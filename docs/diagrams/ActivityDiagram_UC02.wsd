@@ -1,24 +1,33 @@
 @startuml TaijiFlow_Activity_Diagram_UC02
-' ตั้งค่า Font และ Style
+' ============================================================================
+' TaijiFlow AI - Activity Diagram: UC-02 Perform Training (v2.1 Simplified)
+' ============================================================================
+' อัปเดต: เพิ่ม Low Light Check, Ghost/Silhouette, รวม activities ให้กระชับ
+' อ้างอิง: script.js (lines 124-128, 1442, 1690-1720)
+' ============================================================================
+
 skinparam defaultFontName "sarabun"
 skinparam activity {
     BackgroundColor White
     BorderColor Black
     ArrowColor Black
 }
+skinparam note {
+    BackgroundColor LightYellow
+}
 
 start
 
-:ผู้ใช้งานเลือก "ท่าฝึก" และ "ระดับความยาก";
+:ผู้ใช้เลือก "ท่าฝึก" และ "ระดับความยาก";
 
 partition "System Initialization" {
-    if (ตรวจสอบการเข้าถึงกล้อง?) then (ไม่ผ่าน (E1))
-        :แสดงแจ้งเตือน "ไม่พบกล้อง/ไม่ได้รับอนุญาต";
+    if (เข้าถึงกล้องได้?) then (ไม่ได้ (E1))
+        :แจ้งเตือน "ไม่พบกล้อง";
         stop
-    else (ผ่าน)
+    else (ได้)
         :โหลดข้อมูลท่าต้นแบบ (JSON);
-        if (พบไฟล์ข้อมูล?) then (ไม่พบ (E2))
-            :แสดงแจ้งเตือน "ไม่พบข้อมูลต้นแบบ";
+        if (พบไฟล์?) then (ไม่พบ (E2))
+            :แจ้งเตือน "ไม่พบข้อมูลต้นแบบ";
             stop
         else (พบ)
             :แสดงวิดีโอและเส้นนำทาง;
@@ -30,49 +39,62 @@ partition "System Initialization" {
 
 partition "Calibration (<<include>> UC-01)" {
     :เริ่ม Calibration;
-    :รอผู้ใช้ยืน T-Pose;
-    :ตรวจสอบและบันทึกสัดส่วน;
-    note right
-        ดูรายละเอียดใน
-        Activity Diagram UC-01
-    end note
+    
+    if (แสงเพียงพอ?) then (ไม่พอ (E3))
+        :แจ้งเตือนแสงไม่เพียงพอ (Toast + TTS);
+        note right
+            **Low Light Detection**
+            avgVisibility < 0.5
+        end note
+    else (พอ)
+    endif
+    
+    :รอผู้ใช้ยืน T-Pose และบันทึกสัดส่วน;
+    note right: ดูรายละเอียดใน UC-01
 }
 
 partition "Countdown & Start" {
     :แสดง Countdown 3-2-1;
-    :แสดง Timer + Stop (มุมซ้ายล่าง);
-    :แสดงปุ่ม Fullscreen (มุมขวาล่าง);
-    :เริ่มนับเวลาฝึก (Timer);
+    :เริ่มฝึก (Timer + UI Controls);
+    note right
+        **Optional Display**
+        ☐ Ghost Skeleton
+        ☐ Silhouette Video
+    end note
 }
 
 partition "Main Training Loop (Real-time)" {
     repeat
-        :รับภาพจากกล้อง (Frame Input);
-        :ตรวจจับพิกัดร่างกาย (Pose Detection);
+        :รับภาพและตรวจจับท่าทาง;
+        
+        if (แสงน้อย && เกิน Cooldown?) then (ใช่)
+            :เตือนแสงน้อย (Toast + TTS);
+            note right: Cooldown = 30s
+        else (ไม่)
+        endif
+        
+        :วาด Ghost/Silhouette (ถ้าเปิด);
         
         partition "Heuristics Analysis" {
             :ตรวจสอบตามกฎ 8 ข้อ (ตาม Level);
-            note right
-                ดูรายละเอียดใน
-                ActivityDiagram_Heuristics.wsd
-            end note
+            note right: ดูใน ActivityDiagram_Heuristics.wsd
         }
 
         if (พบข้อผิดพลาด?) then (ใช่)
-            :แสดง Feedback (ข้อความ/สีแดง);
-            :ส่งเสียงแจ้งเตือน (Audio);
-        else (ไม่ใช่)
+            :แสดง Feedback (ภาพ + เสียง);
+        else (ไม่)
             :แสดงผลปกติ (สีเขียว);
         endif
 
-        :บันทึกคะแนนและข้อมูลเฟรม (Logging);
+        :บันทึกคะแนน (Logging);
 
-    repeat while (ผู้ใช้กดหยุด หรือ หมดเวลา?) is (ไม่)
+    repeat while (หยุด หรือ หมดเวลา?) is (ไม่)
     -> ใช่ (Stop/Timeout);
 }
 
-:ออกจาก Fullscreen (ถ้าอยู่);
+:Cleanup (Ghost, Fullscreen);
 :ส่งข้อมูลไป UC-03 (View Result);
 
 stop
 @enduml
+

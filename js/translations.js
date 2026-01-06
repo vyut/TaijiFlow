@@ -191,6 +191,9 @@ const TRANSLATIONS = {
     overlay_step3: 'กดปุ่ม "🏃 เริ่มการฝึก"',
     // หมายเหตุ
     overlay_note: "⏱️ ฝึกท่าละ 5 นาที • กด 🛑 เพื่อหยุดก่อนเวลา",
+    // Gesture Hint
+    gesture_start_hint: "ยกนิ้วโป้ง = เริ่มการฝึก",
+    gesture_stop_hint: "กำมือ = หยุดการฝึก",
     // Feedback Link
     feedback_link: "📝 ช่วยพัฒนาแอป • ตอบแบบสอบถาม",
 
@@ -337,6 +340,9 @@ const TRANSLATIONS = {
     overlay_step2: 'Select "Level" to train',
     overlay_step3: 'Press "🏃 Start Training"',
     overlay_note: "⏱️ 5 min per exercise • Press 🛑 to stop early",
+    // Gesture Hint
+    gesture_start_hint: "Thumb Up = Start Training",
+    gesture_stop_hint: "Closed Fist = Stop Training",
     feedback_link: "📝 Help improve this app • Give Feedback",
 
     // -------------------------------------------------------------------------

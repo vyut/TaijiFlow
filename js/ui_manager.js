@@ -531,6 +531,10 @@ class UIManager {
     setText("overlay-step3", "overlay_step3");
     setText("overlay-note", "overlay_note");
 
+    // Gesture Hints (new)
+    setText("gesture-start-hint", "gesture_start_hint");
+    setText("gesture-stop-hint", "gesture_stop_hint");
+
     // Video Overlay Buttons (แสดงระหว่างฝึก)
     setText("stop-btn-text", "stop_btn");
     setText("fullscreen-btn-text", "fullscreen_overlay");

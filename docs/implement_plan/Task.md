@@ -17,7 +17,7 @@
 - [x] Plan new diagrams (Class + Sequence)
 
 ## Phase 3: Implementation
-- [ ] Update [ActivityDiagram_UC02.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/ActivityDiagram_UC02.wsd) (add Low Light Check)
+- [x] Update [ActivityDiagram_UC02.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/ActivityDiagram_UC02.wsd) (add Low Light Check) ✅
 - [ ] Create `ClassDiagram.wsd`
 - [ ] Create `SequenceDiagram_UC02.wsd`
 - [ ] Update System Architecture doc (optional)

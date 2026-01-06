@@ -40,7 +40,8 @@ partition "Calibration (<<include>> UC-01)" {
 
 partition "Countdown & Start" {
     :แสดง Countdown 3-2-1;
-    :แสดงปุ่ม Fullscreen (ผู้ใช้กดเองได้);
+    :แสดง Timer + Stop (มุมซ้ายล่าง);
+    :แสดงปุ่ม Fullscreen (มุมขวาล่าง);
     :เริ่มนับเวลาฝึก (Timer);
 }
 
@@ -50,10 +51,10 @@ partition "Main Training Loop (Real-time)" {
         :ตรวจจับพิกัดร่างกาย (Pose Detection);
         
         partition "Heuristics Analysis" {
-            :คำนวณความถูกต้องตามกฎ 8 ข้อ;
+            :ตรวจสอบตามกฎ 8 ข้อ (ตาม Level);
             note right
-                เทียบพิกัดกับ Threshold 
-                จากการ Calibration
+                ดูรายละเอียดใน
+                ActivityDiagram_Heuristics.wsd
             end note
         }
 

@@ -1,0 +1,135 @@
+@startuml TaijiFlow_Activity_Diagram_Heuristics
+' ============================================================================
+' TaijiFlow AI - Activity Diagram: Heuristics Engine (8 Rules Analysis)
+' ============================================================================
+' แสดงขั้นตอนการวิเคราะห์ท่าทางตามหลักไท่จี๋ 8 ข้อ
+' อ้างอิงจาก: heuristics_engine.js -> analyze() method
+' ============================================================================
+
+skinparam defaultFontName "sarabun"
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+skinparam note {
+    BackgroundColor LightYellow
+}
+
+start
+
+:รับ Pose Landmarks (33 จุด) จาก MediaPipe;
+
+:ดึง Keypoints ที่ต้องการ;
+note right
+    - Wrist (ข้อมือ) - [15, 16]
+    - Shoulder (ไหล่) - [11, 12]
+    - Elbow (ศอก) - [13, 14]
+    - Thumb (นิ้วโป้ง) - [21, 22]
+    - Pinky (นิ้วก้อย) - [17, 18]
+    - Hip (สะโพก) - [23, 24]
+    - Ankle (ข้อเท้า) - [27, 28]
+    - Nose (จมูก) - [0]
+end note
+
+:โหลด Rules Config ตาม Level;
+note right
+    **L1 (นั่ง) - 3 กฎ:**
+    ✓ R1 Path, R3 Elbow, R7 Continuity
+
+    **L2 (ยืน) - 6 กฎ:**
+    ✓ R1 Path, R2 Rotation, R3 Elbow,
+      R4 Waist, R5 Stability, R7 Continuity
+
+    **L3 (ยืนย่อ) - 8 กฎ:**
+    ✓ ทุกกฎ (รวม R6 Smooth, R8 Weight)
+end note
+
+partition "ตรวจสอบ 8 กฎ (ตาม Level Config)" {
+    if (checkPath = true?) then (ใช่)
+        :R1: Path Shape (วิถีวงกลม);
+        note right
+            ตรวจ Wrist History
+            ใช้ Cross Product
+            วัด Direction Consistency
+        end note
+    endif
+    
+    if (checkRotation = true?) then (ใช่)
+        :R2: Arm Rotation (หมุนฝ่ามือ);
+        note right
+            ตรวจ Thumb vs Pinky
+            ขึ้น/ลง = หงาย/คว่ำ
+        end note
+    endif
+    
+    if (checkElbow = true?) then (ใช่)
+        :R3: Elbow Sinking (ศอกจม 沉肩坠肘);
+        note right
+            ศอกต้องต่ำกว่าไหล่
+        end note
+    endif
+    
+    if (checkWaist = true?) then (ใช่)
+        :R4: Waist Initiation (เอวนำ 以腰为轴);
+        note right
+            ความเร็วสะโพก > ไหล่
+        end note
+    endif
+    
+    if (checkStability = true?) then (ใช่)
+        :R5: Vertical Stability (หัวนิ่ง 虚领顶劲);
+        note right
+            Head Y Variance < Threshold
+        end note
+    endif
+    
+    if (checkSmooth = true?) then (ใช่)
+        :R6: Smoothness (ลื่นไหล 如抽丝);
+        note right
+            Acceleration < Threshold
+        end note
+    endif
+    
+    if (checkContinuity = true?) then (ใช่)
+        :R7: Continuity (ต่อเนื่อง 绵绵不断);
+        note right
+            ไม่หยุดนิ่ง > 15 frames
+        end note
+    endif
+    
+    if (checkWeight = true?) then (ใช่)
+        :R8: Weight Shift (ถ่ายน้ำหนัก 分虚实);
+        note right
+            Hip อยู่ในฐาน (Ankles)
+        end note
+    endif
+}
+
+:รวบรวมข้อผิดพลาดทั้งหมด;
+
+if (พบข้อผิดพลาด?) then (ใช่)
+    partition "Priority & Sticky Logic" {
+        :เรียงลำดับตาม Priority (1-8);
+        note right
+            **สำคัญที่สุด:**
+            1. Path Accuracy
+            2. Waist Initiation
+            3. Weight Shift
+            ...
+        end note
+        :เลือกแสดงเฉพาะข้อที่สำคัญที่สุด;
+        :อัปเดต lastFeedbackMsg + Time;
+    }
+    :ส่ง Feedback [1 ข้อ];
+else (ไม่)
+    if (ยังอยู่ใน Hold Time?) then (ใช่)
+        :แสดงข้อความเดิม (Sticky);
+    else (ไม่)
+        :เคลียร์ Feedback (ถูกต้อง!);
+    endif
+    :ส่ง [] (ว่าง);
+endif
+
+stop
+@enduml

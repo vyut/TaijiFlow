@@ -36,6 +36,15 @@
 - **script.js** - เพิ่ม highlight logic ใน `checkSelectionComplete()`
 - **index.html** - เพิ่ม `title` attributes บน dropdowns และ buttons
 
+### 📄 Documentation
+
+#### Added
+- **ActivityDiagram_Heuristics.wsd** - Diagram ใหม่อธิบาย 8 กฎของ Heuristics Engine โดยละเอียด
+- **TESTING_CHECKLIST.md** - เพิ่ม 9 test cases ใหม่ (Low Light + UX)
+
+#### Changed
+- **ActivityDiagram_UC02.wsd** - แก้ไข Countdown partition ให้ตรงกับ code, เพิ่ม reference ไปยัง Heuristics diagram
+
 ---
 
 ## [v0.6] - 2024-12-24

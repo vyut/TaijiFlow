@@ -1,4 +1,12 @@
 @startuml TaijiFlow_Activity_Diagram_UC06
+' ============================================================================
+' TaijiFlow AI - Activity Diagram: UC-06 Manage Reference Data
+' ============================================================================
+' Use Case: บันทึกข้อมูลท่าต้นแบบ (Reference Data Collection)
+' Actor: Admin/Instructor (ผู้เชี่ยวชาญ)
+' Tool: data_collector.html
+' ============================================================================
+
 skinparam defaultFontName "sarabun"
 skinparam activity {
     BackgroundColor White
@@ -7,37 +15,85 @@ skinparam activity {
 }
 
 start
-:ผู้ดูแลระบบเปิดเครื่องมือ Data Collector;
-:ระบุชื่อท่า (Exercise) และระดับ (Level);
+
+:Admin เปิด data_collector.html;
+
+partition "Selection" {
+    :เลือกท่าฝึก (Exercise);
+    note right
+        rh_cw, rh_ccw
+        lh_cw, lh_ccw
+    end note
+    
+    :เลือกระดับ (Level);
+    note right
+        L1: นั่ง
+        L2: ยืน
+        L3: ยืนย่อ
+    end note
+    
+    :แสดง Filename Preview;
+}
 
 if (ตรวจสอบกล้องผ่าน?) then (ผ่าน)
-    :แสดงภาพวิดีโอและ Skeleton;
-    :ผู้ดูแลระบบกด Start Recording;
-    
-    partition "Recording Loop" {
-        repeat
-            :รับภาพจากกล้อง;
-            :บันทึก Video Chunk (WebM);
-            :บันทึก Landmarks (JSON Array);
-            :อัปเดตตัวจับเวลา;
-        repeat while (กด Stop?) is (ไม่)
-        -> ใช่ (Stop);
-    }
-
-    partition "Export Process" {
-        if (จำนวนเฟรม > 0?) then (ใช่)
-            :สร้าง Blob สำหรับวิดีโอ;
-            :สร้าง Blob สำหรับ JSON;
-            :ดาวน์โหลดไฟล์ .webm;
-            :ดาวน์โหลดไฟล์ .json;
-            :แสดงข้อความ "บันทึกเสร็จสิ้น";
-        else (ไม่ใช่)
-            :แจ้งเตือน "ไม่มีข้อมูล";
-        endif
-    }
+    :แสดง Video + Skeleton;
 else (ไม่ผ่าน)
     :แจ้งเตือน Error กล้อง;
+    stop
 endif
 
+partition "Start Recording" {
+    :กดปุ่ม "เริ่มบันทึก";
+    :แสดง Countdown 3-2-1;
+    :เริ่มบันทึก (สูงสุด 30 วินาที);
+}
+
+partition "Recording Loop" #LightBlue {
+    repeat
+        :รับ Pose Landmarks จาก MediaPipe;
+        :วาด Skeleton บน Canvas;
+        
+        if (Frame % 3 == 0?) then (ใช่)
+            :บันทึก Landmarks (JSON);
+            :บันทึก Silhouette Frame;
+        else (ไม่ใช่)
+            :ข้าม Frame นี้;
+            note right: Optimization: 30fps → 10fps
+        endif
+        
+        :อัปเดต Timer;
+        
+    repeat while (เวลา < 30 วินาที AND ไม่กด Stop?) is (ใช่)
+    -> หยุด;
+}
+
+partition "Export Files" {
+    if (จำนวน Frames > 0?) then (ใช่)
+        :ดาวน์โหลด {exercise}_{level}.json;
+        note right: Landmarks data (33 จุด)
+        
+        :ดาวน์โหลด {exercise}_{level}.webm;
+        note right: Original video
+        
+        :ดาวน์โหลด {exercise}_{level}_silhouette.webm;
+        note right: Silhouette video
+        
+        :แสดง "บันทึกเสร็จสิ้น";
+    else (ไม่ใช่)
+        :แจ้งเตือน "ไม่มีข้อมูล";
+    endif
+}
+
+partition "Manual Step" #LightYellow {
+    :Admin ย้ายไฟล์ JSON ไปยัง /data/;
+    note right
+        Manual step:
+        ต้องทำด้วยตนเอง
+    end note
+}
+
+:Reset UI พร้อมบันทึกท่าถัดไป;
+
 stop
+
 @enduml

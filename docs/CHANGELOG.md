@@ -4,9 +4,35 @@
 
 ---
 
+## [v0.8] - 2026-01-07
+
+### 📐 UML Diagrams Update (สำหรับ Final Report ป.โท)
+
+#### Added
+- **ClassDiagram.wsd** - Class Diagram ใหม่ 14 classes, 20 relationships
+  - แสดงโครงสร้าง MVC-like (Controller: script.js, Model: HeuristicsEngine, View: UIManager)
+  - ครอบคลุมทุก Manager และ Utility modules
+
+#### Changed
+- **ActivityDiagram_UC02.wsd** - เพิ่ม Low Light Check, Ghost/Silhouette, รวม activities ให้กระชับ
+- **ActivityDiagram_UC05.wsd** - เพิ่ม Display Options (7 toggles) และ Rules Config (8 rules)
+  - เพิ่ม Note "Development Mode Only" สำหรับ features ที่ซ่อนใน Production
+- **ActivityDiagram_UC06.wsd** - เพิ่มรายละเอียดจาก data_collector.html (Countdown, Frame Optimization, Silhouette Recording)
+
+### 🖐️ Gesture Hint UI
+
+#### Added
+- **Gesture Hint Section** (index.html) - แสดงใน Start Overlay
+  - 👍 ยกนิ้วโป้ง = เริ่มการฝึก
+  - ✊ กำมือ = หยุดการฝึก
+- **translations.js** - เพิ่ม `gesture_start_hint`, `gesture_stop_hint` (TH/EN)
+- **ui_manager.js** - เพิ่ม setText() สำหรับ gesture hints
+
+---
+
 ## [v0.7] - 2026-01-04
 
-### ⚠️ Low Light Warning (Option C: Hybrid)
+### ⚠️ Low Light Warning
 
 #### Added
 - **Low Light Detection** - ตรวจสอบแสงใน 2 จุด:

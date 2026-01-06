@@ -1,0 +1,286 @@
+@startuml TaijiFlow_Class_Diagram
+' ============================================================================
+' TaijiFlow AI - Class Diagram v1.0
+' ============================================================================
+' แสดงโครงสร้าง Classes หลักและความสัมพันธ์
+' อ้างอิง: 19 JavaScript Modules
+' ============================================================================
+
+skinparam defaultFontName "sarabun"
+skinparam class {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+skinparam note {
+    BackgroundColor LightYellow
+}
+
+' ============================================================================
+' MAIN CONTROLLER
+' ============================================================================
+
+class "script.js" as Script <<Controller>> {
+    ' State Variables
+    - isTrainingMode: boolean
+    - currentExercise: string
+    - currentLevel: string
+    - referencePath: array
+    --
+    ' Main Functions
+    + startTrainingFlow()
+    + startTrainingAfterCalibration()
+    + endTrainingSession()
+    + onResults(results)
+    + loadReferenceData()
+}
+
+note right of Script
+    **Main Controller**
+    จัดการ state และ flow
+    ทั้งหมดของ application
+end note
+
+' ============================================================================
+' CORE MANAGERS
+' ============================================================================
+
+class HeuristicsEngine {
+    - config: object
+    - calibrationData: object
+    - lastFeedbackMsg: string
+    - wristHistory: array[]
+    --
+    + analyze(landmarks, timestamp, path, exercise, level): Feedback[]
+    + setCalibration(data)
+    + setLevel(level)
+    - checkPathShape(): Feedback
+    - checkArmRotation(): Feedback
+    - checkElbowSinking(): Feedback
+    - checkWaistInitiation(): Feedback
+    - checkVerticalStability(): Feedback
+    - checkSmoothness(): Feedback
+    - checkContinuity(): Feedback
+    - checkWeightShift(): Feedback
+}
+
+note bottom of HeuristicsEngine
+    **8 Rules ตามหลักไท้เก๊ก**
+    วิเคราะห์ท่าทาง real-time
+end note
+
+class CalibrationManager {
+    - isActive: boolean
+    - calibrationData: object
+    - stage: string
+    - stableFrameCount: int
+    - level: string
+    --
+    + start()
+    + cancel()
+    + process(landmarks): object
+    + setLevel(level)
+    - calculateMetrics(landmarks): object
+    - isTPose(landmarks): boolean
+}
+
+class ScoringManager {
+    - totalFrames: int
+    - correctFrames: int
+    - errorCounts: object
+    - startTime: number
+    --
+    + start()
+    + recordFrame(feedbacks)
+    + getSummary(): object
+    + getGrade(percentage): GradeInfo
+}
+
+class DrawingManager {
+    - ctx: CanvasRenderingContext2D
+    - canvas: HTMLCanvasElement
+    - isMirrored: boolean
+    --
+    + drawSkeleton(landmarks)
+    + drawPath(path, color)
+    + drawGhostSkeleton(landmarks, opacity)
+    + drawSilhouetteVideo(video, opacity)
+    + drawFeedbackPanel(feedbacks)
+    + drawDebugOverlay(debugInfo)
+    + drawTrail(trailHistory)
+}
+
+class GhostManager {
+    - referenceData: array
+    - isPlaying: boolean
+    - currentTime: number
+    - speed: number
+    - opacity: number
+    --
+    + load(data)
+    + loadSilhouetteVideo(url)
+    + start()
+    + stop()
+    + update()
+    + getCurrentFrame(): object
+}
+
+' ============================================================================
+' UI & FEEDBACK MANAGERS
+' ============================================================================
+
+class UIManager {
+    - currentLang: string
+    - currentTheme: string
+    - translations: object
+    --
+    + init()
+    + toggleLanguage(): string
+    + toggleTheme(): string
+    + updateText()
+    + getText(key): string
+    + showNotification(msg, type)
+}
+
+class AudioManager {
+    - synth: SpeechSynthesis
+    - enabled: boolean
+    - currentLang: string
+    - cooldown: number
+    --
+    + toggle()
+    + setLanguage(lang)
+    + speak(message, force)
+    + speakFeedback(feedbacks)
+    + announce(type)
+}
+
+class GestureManager {
+    - gestureRecognizer: object
+    - isReady: boolean
+    - isEnabled: boolean
+    - currentGesture: string
+    - HOLD_DURATION_MS: int
+    --
+    + init()
+    + detectGestures(video, timestamp)
+    + onStartTraining: callback
+    + onStopTraining: callback
+}
+
+class TutorialManager {
+    - isOpen: boolean
+    - currentTab: string
+    - translations: object
+    --
+    + open(lang)
+    + close()
+    + switchTab(tab)
+    - renderPrinciples()
+    - renderExercises()
+    - renderHowTo()
+}
+
+class ScorePopupManager {
+    - popup: HTMLElement
+    - formUrl: string
+    --
+    + show(summary, gradeInfo, lang)
+    + close()
+    - createPopupHTML(): string
+}
+
+class FeedbackManager {
+    - formUrl: string
+    --
+    + createButton()
+    + showPopup()
+}
+
+class RulesConfigManager {
+    - engine: HeuristicsEngine
+    - defaultConfig: object
+    --
+    + bindRuleCheckboxes()
+    + setRuleEnabled(key, enabled)
+    + setThreshold(key, value)
+    + resetToDefaults()
+}
+
+' ============================================================================
+' UTILITY CLASSES
+' ============================================================================
+
+class "session_manager.js" as SessionManager <<Utility>> {
+    + getOrCreateUserId(): string
+    + generateSessionId(): string
+    + getPlatformInfo(): object
+    + isMobileDevice(): boolean
+}
+
+class "path_generator.js" as PathGenerator <<Utility>> {
+    + generatePath(exercise, level): array
+    + transformPath(path, calibration): array
+}
+
+class "data_exporter.js" as DataExporter <<Utility>> {
+    + exportJSON(data)
+    + exportCSV(data)
+    + downloadFile(content, filename)
+}
+
+' ============================================================================
+' RELATIONSHIPS
+' ============================================================================
+
+' Main Controller uses all managers
+Script --> HeuristicsEngine : "uses (every frame)"
+Script --> CalibrationManager : "uses (startup)"
+Script --> ScoringManager : "uses (training)"
+Script --> DrawingManager : "uses (render)"
+Script --> GhostManager : "uses (optional)"
+Script --> UIManager : "uses (UI)"
+Script --> AudioManager : "uses (TTS)"
+Script --> GestureManager : "uses (gesture)"
+Script --> TutorialManager : "uses (help)"
+Script --> FeedbackManager : "uses (QR Code)"
+
+' HeuristicsEngine relationships
+HeuristicsEngine ..> CalibrationManager : "receives calibration data"
+ScoringManager <.. HeuristicsEngine : "receives feedbacks"
+AudioManager <.. HeuristicsEngine : "triggers TTS feedback"
+DrawingManager <.. HeuristicsEngine : "receives feedback to draw"
+
+' UI Manager relationships
+UIManager --> ScorePopupManager : "creates popup"
+ScorePopupManager ..> ScoringManager : "displays summary"
+
+' RulesConfigManager controls HeuristicsEngine
+RulesConfigManager --> HeuristicsEngine : "configures thresholds"
+
+' Drawing relationships
+DrawingManager ..> GhostManager : "draws ghost skeleton"
+DrawingManager ..> CalibrationManager : "draws calibration UI"
+
+' Utilities (dotted = indirect usage)
+Script ..> SessionManager : "generates IDs"
+Script ..> PathGenerator : "creates paths"
+Script ..> DataExporter : "exports data"
+
+' ============================================================================
+' NOTES FOR ADDITIONAL CONTEXT
+' ============================================================================
+
+note as N1
+    **TaijiFlow AI Architecture**
+    
+    รูปแบบ: MVC-like Pattern
+    - Controller: script.js
+    - Model: HeuristicsEngine, ScoringManager
+    - View: DrawingManager, UIManager
+    
+    จำนวน Classes: 14
+    จำนวน Modules: 19
+end note
+
+@enduml

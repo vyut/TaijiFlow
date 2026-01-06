@@ -1,5 +1,10 @@
-
 @startuml TaijiFlow_Activity_Diagram_UC05
+' ============================================================================
+' TaijiFlow AI - Activity Diagram: UC-05 Manage Settings
+' ============================================================================
+' อัปเดต: เพิ่ม Display Options และ Rules Config (Development Only)
+' ============================================================================
+
 skinparam defaultFontName "sarabun"
 skinparam activity {
     BackgroundColor White
@@ -10,7 +15,13 @@ skinparam activity {
 start
 :ผู้ใช้งานเลือกกดปุ่มตั้งค่าบนหน้าจอ;
 
-' ใช้ switch เพื่อสร้างจุดตัดสินใจเดียว (Decision Node) แยกไปหลายทาง
+' Floating Notes สำหรับ Development Features
+note right #LightGray
+    **Development Mode Only**
+    Display 👁️ และ Rules ⚙️
+    ซ่อนใน Production
+end note
+
 switch (เลือกปรับค่าใด?)
 
 case ( ปุ่มภาษา 🇹🇭/🇬🇧 )
@@ -24,9 +35,41 @@ case ( ปุ่มธีม 🌙/☀️ )
 case ( ปุ่มเสียง 🔊/🔇 )
     :สลับค่า Audio (Mute <-> Unmute);
     :อัปเดตไอคอนลำโพง;
+
+case ( ปุ่ม Display 👁️ * )
+    :แสดง Dropdown Menu;
+    :เลือก Toggle Option;
+    :สลับค่า Checkbox;
+
+case ( ปุ่ม Rules ⚙️ * )
+    :แสดง Rules Menu;
     
+    switch (Action?)
+    case ( Toggle )
+        :เปิด/ปิด กฎที่เลือก;
+    case ( Adjust )
+        :ปรับค่า Threshold;
+    case ( Reset )
+        :คืนค่าเริ่มต้น;
+    endswitch
+
 endswitch
 
 :บันทึกค่าการตั้งค่าลง LocalStorage;
+
+' Legend
+note right
+    __Legend__
+    * = Development Only
+    
+    **Display Options (7):**
+    Path, Instructor, Ghost,
+    Skeleton, Trail, Silhouette, Debug
+    
+    **Rules (8):**
+    Path, Rotation, Elbow, Waist,
+    Stability, Smooth, Continuity, Weight
+end note
+
 stop
 @enduml

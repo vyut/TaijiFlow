@@ -290,26 +290,7 @@ const videoFullscreenBtn = document.getElementById("video-fullscreen-btn"); // �
 function checkSelectionComplete() {
   const isComplete = currentExercise !== null && currentLevel !== null;
 
-  // -------------------------------------------------------------------------
-  // Interactive Highlight - แสดงกรอบสีม่วงเพื่อบอกว่าต้องเลือก
-  // -------------------------------------------------------------------------
-  const exerciseSelect = document.getElementById("exercise-select");
-  const levelSelect = document.getElementById("level-select");
-
-  // Highlight Exercise dropdown ถ้ายังไม่เลือก
-  if (!currentExercise) {
-    exerciseSelect.classList.add("highlight-required");
-  } else {
-    exerciseSelect.classList.remove("highlight-required");
-  }
-
-  // Highlight Level dropdown ถ้าเลือกท่าแล้วแต่ยังไม่เลือกระดับ
-  if (currentExercise && !currentLevel) {
-    levelSelect.classList.add("highlight-required");
-  } else {
-    levelSelect.classList.remove("highlight-required");
-  }
-
+  // Quick Start: มี default values เสมอ จึงไม่ต้อง highlight แล้ว
   if (isComplete) {
     // Enable start button
     startTrainingBtn.disabled = false;

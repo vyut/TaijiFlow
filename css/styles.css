@@ -215,16 +215,3 @@ body.light .instructions-box strong {
 #instructor-thumbnail.hidden {
   display: none;
 }
-
-/* --- Interactive Highlight (Required Fields) --- */
-/* แสดงกรอบสีม่วงเพื่อบอกว่าต้องเลือก */
-.highlight-required {
-  border: 2px solid #8b5cf6 !important;
-  box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-/* เมื่อ hover จะสว่างขึ้นเล็กน้อย */
-.highlight-required:hover {
-  box-shadow: 0 0 12px rgba(139, 92, 246, 0.7);
-}

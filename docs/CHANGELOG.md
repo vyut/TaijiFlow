@@ -28,6 +28,14 @@
 - **translations.js** - เพิ่ม `gesture_start_hint`, `gesture_stop_hint` (TH/EN)
 - **ui_manager.js** - เพิ่ม setText() สำหรับ gesture hints
 
+### 🚀 Quick Start (Default Selection)
+
+#### Changed
+- **index.html** - Dropdown เลือกค่า Default อัตโนมัติ
+  - Exercise: `1. มือขวา - ตามเข็ม` (rh_cw)
+  - Level: `1. แบบนั่ง` (L1)
+- **script.js** - ตั้งค่าเริ่มต้นใน state variables และ resetToHomeScreen()
+
 ---
 
 ## [v0.7] - 2026-01-04

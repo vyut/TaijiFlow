@@ -83,8 +83,8 @@ const gestureManager = new GestureManager(); // ควบคุมด้วย�
 // -----------------------------------------------------------------------------
 let isRecording = false; // กำลังบันทึก Session อยู่หรือไม่
 let isTrainingMode = false; // อยู่ใน Training Mode หรือไม่
-let currentExercise = null; // ท่าที่เลือก (rh_cw, rh_ccw, lh_cw, lh_ccw)
-let currentLevel = null; // ระดับที่เลือก (L1, L2, L3)
+let currentExercise = "rh_cw"; // ท่าที่เลือก - Default: มือขวา ตามเข็ม
+let currentLevel = "L1"; // ระดับที่เลือก - Default: นั่ง
 let referencePath = []; // เส้นทางต้นแบบจาก JSON
 let sessionLog = []; // ประวัติข้อผิดพลาด (สำหรับสรุป)
 let sessionStartTime = 0; // เวลาเริ่ม Session (Unix timestamp)
@@ -842,14 +842,14 @@ function endTrainingSession() {
  * กลับไปหน้าแรก (Reset การเลือก)
  */
 function resetToHomeScreen() {
-  // Reset State
-  currentExercise = null;
-  currentLevel = null;
+  // Reset State - ใช้ค่า Default แทน null
+  currentExercise = "rh_cw";
+  currentLevel = "L1";
   referencePath = [];
 
-  // Reset UI
-  exerciseSelect.value = "";
-  if (levelSelect) levelSelect.value = "";
+  // Reset UI - ใช้ค่า Default
+  exerciseSelect.value = "rh_cw";
+  if (levelSelect) levelSelect.value = "L1";
 
   // Reset button states
   updateButtonStates(false);

@@ -42,10 +42,13 @@
 - **keyboard_controller.js** (254 lines) - แยก Keyboard Shortcuts ออกจาก script.js
   - ใช้ Dependency Injection pattern เพื่อความปลอดภัย
   - รองรับ 14 keyboard shortcuts (F, D, Space, M, L, T, G, I, P, B, S, R, ?, /, Escape)
+- **display_controller.js** (254 lines) - แยก Display Options ออกจาก script.js
+  - จัดการ 6 display toggles (Ghost, Instructor, Path, Skeleton, Silhouette, Trail)
+  - รวม resetToDefaults() และ addTrailPoint() methods
 
 #### Changed
-- **script.js** - ลดจาก 1,913 → 1,755 บรรทัด (-8.3%)
-- **index.html** - เพิ่ม script tag สำหรับ keyboard_controller.js
+- **script.js** - ลดจาก 1,913 → 1,643 บรรทัด (-14%)
+- **index.html** - เพิ่ม script tags สำหรับ controllers
 
 ---
 

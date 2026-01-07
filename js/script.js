@@ -353,127 +353,26 @@ audioBtn.addEventListener("click", () => {
   audioBtn.classList.toggle("bg-gray-500", !isEnabled);
 });
 
-// Display State Variables
-// ลำดับ: Ghost, Instructor, Path, Skeleton, Silhouette
-let showGhostOverlay = false; // ปิดเป็น default (เงาครูฝึกบนวิดีโอหลัก)
-let showInstructor = true; // เปิดเป็น default (เงาครูฝึก thumbnail มุมขวาบน)
-let showPath = true; // เปิดเป็น default (เส้น Dynamic Path นำทาง)
-let showSkeleton = true; // เปิดเป็น default (โครงผู้ฝึก)
-let showSilhouette = false; // ปิดเป็น default (เงาผู้ฝึก)
-let showTrail = true; // เปิดเป็น default (เส้นทางการเคลื่อนไหว)
+// Display Controller (extracted to display_controller.js)
+const displayController = new DisplayController({
+  // DOM Elements
+  displayBtn,
+  displayMenu,
+  checkGhost,
+  checkInstructor,
+  checkPath,
+  checkSkeleton,
+  checkSilhouette,
+  instructorThumbnail,
 
-// Trail Visualization State
-// 🔧 CONFIG: ปรับความยาว Trail (จำนวนจุด)
-// - 20 = สั้น (~0.7 วินาที) → หายเร็ว
-// - 40 = ปานกลาง (~1.3 วินาที)
-// - 60 = ยาว (~2 วินาที) → หายช้า
-const TRAIL_LENGTH = 60;
-let trailHistory = []; // Array ของ {x, y, timestamp}
-let circularityScore = null; // คะแนนความกลม (0-100)
+  // Managers
+  ghostManager,
+  silhouetteManager,
+  // Note: pose จะถูก access ผ่าน window.pose ใน display_controller.js
+});
 
-// Display Dropdown Toggle
-if (displayBtn && displayMenu) {
-  displayBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    displayMenu.classList.toggle("hidden");
-  });
-
-  // ปิด dropdown เมื่อคลิกข้างนอก
-  document.addEventListener("click", (e) => {
-    if (!displayMenu.contains(e.target) && e.target !== displayBtn) {
-      displayMenu.classList.add("hidden");
-    }
-  });
-}
-
-// Checkbox: Ghost (เงาครูฝึก)
-if (checkGhost) {
-  checkGhost.checked = showGhostOverlay; // Sync with default
-  checkGhost.addEventListener("change", () => {
-    showGhostOverlay = checkGhost.checked;
-    if (showGhostOverlay) {
-      ghostManager.start();
-    } else {
-      ghostManager.stop();
-    }
-  });
-}
-
-// Checkbox: Instructor Thumbnail (เงาครูฝึกมุมขวาบน)
-if (checkInstructor) {
-  checkInstructor.checked = showInstructor; // Sync with default
-  checkInstructor.addEventListener("change", () => {
-    toggleInstructor(checkInstructor.checked);
-  });
-}
-
-// Toggle Instructor Thumbnail visibility
-function toggleInstructor(show) {
-  showInstructor = show;
-  if (instructorThumbnail) {
-    instructorThumbnail.classList.toggle("hidden", !show);
-  }
-  if (checkInstructor) {
-    checkInstructor.checked = show;
-  }
-}
-
-// Checkbox: Path (เส้นทาง)
-if (checkPath) {
-  checkPath.checked = showPath; // Sync with default
-  checkPath.addEventListener("change", () => {
-    showPath = checkPath.checked;
-  });
-}
-
-// Checkbox: Skeleton (โครงผู้ฝึก)
-if (checkSkeleton) {
-  checkSkeleton.checked = showSkeleton; // Sync with default
-  checkSkeleton.addEventListener("change", () => {
-    showSkeleton = checkSkeleton.checked;
-  });
-}
-
-// Checkbox: Silhouette (เงาผู้ฝึก)
-// Performance: เปิด/ปิด Segmentation ตามการใช้งาน Silhouette
-if (checkSilhouette) {
-  checkSilhouette.checked = showSilhouette; // Sync with default
-  checkSilhouette.addEventListener("change", () => {
-    showSilhouette = checkSilhouette.checked;
-
-    // 🔧 Dynamic Segmentation Toggle - เพิ่ม/ลด performance
-    pose.setOptions({
-      enableSegmentation: showSilhouette,
-      smoothSegmentation: showSilhouette,
-    });
-
-    if (showSilhouette) {
-      silhouetteManager.enable();
-      console.log("⚠️ Silhouette enabled - enableSegmentation: true");
-    } else {
-      silhouetteManager.disable();
-      console.log(
-        "✅ Silhouette disabled - enableSegmentation: false (+5-10 fps)"
-      );
-    }
-  });
-}
-
-// Checkbox: Trail (เส้นทางการเคลื่อนไหว)
-const checkTrail = document.getElementById("check-trail");
-if (checkTrail) {
-  checkTrail.checked = showTrail; // Sync with default
-  checkTrail.addEventListener("change", () => {
-    showTrail = checkTrail.checked;
-
-    if (!showTrail) {
-      // Reset trail data เมื่อปิด
-      trailHistory = [];
-      circularityScore = null;
-    }
-    console.log(`🔵 Trail: ${showTrail ? "enabled" : "disabled"}`);
-  });
-}
+// Helper: ให้ส่วนอื่นเข้าถึง display state ผ่าน displayController
+// ใช้ displayController.showGhostOverlay, displayController.showPath, etc.
 
 // เริ่มต้น UI
 uiManager.init();
@@ -839,19 +738,8 @@ function resetToHomeScreen() {
   if (trainingTimerTop) trainingTimerTop.textContent = "00:00";
   if (trainingTimerOverlay) trainingTimerOverlay.textContent = "5:00";
 
-  // Reset Display Options to defaults
-  showGhostOverlay = false; // ปิดเป็น default
-  showInstructor = true; // เปิดเป็น default
-  showPath = false;
-  showSkeleton = true; // เปิดเป็น default (โครงผู้ฝึก)
-  showSilhouette = false;
-
-  // Sync checkboxes with display state
-  if (checkGhost) checkGhost.checked = false;
-  if (checkInstructor) checkInstructor.checked = true;
-  if (checkPath) checkPath.checked = true;
-  if (checkSkeleton) checkSkeleton.checked = true;
-  if (checkSilhouette) checkSilhouette.checked = false;
+  // Reset Display Options to defaults (via DisplayController)
+  displayController.resetToDefaults();
 
   // Reset Debug Mode
   if (typeof engine !== "undefined") {
@@ -1071,7 +959,7 @@ const keyboardController = new KeyboardController({
   checkPath,
   checkSkeleton,
   checkSilhouette,
-  checkTrail,
+  // checkTrail ถูกจัดการใน displayController แล้ว
   startTrainingBtn,
   stopTrainingBtn,
   startOverlay,
@@ -1081,15 +969,14 @@ const keyboardController = new KeyboardController({
   calibrator,
   uiManager,
   tutorialManager,
+  displayController, // เพิ่มสำหรับ toggleInstructor และ showInstructor
 
   // Functions
   toggleDebugOverlay,
-  toggleInstructor,
   loadReferenceData,
   resetToHomeScreen,
 
   // State getters (functions เพื่อให้ได้ค่าล่าสุด)
-  showInstructor: () => showInstructor,
   currentExercise: () => currentExercise,
   currentLevel: () => currentLevel,
   isTrainingMode: () => isTrainingMode,
@@ -1157,7 +1044,7 @@ async function loadReferenceData() {
     console.log(`✅ Loaded Ghost + Silhouette data.`);
 
     // ถ้า Ghost checkbox เปิดอยู่ ให้ restart ghost playback
-    if (showGhostOverlay) {
+    if (displayController.showGhostOverlay) {
       ghostManager.start();
     }
   } catch (error) {
@@ -1325,7 +1212,7 @@ async function onResults(results) {
 
       // 0. วาด Silhouette (ถ้าเปิดใช้งาน) - ใช้ segmentationMask จาก Pose
       if (
-        showSilhouette &&
+        displayController.showSilhouette &&
         silhouetteManager.isEnabled &&
         results.segmentationMask
       ) {
@@ -1338,7 +1225,7 @@ async function onResults(results) {
       }
 
       // 1. วาด Ghost (เงาคนสอน) ถ้าเปิดใช้งาน
-      if (showGhostOverlay && ghostManager.isPlaying) {
+      if (displayController.showGhostOverlay && ghostManager.isPlaying) {
         ghostManager.update(); // อัปเดต frame
 
         // Priority: Silhouette Video > Ghost Skeleton
@@ -1356,7 +1243,7 @@ async function onResults(results) {
       }
 
       // 1.5. วาด Instructor Thumbnail (มุมขวาบน) ถ้าเปิดใช้งาน
-      if (showInstructor && instructorCtx && isTrainingMode) {
+      if (displayController.showInstructor && instructorCtx && isTrainingMode) {
         // ต้องการ silhouette video โดยตรง (ไม่ขึ้นกับ Ghost overlay)
         const silhouetteVideo = ghostManager.silhouetteVideo;
         if (silhouetteVideo && silhouetteVideo.readyState >= 2) {
@@ -1409,17 +1296,21 @@ async function onResults(results) {
       }
 
       // 2.5. วาด Reference Path (ถ้าเปิด)
-      if (showPath && referencePath.length > 0) {
+      if (displayController.showPath && referencePath.length > 0) {
         drawer.drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4);
       }
 
       // 3. วาด User Skeleton (ถ้าเปิด)
-      if (showSkeleton) {
+      if (displayController.showSkeleton) {
         drawer.drawSkeleton(results.poseLandmarks);
       }
 
       // 4. Trail Visualization (ถ้าเปิด)
-      if (showTrail && isTrainingMode && !calibrator.isActive) {
+      if (
+        displayController.showTrail &&
+        isTrainingMode &&
+        !calibrator.isActive
+      ) {
         try {
           // หาตำแหน่ง Wrist ที่ใช้
           const isRightHand = currentExercise.includes("rh");
@@ -1431,27 +1322,33 @@ async function onResults(results) {
             let smoothX = wrist.x;
             let smoothY = wrist.y;
 
-            if (trailHistory.length > 0) {
-              const last = trailHistory[trailHistory.length - 1];
+            if (displayController.trailHistory.length > 0) {
+              const last =
+                displayController.trailHistory[
+                  displayController.trailHistory.length - 1
+                ];
               const SMOOTH_FACTOR = 0.4; // 0 = ไม่ smooth, 0.4 = ปานกลาง, 0.7 = smooth มาก, 1 = ไม่ขยับ
               smoothX = last.x * SMOOTH_FACTOR + wrist.x * (1 - SMOOTH_FACTOR);
               smoothY = last.y * SMOOTH_FACTOR + wrist.y * (1 - SMOOTH_FACTOR);
             }
 
             // เก็บตำแหน่งที่ smooth แล้วลง History
-            trailHistory.push({
+            displayController.trailHistory.push({
               x: smoothX,
               y: smoothY,
               timestamp: Date.now(),
             });
 
             // จำกัดขนาด History
-            while (trailHistory.length > TRAIL_LENGTH) {
-              trailHistory.shift();
+            while (
+              displayController.trailHistory.length >
+              displayController.TRAIL_LENGTH
+            ) {
+              displayController.trailHistory.shift();
             }
 
             // วาด Trail (Fading Dots)
-            drawer.drawTrail(trailHistory);
+            drawer.drawTrail(displayController.trailHistory);
           }
         } catch (err) {
           console.error("Trail error:", err);

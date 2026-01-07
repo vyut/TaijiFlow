@@ -44,17 +44,14 @@ class KeyboardController {
       checkPath,
       checkSkeleton,
       checkSilhouette,
-      checkTrail,
       startTrainingBtn,
       stopTrainingBtn,
       startOverlay,
-      engine,
       calibrator,
       uiManager,
       tutorialManager,
+      displayController,
       toggleDebugOverlay,
-      toggleInstructor,
-      showInstructor,
       currentExercise,
       currentLevel,
       isTrainingMode,
@@ -76,12 +73,12 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       case "d":
         e.preventDefault();
-        engine.setDebugMode(!engine.debugMode);
-        toggleDebugOverlay(engine.debugMode);
+        this.deps.engine.setDebugMode(!this.deps.engine.debugMode);
+        toggleDebugOverlay(this.deps.engine.debugMode);
         const debugCheckbox = document.getElementById("check-debug");
-        if (debugCheckbox) debugCheckbox.checked = engine.debugMode;
+        if (debugCheckbox) debugCheckbox.checked = this.deps.engine.debugMode;
         uiManager.showNotification(
-          `Debug Mode: ${engine.debugMode ? "ON" : "OFF"}`,
+          `Debug Mode: ${this.deps.engine.debugMode ? "ON" : "OFF"}`,
           "info",
           1500
         );
@@ -145,7 +142,7 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       case "i":
         e.preventDefault();
-        toggleInstructor(!showInstructor());
+        displayController.toggleInstructor(!displayController.showInstructor);
         break;
 
       // -----------------------------------------------------------------------
@@ -186,6 +183,7 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       case "r":
         e.preventDefault();
+        const checkTrail = document.getElementById("check-trail");
         if (checkTrail) {
           checkTrail.checked = !checkTrail.checked;
           checkTrail.dispatchEvent(new Event("change"));

@@ -1060,197 +1060,39 @@ recordBtn.addEventListener("click", () => {
   }
 });
 
-// --- Keyboard Shortcuts ---
-window.addEventListener("keydown", (e) => {
-  // ไม่ทำงานถ้ากำลังพิมพ์ใน input/textarea
-  if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+// --- Keyboard Shortcuts (extracted to keyboard_controller.js) ---
+const keyboardController = new KeyboardController({
+  // DOM Elements
+  fullscreenBtn,
+  audioBtn,
+  langBtn,
+  themeBtn,
+  checkGhost,
+  checkPath,
+  checkSkeleton,
+  checkSilhouette,
+  checkTrail,
+  startTrainingBtn,
+  stopTrainingBtn,
+  startOverlay,
 
-  // ใช้ e.key เพื่อความทันสมัยและอ่านง่าย
-  switch (e.key.toLowerCase()) {
-    // -------------------------------------------------------------------------
-    // F = Fullscreen Toggle
-    // -------------------------------------------------------------------------
-    case "f":
-      e.preventDefault();
-      fullscreenBtn.click();
-      break;
+  // Managers
+  engine,
+  calibrator,
+  uiManager,
+  tutorialManager,
 
-    // -------------------------------------------------------------------------
-    // D = Debug Mode Toggle
-    // -------------------------------------------------------------------------
-    case "d":
-      e.preventDefault();
-      engine.setDebugMode(!engine.debugMode);
-      // แสดง/ซ่อน HTML debug overlay
-      toggleDebugOverlay(engine.debugMode);
-      // Sync checkbox ใน Rules Settings
-      const debugCheckbox = document.getElementById("check-debug");
-      if (debugCheckbox) debugCheckbox.checked = engine.debugMode;
-      uiManager.showNotification(
-        `Debug Mode: ${engine.debugMode ? "ON" : "OFF"}`,
-        "info",
-        1500
-      );
-      break;
+  // Functions
+  toggleDebugOverlay,
+  toggleInstructor,
+  loadReferenceData,
+  resetToHomeScreen,
 
-    // -------------------------------------------------------------------------
-    // Space = Start/Stop Training
-    // -------------------------------------------------------------------------
-    case " ":
-      e.preventDefault();
-      if (calibrator.isActive) {
-        // กำลัง Calibrate → ยกเลิก
-        calibrator.cancel();
-        loadReferenceData();
-        startOverlay.classList.remove("hidden");
-        if (document.fullscreenElement) document.exitFullscreen();
-        uiManager.showNotification("🛑 ยกเลิกการ Calibrate", "info");
-      } else if (isTrainingMode) {
-        // กำลังฝึก → หยุด
-        stopTrainingBtn.click();
-      } else if (currentExercise && currentLevel) {
-        // พร้อมฝึก → เริ่ม
-        startTrainingBtn.click();
-      }
-      break;
-
-    // -------------------------------------------------------------------------
-    // M = Mute/Unmute Audio
-    // -------------------------------------------------------------------------
-    case "m":
-      e.preventDefault();
-      audioBtn.click(); // Toggle audio button
-      break;
-
-    // -------------------------------------------------------------------------
-    // L = Language Toggle (TH/EN)
-    // -------------------------------------------------------------------------
-    case "l":
-      e.preventDefault();
-      langBtn.click(); // Toggle language button
-      break;
-
-    // -------------------------------------------------------------------------
-    // T = Theme Toggle (Dark/Light)
-    // -------------------------------------------------------------------------
-    case "t":
-      e.preventDefault();
-      themeBtn.click(); // Toggle theme button
-      break;
-
-    // -------------------------------------------------------------------------
-    // G = Ghost Overlay Toggle
-    // -------------------------------------------------------------------------
-    case "g":
-      e.preventDefault();
-      if (checkGhost) {
-        checkGhost.checked = !checkGhost.checked;
-        checkGhost.dispatchEvent(new Event("change"));
-      }
-      break;
-
-    // -------------------------------------------------------------------------
-    // I = Instructor Thumbnail Toggle
-    // -------------------------------------------------------------------------
-    case "i":
-      e.preventDefault();
-      toggleInstructor(!showInstructor);
-      break;
-
-    // -------------------------------------------------------------------------
-    // P = Path Overlay Toggle (เส้นทาง)
-    // -------------------------------------------------------------------------
-    case "p":
-      e.preventDefault();
-      if (checkPath) {
-        checkPath.checked = !checkPath.checked;
-        checkPath.dispatchEvent(new Event("change"));
-      }
-      break;
-
-    // -------------------------------------------------------------------------
-    // B = Skeleton (Bones) Toggle (โครงผู้ฝึก)
-    // -------------------------------------------------------------------------
-    case "b":
-      e.preventDefault();
-      if (checkSkeleton) {
-        checkSkeleton.checked = !checkSkeleton.checked;
-        checkSkeleton.dispatchEvent(new Event("change"));
-      }
-      break;
-
-    // -------------------------------------------------------------------------
-    // S = Silhouette Overlay Toggle (เงาผู้ฝึก)
-    // -------------------------------------------------------------------------
-    case "s":
-      e.preventDefault();
-      if (checkSilhouette) {
-        checkSilhouette.checked = !checkSilhouette.checked;
-        checkSilhouette.dispatchEvent(new Event("change"));
-      }
-      break;
-
-    // -------------------------------------------------------------------------
-    // R = Trail Visualization Toggle (เส้นทางการเคลื่อนไหว)
-    // -------------------------------------------------------------------------
-    case "r":
-      e.preventDefault();
-      if (checkTrail) {
-        checkTrail.checked = !checkTrail.checked;
-        checkTrail.dispatchEvent(new Event("change"));
-      }
-      break;
-
-    // -------------------------------------------------------------------------
-    // ? = Open Tutorial Popup (วิธีการใช้งาน)
-    // -------------------------------------------------------------------------
-    case "?":
-      e.preventDefault();
-      tutorialManager.open(uiManager.currentLang);
-      break;
-
-    // -------------------------------------------------------------------------
-    // / = Show Keyboard Shortcuts
-    // -------------------------------------------------------------------------
-    case "/":
-      e.preventDefault();
-      const shortcuts = [
-        "⌨️ คีย์ลัด",
-        "━━━━━━━━━━━━",
-        "",
-        "Space = เริ่ม/หยุด",
-        "F = เต็มจอ",
-        "D = Debug Mode",
-        "",
-        "G = Ghost (เงาต้นแบบ)",
-        "P = Path (เส้นทางต้นแบบ)",
-        "B = Skeleton (โครงผู้ฝึก)",
-        "S = Silhouette (เงาผู้ฝึก)",
-        "",
-        "M = เปิด/ปิดเสียง",
-        "L = เปลี่ยนภาษา",
-        "T = เปลี่ยน Theme",
-        "",
-        "? = วิธีใช้งาน",
-        "/ = คีย์ลัด (นี้)",
-        "Esc = ยกเลิก",
-      ].join("\n");
-      uiManager.showNotification(shortcuts, "info", 5000);
-      break;
-
-    // -------------------------------------------------------------------------
-    // Escape = Cancel Calibration
-    // -------------------------------------------------------------------------
-    case "escape":
-      if (calibrator.isActive) {
-        e.preventDefault();
-        calibrator.cancel();
-        loadReferenceData();
-        resetToHomeScreen();
-        uiManager.showNotification("ยกเลิกการปรับเทียบ", "info", 2000);
-      }
-      break;
-  }
+  // State getters (functions เพื่อให้ได้ค่าล่าสุด)
+  showInstructor: () => showInstructor,
+  currentExercise: () => currentExercise,
+  currentLevel: () => currentLevel,
+  isTrainingMode: () => isTrainingMode,
 });
 
 // =============================================================================

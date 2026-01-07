@@ -36,6 +36,17 @@
   - Level: `1. แบบนั่ง` (L1)
 - **script.js** - ตั้งค่าเริ่มต้นใน state variables และ resetToHomeScreen()
 
+### 🔧 Code Refactoring
+
+#### Added
+- **keyboard_controller.js** (254 lines) - แยก Keyboard Shortcuts ออกจาก script.js
+  - ใช้ Dependency Injection pattern เพื่อความปลอดภัย
+  - รองรับ 14 keyboard shortcuts (F, D, Space, M, L, T, G, I, P, B, S, R, ?, /, Escape)
+
+#### Changed
+- **script.js** - ลดจาก 1,913 → 1,755 บรรทัด (-8.3%)
+- **index.html** - เพิ่ม script tag สำหรับ keyboard_controller.js
+
 ---
 
 ## [v0.7] - 2026-01-04

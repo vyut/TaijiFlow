@@ -388,6 +388,11 @@ audioManager.setLanguage(initLang);
 calibrator.setLanguage(initLang);
 engine.setLang(initLang); // Sync Feedback messages กับภาษา
 
+// เริ่มต้น Rules Settings ตาม Default Level (L1)
+if (currentLevel) {
+  rulesConfigManager.onLevelChange(currentLevel);
+}
+
 // เริ่มต้น Gesture Manager (Gesture Control)
 gestureManager.init().then((ready) => {
   if (ready) {

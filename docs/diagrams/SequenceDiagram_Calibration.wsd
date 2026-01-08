@@ -1,0 +1,113 @@
+@startuml SequenceDiagram_Calibration
+' ============================================================================
+' TaijiFlow AI - Sequence Diagram: Calibration Process
+' ============================================================================
+' แสดงขั้นตอนการปรับเทียบสัดส่วนร่างกายด้วย T-Pose
+' อ้างอิง: UC-01 Calibrate Body, calibration_manager.js
+' ============================================================================
+
+skinparam defaultFontName "Sarabun"
+skinparam backgroundColor transparent
+skinparam sequenceMessageAlign center
+
+' === Participants ===
+actor "ผู้ฝึก\n(User)" as User
+participant "    UI    " as UI #E8F5E9
+participant " Training " as Training #E3F2FD
+participant "Calibrator" as Calibrator #FFF3E0
+participant "Heuristics" as Heuristics #FFF3E0
+
+' ============================================================================
+' PHASE 1: START CALIBRATION
+' ============================================================================
+
+group #E3F2FD เริ่ม Calibration
+    Training -> Calibrator : setLevel(currentLevel)
+    note right
+        L1-L2: ครึ่งบน
+        L3: เห็นทั้งตัว
+    end note
+    
+    Training -> Calibrator : start()
+    activate Calibrator
+    
+    Calibrator --> UI : แสดง Overlay "กรุณายืนกางแขน (T-Pose)"
+end
+
+' ============================================================================
+' PHASE 2: VISIBILITY CHECK
+' ============================================================================
+
+group #FFF3E0 ตรวจ Visibility
+    User -> User : ยืนในกล้อง
+    
+    loop จน visibility ผ่าน
+        Training -> Calibrator : process(landmarks)
+        
+        alt visibility < 0.5
+            Calibrator --> UI : "ถอยหลังอีกนิด!"
+            Calibrator --> Training : {status: "adjusting"}
+        else visibility ผ่าน
+            Calibrator --> UI : "กางแขนระดับไหล่"
+        end
+    end
+end
+
+' ============================================================================
+' PHASE 3: T-POSE CHECK
+' ============================================================================
+
+group #FFF3E0 ตรวจท่า T-Pose
+    User -> User : กางแขนท่า T 🧍
+    
+    loop จนกว่าแขนจะอยู่ระดับไหล่
+        Training -> Calibrator : process(landmarks)
+        
+        alt |wristY - shoulderY| > 0.2
+            Calibrator --> UI : "กางแขนระดับไหล่"
+            Calibrator --> Training : {status: "adjusting"}
+        else ท่าถูกต้อง
+            Calibrator -> Calibrator : stableFrames++
+        end
+    end
+end
+
+' ============================================================================
+' PHASE 4: COUNTDOWN (3 SECONDS)
+' ============================================================================
+
+group #E8F5E9 นับถอยหลัง (3 วินาที)
+    loop stableFrames < 90 (~3 วินาที)
+        Calibrator --> UI : "อยู่นิ่งๆ... 3"
+        Calibrator --> UI : "อยู่นิ่งๆ... 2"
+        Calibrator --> UI : "อยู่นิ่งๆ... 1"
+        Calibrator --> Training : {status: "measuring"}
+    end
+end
+
+' ============================================================================
+' PHASE 5: CALCULATE & COMPLETE
+' ============================================================================
+
+group #E8F5E9 วัดสัดส่วน
+    Calibrator -> Calibrator : calculateMetrics(landmarks)
+    note right
+        **ข้อมูลที่วัด:**
+        - torsoHeight (ความสูงลำตัว)
+        - shoulderWidth (ความกว้างไหล่)
+        - armLength (ความยาวแขน)
+    end note
+    
+    Calibrator -> Calibrator : saveToStorage()
+    note right: เก็บใน LocalStorage
+    
+    Calibrator --> Training : {status: "complete", data}
+    deactivate Calibrator
+    
+    Training -> Heuristics : setCalibration(data)
+    note right: ปรับ Dynamic Thresholds
+    
+    Training --> UI : "✅ ปรับเทียบเสร็จสมบูรณ์!"
+end
+
+@enduml

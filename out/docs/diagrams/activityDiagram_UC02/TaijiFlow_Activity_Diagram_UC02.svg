@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1765px" preserveAspectRatio="none" style="width:611px;height:1765px;" version="1.1" viewBox="0 0 611 1765" width="611px" zoomAndPan="magnify"><defs><filter height="300%" id="f1gqiihnszp615" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><ellipse cx="223.25" cy="20" fill="#000000" filter="url(#f1gqiihnszp615)" rx="10" ry="10" style="stroke:none;stroke-width:1.0;"/><path d="M348.25,40 L348.25,74.8 L328.25,78.8 L348.25,82.8 L348.25,117.6 A0,0 0 0 0 348.25,117.6 L480.25,117.6 A0,0 0 0 0 480.25,117.6 L480.25,50 L470.25,40 L348.25,40 A0,0 0 0 0 348.25,40 " fill="#FFFFE0" filter="url(#f1gqiihnszp615)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M470.25,40 L470.25,50 L480.25,50 L470.25,40 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="61" x="354.25" y="58.884">Quickstart</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="71" x="354.25" y="75.784">มี default ให้:</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="111" x="354.25" y="92.684">- ท่า: มือขวา-ตามเข็ม</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="81" x="354.25" y="109.584">- ระดับ: L1 (นั่ง)</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="210" x="118.25" y="61"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="190" x="128.25" y="83.816">ผู้ใช้เลือก "ท่าฝึก" และ "ระดับความยาก"</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="251.4" style="stroke:#000000;stroke-width:2.0;" width="537" x="11" y="127.6"/><path d="M141,127.6 L141,138.8 L131,148.8 L11,148.8 " fill="none" style="stroke:#000000;stroke-width:2.0;"/><text fill="#000000" font-family="sarabun" font-size="14" lengthAdjust="spacing" textLength="120" x="14" y="143.552">System Initialization</text><polygon fill="#FEFECE" filter="url(#f1gqiihnszp615)" points="190.75,165.8,255.75,165.8,267.75,177.8,255.75,189.8,190.75,189.8,178.75,177.8,190.75,165.8" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="65" x="190.75" y="182.398">เข้าถึงกล้องได้?</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="43" x="135.75" y="175.248">ไม่ได้ (E1)</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="267.75" y="175.248">ได้</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="131" x="23" y="199.8"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="111" x="33" y="222.616">แจ้งเตือน "ไม่พบกล้อง"</text><ellipse cx="88.5" cy="266.4" fill="#FFFFFF" filter="url(#f1gqiihnszp615)" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><ellipse cx="88.5" cy="266.4" fill="#000000" rx="6" ry="6" style="stroke:#7F7F7F;stroke-width:1.0;"/><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="165" x="275.5" y="199.8"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="145" x="285.5" y="222.616">โหลดข้อมูลท่าต้นแบบ (JSON)</text><polygon fill="#FEFECE" filter="url(#f1gqiihnszp615)" points="339,255.4,377,255.4,389,267.4,377,279.4,339,279.4,327,267.4,339,255.4" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="38" x="339" y="271.998">พบไฟล์?</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="47" x="280" y="264.848">ไม่พบ (E2)</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="15" x="389" y="264.848">พบ</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="171" x="184" y="289.4"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="151" x="194" y="312.216">แจ้งเตือน "ไม่พบข้อมูลต้นแบบ"</text><ellipse cx="269.5" cy="356" fill="#FFFFFF" filter="url(#f1gqiihnszp615)" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><ellipse cx="269.5" cy="356" fill="#000000" rx="6" ry="6" style="stroke:#7F7F7F;stroke-width:1.0;"/><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="143" x="375" y="289.4"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="123" x="385" y="312.216">แสดงวิดีโอและเส้นนำทาง</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="143" x="151.75" y="399"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="123" x="161.75" y="421.816">ผู้ใช้กดปุ่ม Start Training</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="298.35" style="stroke:#000000;stroke-width:2.0;" width="421" x="97.75" y="444.6"/><path d="M302.75,444.6 L302.75,455.8 L292.75,465.8 L97.75,465.8 " fill="none" style="stroke:#000000;stroke-width:2.0;"/><text fill="#000000" font-family="sarabun" font-size="14" lengthAdjust="spacing" textLength="195" x="100.75" y="460.552">Calibration (&lt;&lt;include&gt;&gt; UC-01)</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="98" x="174.25" y="482.8"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="78" x="184.25" y="505.616">เริ่ม Calibration</text><path d="M348.75,587.55 L348.75,605.45 L328.75,609.45 L348.75,613.45 L348.75,631.35 A0,0 0 0 0 348.75,631.35 L486.75,631.35 A0,0 0 0 0 486.75,631.35 L486.75,597.55 L476.75,587.55 L348.75,587.55 A0,0 0 0 0 348.75,587.55 " fill="#FFFFE0" filter="url(#f1gqiihnszp615)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M476.75,587.55 L476.75,597.55 L486.75,597.55 L476.75,587.55 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="117" x="354.75" y="606.434">Low Light Detection</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="98" x="354.75" y="623.334">avgVisibility &lt; 0.5</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="211" x="117.75" y="591.65"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="191" x="127.75" y="614.466">แจ้งเตือนแสงไม่เพียงพอ (Toast + TTS)</text><polygon fill="#FEFECE" filter="url(#f1gqiihnszp615)" points="194.25,538.4,252.25,538.4,264.25,550.4,252.25,562.4,194.25,562.4,182.25,550.4,194.25,538.4" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="46" x="227.25" y="574.148">ไม่พอ (E3)</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="58" x="194.25" y="554.998">แสงเพียงพอ?</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="14" x="264.25" y="547.848">พอ</text><polygon fill="#FEFECE" filter="url(#f1gqiihnszp615)" points="223.25,651.35,235.25,663.35,223.25,675.35,211.25,663.35,223.25,651.35" style="stroke:#A80036;stroke-width:1.5;"/><path d="M340.75,699.7 L340.75,709.15 L320.75,713.15 L340.75,717.15 L340.75,726.6 A0,0 0 0 0 340.75,726.6 L481.75,726.6 A0,0 0 0 0 481.75,726.6 L481.75,709.7 L471.75,699.7 L340.75,699.7 A0,0 0 0 0 340.75,699.7 " fill="#FFFFE0" filter="url(#f1gqiihnszp615)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M471.75,699.7 L471.75,709.7 L481.75,709.7 L471.75,699.7 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="120" x="346.75" y="718.584">ดูรายละเอียดใน UC-01</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="195" x="125.75" y="695.35"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="175" x="135.75" y="718.166">รอผู้ใช้ยืน T-Pose และบันทึกสัดส่วน</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="156.5" style="stroke:#000000;stroke-width:2.0;" width="334" x="130.75" y="752.95"/><path d="M254.75,752.95 L254.75,764.15 L244.75,774.15 L130.75,774.15 " fill="none" style="stroke:#000000;stroke-width:2.0;"/><text fill="#000000" font-family="sarabun" font-size="14" lengthAdjust="spacing" textLength="114" x="133.75" y="768.902">Countdown &amp; Start</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="143" x="151.75" y="791.15"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="123" x="161.75" y="813.966">แสดง Countdown 3-2-1</text><path d="M325.75,836.75 L325.75,863.1 L305.75,867.1 L325.75,871.1 L325.75,897.45 A0,0 0 0 0 325.75,897.45 L454.75,897.45 A0,0 0 0 0 454.75,897.45 L454.75,846.75 L444.75,836.75 L325.75,836.75 A0,0 0 0 0 325.75,836.75 " fill="#FFFFE0" filter="url(#f1gqiihnszp615)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M444.75,836.75 L444.75,846.75 L454.75,846.75 L444.75,836.75 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="97" x="331.75" y="855.634">Optional Display</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="99" x="331.75" y="872.534">☐ Ghost Skeleton</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="108" x="331.75" y="889.434">☐ Silhouette Video</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="165" x="140.75" y="849.3"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="145" x="150.75" y="872.116">เริ่มฝึก (Timer + UI Controls)</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="654.7" style="stroke:#000000;stroke-width:2.0;" width="559.25" x="35.5" y="919.45"/><path d="M231.5,919.45 L231.5,930.65 L221.5,940.65 L35.5,940.65 " fill="none" style="stroke:#000000;stroke-width:2.0;"/><text fill="#000000" font-family="sarabun" font-size="14" lengthAdjust="spacing" textLength="186" x="38.5" y="935.402">Main Training Loop (Real-time)</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="150" x="148.25" y="1001.65"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="130" x="158.25" y="1024.466">รับภาพและตรวจจับท่าทาง</text><path d="M323.75,1110.75 L323.75,1120.2 L303.75,1124.2 L323.75,1128.2 L323.75,1137.65 A0,0 0 0 0 323.75,1137.65 L433.75,1137.65 A0,0 0 0 0 433.75,1137.65 L433.75,1120.75 L423.75,1110.75 L323.75,1110.75 A0,0 0 0 0 323.75,1110.75 " fill="#FFFFE0" filter="url(#f1gqiihnszp615)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M423.75,1110.75 L423.75,1120.75 L433.75,1120.75 L423.75,1110.75 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="89" x="329.75" y="1129.634">Cooldown = 30s</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="161" x="142.75" y="1106.4"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="141" x="152.75" y="1129.216">เตือนแสงน้อย (Toast + TTS)</text><polygon fill="#FEFECE" filter="url(#f1gqiihnszp615)" points="160.25,1057.25,286.25,1057.25,298.25,1069.25,286.25,1081.25,160.25,1081.25,148.25,1069.25,160.25,1057.25" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="227.25" y="1092.998">ใช่</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="126" x="160.25" y="1073.848">แสงน้อย &amp;&amp; เกิน Cooldown?</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="298.25" y="1066.698">ไม่</text><polygon fill="#FEFECE" filter="url(#f1gqiihnszp615)" points="223.25,1162,235.25,1174,223.25,1186,211.25,1174,223.25,1162" style="stroke:#A80036;stroke-width:1.5;"/><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="177" x="134.75" y="1206"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="157" x="144.75" y="1228.816">วาด Ghost/Silhouette (ถ้าเปิด)</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="85.8" style="stroke:#000000;stroke-width:2.0;" width="449" x="117.75" y="1257.15"/><path d="M237.75,1257.15 L237.75,1268.35 L227.75,1278.35 L117.75,1278.35 " fill="none" style="stroke:#000000;stroke-width:2.0;"/><text fill="#000000" font-family="sarabun" font-size="14" lengthAdjust="spacing" textLength="110" x="120.75" y="1273.102">Heuristics Analysis</text><path d="M338.75,1299.7 L338.75,1309.15 L318.75,1313.15 L338.75,1317.15 L338.75,1326.6 A0,0 0 0 0 338.75,1326.6 L556.75,1326.6 A0,0 0 0 0 556.75,1326.6 L556.75,1309.7 L546.75,1299.7 L338.75,1299.7 A0,0 0 0 0 338.75,1299.7 " fill="#FFFFE0" filter="url(#f1gqiihnszp615)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M546.75,1299.7 L546.75,1309.7 L556.75,1309.7 L546.75,1299.7 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="197" x="344.75" y="1318.584">ดูใน ActivityDiagram_Heuristics.wsd</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="191" x="127.75" y="1295.35"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="171" x="137.75" y="1318.166">ตรวจสอบตามกฎ 8 ข้อ (ตาม Level)</text><polygon fill="#FEFECE" filter="url(#f1gqiihnszp615)" points="186.75,1362.95,259.75,1362.95,271.75,1374.95,259.75,1386.95,186.75,1386.95,174.75,1374.95,186.75,1362.95" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="73" x="186.75" y="1379.548">พบข้อผิดพลาด?</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="163.75" y="1372.398">ใช่</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="271.75" y="1372.398">ไม่</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="169" x="55.5" y="1396.95"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="149" x="65.5" y="1419.766">แสดง Feedback (ภาพ + เสียง)</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="124" x="244.5" y="1396.95"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="104" x="254.5" y="1419.766">แสดงผลปกติ (สีเขียว)</text><polygon fill="#FEFECE" filter="url(#f1gqiihnszp615)" points="223.25,1438.55,235.25,1450.55,223.25,1462.55,211.25,1450.55,223.25,1438.55" style="stroke:#A80036;stroke-width:1.5;"/><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="140" x="153.25" y="1482.55"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="120" x="163.25" y="1505.366">บันทึกคะแนน (Logging)</text><polygon fill="#FEFECE" filter="url(#f1gqiihnszp615)" points="223.25,957.65,235.25,969.65,223.25,981.65,211.25,969.65,223.25,957.65" style="stroke:#A80036;stroke-width:1.5;"/><polygon fill="#FEFECE" filter="url(#f1gqiihnszp615)" points="178.25,1538.15,268.25,1538.15,280.25,1550.15,268.25,1562.15,178.25,1562.15,166.25,1550.15,178.25,1538.15" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="90" x="178.25" y="1554.748">หยุด หรือ หมดเวลา?</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="280.25" y="1547.598">ไม่</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="166" x="140.25" y="1614.898"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="146" x="150.25" y="1637.714">Cleanup (Ghost, Fullscreen)</text><rect fill="#FFFFFF" filter="url(#f1gqiihnszp615)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="180" x="133.25" y="1670.498"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="160" x="143.25" y="1693.314">ส่งข้อมูลไป UC-03 (View Result)</text><ellipse cx="223.25" cy="1737.098" fill="#FFFFFF" filter="url(#f1gqiihnszp615)" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><ellipse cx="223.25" cy="1737.098" fill="#000000" rx="6" ry="6" style="stroke:#7F7F7F;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="30" y2="61"/><polygon fill="#000000" points="219.25,51,223.25,61,227.25,51,223.25,55" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="88.5" x2="88.5" y1="235.4" y2="255.4"/><polygon fill="#000000" points="84.5,245.4,88.5,255.4,92.5,245.4,88.5,249.4" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="269.5" x2="269.5" y1="325" y2="345"/><polygon fill="#000000" points="265.5,335,269.5,345,273.5,335,269.5,339" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="327" x2="269.5" y1="267.4" y2="267.4"/><line style="stroke:#000000;stroke-width:1.5;" x1="269.5" x2="269.5" y1="267.4" y2="289.4"/><polygon fill="#000000" points="265.5,279.4,269.5,289.4,273.5,279.4,269.5,283.4" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="389" x2="446.5" y1="267.4" y2="267.4"/><line style="stroke:#000000;stroke-width:1.5;" x1="446.5" x2="446.5" y1="267.4" y2="289.4"/><polygon fill="#000000" points="442.5,279.4,446.5,289.4,450.5,279.4,446.5,283.4" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="446.5" x2="446.5" y1="325" y2="372"/><line style="stroke:#000000;stroke-width:1.5;" x1="446.5" x2="223.25" y1="372" y2="372"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="372" y2="399"/><polygon fill="#000000" points="219.25,389,223.25,399,227.25,389,223.25,393" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="358" x2="358" y1="235.4" y2="255.4"/><polygon fill="#000000" points="354,245.4,358,255.4,362,245.4,358,249.4" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="178.75" x2="88.5" y1="177.8" y2="177.8"/><line style="stroke:#000000;stroke-width:1.5;" x1="88.5" x2="88.5" y1="177.8" y2="199.8"/><polygon fill="#000000" points="84.5,189.8,88.5,199.8,92.5,189.8,88.5,193.8" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="267.75" x2="358" y1="177.8" y2="177.8"/><line style="stroke:#000000;stroke-width:1.5;" x1="358" x2="358" y1="177.8" y2="199.8"/><polygon fill="#000000" points="354,189.8,358,199.8,362,189.8,358,193.8" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="96.6" y2="165.8"/><polygon fill="#000000" points="219.25,155.8,223.25,165.8,227.25,155.8,223.25,159.8" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="562.4" y2="591.65"/><polygon fill="#000000" points="219.25,581.65,223.25,591.65,227.25,581.65,223.25,585.65" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="264.25" x2="496.75" y1="550.4" y2="550.4"/><polygon fill="#000000" points="492.75,599.45,496.75,609.45,500.75,599.45,496.75,603.45" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="496.75" x2="496.75" y1="550.4" y2="663.35"/><line style="stroke:#000000;stroke-width:1.5;" x1="496.75" x2="235.25" y1="663.35" y2="663.35"/><polygon fill="#000000" points="245.25,659.35,235.25,663.35,245.25,667.35,241.25,663.35" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="627.25" y2="651.35"/><polygon fill="#000000" points="219.25,641.35,223.25,651.35,227.25,641.35,223.25,645.35" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="518.4" y2="538.4"/><polygon fill="#000000" points="219.25,528.4,223.25,538.4,227.25,528.4,223.25,532.4" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="675.35" y2="695.35"/><polygon fill="#000000" points="219.25,685.35,223.25,695.35,227.25,685.35,223.25,689.35" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="434.6" y2="482.8"/><polygon fill="#000000" points="219.25,472.8,223.25,482.8,227.25,472.8,223.25,476.8" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="826.75" y2="849.3"/><polygon fill="#000000" points="219.25,839.3,223.25,849.3,227.25,839.3,223.25,843.3" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="730.95" y2="791.15"/><polygon fill="#000000" points="219.25,781.15,223.25,791.15,227.25,781.15,223.25,785.15" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="1081.25" y2="1106.4"/><polygon fill="#000000" points="219.25,1096.4,223.25,1106.4,227.25,1096.4,223.25,1100.4" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="298.25" x2="443.75" y1="1069.25" y2="1069.25"/><polygon fill="#000000" points="439.75,1114.2,443.75,1124.2,447.75,1114.2,443.75,1118.2" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="443.75" x2="443.75" y1="1069.25" y2="1174"/><line style="stroke:#000000;stroke-width:1.5;" x1="443.75" x2="235.25" y1="1174" y2="1174"/><polygon fill="#000000" points="245.25,1170,235.25,1174,245.25,1178,241.25,1174" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="1142" y2="1162"/><polygon fill="#000000" points="219.25,1152,223.25,1162,227.25,1152,223.25,1156" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="1037.25" y2="1057.25"/><polygon fill="#000000" points="219.25,1047.25,223.25,1057.25,227.25,1047.25,223.25,1051.25" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="1186" y2="1206"/><polygon fill="#000000" points="219.25,1196,223.25,1206,227.25,1196,223.25,1200" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="1241.6" y2="1295.35"/><polygon fill="#000000" points="219.25,1285.35,223.25,1295.35,227.25,1285.35,223.25,1289.35" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="174.75" x2="140" y1="1374.95" y2="1374.95"/><line style="stroke:#000000;stroke-width:1.5;" x1="140" x2="140" y1="1374.95" y2="1396.95"/><polygon fill="#000000" points="136,1386.95,140,1396.95,144,1386.95,140,1390.95" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="271.75" x2="306.5" y1="1374.95" y2="1374.95"/><line style="stroke:#000000;stroke-width:1.5;" x1="306.5" x2="306.5" y1="1374.95" y2="1396.95"/><polygon fill="#000000" points="302.5,1386.95,306.5,1396.95,310.5,1386.95,306.5,1390.95" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="140" x2="140" y1="1432.55" y2="1450.55"/><line style="stroke:#000000;stroke-width:1.5;" x1="140" x2="211.25" y1="1450.55" y2="1450.55"/><polygon fill="#000000" points="201.25,1446.55,211.25,1450.55,201.25,1454.55,205.25,1450.55" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="306.5" x2="306.5" y1="1432.55" y2="1450.55"/><line style="stroke:#000000;stroke-width:1.5;" x1="306.5" x2="235.25" y1="1450.55" y2="1450.55"/><polygon fill="#000000" points="245.25,1446.55,235.25,1450.55,245.25,1454.55,241.25,1450.55" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="1330.95" y2="1362.95"/><polygon fill="#000000" points="219.25,1352.95,223.25,1362.95,227.25,1352.95,223.25,1356.95" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="1462.55" y2="1482.55"/><polygon fill="#000000" points="219.25,1472.55,223.25,1482.55,227.25,1472.55,223.25,1476.55" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="981.65" y2="1001.65"/><polygon fill="#000000" points="219.25,991.65,223.25,1001.65,227.25,991.65,223.25,995.65" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="280.25" x2="578.75" y1="1550.15" y2="1550.15"/><polygon fill="#000000" points="574.75,1261.6,578.75,1251.6,582.75,1261.6,578.75,1257.6" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="578.75" x2="578.75" y1="969.65" y2="1550.15"/><line style="stroke:#000000;stroke-width:1.5;" x1="578.75" x2="235.25" y1="969.65" y2="969.65"/><polygon fill="#000000" points="245.25,965.65,235.25,969.65,245.25,973.65,241.25,969.65" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="1518.15" y2="1538.15"/><polygon fill="#000000" points="219.25,1528.15,223.25,1538.15,227.25,1528.15,223.25,1532.15" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="884.9" y2="957.65"/><polygon fill="#000000" points="219.25,947.65,223.25,957.65,227.25,947.65,223.25,951.65" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="1562.15" y2="1614.898"/><polygon fill="#000000" points="219.25,1604.898,223.25,1614.898,227.25,1604.898,223.25,1608.898" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="87" x="227.25" y="1593.398">ใช่ (Stop/Timeout)</text><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="1650.498" y2="1670.498"/><polygon fill="#000000" points="219.25,1660.498,223.25,1670.498,227.25,1660.498,223.25,1664.498" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="223.25" x2="223.25" y1="1706.098" y2="1726.098"/><polygon fill="#000000" points="219.25,1716.098,223.25,1726.098,227.25,1716.098,223.25,1720.098" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[c0962a7a6f93f3306d3d8c19d0bcca81]
+@startuml TaijiFlow_Activity_Diagram_UC02
+' ============================================================================
+' TaijiFlow AI - Activity Diagram: UC-02 Perform Training (v2.1 Simplified)
+' ============================================================================
+' อัปเดต: เพิ่ม Low Light Check, Ghost/Silhouette, รวม activities ให้กระชับ
+' อ้างอิง: script.js (lines 124-128, 1442, 1690-1720)
+' ============================================================================
+
+skinparam defaultFontName "sarabun"
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+skinparam note {
+    BackgroundColor LightYellow
+}
+
+start
+
+:ผู้ใช้เลือก "ท่าฝึก" และ "ระดับความยาก";
+note right
+    **Quickstart**
+    มี default ให้:
+    - ท่า: มือขวา-ตามเข็ม
+    - ระดับ: L1 (นั่ง)
+end note
+
+partition "System Initialization" {
+    if (เข้าถึงกล้องได้?) then (ไม่ได้ (E1))
+        :แจ้งเตือน "ไม่พบกล้อง";
+        stop
+    else (ได้)
+        :โหลดข้อมูลท่าต้นแบบ (JSON);
+        if (พบไฟล์?) then (ไม่พบ (E2))
+            :แจ้งเตือน "ไม่พบข้อมูลต้นแบบ";
+            stop
+        else (พบ)
+            :แสดงวิดีโอและเส้นนำทาง;
+        endif
+    endif
+}
+
+:ผู้ใช้กดปุ่ม Start Training;
+
+partition "Calibration (<<include>> UC-01)" {
+    :เริ่ม Calibration;
+    
+    if (แสงเพียงพอ?) then (ไม่พอ (E3))
+        :แจ้งเตือนแสงไม่เพียงพอ (Toast + TTS);
+        note right
+            **Low Light Detection**
+            avgVisibility < 0.5
+        end note
+    else (พอ)
+    endif
+    
+    :รอผู้ใช้ยืน T-Pose และบันทึกสัดส่วน;
+    note right: ดูรายละเอียดใน UC-01
+}
+
+partition "Countdown & Start" {
+    :แสดง Countdown 3-2-1;
+    :เริ่มฝึก (Timer + UI Controls);
+    note right
+        **Optional Display**
+        ☐ Ghost Skeleton
+        ☐ Silhouette Video
+    end note
+}
+
+partition "Main Training Loop (Real-time)" {
+    repeat
+        :รับภาพและตรวจจับท่าทาง;
+        
+        if (แสงน้อย && เกิน Cooldown?) then (ใช่)
+            :เตือนแสงน้อย (Toast + TTS);
+            note right: Cooldown = 30s
+        else (ไม่)
+        endif
+        
+        :วาด Ghost/Silhouette (ถ้าเปิด);
+        
+        partition "Heuristics Analysis" {
+            :ตรวจสอบตามกฎ 8 ข้อ (ตาม Level);
+            note right: ดูใน ActivityDiagram_Heuristics.wsd
+        }
+
+        if (พบข้อผิดพลาด?) then (ใช่)
+            :แสดง Feedback (ภาพ + เสียง);
+        else (ไม่)
+            :แสดงผลปกติ (สีเขียว);
+        endif
+
+        :บันทึกคะแนน (Logging);
+
+    repeat while (หยุด หรือ หมดเวลา?) is (ไม่)
+    -> ใช่ (Stop/Timeout);
+}
+
+:Cleanup (Ghost, Fullscreen);
+:ส่งข้อมูลไป UC-03 (View Result);
+
+stop
+@enduml
+
+@startuml TaijiFlow_Activity_Diagram_UC02
+
+skinparam defaultFontName "sarabun"
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+skinparam note {
+    BackgroundColor LightYellow
+}
+
+start
+
+:ผู้ใช้เลือก "ท่าฝึก" และ "ระดับความยาก";
+note right
+    **Quickstart**
+    มี default ให้:
+    - ท่า: มือขวา-ตามเข็ม
+    - ระดับ: L1 (นั่ง)
+end note
+
+partition "System Initialization" {
+    if (เข้าถึงกล้องได้?) then (ไม่ได้ (E1))
+        :แจ้งเตือน "ไม่พบกล้อง";
+        stop
+    else (ได้)
+        :โหลดข้อมูลท่าต้นแบบ (JSON);
+        if (พบไฟล์?) then (ไม่พบ (E2))
+            :แจ้งเตือน "ไม่พบข้อมูลต้นแบบ";
+            stop
+        else (พบ)
+            :แสดงวิดีโอและเส้นนำทาง;
+        endif
+    endif
+}
+
+:ผู้ใช้กดปุ่ม Start Training;
+
+partition "Calibration (<<include>> UC-01)" {
+    :เริ่ม Calibration;
+    
+    if (แสงเพียงพอ?) then (ไม่พอ (E3))
+        :แจ้งเตือนแสงไม่เพียงพอ (Toast + TTS);
+        note right
+            **Low Light Detection**
+            avgVisibility < 0.5
+        end note
+    else (พอ)
+    endif
+    
+    :รอผู้ใช้ยืน T-Pose และบันทึกสัดส่วน;
+    note right: ดูรายละเอียดใน UC-01
+}
+
+partition "Countdown & Start" {
+    :แสดง Countdown 3-2-1;
+    :เริ่มฝึก (Timer + UI Controls);
+    note right
+        **Optional Display**
+        ☐ Ghost Skeleton
+        ☐ Silhouette Video
+    end note
+}
+
+partition "Main Training Loop (Real-time)" {
+    repeat
+        :รับภาพและตรวจจับท่าทาง;
+        
+        if (แสงน้อย && เกิน Cooldown?) then (ใช่)
+            :เตือนแสงน้อย (Toast + TTS);
+            note right: Cooldown = 30s
+        else (ไม่)
+        endif
+        
+        :วาด Ghost/Silhouette (ถ้าเปิด);
+        
+        partition "Heuristics Analysis" {
+            :ตรวจสอบตามกฎ 8 ข้อ (ตาม Level);
+            note right: ดูใน ActivityDiagram_Heuristics.wsd
+        }
+
+        if (พบข้อผิดพลาด?) then (ใช่)
+            :แสดง Feedback (ภาพ + เสียง);
+        else (ไม่)
+            :แสดงผลปกติ (สีเขียว);
+        endif
+
+        :บันทึกคะแนน (Logging);
+
+    repeat while (หยุด หรือ หมดเวลา?) is (ไม่)
+    -> ใช่ (Stop/Timeout);
+}
+
+:Cleanup (Ghost, Fullscreen);
+:ส่งข้อมูลไป UC-03 (View Result);
+
+stop
+@enduml
+
+PlantUML version 1.2021.00(Sun Jan 10 17:25:05 ICT 2021)
+(MIT source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

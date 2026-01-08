@@ -1,0 +1,117 @@
+@startuml SequenceDiagram_RealtimeAnalysis
+' ============================================================================
+' TaijiFlow AI - Sequence Diagram: Real-time Pose Analysis
+' ============================================================================
+' แสดงการวิเคราะห์ท่าแบบ Real-time ในแต่ละ Frame
+' อ้างอิง: onResults() callback ใน script.js (lines 1200-1470)
+' ============================================================================
+
+skinparam defaultFontName "Sarabun"
+skinparam backgroundColor transparent
+skinparam sequenceMessageAlign center
+
+' === Participants ===
+participant "MediaPipe\nPose" as MediaPipe #E8F5E9
+participant " Training " as Training #E3F2FD
+participant "Heuristics" as Heuristics #FFF3E0
+participant "  Scorer  " as Scorer #FFF3E0
+participant "  Drawing " as Drawing #E0F7FA
+participant "    UI    " as UI #E8F5E9
+
+' ============================================================================
+' MAIN LOOP: onResults Callback
+' ============================================================================
+
+loop ทุก 3 Frames (~10 fps เพื่อประหยัด CPU)
+    
+    MediaPipe -> Training : onResults(results)
+    activate Training
+    
+    ' === Step 1: Analyze Pose (8 Rules) ===
+    group #FFF3E0 วิเคราะห์ท่า (8 กฎ)
+        Training -> Heuristics : analyze(landmarks)
+        activate Heuristics
+        
+        Heuristics -> Heuristics : 1. checkPathShape()
+        note right: เส้นทางเป็นวงโค้ง
+        
+        Heuristics -> Heuristics : 2. checkWaistInitiation()
+        note right: เอวนำการเคลื่อนไหว
+        
+        Heuristics -> Heuristics : 3. checkWeightShift()
+        note right: ถ่ายน้ำหนักสมดุล
+        
+        Heuristics -> Heuristics : 4. checkVerticalStability()
+        note right: ศีรษะนิ่ง ไม่โยก
+        
+        Heuristics -> Heuristics : 5. checkArmRotation()
+        note right: หมุนฝ่ามือถูกทิศ
+        
+        Heuristics -> Heuristics : 6. checkElbowSinking()
+        note right: ศอกจม ไม่ลอย
+        
+        Heuristics -> Heuristics : 7. checkSmoothness()
+        note right: เคลื่อนไหวลื่นไหล
+        
+        Heuristics -> Heuristics : 8. checkContinuity()
+        note right: ต่อเนื่อง ไม่หยุดนิ่ง
+        
+        Heuristics --> Training : feedbacks[]
+        deactivate Heuristics
+    end
+    
+    ' === Step 2: Record Data ===
+    group #FFF3E0 บันทึกข้อมูล (Recording)
+        Training -> Scorer : recordFrame(feedbacks)
+        Training -> Training : recordedSessionData.push()
+        note right
+            เก็บ: landmarks, feedbacks,
+            timestamp, visibility
+        end note
+    end
+    
+    ' === Step 3: Draw Visuals (ตามลำดับจาก code) ===
+    group #E0F7FA วาดภาพ (Rendering)
+        opt showSilhouette = true
+            Training -> Drawing : drawSilhouetteFromMask()
+            note right: เงาผู้ฝึก (สีม่วง)
+        end
+        
+        opt showGhostOverlay = true
+            Training -> Drawing : drawSilhouetteVideo() / drawGhostSkeleton()
+            note right: เงาครู (สีฟ้า)
+        end
+        
+        opt showInstructor = true
+            Training -> UI : วาด Instructor Thumbnail
+            note right: วิดีโอมุมขวาบน
+        end
+        
+        opt showPath = true
+            Training -> Drawing : drawPath(referencePath)
+            note right: เส้นนำทาง (สีเขียว)
+        end
+        
+        opt showSkeleton = true
+            Training -> Drawing : drawSkeleton(landmarks)
+            note right: กระดูกผู้ฝึก
+        end
+        
+        opt showTrail = true
+            Training -> Drawing : drawTrail(trailHistory)
+            note right: รอยเส้นตามมือ
+        end
+    end
+    
+    ' === Step 4: Show Feedback ===
+    alt มี feedback ใหม่
+        Training -> UI : updateFeedbackOverlay()
+        note right: แสดงข้อความ (HTML)
+        Training -> UI : audioManager.speakFeedback()
+        note right: พูดเสียง (TTS)
+    end
+    
+    deactivate Training
+end
+
+@enduml

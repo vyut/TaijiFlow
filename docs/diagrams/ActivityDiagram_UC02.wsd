@@ -19,6 +19,12 @@ skinparam note {
 start
 
 :ผู้ใช้เลือก "ท่าฝึก" และ "ระดับความยาก";
+note right
+    **Quickstart**
+    มี default ให้:
+    - ท่า: มือขวา-ตามเข็ม
+    - ระดับ: L1 (นั่ง)
+end note
 
 partition "System Initialization" {
     if (เข้าถึงกล้องได้?) then (ไม่ได้ (E1))

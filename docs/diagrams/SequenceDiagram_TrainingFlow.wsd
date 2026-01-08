@@ -1,0 +1,109 @@
+@startuml SequenceDiagram_TrainingFlow
+' ============================================================================
+' TaijiFlow AI - Sequence Diagram: Training Flow (Main)
+' ============================================================================
+' แสดง Flow หลักของการฝึกท่าม้วนไหมตั้งแต่เริ่มจนจบ
+' อ้างอิง: UC-02 Perform Training
+' ============================================================================
+
+skinparam defaultFontName "Sarabun"
+skinparam backgroundColor transparent
+skinparam sequenceMessageAlign center
+
+' === Participants (6 ตัวหลัก - ชื่อสั้นเพื่ออ่านง่าย) ===
+actor "ผู้ฝึก\n(User)" as User
+participant "    UI    " as UI #E8F5E9
+participant " Gesture " as Gesture #E8F5E9
+participant " Training " as Training #E3F2FD
+participant "Calibrator" as Calibration #FFF3E0
+participant "Heuristics" as Heuristics #FFF3E0
+participant "  Scorer  " as Scoring #FFF3E0
+
+' ============================================================================
+' PHASE 1: START TRAINING
+' ============================================================================
+
+group #E3F2FD เริ่มการฝึก (Start Training)
+    opt เลือกท่า/ระดับ (ถ้าไม่ใช้ค่า default)
+        User -> UI : เลือกท่า (Exercise)
+        User -> UI : เลือกระดับ (Level)
+    end
+    
+    User -> UI : กดปุ่ม Start / ยกนิ้วโป้ง 👍
+    UI -> Training : startTrainingFlow()
+    activate Training
+    
+    alt ใช้ Gesture Start
+        Training -> Gesture : detectGestures()
+        Gesture --> Training : thumbsUp detected
+    end
+    
+    Training -> Calibration : setLevel(currentLevel)
+    Training -> Calibration : start()
+    activate Calibration
+end
+
+' ============================================================================
+' PHASE 2: CALIBRATION (T-POSE)
+' ============================================================================
+
+group #FFF3E0 Calibration (T-Pose)
+    Calibration --> UI : แสดง "กางแขนท่า T"
+    User -> User : ทำท่า T-Pose 🧍
+    
+    loop ทุก frame จนกว่าจะ T-Pose ถูกต้อง
+        Training -> Calibration : process(landmarks)
+        Calibration --> Training : {status: "adjusting"}
+    end
+    
+    Calibration --> Training : {status: "complete", data}
+    deactivate Calibration
+    
+    Training -> Heuristics : setCalibration(data)
+    Training -> Training : startTrainingAfterCalibration()
+end
+
+' ============================================================================
+' PHASE 3: TRAINING LOOP (MAIN)
+' ============================================================================
+
+group #E8F5E9 การฝึก (Training Loop)
+    Training -> Scoring : start()
+    activate Scoring
+    
+    loop ทุก frame (~30 fps) จนกว่าจะหยุด
+        User -> User : ฝึกท่าม้วนไหม 🌀
+        
+        Training -> Heuristics : analyze(landmarks)
+        activate Heuristics
+        Heuristics --> Training : feedbacks[]
+        deactivate Heuristics
+        
+        Training -> Scoring : recordFrame(feedbacks)
+        Training --> UI : แสดง feedback
+    end
+end
+
+' ============================================================================
+' PHASE 4: END & RESULT
+' ============================================================================
+
+group #F3E5F5 สิ้นสุดการฝึก (End Training)
+    User -> UI : กดปุ่ม Stop / กำมือ ✊
+    UI -> Training : endTrainingSession()
+    
+    alt ใช้ Gesture Stop
+        Training -> Gesture : detectGestures()
+        Gesture --> Training : fist detected
+    end
+    
+    Training -> Scoring : getSummary()
+    Scoring --> Training : {score, totalFrames, grade}
+    deactivate Scoring
+    
+    Training --> UI : แสดงผลคะแนน 📊
+    UI --> User : Score Popup
+    deactivate Training
+end
+
+@enduml

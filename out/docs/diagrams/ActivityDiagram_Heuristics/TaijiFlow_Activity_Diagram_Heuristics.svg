@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="2199px" preserveAspectRatio="none" style="width:709px;height:2199px;" version="1.1" viewBox="0 0 709 2199" width="709px" zoomAndPan="magnify"><defs><filter height="300%" id="f1fnlx4k5jclf1" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><ellipse cx="322.875" cy="20" fill="#000000" filter="url(#f1fnlx4k5jclf1)" rx="10" ry="10" style="stroke:none;stroke-width:1.0;"/><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="246" x="199.875" y="50"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="226" x="209.875" y="72.816">รับ Pose Landmarks (33 จุด) จาก MediaPipe</text><path d="M411.375,95.6 L411.375,164.2 L391.375,168.2 L411.375,172.2 L411.375,240.8 A0,0 0 0 0 411.375,240.8 L576.375,240.8 A0,0 0 0 0 576.375,240.8 L576.375,105.6 L566.375,95.6 L411.375,95.6 A0,0 0 0 0 411.375,95.6 " fill="#FFFFE0" filter="url(#f1fnlx4k5jclf1)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M566.375,95.6 L566.375,105.6 L576.375,105.6 L566.375,95.6 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="131" x="417.375" y="114.484">- Wrist (ข้อมือ) - [15, 16]</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="142" x="417.375" y="131.384">- Shoulder (ไหล่) - [11, 12]</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="127" x="417.375" y="148.284">- Elbow (ศอก) - [13, 14]</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="144" x="417.375" y="165.184">- Thumb (นิ้วโป้ง) - [21, 22]</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="136" x="417.375" y="182.084">- Pinky (นิ้วก้อย) - [17, 18]</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="125" x="417.375" y="198.984">- Hip (สะโพก) - [23, 24]</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="137" x="417.375" y="215.884">- Ankle (ข้อเท้า) - [27, 28]</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="93" x="417.375" y="232.784">- Nose (จมูก) - [0]</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="137" x="254.375" y="150.4"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="117" x="264.375" y="173.216">ดึง Keypoints ที่ต้องการ</text><path d="M427.375,250.8 L427.375,327.85 L407.375,331.85 L427.375,335.85 L427.375,412.9 A0,0 0 0 0 427.375,412.9 L656.375,412.9 A0,0 0 0 0 656.375,412.9 L656.375,260.8 L646.375,250.8 L427.375,250.8 A0,0 0 0 0 427.375,250.8 " fill="#FFFFE0" filter="url(#f1fnlx4k5jclf1)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M646.375,250.8 L646.375,260.8 L656.375,260.8 L646.375,250.8 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="81" x="433.375" y="269.684">L1 (นั่ง) - 3 กฎ:</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="197" x="433.375" y="286.584">✓ R1 Path, R3 Elbow, R7 Continuity</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="0" x="436.375" y="303.484"/><text fill="#000000" font-family="sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="83" x="433.375" y="320.384">L2 (ยืน) - 6 กฎ:</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="191" x="433.375" y="337.284">✓ R1 Path, R2 Rotation, R3 Elbow,</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="202" x="439.375" y="354.184">R4 Waist, R5 Stability, R7 Continuity</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="0" x="436.375" y="371.084"/><text fill="#000000" font-family="sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="99" x="433.375" y="387.984">L3 (ยืนย่อ) - 8 กฎ:</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="205" x="433.375" y="404.884">✓ ทุกกฎ (รวม R6 Smooth, R8 Weight)</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="169" x="238.375" y="314.05"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="149" x="248.375" y="336.866">โหลด Rules Config ตาม Level</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="1251.598" style="stroke:#000000;stroke-width:2.0;" width="472" x="194.875" y="422.9"/><path d="M404.875,422.9 L404.875,434.1 L394.875,444.1 L194.875,444.1 " fill="none" style="stroke:#000000;stroke-width:2.0;"/><text fill="#000000" font-family="sarabun" font-size="14" lengthAdjust="spacing" textLength="200" x="197.875" y="438.852">ตรวจสอบ 8 กฎ (ตาม Level Config)</text><path d="M420.875,508.348 L420.875,534.698 L400.875,538.698 L420.875,542.698 L420.875,569.048 A0,0 0 0 0 420.875,569.048 L579.875,569.048 A0,0 0 0 0 579.875,569.048 L579.875,518.348 L569.875,508.348 L420.875,508.348 A0,0 0 0 0 420.875,508.348 " fill="#FFFFE0" filter="url(#f1fnlx4k5jclf1)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M569.875,508.348 L569.875,518.348 L579.875,518.348 L569.875,508.348 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="103" x="426.875" y="527.232">ตรวจ Wrist History</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="93" x="426.875" y="544.132">ใช้ Cross Product</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="138" x="426.875" y="561.032">วัด Direction Consistency</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="156" x="244.875" y="520.898"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="136" x="254.875" y="543.714">R1: Path Shape (วิถีวงกลม)</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="279.375,461.1,366.375,461.1,378.375,473.1,366.375,485.1,279.375,485.1,267.375,473.1,279.375,461.1" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="326.875" y="496.848">ใช่</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="87" x="279.375" y="477.698">checkPath = true?</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="322.875,589.048,334.875,601.048,322.875,613.048,310.875,601.048,322.875,589.048" style="stroke:#A80036;stroke-width:1.5;"/><path d="M428.875,682.198 L428.875,700.098 L408.875,704.098 L428.875,708.098 L428.875,725.998 A0,0 0 0 0 428.875,725.998 L565.875,725.998 A0,0 0 0 0 565.875,725.998 L565.875,692.198 L555.875,682.198 L428.875,682.198 A0,0 0 0 0 428.875,682.198 " fill="#FFFFE0" filter="url(#f1fnlx4k5jclf1)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M555.875,682.198 L555.875,692.198 L565.875,692.198 L555.875,682.198 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="116" x="434.875" y="701.082">ตรวจ Thumb vs Pinky</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="102" x="434.875" y="717.982">ขึ้น/ลง = หงาย/คว่ำ</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="172" x="236.875" y="686.298"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="152" x="246.875" y="709.114">R2: Arm Rotation (หมุนฝ่ามือ)</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="269.875,633.048,375.875,633.048,387.875,645.048,375.875,657.048,269.875,657.048,257.875,645.048,269.875,633.048" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="326.875" y="668.796">ใช่</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="106" x="269.875" y="649.646">checkRotation = true?</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="322.875,745.998,334.875,757.998,322.875,769.998,310.875,757.998,322.875,745.998" style="stroke:#A80036;stroke-width:1.5;"/><path d="M447.875,843.498 L447.875,852.948 L427.875,856.948 L447.875,860.948 L447.875,870.398 A0,0 0 0 0 447.875,870.398 L568.875,870.398 A0,0 0 0 0 568.875,870.398 L568.875,853.498 L558.875,843.498 L447.875,843.498 A0,0 0 0 0 447.875,843.498 " fill="#FFFFE0" filter="url(#f1fnlx4k5jclf1)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M558.875,843.498 L558.875,853.498 L568.875,853.498 L558.875,843.498 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="100" x="453.875" y="862.382">ศอกต้องต่ำกว่าไหล่</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="210" x="217.875" y="839.148"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="190" x="227.875" y="861.964">R3: Elbow Sinking (ศอกจม 沉肩坠肘)</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="276.375,789.998,369.375,789.998,381.375,801.998,369.375,813.998,276.375,813.998,264.375,801.998,276.375,789.998" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="326.875" y="825.746">ใช่</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="93" x="276.375" y="806.596">checkElbow = true?</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="322.875,894.748,334.875,906.748,322.875,918.748,310.875,906.748,322.875,894.748" style="stroke:#A80036;stroke-width:1.5;"/><path d="M450.375,992.248 L450.375,1001.698 L430.375,1005.698 L450.375,1009.698 L450.375,1019.148 A0,0 0 0 0 450.375,1019.148 L588.375,1019.148 A0,0 0 0 0 588.375,1019.148 L588.375,1002.248 L578.375,992.248 L450.375,992.248 A0,0 0 0 0 450.375,992.248 " fill="#FFFFE0" filter="url(#f1fnlx4k5jclf1)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M578.375,992.248 L578.375,1002.248 L588.375,1002.248 L578.375,992.248 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="117" x="456.375" y="1011.132">ความเร็วสะโพก &gt; ไหล่</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="215" x="215.375" y="987.898"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="195" x="225.375" y="1010.714">R4: Waist Initiation (เอวนำ 以腰为轴)</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="276.875,938.748,368.875,938.748,380.875,950.748,368.875,962.748,276.875,962.748,264.875,950.748,276.875,938.748" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="326.875" y="974.496">ใช่</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="92" x="276.875" y="955.346">checkWaist = true?</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="322.875,1043.498,334.875,1055.498,322.875,1067.498,310.875,1055.498,322.875,1043.498" style="stroke:#A80036;stroke-width:1.5;"/><path d="M450.875,1140.998 L450.875,1150.448 L430.875,1154.448 L450.875,1158.448 L450.875,1167.898 A0,0 0 0 0 450.875,1167.898 L634.875,1167.898 A0,0 0 0 0 634.875,1167.898 L634.875,1150.998 L624.875,1140.998 L450.875,1140.998 A0,0 0 0 0 450.875,1140.998 " fill="#FFFFE0" filter="url(#f1fnlx4k5jclf1)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M624.875,1140.998 L624.875,1150.998 L634.875,1150.998 L624.875,1140.998 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="163" x="456.875" y="1159.882">Head Y Variance &lt; Threshold</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="216" x="214.875" y="1136.648"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="196" x="224.875" y="1159.464">R5: Vertical Stability (หัวนิ่ง 虚领顶劲)</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="270.375,1087.498,375.375,1087.498,387.375,1099.498,375.375,1111.498,270.375,1111.498,258.375,1099.498,270.375,1087.498" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="326.875" y="1123.246">ใช่</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="105" x="270.375" y="1104.096">checkStability = true?</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="322.875,1192.248,334.875,1204.248,322.875,1216.248,310.875,1204.248,322.875,1192.248" style="stroke:#A80036;stroke-width:1.5;"/><path d="M437.875,1289.748 L437.875,1299.198 L417.875,1303.198 L437.875,1307.198 L437.875,1316.648 A0,0 0 0 0 437.875,1316.648 L600.875,1316.648 A0,0 0 0 0 600.875,1316.648 L600.875,1299.748 L590.875,1289.748 L437.875,1289.748 A0,0 0 0 0 437.875,1289.748 " fill="#FFFFE0" filter="url(#f1fnlx4k5jclf1)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M590.875,1289.748 L590.875,1299.748 L600.875,1299.748 L590.875,1289.748 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="142" x="443.875" y="1308.632">Acceleration &lt; Threshold</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="190" x="227.875" y="1285.398"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="170" x="237.875" y="1308.214">R6: Smoothness (ลื่นไหล 如抽丝)</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="271.875,1236.248,373.875,1236.248,385.875,1248.248,373.875,1260.248,271.875,1260.248,259.875,1248.248,271.875,1236.248" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="326.875" y="1271.996">ใช่</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="102" x="271.875" y="1252.846">checkSmooth = true?</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="322.875,1340.998,334.875,1352.998,322.875,1364.998,310.875,1352.998,322.875,1340.998" style="stroke:#A80036;stroke-width:1.5;"/><path d="M441.375,1438.498 L441.375,1447.948 L421.375,1451.948 L441.375,1455.948 L441.375,1465.398 A0,0 0 0 0 441.375,1465.398 L582.375,1465.398 A0,0 0 0 0 582.375,1465.398 L582.375,1448.498 L572.375,1438.498 L441.375,1438.498 A0,0 0 0 0 441.375,1438.498 " fill="#FFFFE0" filter="url(#f1fnlx4k5jclf1)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M572.375,1438.498 L572.375,1448.498 L582.375,1448.498 L572.375,1438.498 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="120" x="447.375" y="1457.382">ไม่หยุดนิ่ง &gt; 15 frames</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="197" x="224.375" y="1434.148"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="177" x="234.375" y="1456.964">R7: Continuity (ต่อเนื่อง 绵绵不断)</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="265.875,1384.998,379.875,1384.998,391.875,1396.998,379.875,1408.998,265.875,1408.998,253.875,1396.998,265.875,1384.998" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="326.875" y="1420.746">ใช่</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="114" x="265.875" y="1401.596">checkContinuity = true?</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="322.875,1489.748,334.875,1501.748,322.875,1513.748,310.875,1501.748,322.875,1489.748" style="stroke:#A80036;stroke-width:1.5;"/><path d="M448.875,1587.248 L448.875,1596.698 L428.875,1600.698 L448.875,1604.698 L448.875,1614.148 A0,0 0 0 0 448.875,1614.148 L588.875,1614.148 A0,0 0 0 0 588.875,1614.148 L588.875,1597.248 L578.875,1587.248 L448.875,1587.248 A0,0 0 0 0 448.875,1587.248 " fill="#FFFFE0" filter="url(#f1fnlx4k5jclf1)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M578.875,1587.248 L578.875,1597.248 L588.875,1597.248 L578.875,1587.248 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="119" x="454.875" y="1606.132">Hip อยู่ในฐาน (Ankles)</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="212" x="216.875" y="1582.898"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="192" x="226.875" y="1605.714">R8: Weight Shift (ถ่ายน้ำหนัก 分虚实)</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="273.375,1533.748,372.375,1533.748,384.375,1545.748,372.375,1557.748,273.375,1557.748,261.375,1545.748,273.375,1533.748" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="326.875" y="1569.496">ใช่</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="99" x="273.375" y="1550.346">checkWeight = true?</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="322.875,1638.498,334.875,1650.498,322.875,1662.498,310.875,1650.498,322.875,1638.498" style="stroke:#A80036;stroke-width:1.5;"/><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="151" x="247.375" y="1694.498"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="131" x="257.375" y="1717.314">รวบรวมข้อผิดพลาดทั้งหมด</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="286.375,1750.098,359.375,1750.098,371.375,1762.098,359.375,1774.098,286.375,1774.098,274.375,1762.098,286.375,1750.098" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="73" x="286.375" y="1766.696">พบข้อผิดพลาด?</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="263.375" y="1759.546">ใช่</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="371.375" y="1759.546">ไม่</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="270.9" style="stroke:#000000;stroke-width:2.0;" width="332.5" x="11" y="1784.098"/><path d="M151,1784.098 L151,1795.298 L141,1805.298 L11,1805.298 " fill="none" style="stroke:#000000;stroke-width:2.0;"/><text fill="#000000" font-family="sarabun" font-size="14" lengthAdjust="spacing" textLength="130" x="14" y="1800.05">Priority &amp; Sticky Logic</text><path d="M214.5,1822.298 L214.5,1865.548 L194.5,1869.548 L214.5,1873.548 L214.5,1916.798 A0,0 0 0 0 214.5,1916.798 L333.5,1916.798 A0,0 0 0 0 333.5,1916.798 L333.5,1832.298 L323.5,1822.298 L214.5,1822.298 A0,0 0 0 0 214.5,1822.298 " fill="#FFFFE0" filter="url(#f1fnlx4k5jclf1)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M323.5,1822.298 L323.5,1832.298 L333.5,1832.298 L323.5,1822.298 " fill="#FFFFE0" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="63" x="220.5" y="1841.182">สำคัญที่สุด:</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="93" x="220.5" y="1858.082">1. Path Accuracy</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="98" x="220.5" y="1874.982">2. Waist Initiation</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="82" x="220.5" y="1891.882">3. Weight Shift</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="9" x="220.5" y="1908.782">...</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="161" x="33.5" y="1851.748"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="141" x="43.5" y="1874.564">เรียงลำดับตาม Priority (1-8)</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="177" x="25.5" y="1951.798"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="157" x="35.5" y="1974.614">เลือกแสดงเฉพาะข้อที่สำคัญที่สุด</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="186" x="21" y="2007.398"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="166" x="31" y="2030.214">อัปเดต lastFeedbackMsg + Time</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="121" x="53.5" y="2074.998"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="101" x="63.5" y="2097.814">ส่ง Feedback [1 ข้อ]</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="486.25,1784.098,577.25,1784.098,589.25,1796.098,577.25,1808.098,486.25,1808.098,474.25,1796.098,486.25,1784.098" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="91" x="486.25" y="1800.696">ยังอยู่ใน Hold Time?</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="463.25" y="1793.546">ใช่</text><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="11" x="589.25" y="1793.546">ไม่</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="147" x="373.5" y="1818.098"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="127" x="383.5" y="1840.914">แสดงข้อความเดิม (Sticky)</text><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="152" x="540.5" y="1818.098"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="132" x="550.5" y="1840.914">เคลียร์ Feedback (ถูกต้อง!)</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="531.75,1859.698,543.75,1871.698,531.75,1883.698,519.75,1871.698,531.75,1859.698" style="stroke:#A80036;stroke-width:1.5;"/><rect fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" height="35.6" rx="12.5" ry="12.5" style="stroke:#000000;stroke-width:1.5;" width="71" x="496.25" y="1918.698"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="51" x="506.25" y="1941.514">ส่ง [] (ว่าง)</text><polygon fill="#FEFECE" filter="url(#f1fnlx4k5jclf1)" points="322.875,2116.598,334.875,2128.598,322.875,2140.598,310.875,2128.598,322.875,2116.598" style="stroke:#A80036;stroke-width:1.5;"/><ellipse cx="322.875" cy="2171.598" fill="#FFFFFF" filter="url(#f1fnlx4k5jclf1)" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><ellipse cx="322.875" cy="2171.598" fill="#000000" rx="6" ry="6" style="stroke:#7F7F7F;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="30" y2="50"/><polygon fill="#000000" points="318.875,40,322.875,50,326.875,40,322.875,44" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="85.6" y2="150.4"/><polygon fill="#000000" points="318.875,140.4,322.875,150.4,326.875,140.4,322.875,144.4" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="186" y2="314.05"/><polygon fill="#000000" points="318.875,304.05,322.875,314.05,326.875,304.05,322.875,308.05" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="485.1" y2="520.898"/><polygon fill="#000000" points="318.875,510.898,322.875,520.898,326.875,510.898,322.875,514.898" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="378.375" x2="589.875" y1="473.1" y2="473.1"/><polygon fill="#000000" points="585.875,528.698,589.875,538.698,593.875,528.698,589.875,532.698" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="589.875" x2="589.875" y1="473.1" y2="601.048"/><line style="stroke:#000000;stroke-width:1.5;" x1="589.875" x2="334.875" y1="601.048" y2="601.048"/><polygon fill="#000000" points="344.875,597.048,334.875,601.048,344.875,605.048,340.875,601.048" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="556.498" y2="589.048"/><polygon fill="#000000" points="318.875,579.048,322.875,589.048,326.875,579.048,322.875,583.048" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="657.048" y2="686.298"/><polygon fill="#000000" points="318.875,676.298,322.875,686.298,326.875,676.298,322.875,680.298" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="387.875" x2="575.875" y1="645.048" y2="645.048"/><polygon fill="#000000" points="571.875,694.098,575.875,704.098,579.875,694.098,575.875,698.098" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="575.875" x2="575.875" y1="645.048" y2="757.998"/><line style="stroke:#000000;stroke-width:1.5;" x1="575.875" x2="334.875" y1="757.998" y2="757.998"/><polygon fill="#000000" points="344.875,753.998,334.875,757.998,344.875,761.998,340.875,757.998" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="721.898" y2="745.998"/><polygon fill="#000000" points="318.875,735.998,322.875,745.998,326.875,735.998,322.875,739.998" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="613.048" y2="633.048"/><polygon fill="#000000" points="318.875,623.048,322.875,633.048,326.875,623.048,322.875,627.048" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="813.998" y2="839.148"/><polygon fill="#000000" points="318.875,829.148,322.875,839.148,326.875,829.148,322.875,833.148" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="381.375" x2="578.875" y1="801.998" y2="801.998"/><polygon fill="#000000" points="574.875,846.948,578.875,856.948,582.875,846.948,578.875,850.948" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="578.875" x2="578.875" y1="801.998" y2="906.748"/><line style="stroke:#000000;stroke-width:1.5;" x1="578.875" x2="334.875" y1="906.748" y2="906.748"/><polygon fill="#000000" points="344.875,902.748,334.875,906.748,344.875,910.748,340.875,906.748" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="874.748" y2="894.748"/><polygon fill="#000000" points="318.875,884.748,322.875,894.748,326.875,884.748,322.875,888.748" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="769.998" y2="789.998"/><polygon fill="#000000" points="318.875,779.998,322.875,789.998,326.875,779.998,322.875,783.998" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="962.748" y2="987.898"/><polygon fill="#000000" points="318.875,977.898,322.875,987.898,326.875,977.898,322.875,981.898" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="380.875" x2="598.375" y1="950.748" y2="950.748"/><polygon fill="#000000" points="594.375,995.698,598.375,1005.698,602.375,995.698,598.375,999.698" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="598.375" x2="598.375" y1="950.748" y2="1055.498"/><line style="stroke:#000000;stroke-width:1.5;" x1="598.375" x2="334.875" y1="1055.498" y2="1055.498"/><polygon fill="#000000" points="344.875,1051.498,334.875,1055.498,344.875,1059.498,340.875,1055.498" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1023.498" y2="1043.498"/><polygon fill="#000000" points="318.875,1033.498,322.875,1043.498,326.875,1033.498,322.875,1037.498" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="918.748" y2="938.748"/><polygon fill="#000000" points="318.875,928.748,322.875,938.748,326.875,928.748,322.875,932.748" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1111.498" y2="1136.648"/><polygon fill="#000000" points="318.875,1126.648,322.875,1136.648,326.875,1126.648,322.875,1130.648" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="387.375" x2="644.875" y1="1099.498" y2="1099.498"/><polygon fill="#000000" points="640.875,1144.448,644.875,1154.448,648.875,1144.448,644.875,1148.448" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="644.875" x2="644.875" y1="1099.498" y2="1204.248"/><line style="stroke:#000000;stroke-width:1.5;" x1="644.875" x2="334.875" y1="1204.248" y2="1204.248"/><polygon fill="#000000" points="344.875,1200.248,334.875,1204.248,344.875,1208.248,340.875,1204.248" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1172.248" y2="1192.248"/><polygon fill="#000000" points="318.875,1182.248,322.875,1192.248,326.875,1182.248,322.875,1186.248" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1067.498" y2="1087.498"/><polygon fill="#000000" points="318.875,1077.498,322.875,1087.498,326.875,1077.498,322.875,1081.498" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1260.248" y2="1285.398"/><polygon fill="#000000" points="318.875,1275.398,322.875,1285.398,326.875,1275.398,322.875,1279.398" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="385.875" x2="610.875" y1="1248.248" y2="1248.248"/><polygon fill="#000000" points="606.875,1293.198,610.875,1303.198,614.875,1293.198,610.875,1297.198" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="610.875" x2="610.875" y1="1248.248" y2="1352.998"/><line style="stroke:#000000;stroke-width:1.5;" x1="610.875" x2="334.875" y1="1352.998" y2="1352.998"/><polygon fill="#000000" points="344.875,1348.998,334.875,1352.998,344.875,1356.998,340.875,1352.998" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1320.998" y2="1340.998"/><polygon fill="#000000" points="318.875,1330.998,322.875,1340.998,326.875,1330.998,322.875,1334.998" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1216.248" y2="1236.248"/><polygon fill="#000000" points="318.875,1226.248,322.875,1236.248,326.875,1226.248,322.875,1230.248" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1408.998" y2="1434.148"/><polygon fill="#000000" points="318.875,1424.148,322.875,1434.148,326.875,1424.148,322.875,1428.148" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="391.875" x2="592.375" y1="1396.998" y2="1396.998"/><polygon fill="#000000" points="588.375,1441.948,592.375,1451.948,596.375,1441.948,592.375,1445.948" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="592.375" x2="592.375" y1="1396.998" y2="1501.748"/><line style="stroke:#000000;stroke-width:1.5;" x1="592.375" x2="334.875" y1="1501.748" y2="1501.748"/><polygon fill="#000000" points="344.875,1497.748,334.875,1501.748,344.875,1505.748,340.875,1501.748" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1469.748" y2="1489.748"/><polygon fill="#000000" points="318.875,1479.748,322.875,1489.748,326.875,1479.748,322.875,1483.748" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1364.998" y2="1384.998"/><polygon fill="#000000" points="318.875,1374.998,322.875,1384.998,326.875,1374.998,322.875,1378.998" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1557.748" y2="1582.898"/><polygon fill="#000000" points="318.875,1572.898,322.875,1582.898,326.875,1572.898,322.875,1576.898" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="384.375" x2="598.875" y1="1545.748" y2="1545.748"/><polygon fill="#000000" points="594.875,1590.698,598.875,1600.698,602.875,1590.698,598.875,1594.698" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="598.875" x2="598.875" y1="1545.748" y2="1650.498"/><line style="stroke:#000000;stroke-width:1.5;" x1="598.875" x2="334.875" y1="1650.498" y2="1650.498"/><polygon fill="#000000" points="344.875,1646.498,334.875,1650.498,344.875,1654.498,340.875,1650.498" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1618.498" y2="1638.498"/><polygon fill="#000000" points="318.875,1628.498,322.875,1638.498,326.875,1628.498,322.875,1632.498" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1513.748" y2="1533.748"/><polygon fill="#000000" points="318.875,1523.748,322.875,1533.748,326.875,1523.748,322.875,1527.748" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="349.65" y2="461.1"/><polygon fill="#000000" points="318.875,451.1,322.875,461.1,326.875,451.1,322.875,455.1" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1662.498" y2="1694.498"/><polygon fill="#000000" points="318.875,1684.498,322.875,1694.498,326.875,1684.498,322.875,1688.498" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="114" x2="114" y1="1887.348" y2="1951.798"/><polygon fill="#000000" points="110,1941.798,114,1951.798,118,1941.798,114,1945.798" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="114" x2="114" y1="1987.398" y2="2007.398"/><polygon fill="#000000" points="110,1997.398,114,2007.398,118,1997.398,114,2001.398" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="114" x2="114" y1="2042.998" y2="2074.998"/><polygon fill="#000000" points="110,2064.998,114,2074.998,118,2064.998,114,2068.998" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="474.25" x2="447" y1="1796.098" y2="1796.098"/><line style="stroke:#000000;stroke-width:1.5;" x1="447" x2="447" y1="1796.098" y2="1818.098"/><polygon fill="#000000" points="443,1808.098,447,1818.098,451,1808.098,447,1812.098" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="589.25" x2="616.5" y1="1796.098" y2="1796.098"/><line style="stroke:#000000;stroke-width:1.5;" x1="616.5" x2="616.5" y1="1796.098" y2="1818.098"/><polygon fill="#000000" points="612.5,1808.098,616.5,1818.098,620.5,1808.098,616.5,1812.098" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="447" x2="447" y1="1853.698" y2="1871.698"/><line style="stroke:#000000;stroke-width:1.5;" x1="447" x2="519.75" y1="1871.698" y2="1871.698"/><polygon fill="#000000" points="509.75,1867.698,519.75,1871.698,509.75,1875.698,513.75,1871.698" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="616.5" x2="616.5" y1="1853.698" y2="1871.698"/><line style="stroke:#000000;stroke-width:1.5;" x1="616.5" x2="543.75" y1="1871.698" y2="1871.698"/><polygon fill="#000000" points="553.75,1867.698,543.75,1871.698,553.75,1875.698,549.75,1871.698" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="531.75" x2="531.75" y1="1883.698" y2="1918.698"/><polygon fill="#000000" points="527.75,1908.698,531.75,1918.698,535.75,1908.698,531.75,1912.698" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="274.375" x2="114" y1="1762.098" y2="1762.098"/><line style="stroke:#000000;stroke-width:1.5;" x1="114" x2="114" y1="1762.098" y2="1851.748"/><polygon fill="#000000" points="110,1841.748,114,1851.748,118,1841.748,114,1845.748" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="371.375" x2="531.75" y1="1762.098" y2="1762.098"/><line style="stroke:#000000;stroke-width:1.5;" x1="531.75" x2="531.75" y1="1762.098" y2="1784.098"/><polygon fill="#000000" points="527.75,1774.098,531.75,1784.098,535.75,1774.098,531.75,1778.098" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="114" x2="114" y1="2110.598" y2="2128.598"/><line style="stroke:#000000;stroke-width:1.5;" x1="114" x2="310.875" y1="2128.598" y2="2128.598"/><polygon fill="#000000" points="300.875,2124.598,310.875,2128.598,300.875,2132.598,304.875,2128.598" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="531.75" x2="531.75" y1="1954.298" y2="2128.598"/><line style="stroke:#000000;stroke-width:1.5;" x1="531.75" x2="334.875" y1="2128.598" y2="2128.598"/><polygon fill="#000000" points="344.875,2124.598,334.875,2128.598,344.875,2132.598,340.875,2128.598" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="1730.098" y2="1750.098"/><polygon fill="#000000" points="318.875,1740.098,322.875,1750.098,326.875,1740.098,322.875,1744.098" style="stroke:#000000;stroke-width:1.0;"/><line style="stroke:#000000;stroke-width:1.5;" x1="322.875" x2="322.875" y1="2140.598" y2="2160.598"/><polygon fill="#000000" points="318.875,2150.598,322.875,2160.598,326.875,2150.598,322.875,2154.598" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[fe3e73c1ded0abaa39a7193d5443f64f]
+@startuml TaijiFlow_Activity_Diagram_Heuristics
+' ============================================================================
+' TaijiFlow AI - Activity Diagram: Heuristics Engine (8 Rules Analysis)
+' ============================================================================
+' แสดงขั้นตอนการวิเคราะห์ท่าทางตามหลักไท่จี๋ 8 ข้อ
+' อ้างอิงจาก: heuristics_engine.js -> analyze() method
+' ============================================================================
+
+skinparam defaultFontName "sarabun"
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+skinparam note {
+    BackgroundColor LightYellow
+}
+
+start
+
+:รับ Pose Landmarks (33 จุด) จาก MediaPipe;
+
+:ดึง Keypoints ที่ต้องการ;
+note right
+    - Wrist (ข้อมือ) - [15, 16]
+    - Shoulder (ไหล่) - [11, 12]
+    - Elbow (ศอก) - [13, 14]
+    - Thumb (นิ้วโป้ง) - [21, 22]
+    - Pinky (นิ้วก้อย) - [17, 18]
+    - Hip (สะโพก) - [23, 24]
+    - Ankle (ข้อเท้า) - [27, 28]
+    - Nose (จมูก) - [0]
+end note
+
+:โหลด Rules Config ตาม Level;
+note right
+    **L1 (นั่ง) - 3 กฎ:**
+    ✓ R1 Path, R3 Elbow, R7 Continuity
+
+    **L2 (ยืน) - 6 กฎ:**
+    ✓ R1 Path, R2 Rotation, R3 Elbow,
+      R4 Waist, R5 Stability, R7 Continuity
+
+    **L3 (ยืนย่อ) - 8 กฎ:**
+    ✓ ทุกกฎ (รวม R6 Smooth, R8 Weight)
+end note
+
+partition "ตรวจสอบ 8 กฎ (ตาม Level Config)" {
+    if (checkPath = true?) then (ใช่)
+        :R1: Path Shape (วิถีวงกลม);
+        note right
+            ตรวจ Wrist History
+            ใช้ Cross Product
+            วัด Direction Consistency
+        end note
+    endif
+    
+    if (checkRotation = true?) then (ใช่)
+        :R2: Arm Rotation (หมุนฝ่ามือ);
+        note right
+            ตรวจ Thumb vs Pinky
+            ขึ้น/ลง = หงาย/คว่ำ
+        end note
+    endif
+    
+    if (checkElbow = true?) then (ใช่)
+        :R3: Elbow Sinking (ศอกจม 沉肩坠肘);
+        note right
+            ศอกต้องต่ำกว่าไหล่
+        end note
+    endif
+    
+    if (checkWaist = true?) then (ใช่)
+        :R4: Waist Initiation (เอวนำ 以腰为轴);
+        note right
+            ความเร็วสะโพก > ไหล่
+        end note
+    endif
+    
+    if (checkStability = true?) then (ใช่)
+        :R5: Vertical Stability (หัวนิ่ง 虚领顶劲);
+        note right
+            Head Y Variance < Threshold
+        end note
+    endif
+    
+    if (checkSmooth = true?) then (ใช่)
+        :R6: Smoothness (ลื่นไหล 如抽丝);
+        note right
+            Acceleration < Threshold
+        end note
+    endif
+    
+    if (checkContinuity = true?) then (ใช่)
+        :R7: Continuity (ต่อเนื่อง 绵绵不断);
+        note right
+            ไม่หยุดนิ่ง > 15 frames
+        end note
+    endif
+    
+    if (checkWeight = true?) then (ใช่)
+        :R8: Weight Shift (ถ่ายน้ำหนัก 分虚实);
+        note right
+            Hip อยู่ในฐาน (Ankles)
+        end note
+    endif
+}
+
+:รวบรวมข้อผิดพลาดทั้งหมด;
+
+if (พบข้อผิดพลาด?) then (ใช่)
+    partition "Priority & Sticky Logic" {
+        :เรียงลำดับตาม Priority (1-8);
+        note right
+            **สำคัญที่สุด:**
+            1. Path Accuracy
+            2. Waist Initiation
+            3. Weight Shift
+            ...
+        end note
+        :เลือกแสดงเฉพาะข้อที่สำคัญที่สุด;
+        :อัปเดต lastFeedbackMsg + Time;
+    }
+    :ส่ง Feedback [1 ข้อ];
+else (ไม่)
+    if (ยังอยู่ใน Hold Time?) then (ใช่)
+        :แสดงข้อความเดิม (Sticky);
+    else (ไม่)
+        :เคลียร์ Feedback (ถูกต้อง!);
+    endif
+    :ส่ง [] (ว่าง);
+endif
+
+stop
+@enduml
+
+@startuml TaijiFlow_Activity_Diagram_Heuristics
+
+skinparam defaultFontName "sarabun"
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+skinparam note {
+    BackgroundColor LightYellow
+}
+
+start
+
+:รับ Pose Landmarks (33 จุด) จาก MediaPipe;
+
+:ดึง Keypoints ที่ต้องการ;
+note right
+    - Wrist (ข้อมือ) - [15, 16]
+    - Shoulder (ไหล่) - [11, 12]
+    - Elbow (ศอก) - [13, 14]
+    - Thumb (นิ้วโป้ง) - [21, 22]
+    - Pinky (นิ้วก้อย) - [17, 18]
+    - Hip (สะโพก) - [23, 24]
+    - Ankle (ข้อเท้า) - [27, 28]
+    - Nose (จมูก) - [0]
+end note
+
+:โหลด Rules Config ตาม Level;
+note right
+    **L1 (นั่ง) - 3 กฎ:**
+    ✓ R1 Path, R3 Elbow, R7 Continuity
+
+    **L2 (ยืน) - 6 กฎ:**
+    ✓ R1 Path, R2 Rotation, R3 Elbow,
+      R4 Waist, R5 Stability, R7 Continuity
+
+    **L3 (ยืนย่อ) - 8 กฎ:**
+    ✓ ทุกกฎ (รวม R6 Smooth, R8 Weight)
+end note
+
+partition "ตรวจสอบ 8 กฎ (ตาม Level Config)" {
+    if (checkPath = true?) then (ใช่)
+        :R1: Path Shape (วิถีวงกลม);
+        note right
+            ตรวจ Wrist History
+            ใช้ Cross Product
+            วัด Direction Consistency
+        end note
+    endif
+    
+    if (checkRotation = true?) then (ใช่)
+        :R2: Arm Rotation (หมุนฝ่ามือ);
+        note right
+            ตรวจ Thumb vs Pinky
+            ขึ้น/ลง = หงาย/คว่ำ
+        end note
+    endif
+    
+    if (checkElbow = true?) then (ใช่)
+        :R3: Elbow Sinking (ศอกจม 沉肩坠肘);
+        note right
+            ศอกต้องต่ำกว่าไหล่
+        end note
+    endif
+    
+    if (checkWaist = true?) then (ใช่)
+        :R4: Waist Initiation (เอวนำ 以腰为轴);
+        note right
+            ความเร็วสะโพก > ไหล่
+        end note
+    endif
+    
+    if (checkStability = true?) then (ใช่)
+        :R5: Vertical Stability (หัวนิ่ง 虚领顶劲);
+        note right
+            Head Y Variance < Threshold
+        end note
+    endif
+    
+    if (checkSmooth = true?) then (ใช่)
+        :R6: Smoothness (ลื่นไหล 如抽丝);
+        note right
+            Acceleration < Threshold
+        end note
+    endif
+    
+    if (checkContinuity = true?) then (ใช่)
+        :R7: Continuity (ต่อเนื่อง 绵绵不断);
+        note right
+            ไม่หยุดนิ่ง > 15 frames
+        end note
+    endif
+    
+    if (checkWeight = true?) then (ใช่)
+        :R8: Weight Shift (ถ่ายน้ำหนัก 分虚实);
+        note right
+            Hip อยู่ในฐาน (Ankles)
+        end note
+    endif
+}
+
+:รวบรวมข้อผิดพลาดทั้งหมด;
+
+if (พบข้อผิดพลาด?) then (ใช่)
+    partition "Priority & Sticky Logic" {
+        :เรียงลำดับตาม Priority (1-8);
+        note right
+            **สำคัญที่สุด:**
+            1. Path Accuracy
+            2. Waist Initiation
+            3. Weight Shift
+            ...
+        end note
+        :เลือกแสดงเฉพาะข้อที่สำคัญที่สุด;
+        :อัปเดต lastFeedbackMsg + Time;
+    }
+    :ส่ง Feedback [1 ข้อ];
+else (ไม่)
+    if (ยังอยู่ใน Hold Time?) then (ใช่)
+        :แสดงข้อความเดิม (Sticky);
+    else (ไม่)
+        :เคลียร์ Feedback (ถูกต้อง!);
+    endif
+    :ส่ง [] (ว่าง);
+endif
+
+stop
+@enduml
+
+PlantUML version 1.2021.00(Sun Jan 10 17:25:05 ICT 2021)
+(MIT source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

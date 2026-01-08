@@ -1,0 +1,138 @@
+@startuml LayerArchitecture
+' ============================================================================
+' TaijiFlow AI - Layer Architecture Diagram
+' ============================================================================
+' แสดง 4 Layer ของระบบ: Presentation, Business Logic, Data, External APIs
+' หลักการ: แต่ละ Layer สื่อสารกับ Layer ที่อยู่ติดกันเท่านั้น
+' อัปเดต: 2026-01-08
+' ============================================================================
+
+skinparam defaultFontName "Sarabun"
+skinparam backgroundColor transparent
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+' === Direction ===
+top to bottom direction
+
+' === Colors ===
+skinparam package {
+    BackgroundColor<<presentation>> #E3F2FD
+    BackgroundColor<<business>> #FFF3E0
+    BackgroundColor<<data>> #E8F5E9
+    BackgroundColor<<external>> #FFEBEE
+    BorderColor #666666
+}
+
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor #999999
+}
+
+' ============================================================================
+' LAYER 1: PRESENTATION LAYER (Top)
+' ============================================================================
+
+package "🖥️ PRESENTATION LAYER" <<presentation>> {
+    [index.html] as IndexHtml
+    [ui_manager.js] as UIManager
+    [drawing_manager.js] as DrawingManager
+    [tutorial_manager.js] as TutorialManager
+    [score_popup_manager.js] as ScorePopup
+    [chatbot.js] as Chatbot
+    [feedback_manager.js] as FeedbackManager
+}
+
+note right of IndexHtml
+  **หน้าที่:** แสดงผล UI, รับ input, วาด Canvas
+end note
+
+' ============================================================================
+' LAYER 2: BUSINESS LOGIC LAYER
+' ============================================================================
+
+package "⚙️ BUSINESS LOGIC LAYER" <<business>> {
+    [script.js] as Script
+    [heuristics_engine.js] as Heuristics
+    [calibration_manager.js] as Calibration
+    [scoring_manager.js] as Scoring
+    [gesture_manager.js] as Gesture
+    [audio_manager.js] as Audio
+}
+
+note right of Script
+  **หน้าที่:** ประมวลผลหลัก, วิเคราะห์ท่า, คำนวณคะแนน
+end note
+
+' ============================================================================
+' LAYER 3: DATA LAYER
+' ============================================================================
+
+package "💾 DATA LAYER" <<data>> {
+    [session_manager.js] as Session
+    [data_exporter.js] as Exporter
+    [LocalStorage] as LocalStorage
+    [path_generator.js] as PathGen
+    [translations.js] as Translations
+}
+
+note right of Session
+  **หน้าที่:** จัดการข้อมูล, Session, Export
+end note
+
+' ============================================================================
+' LAYER 4: EXTERNAL APIs (Bottom)
+' ============================================================================
+
+package "🌐 EXTERNAL APIs" <<external>> {
+    [MediaPipe Pose] as MPPose
+    [MediaPipe Gesture] as MPGesture
+    [Web Speech API] as WebSpeech
+    [Gemini API] as Gemini
+}
+
+note right of MPPose
+  **หน้าที่:** APIs ภายนอก
+end note
+
+' ============================================================================
+' RELATIONSHIPS (Layer-to-Layer Communication Only)
+' ============================================================================
+
+' Presentation → Business Logic
+UIManager --> Script : ใช้งาน
+DrawingManager --> Heuristics : รับผลวิเคราะห์
+ScorePopup --> Scoring : แสดงคะแนน
+TutorialManager --> Script : ควบคุม
+
+' Business Logic → Data
+Script --> Session : จัดการ session
+Script --> Exporter : ส่งออกข้อมูล
+Script --> PathGen : สร้าง path
+UIManager --> Translations : i18n
+
+' Business Logic → External APIs
+Heuristics --> MPPose : ตรวจจับท่า
+Gesture --> MPGesture : ตรวจจับมือ
+Audio --> WebSpeech : เสียงเตือน
+Chatbot --> Gemini : AI ตอบคำถาม
+
+' Data → LocalStorage
+Session --> LocalStorage : บันทึก/อ่าน
+
+' ============================================================================
+' LEGEND
+' ============================================================================
+
+legend right
+  |= Layer |= หน้าที่หลัก |
+  | Presentation | แสดงผล UI, รับ input |
+  | Business Logic | ประมวลผล, วิเคราะห์ |
+  | Data | จัดการข้อมูล |
+  | External APIs | บริการภายนอก |
+  --
+  **💡 หลักการ:** แต่ละ Layer สื่อสารกับ Layer ที่อยู่ติดกันเท่านั้น
+endlegend
+
+@enduml

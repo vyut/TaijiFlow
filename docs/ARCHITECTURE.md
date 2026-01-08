@@ -1,429 +1,310 @@
 # TaijiFlow AI - System Architecture
 
-**Version:** 0.6.0  
-**Last Updated:** 2024-12-26
+**Version:** 0.7.0  
+**Last Updated:** 2025-01-08
 
 ---
 
 ## 📋 สารบัญ
 
-1. [Layer Architecture](#1-layer-architecture)
-2. [Core Features Data Flow](#2-core-features-data-flow)
-3. [Training Flow Sequence](#3-training-flow-sequence)
-4. [State Management](#4-state-management)
-5. [Module Dependencies](#5-module-dependencies)
-6. [File Structure](#6-file-structure)
-7. [Technology Stack](#7-technology-stack)
+1. [File Structure](#1-file-structure)
+2. [Technology Stack](#2-technology-stack)
+3. [Design Patterns](#3-design-patterns)
+4. [Module Dependencies](#4-module-dependencies)
+5. [Layer Architecture](#5-layer-architecture)
 
 ---
 
-## 1. Layer Architecture
+## 1. File Structure
 
-### แผนภาพ
-
-```mermaid
-flowchart TB
-    subgraph Presentation["🖥️ Presentation Layer"]
-        UI["index.html"]
-        UIM["ui_manager.js"]
-        DM["drawing_manager.js"]
-        TM["tutorial_manager.js"]
-    end
-    
-    subgraph Business["⚙️ Business Logic Layer"]
-        SC["script.js<br/>(Main Controller)"]
-        HE["heuristics_engine.js"]
-        CM["calibration_manager.js"]
-        SM["scoring_manager.js"]
-        AM["audio_manager.js"]
-    end
-    
-    subgraph Data["💾 Data Layer"]
-        SEM["session_manager.js"]
-        DE["data_exporter.js"]
-        GM["ghost_manager.js"]
-        LS["LocalStorage"]
-    end
-    
-    subgraph External["🌐 External APIs"]
-        MP["MediaPipe Pose"]
-        WS["Web Speech API"]
-        GEM["Gemini API"]
-    end
-    
-    Presentation --> Business
-    Business --> Data
-    Business --> External
-    Data --> LS
-```
-
-### คำอธิบาย
-
-| Layer | หน้าที่ | ไฟล์หลัก |
-|-------|--------|---------|
-| **Presentation** | แสดงผล UI, รับ input จากผู้ใช้, วาด Canvas | `index.html`, `ui_manager.js`, `drawing_manager.js` |
-| **Business Logic** | ประมวลผลหลัก, วิเคราะห์ท่า, คำนวณคะแนน | `script.js`, `heuristics_engine.js`, `scoring_manager.js` |
-| **Data** | จัดการข้อมูล, Session, Export | `session_manager.js`, `data_exporter.js` |
-| **External** | APIs ภายนอก (AI, Speech) | MediaPipe, Web Speech, Gemini |
-
-> **💡 หลักการ:** แต่ละ Layer สื่อสารกับ Layer ที่อยู่ติดกันเท่านั้น  
-> Presentation ไม่เรียก Data โดยตรง ต้องผ่าน Business Logic
-
----
-
-## 2. Core Features Data Flow
-
-### แผนภาพ
-
-```mermaid
-flowchart TB
-    subgraph Input["📥 INPUT"]
-        A["🎥 Webcam"]
-    end
-    
-    subgraph Core1["1️⃣ POSE DETECTION"]
-        B["MediaPipe Pose<br/>33 Landmarks"]
-    end
-    
-    subgraph Core2["2️⃣ CALIBRATION"]
-        C["วัดสัดส่วนร่างกาย<br/>T-Pose 3 วินาที"]
-    end
-    
-    subgraph Core3["3️⃣ PATH VISUALIZATION"]
-        D["แสดงเส้นทางอ้างอิง<br/>Dynamic Path"]
-    end
-    
-    subgraph Core4["4️⃣ HEURISTICS ENGINE"]
-        E["วิเคราะห์ 8 กฎ<br/>เปรียบเทียบท่าทาง"]
-    end
-    
-    subgraph Core5["5️⃣ REAL-TIME FEEDBACK"]
-        F["🔊 เสียงแจ้งเตือน<br/>👁️ Visual Overlay"]
-    end
-    
-    subgraph Core6["6️⃣ SCORE REPORT"]
-        G["📊 คะแนน 0-100%<br/>🎓 เกรด A-F"]
-    end
-    
-    subgraph Output["👤 USER"]
-        H["ผู้ฝึกท่าม้วนไหม"]
-    end
-    
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-    E --> F
-    E --> G
-    F --> H
-    G --> H
-    
-    style A fill:#e3f2fd,stroke:#1976d2
-    style B fill:#e3f2fd,stroke:#1976d2
-    style C fill:#e8f5e9,stroke:#388e3c
-    style D fill:#fff8e1,stroke:#f9a825
-    style E fill:#ffebee,stroke:#d32f2f
-    style F fill:#fce4ec,stroke:#c2185b
-    style G fill:#ede7f6,stroke:#7b1fa2
-    style H fill:#f3e5f5,stroke:#9c27b0
-```
-
-### คำอธิบายแต่ละขั้นตอน
-
-| # | Feature | Input | Output | คำอธิบาย |
-|---|---------|-------|--------|---------|
-| 1 | **Pose Detection** | Video Frame | 33 Landmarks | MediaPipe ตรวจจับจุดบนร่างกาย 33 จุด (หัว, ไหล่, ข้อศอก, มือ, สะโพก, เข่า, เท้า) |
-| 2 | **Calibration** | Landmarks | Body Metrics | วัดสัดส่วน: ความสูงลำตัว, ความกว้างไหล่, ความยาวแขน |
-| 3 | **Path Visualization** | Metrics | Canvas Drawing | สร้างวงกลมนำทางขนาดพอดีกับแขนผู้ฝึก |
-| 4 | **Heuristics Engine** | Landmarks + Metrics | Error Flags | ตรวจสอบ 8 กฎไทเก๊ก: Path Shape, Elbow, Waist, etc. |
-| 5 | **Real-time Feedback** | Error Flags | Voice + Visual | พูดแจ้งเตือน + แสดงข้อความบนหน้าจอ |
-| 6 | **Score Report** | Session Logs | Score + Grade | คำนวณคะแนน: CorrectFrames / TotalFrames × 100 |
-
----
-
-## 3. Training Flow Sequence
-
-### Sequence Diagram
-
-```mermaid
-sequenceDiagram
-    participant U as 👤 User
-    participant UI as 🖥️ UI
-    participant C as ⚙️ Calibrator
-    participant T as 🏃 Training
-    participant H as 🧠 Heuristics
-    participant S as 📊 Scorer
-    
-    U->>UI: เลือกท่า + ระดับ
-    U->>UI: กด "เริ่มฝึก"
-    
-    rect rgb(200, 230, 200)
-        Note over C: Calibration Phase
-        UI->>C: start()
-        C->>U: แสดง "กางแขนท่า T"
-        U->>C: ยืนท่า T-Pose
-        C->>C: วัดสัดส่วน 3 วินาที
-        C->>UI: complete(metrics)
-    end
-    
-    rect rgb(200, 200, 230)
-        Note over T: Countdown Phase
-        UI->>U: แสดง 3-2-1
-    end
-    
-    rect rgb(230, 200, 200)
-        Note over T,S: Training Phase (5 นาที)
-        loop ทุก Frame (~30fps)
-            T->>H: analyze(landmarks)
-            H->>T: feedbacks[]
-            T->>S: recordFrame(feedbacks)
-            T->>U: แสดง feedback
-        end
-    end
-    
-    rect rgb(230, 230, 200)
-        Note over S: Summary Phase
-        T->>S: stop()
-        S->>UI: summary
-        UI->>U: แสดงคะแนน + เกรด
-    end
-```
-
-### คำอธิบาย
-
-1. **เลือกท่า + ระดับ** - ผู้ใช้เลือกท่าฝึก (4 ท่า) และระดับ (L1-L3)
-2. **Calibration** - ระบบวัดสัดส่วนร่างกายจากท่า T-Pose (3 วินาที)
-3. **Countdown** - นับถอยหลัง 3-2-1 ให้เตรียมตัว
-4. **Training Loop** - วิเคราะห์ท่าทุก frame (~30fps) เป็นเวลา 5 นาที
-5. **Summary** - แสดงคะแนนและเกรดเมื่อจบ session
-
----
-
-## 4. State Management
-
-### State Diagram
-
-```mermaid
-stateDiagram-v2
-    [*] --> IDLE: App Start
-    
-    IDLE --> CALIBRATING: กด "เริ่มฝึก"
-    CALIBRATING --> COUNTDOWN: Calibration สำเร็จ
-    CALIBRATING --> IDLE: ยกเลิก (Esc)
-    
-    COUNTDOWN --> TRAINING: นับเสร็จ
-    
-    TRAINING --> SUMMARY: หมดเวลา / กด Stop
-    TRAINING --> IDLE: ยกเลิก (Esc)
-    
-    SUMMARY --> IDLE: กด "ฝึกใหม่"
-    
-    note right of IDLE: showStartOverlay = true<br/>isTrainingMode = false
-    note right of CALIBRATING: calibrator.isActive = true
-    note right of TRAINING: isTrainingMode = true<br/>isRecording = true
-    note right of SUMMARY: แสดง Popup คะแนน
-```
-
-### Global State Variables
-
-| Variable | Type | คำอธิบาย |
-|----------|------|---------|
-| `isTrainingMode` | boolean | กำลังฝึกอยู่หรือไม่ |
-| `isRecording` | boolean | กำลังบันทึกข้อมูลหรือไม่ |
-| `calibrator.isActive` | boolean | กำลัง calibrate อยู่หรือไม่ |
-| `currentExercise` | string | ท่าที่เลือก (rh_cw, lh_ccw, ...) |
-| `currentLevel` | string | ระดับที่เลือก (L1, L2, L3) |
-| `referencePath` | array | เส้นทางวงกลมที่สร้างจาก calibration |
-
-### Display State Variables
-
-| Variable | Type | Default | คำอธิบาย |
-|----------|------|---------|---------|
-| `showGhostOverlay` | boolean | false | แสดง Ghost บนวิดีโอ |
-| `showInstructor` | boolean | true | แสดง Instructor Thumbnail |
-| `showPath` | boolean | true | แสดง Dynamic Path |
-| `showSkeleton` | boolean | true | แสดง Skeleton ผู้ฝึก |
-| `showSilhouette` | boolean | false | แสดง Silhouette ผู้ฝึก |
-
-> **💡 หมายเหตุ:** State ทั้งหมดเก็บใน `script.js` เป็น global variables  
-> ไม่ได้ใช้ State Management Library (เช่น Redux) เพื่อความเรียบง่าย
-
----
-
-## 5. Module Dependencies
-
-### แผนภาพ
-
-```mermaid
-flowchart TB
-    subgraph Main["script.js"]
-        M["Main Controller"]
-    end
-    
-    subgraph Core["Core Modules"]
-        H["heuristics_engine.js"]
-        C["calibration_manager.js"]
-        S["scoring_manager.js"]
-        RC["rules_config_manager.js"]
-    end
-    
-    subgraph UI["UI Modules"]
-        D["drawing_manager.js"]
-        A["audio_manager.js"]
-        U["ui_manager.js"]
-        G["ghost_manager.js"]
-        TU["tutorial_manager.js"]
-        CB["chatbot.js"]
-    end
-    
-    subgraph Utility["Utility Modules"]
-        PG["path_generator.js"]
-        SM["session_manager.js"]
-        TR["translations.js"]
-        DE["data_exporter.js"]
-    end
-    
-    subgraph External["External APIs"]
-        MP["MediaPipe Pose"]
-        MG["MediaPipe Gesture"]
-        GM["Gemini API"]
-        WS["Web Speech API"]
-    end
-    
-    M --> H
-    M --> C
-    M --> S
-    M --> RC
-    M --> D
-    M --> A
-    M --> U
-    M --> G
-    M --> TU
-    M --> CB
-    M --> PG
-    M --> SM
-    M --> DE
-    
-    RC --> H
-    U --> TR
-    H --> MP
-    A --> WS
-    CB --> GM
-```
-
-### Dependency Table
-
-| Module | Dependencies | หน้าที่ |
-|--------|--------------|--------|
-| `script.js` | ทุก module | Main controller, glue code |
-| `heuristics_engine.js` | MediaPipe | วิเคราะห์ท่า 8 กฎ |
-| `rules_config_manager.js` | heuristics_engine | UI ปรับ Threshold กฎ |
-| `calibration_manager.js` | - | วัดสัดส่วนร่างกาย |
-| `scoring_manager.js` | - | คำนวณคะแนน |
-| `ui_manager.js` | translations.js | จัดการ UI, i18n |
-| `audio_manager.js` | Web Speech API | Text-to-Speech |
-| `drawing_manager.js` | - | วาด Canvas |
-| `tutorial_manager.js` | - | Tutorial Popup |
-| `chatbot.js` | Gemini API | AI Chatbot |
-| `data_exporter.js` | - | Export JSON/CSV |
-
-> **💡 หลักการ:** Core modules ไม่มี dependencies ระหว่างกัน  
-> ทุก module สื่อสารผ่าน `script.js` (Main Controller)
-
-### Modules ที่ไม่แสดงใน Diagram (เล็ก/Optional)
-
-| Module | เหตุผลที่ไม่แสดง |
-|--------|----------------|
-| `gesture_manager.js` | Feature เสริม, optional |
-| `feedback_manager.js` | UI เล็กมาก (~50 lines) |
-| `silhouette_manager.js` | Sub-module ของ ghost_manager |
-
----
-
-## 6. File Structure
-
-```
+```text
 TaijiFlow/
-├── 📄 index.html              # Entry Point
-├── 📁 css/
-│   ├── styles.css             # Main Styles
-│   └── chatbot.css            # Chatbot Styles
-├── 📁 js/
-│   ├── script.js              # Main Controller (1,723 lines)
-│   ├── heuristics_engine.js   # Pose Analysis (973 lines)
-│   ├── calibration_manager.js # Calibration (362 lines)
-│   ├── scoring_manager.js     # Scoring (270 lines)
-│   ├── ui_manager.js          # UI Management (1,091 lines)
-│   ├── audio_manager.js       # Audio Feedback (584 lines)
-│   ├── drawing_manager.js     # Canvas Drawing (430 lines)
-│   ├── ghost_manager.js       # Ghost Overlay (261 lines)
-│   ├── path_generator.js      # Dynamic Path (85 lines)
-│   ├── session_manager.js     # Session/User ID (115 lines)
-│   ├── translations.js        # i18n Strings (~500 lines)
-│   ├── tutorial_manager.js    # Tutorial Popup
-│   ├── chatbot.js             # Gemini Chatbot
+├── 📄 index.html                    # Entry Point หลัก
+├── 📄 data_collector.html           # เครื่องมือเก็บข้อมูล Reference
+├── 📄 landing.html                  # Landing Page
+│
+├── 📁 css/                          # Stylesheets (3 files)
+│   ├── styles.css                   # Main Styles
+│   ├── chatbot.css                  # Chatbot Popup Styles
+│   └── feedback.css                 # Feedback Modal Styles
+│
+├── 📁 js/                           # JavaScript Modules (21 files)
+│   │
+│   │   # ═══════════════════════════════════════════════════════
+│   │   # CORE MANAGERS (ไม่พึ่งพา Module อื่น)
+│   │   # ═══════════════════════════════════════════════════════
+│   ├── heuristics_engine.js         # วิเคราะห์ท่า 8 กฎ (~51KB)
+│   ├── calibration_manager.js       # ปรับเทียบ T-Pose (~15KB)
+│   ├── scoring_manager.js           # คำนวณคะแนน (~11KB)
+│   │
+│   │   # ═══════════════════════════════════════════════════════
+│   │   # DISPLAY MANAGERS (Canvas API)
+│   │   # ═══════════════════════════════════════════════════════
+│   ├── drawing_manager.js           # วาด Skeleton, Path (~25KB)
+│   ├── ghost_manager.js             # เงาครูผู้สอน (~8KB)
+│   ├── silhouette_manager.js        # เงาผู้ฝึก (~3KB)
+│   │
+│   │   # ═══════════════════════════════════════════════════════
+│   │   # UI MANAGERS
+│   │   # ═══════════════════════════════════════════════════════
+│   ├── ui_manager.js                # Theme, Notifications (~41KB)
+│   ├── audio_manager.js             # Text-to-Speech (~31KB)
+│   ├── score_popup_manager.js       # ผลคะแนน Popup (~7KB)
+│   ├── tutorial_manager.js          # Tutorial Popup (~30KB)
+│   ├── gesture_manager.js           # ควบคุมด้วยมือ 👍✊ (~14KB)
+│   ├── feedback_manager.js          # Bug Report (~4KB)
+│   ├── chatbot.js                   # Gemini AI Chatbot (~26KB)
+│   ├── rules_config_manager.js      # Settings UI (~12KB)
+│   │
+│   │   # ═══════════════════════════════════════════════════════
+│   │   # CONTROLLERS
+│   │   # ═══════════════════════════════════════════════════════
+│   ├── display_controller.js        # Display Options (~7KB)
+│   ├── keyboard_controller.js       # Keyboard Shortcuts (~9KB)
+│   │
+│   │   # ═══════════════════════════════════════════════════════
+│   │   # UTILITIES (Stateless Helpers)
+│   │   # ═══════════════════════════════════════════════════════
+│   ├── data_exporter.js             # Export JSON/CSV (~8KB)
+│   ├── path_generator.js            # Dynamic Path (~5KB)
+│   ├── session_manager.js           # User/Session ID (~5KB)
+│   ├── translations.js              # i18n TH/EN (~23KB)
+│   │
+│   │   # ═══════════════════════════════════════════════════════
+│   │   # MAIN CONTROLLER (Entry Point)
+│   │   # ═══════════════════════════════════════════════════════
+│   └── script.js                    # Main Controller (~72KB)
+│
+├── 📁 data/                         # Reference Data
+│   ├── rh_cw_L1.json                # Ghost landmarks (มือขวา-ตามเข็ม L1)
+│   ├── rh_cw_L1.webm                # Video ต้นแบบ
+│   ├── rh_cw_L1_silhouette.webm     # Video เงาครู
 │   └── ...
-├── 📁 data/
-│   └── *.json                 # Reference Data (Ghost, Path)
-├── 📁 audio/
-│   └── *.mp3                  # Sound Effects
-└── 📁 docs/
-    ├── ARCHITECTURE.md        # This file
-    ├── SYSTEM_OVERVIEW.md     # System Overview
-    ├── CHANGELOG.md           # Version History
-    └── code/                  # Code Documentation
+│
+├── 📁 docs/                         # Documentation
+│   ├── diagrams/                    # UML Diagrams (14 files)
+│   ├── ARCHITECTURE.md              # This file
+│   ├── CHANGELOG.md                 # Version History
+│   └── ...
+│
+└── 📁 tests/                        # Unit Tests
+    └── *.test.js
 ```
 
-### File Size Statistics
+### File Statistics
 
-| Category | Files | Total Lines |
-|----------|-------|-------------|
-| Core Logic | 4 | ~3,300 |
-| UI/Display | 5 | ~2,800 |
-| Utilities | 5 | ~1,200 |
-| **Total** | **18** | **~8,500** |
+| Category | Files | Total Size |
+| -------- | :---: | :--------: |
+| Core Managers | 3 | ~77 KB |
+| Display Managers | 3 | ~36 KB |
+| UI Managers | 8 | ~165 KB |
+| Controllers | 2 | ~16 KB |
+| Utilities | 4 | ~41 KB |
+| Main Controller | 1 | ~72 KB |
+| **Total JS** | **21** | **~407 KB** |
 
 ---
 
-## 7. Technology Stack
+## 2. Technology Stack
 
 ### Frontend
 
 | Technology | Version | Purpose |
-|------------|---------|---------|
-| HTML5 | - | Structure |
-| CSS3 | - | Styling |
-| JavaScript (ES6+) | - | Logic |
-| TailwindCSS | 3.x | Utility Styling |
-| Google Fonts | - | Sarabun Font |
+| ---------- | :-----: | ------- |
+| **HTML5** | - | Page Structure |
+| **CSS3** | - | Styling |
+| **JavaScript** | ES6+ | Core Logic |
+| **TailwindCSS** | 3.x | Utility CSS Framework |
+| **Google Fonts** | - | Sarabun Thai Font |
 
-### AI/ML
+### AI / Machine Learning
 
 | Technology | Version | Purpose |
-|------------|---------|---------|
-| MediaPipe Pose | 0.5 | Pose Detection (33 landmarks) |
-| MediaPipe Gesture | 0.1 | Gesture Recognition (optional) |
-| Gemini API | - | Chatbot (optional) |
+| ---------- | :-----: | ------- |
+| **MediaPipe Pose** | 0.5 | Pose Detection (33 landmarks) |
+| **MediaPipe Gesture** | 0.10.8 | Hand Gesture Recognition (👍✊) |
+| **Gemini API** | - | AI Chatbot (Optional) |
 
 ### Browser APIs
 
 | API | Purpose |
-|-----|---------|
-| Web Speech API | Text-to-Speech feedback |
-| Canvas API | Drawing skeleton, path |
-| LocalStorage API | Save calibration, settings |
-| Fullscreen API | Fullscreen mode |
+| --- | ------- |
+| **Web Speech API** | Text-to-Speech เสียงเตือน |
+| **Canvas API** | วาด Skeleton, Path, Trail |
+| **LocalStorage API** | บันทึก Calibration, Settings |
+| **Fullscreen API** | โหมดเต็มจอ |
+| **Fetch API** | ส่ง Bug Report |
 
-### Design Patterns Used
+### Development Tools
 
-| Pattern | Where | Purpose |
-|---------|-------|---------|
-| **Module Pattern** | All managers | Encapsulation |
-| **Singleton** | ghostManager, uiManager | Single instance |
-| **Observer** | Event listeners | UI updates |
-| **Facade** | script.js | Simplify module access |
+| Tool | Purpose |
+| ---- | ------- |
+| **Jest** | Unit Testing |
+| **PlantUML** | UML Diagrams |
+| **Git** | Version Control |
+| **VS Code** | IDE |
 
 ---
 
-*เอกสารนี้อัปเดตอัตโนมัติเมื่อมีการเปลี่ยนแปลงสถาปัตยกรรม*
+## 3. Design Patterns
 
+| Pattern | Where Used | Purpose |
+| ------- | ---------- | ------- |
+| **Module Pattern** | ทุก Manager classes | Encapsulation - แยก scope |
+| **Singleton** | `ghostManager`, `uiManager` | Single Instance - ป้องกันสร้างซ้ำ |
+| **Observer** | Event Listeners | Reactive UI - อัปเดตเมื่อ state เปลี่ยน |
+| **Facade** | `script.js` | Simplify Access - รวม dependencies |
+| **Factory** | `generateDynamicPath()` | Create Objects - สร้าง path ตามสัดส่วน |
+| **Strategy** | `HeuristicsEngine` rules | Swappable Algorithms - เปิด/ปิดกฎได้ |
+| **Controller** | `KeyboardController`, `DisplayController` | Separation of Concerns |
+
+### Pattern Examples
+
+```javascript
+// Singleton Pattern
+const ghostManager = new GhostManager(); // สร้างครั้งเดียวใน script.js
+window.ghostManager = ghostManager;      // เข้าถึง global
+
+// Module Pattern
+class HeuristicsEngine {
+    constructor() {
+        this.CONFIG = { ... };  // Private-like config
+    }
+    analyze() { ... }           // Public method
+}
+
+// Observer Pattern
+document.addEventListener('languageChange', () => {
+    uiManager.updateAllTexts();  // React to state change
+});
+
+// Strategy Pattern
+this.RULES_CONFIG = {
+    L1: { checkPath: true, checkWaist: false },  // Easy
+    L3: { checkPath: true, checkWaist: true }    // Hard
+};
+```
+
+---
+
+## 4. Module Dependencies
+
+### Dependency Diagram
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                     Layer 1: Entry Point                     │
+│                        [script.js]                           │
+└─────────────────────────┬───────────────────────────────────┘
+                          │
+┌─────────────────────────┴───────────────────────────────────┐
+│                     Layer 2: Controllers                     │
+│          [DisplayController]  [KeyboardController]           │
+└─────────────────────────┬───────────────────────────────────┘
+                          │
+┌─────────┬───────────────┴───────────────┬───────────────────┐
+│  Core   │           Display             │        UI         │
+├─────────┼───────────────────────────────┼───────────────────┤
+│Heuristics│      DrawingManager          │    UIManager      │
+│Calibration│     GhostManager            │   AudioManager    │
+│ Scoring  │    SilhouetteManager         │  GestureManager   │
+│          │                              │  ScorePopup...    │
+│          │                              │  RulesConfig...   │
+└─────────┴───────────────────────────────┴───────────────────┘
+                          │
+┌─────────────────────────┴───────────────────────────────────┐
+│                     Layer 4: Utilities                       │
+│    [DataExporter] [PathGenerator] [SessionManager] [i18n]    │
+└─────────────────────────┬───────────────────────────────────┘
+                          │
+┌─────────────────────────┴───────────────────────────────────┐
+│                   Layer 5: External APIs                     │
+│   [MediaPipe Pose]  [MediaPipe Gesture]  [Web Speech]  [AI]  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Dependency Table
+
+#### Core Managers (ไม่พึ่งพา Module อื่น)
+
+| Module | Dependencies | หน้าที่ |
+| ------ | ------------ | ------- |
+| `heuristics_engine.js` | MediaPipe Pose | วิเคราะห์ท่า 8 กฎ |
+| `calibration_manager.js` | - | ปรับเทียบสัดส่วน T-Pose |
+| `scoring_manager.js` | - | คำนวณคะแนน % |
+
+#### Display Managers
+
+| Module | Dependencies | หน้าที่ |
+| ------ | ------------ | ------- |
+| `drawing_manager.js` | Canvas API | วาด Skeleton, Path, Trail |
+| `ghost_manager.js` | - | เงาครูผู้สอน (วิดีโอ/Skeleton) |
+| `silhouette_manager.js` | MediaPipe Mask | เงาผู้ฝึก (สีม่วง) |
+
+#### UI Managers
+
+| Module | Dependencies | หน้าที่ |
+| ------ | ------------ | ------- |
+| `ui_manager.js` | `translations.js` | Theme, Language, Notifications |
+| `audio_manager.js` | Web Speech API | Text-to-Speech เสียงเตือน |
+| `score_popup_manager.js` | - | แสดง Popup ผลคะแนน |
+| `tutorial_manager.js` | - | แสดง Tutorial Popup |
+| `gesture_manager.js` | MediaPipe Gesture | ตรวจจับท่ามือ 👍✊ |
+| `feedback_manager.js` | Fetch API | ส่ง Bug Report |
+| `chatbot.js` | Gemini API | AI ตอบคำถาม |
+| `rules_config_manager.js` | `HeuristicsEngine` | Settings UI สำหรับปรับกฎ |
+
+#### Controllers
+
+| Module | Dependencies | หน้าที่ |
+| ------ | ------------ | ------- |
+| `display_controller.js` | `GhostManager`, `SilhouetteManager` | ควบคุม Display Options |
+| `keyboard_controller.js` | `DisplayController`, `TutorialManager` | Keyboard Shortcuts |
+
+#### Utilities (Stateless)
+
+| Module | Dependencies | หน้าที่ |
+| ------ | ------------ | ------- |
+| `data_exporter.js` | - | Export JSON/CSV |
+| `path_generator.js` | - | สร้าง Dynamic Path |
+| `session_manager.js` | LocalStorage | User ID, Session ID |
+| `translations.js` | - | i18n Data TH/EN |
+
+#### Main Controller
+
+| Module | Dependencies | หน้าที่ |
+| ------ | ------------ | ------- |
+| `script.js` | **ทุก Module ข้างบน** | Entry Point, MediaPipe Integration |
+
+---
+
+## 5. Layer Architecture
+
+```text
+┌────────────────────────────────────────────────────────────────┐
+│                    🖥️ PRESENTATION LAYER                       │
+│  index.html │ ui_manager.js │ drawing_manager.js │ tutorial... │
+├────────────────────────────────────────────────────────────────┤
+│                    ⚙️ BUSINESS LOGIC LAYER                      │
+│  script.js │ heuristics_engine.js │ calibration │ scoring     │
+├────────────────────────────────────────────────────────────────┤
+│                    💾 DATA LAYER                                │
+│  session_manager.js │ data_exporter.js │ LocalStorage          │
+├────────────────────────────────────────────────────────────────┤
+│                    🌐 EXTERNAL APIs                             │
+│  MediaPipe Pose │ MediaPipe Gesture │ Web Speech │ Gemini      │
+└────────────────────────────────────────────────────────────────┘
+```
+
+| Layer | หน้าที่ | ไฟล์หลัก |
+|-------|------|--------|
+| **Presentation** | แสดงผล UI, รับ input, วาด Canvas | `index.html`, `ui_manager.js`, `drawing_manager.js` |
+| **Business Logic** | ประมวลผลหลัก, วิเคราะห์ท่า, คำนวณคะแนน | `script.js`, `heuristics_engine.js`, `scoring_manager.js` |
+| **Data** | จัดการข้อมูล, Session, Export | `session_manager.js`, `data_exporter.js` |
+| **External** | APIs ภายนอก | MediaPipe, Web Speech, Gemini |
+
+> **💡 หลักการ:** แต่ละ Layer สื่อสารกับ Layer ที่อยู่ติดกันเท่านั้น
+
+---
+
+*Document updated: 2026-01-08 for Master's Thesis SE*

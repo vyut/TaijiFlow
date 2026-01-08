@@ -1,0 +1,111 @@
+@startuml StateDiagram_TrainingSession
+' ============================================================================
+' TaijiFlow AI - State Diagram: Training Session
+' ============================================================================
+' แสดง States และ Transitions ของ Training Session
+' อ้างอิง: script.js (isTrainingMode, isRecording, calibrator.isActive)
+' ============================================================================
+
+skinparam defaultFontName "Sarabun"
+skinparam backgroundColor transparent
+skinparam state {
+    BackgroundColor #FAFAFA
+    BorderColor #424242
+    FontColor #212121
+    ArrowColor #424242
+}
+
+' === State Colors ===
+skinparam state {
+    BackgroundColor<<idle>> #E3F2FD
+    BackgroundColor<<calibrating>> #FFF3E0
+    BackgroundColor<<countdown>> #E8F5E9
+    BackgroundColor<<training>> #E8F5E9
+    BackgroundColor<<ended>> #F3E5F5
+}
+
+' ============================================================================
+' STATES
+' ============================================================================
+
+[*] --> Idle
+
+state "Idle\n(หน้าจอหลัก)" as Idle <<idle>> {
+    Idle : isTrainingMode = false
+    Idle : isRecording = false
+    Idle : calibrator.isActive = false
+}
+
+state "Calibrating\n(ปรับเทียบ T-Pose)" as Calibrating <<calibrating>> {
+    Calibrating : isTrainingMode = false
+    Calibrating : calibrator.isActive = true
+    Calibrating : ---
+    Calibrating : ตรวจ visibility
+    Calibrating : ตรวจท่า T-Pose
+    Calibrating : นับถอยหลัง 3 วินาที
+}
+
+state "Countdown\n(นับถอยหลัง 3-2-1)" as Countdown <<countdown>> {
+    Countdown : showCountdown()
+    Countdown : แสดง overlay "3-2-1"
+}
+
+state "Training\n(ฝึกท่าม้วนไหม)" as Training <<training>> {
+    Training : isTrainingMode = true
+    Training : isRecording = true
+    Training : ---
+    Training : วิเคราะห์ท่า (8 กฎ)
+    Training : บันทึก landmarks
+    Training : คำนวณคะแนน
+    Training : Timer นับเวลา
+}
+
+state "Ended\n(แสดงผลคะแนน)" as Ended <<ended>> {
+    Ended : isTrainingMode = false
+    Ended : แสดง Score Popup
+    Ended : Export Session Data
+}
+
+' ============================================================================
+' TRANSITIONS
+' ============================================================================
+
+Idle --> Calibrating : กด Start /\nยกนิ้วโป้ง 👍
+note on link
+    startTrainingFlow()
+    calibrator.start()
+end note
+
+Calibrating --> Countdown : Calibration Complete\n(stableFrames >= 90)
+note on link
+    calibrator.process()
+    returns {status: "complete"}
+end note
+
+Calibrating --> Idle : กด Cancel /\nหมดเวลา
+note on link
+    calibrator.cancel()
+end note
+
+Countdown --> Training : Countdown เสร็จ
+note on link
+    startTrainingAfterCalibration()
+    isTrainingMode = true
+    isRecording = true
+end note
+
+Training --> Ended : กด Stop /\nกำมือ ✊ /\nหมดเวลา 5 นาที
+note on link
+    endTrainingSession()
+    scorer.getSummary()
+end note
+
+Ended --> Idle : ปิด Score Popup\n(3 วินาที)
+note on link
+    resetToHomeScreen()
+end note
+
+Idle --> Idle : เปลี่ยนท่า / Level
+Training --> Training : ทุก 3 frames\n(วิเคราะห์ + บันทึก)
+
+@enduml

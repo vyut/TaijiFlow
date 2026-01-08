@@ -1,0 +1,137 @@
+@startuml ModuleDependencies
+' ============================================================================
+' TaijiFlow AI - Module Dependencies Diagram (Top-Down Layers)
+' ============================================================================
+' แสดงความสัมพันธ์ระหว่าง 21 Modules แบ่งเป็น 4 ชั้น
+' อัปเดต: 2025-01-08
+' ============================================================================
+
+skinparam defaultFontName "Sarabun"
+skinparam backgroundColor transparent
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+' === Direction ===
+top to bottom direction
+
+' === Colors ===
+skinparam package {
+    BackgroundColor<<entry>> #E3F2FD
+    BackgroundColor<<core>> #FFF3E0
+    BackgroundColor<<display>> #E0F7FA
+    BackgroundColor<<ui>> #E8F5E9
+    BackgroundColor<<controller>> #E1BEE7
+    BackgroundColor<<utility>> #F3E5F5
+    BackgroundColor<<external>> #FFEBEE
+}
+
+' ============================================================================
+' LAYER 1: ENTRY POINT (Top)
+' ============================================================================
+
+package "Layer 1: Entry Point" <<entry>> {
+    [script.js] as Script
+}
+
+' ============================================================================
+' LAYER 2: CONTROLLERS
+' ============================================================================
+
+package "Layer 2: Controllers" <<controller>> {
+    [DisplayController] as DisplayCtrl
+    [KeyboardController] as KeyboardCtrl
+}
+
+' ============================================================================
+' LAYER 3: MANAGERS (Core + Display + UI)
+' ============================================================================
+
+package "Layer 3: Core Managers" <<core>> {
+    [HeuristicsEngine] as Heuristics
+    [CalibrationManager] as Calibration
+    [ScoringManager] as Scoring
+}
+
+package "Layer 3: Display Managers" <<display>> {
+    [DrawingManager] as Drawing
+    [GhostManager] as Ghost
+    [SilhouetteManager] as Silhouette
+}
+
+package "Layer 3: UI Managers" <<ui>> {
+    [UIManager] as UI
+    [AudioManager] as Audio
+    [GestureManager] as Gesture
+    [ScorePopupManager] as ScorePopup
+    [TutorialManager] as Tutorial
+    [RulesConfigManager] as RulesConfig
+    [Chatbot] as Chatbot
+    [FeedbackManager] as Feedback
+}
+
+' ============================================================================
+' LAYER 4: UTILITIES
+' ============================================================================
+
+package "Layer 4: Utilities" <<utility>> {
+    [DataExporter] as Exporter
+    [PathGenerator] as PathGen
+    [SessionManager] as Session
+    [translations.js] as Translations
+}
+
+' ============================================================================
+' LAYER 5: EXTERNAL APIs (Bottom)
+' ============================================================================
+
+package "Layer 5: External APIs" <<external>> {
+    [MediaPipe Pose] as MPPose
+    [MediaPipe Gesture] as MPGesture
+    [Web Speech API] as WebSpeech
+    [Gemini API] as Gemini
+}
+
+' ============================================================================
+' RELATIONSHIPS (Simplified - Main flows only)
+' ============================================================================
+
+' Layer 1 → Layer 2
+Script --> DisplayCtrl
+Script --> KeyboardCtrl
+
+' Layer 1 → Layer 3 (Core)
+Script --> Heuristics
+Script --> Calibration
+Script --> Scoring
+
+' Layer 1 → Layer 3 (Display)
+Script --> Drawing
+Script --> Ghost
+
+' Layer 1 → Layer 3 (UI)
+Script --> UI
+Script --> Audio
+Script --> Gesture
+
+' Layer 2 → Layer 3
+DisplayCtrl --> Ghost
+DisplayCtrl --> Silhouette
+KeyboardCtrl --> Tutorial
+
+' Layer 3 Internal
+RulesConfig --> Heuristics
+UI --> Translations
+
+' Layer 3 → Layer 5 (External)
+Heuristics --> MPPose
+Gesture --> MPGesture
+Audio --> WebSpeech
+Chatbot --> Gemini
+
+' Layer 1 → Layer 4 (Utilities)
+Script ..> Exporter
+Script ..> PathGen
+Script ..> Session
+
+@enduml

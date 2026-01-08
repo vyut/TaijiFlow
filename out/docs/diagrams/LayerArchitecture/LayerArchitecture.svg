@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="729px" preserveAspectRatio="none" style="width:1693px;height:729px;background:#00000000;" version="1.1" viewBox="0 0 1693 729" width="1693px" zoomAndPan="magnify"><defs><filter height="300%" id="f1egk0vf7zlg6u" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[5d524885402328335b4a35312f24b204]
+cluster 🖥️ PRESENTATION LAYER--><rect fill="#E3F2FD" filter="url(#f1egk0vf7zlg6u)" height="109.2" style="stroke:#666666;stroke-width:1.5;" width="1107" x="7" y="7"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="92" x="514.5" y="23.952">«presentation»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="167" x="477" y="42.152">&#128421;️ PRESENTATION LAYER</text><!--MD5=[4146f06eddd723180e542942bab06c6c]
+cluster ⚙️ BUSINESS LOGIC LAYER--><rect fill="#FFF3E0" filter="url(#f1egk0vf7zlg6u)" height="109.2" style="stroke:#666666;stroke-width:1.5;" width="970" x="206" y="166.2"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="66" x="658" y="183.152">«business»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="174" x="604" y="201.352">⚙️ BUSINESS LOGIC LAYER</text><!--MD5=[35a8a102f8bf62aa0b787c95d0596ead]
+cluster 💾 DATA LAYER--><rect fill="#E8F5E9" filter="url(#f1egk0vf7zlg6u)" height="227.4" style="stroke:#666666;stroke-width:1.5;" width="619" x="38" y="325.4"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="43" x="326" y="342.352">«data»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="102" x="296.5" y="360.552">&#128190; DATA LAYER</text><!--MD5=[965b9c49da50dcd8501a0eef92ddec32]
+cluster 🌐 EXTERNAL APIs--><rect fill="#FFEBEE" filter="url(#f1egk0vf7zlg6u)" height="109.2" style="stroke:#666666;stroke-width:1.5;" width="585" x="699" y="325.4"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="64" x="959.5" y="342.352">«external»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="118" x="932.5" y="360.552">&#127760; EXTERNAL APIs</text><!--MD5=[2e693b820b9a8c0f0d64ba1301bdd186]
+entity IndexHtml--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="85" x="23.5" y="62"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="65" x="33.5" y="86.952">index.html</text><!--MD5=[4b768be5da11e8ceab754911fdd9c219]
+entity UIManager--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="103" x="143.5" y="62"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="83" x="153.5" y="86.952">ui_manager.js</text><!--MD5=[b68ba1295c5270b62f61db130833e3a0]
+entity DrawingManager--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="140" x="659" y="62"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="120" x="669" y="86.952">drawing_manager.js</text><!--MD5=[4b52e12aa25e55c110106330f07904ec]
+entity TutorialManager--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="137" x="281.5" y="62"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="117" x="291.5" y="86.952">tutorial_manager.js</text><!--MD5=[13b78e0465d0724dd360060cf842e6a1]
+entity ScorePopup--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="170" x="454" y="62"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="150" x="464" y="86.952">score_popup_manager.js</text><!--MD5=[6c1038c56275e06a0f9aecf03cf54920]
+entity Chatbot--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="81" x="833.5" y="62"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="61" x="843.5" y="86.952">chatbot.js</text><!--MD5=[a7eccb9ca3f79f3e9774f03e61b08981]
+entity FeedbackManager--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="148" x="950" y="62"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="128" x="960" y="86.952">feedback_manager.js</text><!--MD5=[d2c3bb4e3bf44be22fe413c310a84ccc]
+entity Script--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="67" x="222.5" y="221.2"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="47" x="232.5" y="246.152">script.js</text><!--MD5=[ed4857f8eaf740408a3e23246f050753]
+entity Heuristics--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="137" x="688.5" y="221.2"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="117" x="698.5" y="246.152">heuristics_engine.js</text><!--MD5=[ab4d02a5ae885086a6874c8053cbe896]
+entity Calibration--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="157" x="496.5" y="221.2"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="137" x="506.5" y="246.152">calibration_manager.js</text><!--MD5=[0e8aaa35e1d7378bac8692a5c3e9af2f]
+entity Scoring--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="137" x="324.5" y="221.2"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="117" x="334.5" y="246.152">scoring_manager.js</text><!--MD5=[0e98fb2cf4384dd54966e0f70c39677c]
+entity Gesture--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="138" x="861" y="221.2"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="118" x="871" y="246.152">gesture_manager.js</text><!--MD5=[9bf38e2b6fa784581ad2b7a500786e52]
+entity Audio--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="126" x="1034" y="221.2"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="106" x="1044" y="246.152">audio_manager.js</text><!--MD5=[ec12e68d482471526d41adfe4cff0e6f]
+entity Session--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="136" x="354" y="380.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="116" x="364" y="405.352">session_manager.js</text><!--MD5=[edcdcc4a1bbe04bafa0ded76de3de705]
+entity Exporter--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="116" x="525" y="380.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="96" x="535" y="405.352">data_exporter.js</text><!--MD5=[cf2cf022f979d75c501201842129ac17]
+entity LocalStorage--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="101" x="371.5" y="498.6"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="81" x="381.5" y="523.552">LocalStorage</text><!--MD5=[b6715f68abc5ceb99b5a1d5d1c8cd4fd]
+entity PathGen--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="126" x="193" y="380.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="106" x="203" y="405.352">path_generator.js</text><!--MD5=[a15921272b0ba6be1c0e0fbbb47c631e]
+entity Translations--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="105" x="53.5" y="380.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="85" x="63.5" y="405.352">translations.js</text><!--MD5=[e86360a2a0b2b59313154159dd50eceb]
+entity MPPose--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="114" x="715" y="380.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="94" x="725" y="405.352">MediaPipe Pose</text><!--MD5=[26fe4ee09733cd8b05f5dc198f526905]
+entity MPGesture--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="132" x="864" y="380.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="112" x="874" y="405.352">MediaPipe Gesture</text><!--MD5=[8ce744e8092058499958f6e5d5e77a38]
+entity WebSpeech--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="117" x="1030.5" y="380.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="97" x="1040.5" y="405.352">Web Speech API</text><!--MD5=[7a37ba3f7713e16f7df05a1c781e9ab7]
+entity Gemini--><rect fill="#FEFECE" filter="url(#f1egk0vf7zlg6u)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="85" x="1182.5" y="380.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="65" x="1192.5" y="405.352">Gemini API</text><path d="M1133,67.65 L1133,94.55 L1377,94.55 L1377,77.65 L1367,67.65 L1133,67.65 " fill="#FBFB77" filter="url(#f1egk0vf7zlg6u)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1367,67.65 L1367,77.65 L1377,77.65 L1367,67.65 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="36" x="1139" y="86.534">หน้าที่:</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="184" x="1178" y="86.534">แสดงผล UI, รับ input, วาด Canvas</text><path d="M1342,226.85 L1342,253.75 L1638,253.75 L1638,236.85 L1628,226.85 L1342,226.85 " fill="#FBFB77" filter="url(#f1egk0vf7zlg6u)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1628,226.85 L1628,236.85 L1638,236.85 L1628,226.85 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="36" x="1348" y="245.734">หน้าที่:</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="236" x="1387" y="245.734">ประมวลผลหลัก, วิเคราะห์ท่า, คำนวณคะแนน</text><path d="M1303,386.05 L1303,412.95 L1519,412.95 L1519,396.05 L1509,386.05 L1303,386.05 " fill="#FBFB77" filter="url(#f1egk0vf7zlg6u)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1509,386.05 L1509,396.05 L1519,396.05 L1509,386.05 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="36" x="1309" y="404.934">หน้าที่:</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="156" x="1348" y="404.934">จัดการข้อมูล, Session, Export</text><path d="M1553.5,386.05 L1553.5,412.95 L1684.5,412.95 L1684.5,396.05 L1674.5,386.05 L1553.5,386.05 " fill="#FBFB77" filter="url(#f1egk0vf7zlg6u)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1674.5,386.05 L1674.5,396.05 L1684.5,396.05 L1674.5,386.05 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="36" x="1559.5" y="404.934">หน้าที่:</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="71" x="1598.5" y="404.934">APIs ภายนอก</text><!--MD5=[ba06aed102358ba4bc42e0afeba70728]
+link IndexHtml to GMN11--><path d="M81,100.46 C81,114.41 81,130.8 81,130.8 C81,130.8 1146.5,130.8 1146.5,130.8 C1146.5,130.8 1146.5,109.65 1146.5,94.94 " fill="none" id="IndexHtml-GMN11" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><!--MD5=[062fd883ff06906afdff392471904f37]
+link Script to GMN21--><path d="M286.83,221.06 C286.83,197.53 286.83,160.8 286.83,160.8 C286.83,160.8 1359.5,160.8 1359.5,160.8 C1359.5,160.8 1359.5,203.67 1359.5,226.45 " fill="none" id="Script-GMN21" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><!--MD5=[9e8b02ca5a987531e23601298b23c2b8]
+link Session to GMN30--><path d="M475.75,380.14 C475.75,348.65 475.75,289.8 475.75,289.8 C475.75,289.8 1322.5,289.8 1322.5,289.8 C1322.5,289.8 1322.5,356.09 1322.5,385.61 " fill="none" id="Session-GMN30" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><!--MD5=[52b1b9aff90cea9e0b880a75e9d6fb74]
+link MPPose to GMN38--><path d="M772,418.92 C772,436.21 772,458.8 772,458.8 C772,458.8 1619,458.8 1619,458.8 C1619,458.8 1619,430.77 1619,413.25 " fill="none" id="MPPose-GMN38" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><!--MD5=[0360544c992450fffa8e9dbea13224a5]
+link UIManager to Script--><path d="M234.5,100.62 C234.5,100.62 234.5,214.6 234.5,214.6 " fill="none" id="UIManager-to-Script" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="234.5,219.6,238.5,210.6,234.5,214.6,230.5,210.6,234.5,219.6" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="33" x="207" y="147.084">ใช้งาน</text><!--MD5=[61c4d8fdf8fe82e9a5a4071df80bf255]
+link DrawingManager to Heuristics--><path d="M743.75,100.62 C743.75,100.62 743.75,214.6 743.75,214.6 " fill="none" id="DrawingManager-to-Heuristics" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="743.75,219.6,747.75,210.6,743.75,214.6,739.75,210.6,743.75,219.6" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="76" x="743" y="147.084">รับผลวิเคราะห์</text><!--MD5=[88e399026a7cd10edbada62dd148ef38]
+link ScorePopup to Scoring--><path d="M457.75,100.62 C457.75,100.62 457.75,214.6 457.75,214.6 " fill="none" id="ScorePopup-to-Scoring" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="457.75,219.6,461.75,210.6,457.75,214.6,453.75,210.6,457.75,219.6" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="69" x="416" y="147.084">แสดงคะแนน</text><!--MD5=[e37bb8e1842647a8163351ac121b3cea]
+link TutorialManager to Script--><path d="M284.17,100.62 C284.17,100.62 284.17,214.6 284.17,214.6 " fill="none" id="TutorialManager-to-Script" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="284.17,219.6,288.17,210.6,284.17,214.6,280.17,210.6,284.17,219.6" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="39" x="328" y="147.084">ควบคุม</text><!--MD5=[d496892f9e6690f6ee7590dbb1fb8031]
+link Script to Session--><path d="M256,259.88 C256,291.37 256,349.8 256,349.8 C256,349.8 407.75,349.8 407.75,349.8 C407.75,349.8 407.75,373.63 407.75,373.63 " fill="none" id="Script-to-Session" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="407.75,378.63,411.75,369.63,407.75,373.63,403.75,369.63,407.75,378.63" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="76" x="389" y="306.284">จัดการ session</text><!--MD5=[e423245bf529dda2ca0d392dbadbe4d7]
+link Script to Exporter--><path d="M272.75,259.54 C272.75,283.07 272.75,319.8 272.75,319.8 C272.75,319.8 583,319.8 583,319.8 C583,319.8 583,373.69 583,373.69 " fill="none" id="Script-to-Exporter" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="583,378.69,587,369.69,583,373.69,579,369.69,583,378.69" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="69" x="546" y="306.284">ส่งออกข้อมูล</text><!--MD5=[05b4aa5e4a30750a603c2dd2ad4a0c96]
+link Script to PathGen--><path d="M239.25,259.82 C239.25,259.82 239.25,373.8 239.25,373.8 " fill="none" id="Script-to-PathGen" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="239.25,378.8,243.25,369.8,239.25,373.8,235.25,369.8,239.25,378.8" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="55" x="257" y="306.284">สร้าง path</text><!--MD5=[ca51fc68237c1fa249204e28d5a3cf53]
+link UIManager to Translations--><path d="M151,100.54 C151,100.54 151,373.4 151,373.4 " fill="none" id="UIManager-to-Translations" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="151,378.4,155,369.4,151,373.4,147,369.4,151,378.4" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="24" x="135" y="246.184">i18n</text><!--MD5=[946961918582c617df6d290e0c1a01ba]
+link Heuristics to MPPose--><path d="M770.25,259.82 C770.25,259.82 770.25,373.8 770.25,373.8 " fill="none" id="Heuristics-to-MPPose" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="770.25,378.8,774.25,369.8,770.25,373.8,766.25,369.8,770.25,378.8" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="58" x="765" y="306.284">ตรวจจับท่า</text><!--MD5=[36278df54b849fb29fb533014afc69dc]
+link Gesture to MPGesture--><path d="M930,259.82 C930,259.82 930,373.8 930,373.8 " fill="none" id="Gesture-to-MPGesture" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="930,378.8,934,369.8,930,373.8,926,369.8,930,378.8" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="59" x="931" y="306.284">ตรวจจับมือ</text><!--MD5=[5d2968167655c2a7f41e07f4dbeeaf82]
+link Audio to WebSpeech--><path d="M1090.75,259.82 C1090.75,259.82 1090.75,373.8 1090.75,373.8 " fill="none" id="Audio-to-WebSpeech" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1090.75,378.8,1094.75,369.8,1090.75,373.8,1086.75,369.8,1090.75,378.8" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="53" x="1094" y="306.284">เสียงเตือน</text><!--MD5=[fa2bf33665ed016c01ebce86b27bf280]
+link Chatbot to Gemini--><path d="M887.75,100.46 C887.75,131.95 887.75,190.8 887.75,190.8 C887.75,190.8 1225,190.8 1225,190.8 C1225,190.8 1225,373.73 1225,373.73 " fill="none" id="Chatbot-to-Gemini" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1225,378.73,1229,369.73,1225,373.73,1221,369.73,1225,378.73" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="75" x="1231" y="246.184">AI ตอบคำถาม</text><!--MD5=[6e63a70208ceac2ea0269d377010655a]
+link Session to LocalStorage--><path d="M422,419.02 C422,419.02 422,491.64 422,491.64 " fill="none" id="Session-to-LocalStorage" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="422,496.64,426,487.64,422,491.64,418,487.64,422,496.64" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="59" x="423" y="465.484">บันทึก/อ่าน</text><rect fill="#DDDDDD" height="141.4" rx="5" ry="5" style="stroke:#000000;stroke-width:1.0;" width="348" x="1321.5" y="571.8"/><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="36" x="1330.5" y="593.752">Layer</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="59" x="1425.5" y="593.752">หน้าที่หลัก</text><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="77" x="1330.5" y="611.952">Presentation</text><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="121" x="1425.5" y="611.952">แสดงผล UI, รับ input</text><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="89" x="1330.5" y="630.152">Business Logic</text><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="120" x="1425.5" y="630.152">ประมวลผล, วิเคราะห์</text><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="28" x="1330.5" y="648.352">Data</text><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="71" x="1425.5" y="648.352">จัดการข้อมูล</text><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="79" x="1330.5" y="666.552">External APIs</text><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="87" x="1425.5" y="666.552">บริการภายนอก</text><line style="stroke:#000000;stroke-width:1.0;" x1="1327.5" x2="1549.5" y1="578.8" y2="578.8"/><line style="stroke:#000000;stroke-width:1.0;" x1="1327.5" x2="1549.5" y1="597" y2="597"/><line style="stroke:#000000;stroke-width:1.0;" x1="1327.5" x2="1549.5" y1="615.2" y2="615.2"/><line style="stroke:#000000;stroke-width:1.0;" x1="1327.5" x2="1549.5" y1="633.4" y2="633.4"/><line style="stroke:#000000;stroke-width:1.0;" x1="1327.5" x2="1549.5" y1="651.6" y2="651.6"/><line style="stroke:#000000;stroke-width:1.0;" x1="1327.5" x2="1549.5" y1="669.8" y2="669.8"/><line style="stroke:#000000;stroke-width:1.0;" x1="1327.5" x2="1327.5" y1="578.8" y2="669.8"/><line style="stroke:#000000;stroke-width:1.0;" x1="1422.5" x2="1422.5" y1="578.8" y2="669.8"/><line style="stroke:#000000;stroke-width:1.0;" x1="1549.5" x2="1549.5" y1="578.8" y2="669.8"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="10" x="1327.5" y="686.752">--</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="73" x="1327.5" y="704.952">&#128161; หลักการ:</text><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="260" x="1403.5" y="704.952">แต่ละ Layer สื่อสารกับ Layer ที่อยู่ติดกันเท่านั้น</text><!--MD5=[fad5ad1e4fd51958cec09e8f68884154]
+@startuml LayerArchitecture
+' ============================================================================
+' TaijiFlow AI - Layer Architecture Diagram
+' ============================================================================
+' แสดง 4 Layer ของระบบ: Presentation, Business Logic, Data, External APIs
+' หลักการ: แต่ละ Layer สื่อสารกับ Layer ที่อยู่ติดกันเท่านั้น
+' อัปเดต: 2026-01-08
+' ============================================================================
+
+skinparam defaultFontName "Sarabun"
+skinparam backgroundColor transparent
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+' === Direction ===
+top to bottom direction
+
+' === Colors ===
+skinparam package {
+    BackgroundColor<<presentation>> #E3F2FD
+    BackgroundColor<<business>> #FFF3E0
+    BackgroundColor<<data>> #E8F5E9
+    BackgroundColor<<external>> #FFEBEE
+    BorderColor #666666
+}
+
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor #999999
+}
+
+' ============================================================================
+' LAYER 1: PRESENTATION LAYER (Top)
+' ============================================================================
+
+package "🖥️ PRESENTATION LAYER" <<presentation>> {
+    [index.html] as IndexHtml
+    [ui_manager.js] as UIManager
+    [drawing_manager.js] as DrawingManager
+    [tutorial_manager.js] as TutorialManager
+    [score_popup_manager.js] as ScorePopup
+    [chatbot.js] as Chatbot
+    [feedback_manager.js] as FeedbackManager
+}
+
+note right of IndexHtml
+  **หน้าที่:** แสดงผล UI, รับ input, วาด Canvas
+end note
+
+' ============================================================================
+' LAYER 2: BUSINESS LOGIC LAYER
+' ============================================================================
+
+package "⚙️ BUSINESS LOGIC LAYER" <<business>> {
+    [script.js] as Script
+    [heuristics_engine.js] as Heuristics
+    [calibration_manager.js] as Calibration
+    [scoring_manager.js] as Scoring
+    [gesture_manager.js] as Gesture
+    [audio_manager.js] as Audio
+}
+
+note right of Script
+  **หน้าที่:** ประมวลผลหลัก, วิเคราะห์ท่า, คำนวณคะแนน
+end note
+
+' ============================================================================
+' LAYER 3: DATA LAYER
+' ============================================================================
+
+package "💾 DATA LAYER" <<data>> {
+    [session_manager.js] as Session
+    [data_exporter.js] as Exporter
+    [LocalStorage] as LocalStorage
+    [path_generator.js] as PathGen
+    [translations.js] as Translations
+}
+
+note right of Session
+  **หน้าที่:** จัดการข้อมูล, Session, Export
+end note
+
+' ============================================================================
+' LAYER 4: EXTERNAL APIs (Bottom)
+' ============================================================================
+
+package "🌐 EXTERNAL APIs" <<external>> {
+    [MediaPipe Pose] as MPPose
+    [MediaPipe Gesture] as MPGesture
+    [Web Speech API] as WebSpeech
+    [Gemini API] as Gemini
+}
+
+note right of MPPose
+  **หน้าที่:** APIs ภายนอก
+end note
+
+' ============================================================================
+' RELATIONSHIPS (Layer-to-Layer Communication Only)
+' ============================================================================
+
+' Presentation → Business Logic
+UIManager - -> Script : ใช้งาน
+DrawingManager - -> Heuristics : รับผลวิเคราะห์
+ScorePopup - -> Scoring : แสดงคะแนน
+TutorialManager - -> Script : ควบคุม
+
+' Business Logic → Data
+Script - -> Session : จัดการ session
+Script - -> Exporter : ส่งออกข้อมูล
+Script - -> PathGen : สร้าง path
+UIManager - -> Translations : i18n
+
+' Business Logic → External APIs
+Heuristics - -> MPPose : ตรวจจับท่า
+Gesture - -> MPGesture : ตรวจจับมือ
+Audio - -> WebSpeech : เสียงเตือน
+Chatbot - -> Gemini : AI ตอบคำถาม
+
+' Data → LocalStorage
+Session - -> LocalStorage : บันทึก/อ่าน
+
+' ============================================================================
+' LEGEND
+' ============================================================================
+
+legend right
+  |= Layer |= หน้าที่หลัก |
+  | Presentation | แสดงผล UI, รับ input |
+  | Business Logic | ประมวลผล, วิเคราะห์ |
+  | Data | จัดการข้อมูล |
+  | External APIs | บริการภายนอก |
+  - -
+  **💡 หลักการ:** แต่ละ Layer สื่อสารกับ Layer ที่อยู่ติดกันเท่านั้น
+endlegend
+
+@enduml
+
+@startuml LayerArchitecture
+
+skinparam defaultFontName "Sarabun"
+skinparam backgroundColor transparent
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+top to bottom direction
+
+skinparam package {
+    BackgroundColor<<presentation>> #E3F2FD
+    BackgroundColor<<business>> #FFF3E0
+    BackgroundColor<<data>> #E8F5E9
+    BackgroundColor<<external>> #FFEBEE
+    BorderColor #666666
+}
+
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor #999999
+}
+
+
+package "🖥️ PRESENTATION LAYER" <<presentation>> {
+    [index.html] as IndexHtml
+    [ui_manager.js] as UIManager
+    [drawing_manager.js] as DrawingManager
+    [tutorial_manager.js] as TutorialManager
+    [score_popup_manager.js] as ScorePopup
+    [chatbot.js] as Chatbot
+    [feedback_manager.js] as FeedbackManager
+}
+
+note right of IndexHtml
+  **หน้าที่:** แสดงผล UI, รับ input, วาด Canvas
+end note
+
+
+package "⚙️ BUSINESS LOGIC LAYER" <<business>> {
+    [script.js] as Script
+    [heuristics_engine.js] as Heuristics
+    [calibration_manager.js] as Calibration
+    [scoring_manager.js] as Scoring
+    [gesture_manager.js] as Gesture
+    [audio_manager.js] as Audio
+}
+
+note right of Script
+  **หน้าที่:** ประมวลผลหลัก, วิเคราะห์ท่า, คำนวณคะแนน
+end note
+
+
+package "💾 DATA LAYER" <<data>> {
+    [session_manager.js] as Session
+    [data_exporter.js] as Exporter
+    [LocalStorage] as LocalStorage
+    [path_generator.js] as PathGen
+    [translations.js] as Translations
+}
+
+note right of Session
+  **หน้าที่:** จัดการข้อมูล, Session, Export
+end note
+
+
+package "🌐 EXTERNAL APIs" <<external>> {
+    [MediaPipe Pose] as MPPose
+    [MediaPipe Gesture] as MPGesture
+    [Web Speech API] as WebSpeech
+    [Gemini API] as Gemini
+}
+
+note right of MPPose
+  **หน้าที่:** APIs ภายนอก
+end note
+
+
+UIManager - -> Script : ใช้งาน
+DrawingManager - -> Heuristics : รับผลวิเคราะห์
+ScorePopup - -> Scoring : แสดงคะแนน
+TutorialManager - -> Script : ควบคุม
+
+Script - -> Session : จัดการ session
+Script - -> Exporter : ส่งออกข้อมูล
+Script - -> PathGen : สร้าง path
+UIManager - -> Translations : i18n
+
+Heuristics - -> MPPose : ตรวจจับท่า
+Gesture - -> MPGesture : ตรวจจับมือ
+Audio - -> WebSpeech : เสียงเตือน
+Chatbot - -> Gemini : AI ตอบคำถาม
+
+Session - -> LocalStorage : บันทึก/อ่าน
+
+
+legend right
+  |= Layer |= หน้าที่หลัก |
+  | Presentation | แสดงผล UI, รับ input |
+  | Business Logic | ประมวลผล, วิเคราะห์ |
+  | Data | จัดการข้อมูล |
+  | External APIs | บริการภายนอก |
+  - -
+  **💡 หลักการ:** แต่ละ Layer สื่อสารกับ Layer ที่อยู่ติดกันเท่านั้น
+endlegend
+
+@enduml
+
+PlantUML version 1.2021.00(Sun Jan 10 17:25:05 ICT 2021)
+(MIT source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1339px" preserveAspectRatio="none" style="width:535px;height:1339px;background:#00000000;" version="1.1" viewBox="0 0 535 1339" width="535px" zoomAndPan="magnify"><defs><filter height="300%" id="f11c06uxko8ib0" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><ellipse cx="214.69" cy="16" fill="#000000" filter="url(#f11c06uxko8ib0)" rx="10" ry="10" style="stroke:none;stroke-width:1.0;"/><g id="Idle"><rect fill="#E3F2FD" filter="url(#f11c06uxko8ib0)" height="103.2" rx="12.5" ry="12.5" style="stroke:#424242;stroke-width:1.5;" width="152" x="138.69" y="87"/><line style="stroke:#424242;stroke-width:1.5;" x1="138.69" x2="290.69" y1="133.4" y2="133.4"/><text fill="#212121" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="23" x="203.19" y="106.952">Idle</text><text fill="#212121" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="74" x="177.69" y="125.152">(หน้าจอหลัก)</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="118" x="143.69" y="151.216">isTrainingMode = false</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="98" x="143.69" y="166.816">isRecording = false</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="132" x="143.69" y="182.416">calibrator.isActive = false</text></g><g id="Calibrating"><rect fill="#FFF3E0" filter="url(#f11c06uxko8ib0)" height="150" rx="12.5" ry="12.5" style="stroke:#424242;stroke-width:1.5;" width="150" x="50.69" y="343.2"/><line style="stroke:#424242;stroke-width:1.5;" x1="50.69" x2="200.69" y1="389.6" y2="389.6"/><text fill="#212121" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="66" x="92.69" y="363.152">Calibrating</text><text fill="#212121" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="108" x="71.69" y="381.352">(ปรับเทียบ T-Pose)</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="118" x="55.69" y="407.416">isTrainingMode = false</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="130" x="55.69" y="423.016">calibrator.isActive = true</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="12" x="55.69" y="438.616">---</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="73" x="55.69" y="454.216">ตรวจ visibility</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="79" x="55.69" y="469.816">ตรวจท่า T-Pose</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="98" x="55.69" y="485.416">นับถอยหลัง 3 วินาที</text></g><g id="Countdown"><rect fill="#E8F5E9" filter="url(#f11c06uxko8ib0)" height="87.6" rx="12.5" ry="12.5" style="stroke:#424242;stroke-width:1.5;" width="130" x="60.69" y="646.2"/><line style="stroke:#424242;stroke-width:1.5;" x1="60.69" x2="190.69" y1="692.6" y2="692.6"/><text fill="#212121" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="70" x="90.69" y="666.152">Countdown</text><text fill="#212121" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="110" x="70.69" y="684.352">(นับถอยหลัง 3-2-1)</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="97" x="65.69" y="710.416">showCountdown()</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="107" x="65.69" y="726.016">แสดง overlay "3-2-1"</text></g><g id="Training"><rect fill="#E8F5E9" filter="url(#f11c06uxko8ib0)" height="165.6" rx="12.5" ry="12.5" style="stroke:#424242;stroke-width:1.5;" width="136" x="57.69" y="886.8"/><line style="stroke:#424242;stroke-width:1.5;" x1="57.69" x2="193.69" y1="933.2" y2="933.2"/><text fill="#212121" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="50" x="100.69" y="906.752">Training</text><text fill="#212121" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="89" x="81.19" y="924.952">(ฝึกท่าม้วนไหม)</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="116" x="62.69" y="951.016">isTrainingMode = true</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="96" x="62.69" y="966.616">isRecording = true</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="12" x="62.69" y="982.216">---</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="92" x="62.69" y="997.816">วิเคราะห์ท่า (8 กฎ)</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="88" x="62.69" y="1013.416">บันทึก landmarks</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="73" x="62.69" y="1029.016">คำนวณคะแนน</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="72" x="62.69" y="1044.616">Timer นับเวลา</text></g><g id="Ended"><rect fill="#F3E5F5" filter="url(#f11c06uxko8ib0)" height="103.2" rx="12.5" ry="12.5" style="stroke:#424242;stroke-width:1.5;" width="138" x="181.69" y="1222.4"/><line style="stroke:#424242;stroke-width:1.5;" x1="181.69" x2="319.69" y1="1268.8" y2="1268.8"/><text fill="#212121" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="39" x="231.19" y="1242.352">Ended</text><text fill="#212121" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="96" x="202.69" y="1260.552">(แสดงผลคะแนน)</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="118" x="186.69" y="1286.616">isTrainingMode = false</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="96" x="186.69" y="1302.216">แสดง Score Popup</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="105" x="186.69" y="1317.816">Export Session Data</text></g><!--MD5=[38f1f8b7f214ff6bc6d4b705f682283d]
+link *start to Idle--><path d="M214.69,26.46 C214.69,38.29 214.69,59.51 214.69,80.25 " fill="none" id="*start-to-Idle" style="stroke:#424242;stroke-width:1.0;"/><polygon fill="#424242" points="214.69,85.15,218.69,76.15,214.69,80.15,210.69,76.15,214.69,85.15" style="stroke:#424242;stroke-width:1.0;"/><!--MD5=[613bcc83712b49aab47de170ad2aa798]
+link Idle to Calibrating--><path d="M138.34,152.17 C98.46,163.03 53.03,183.13 28.69,220.2 C6,254.75 13.54,274.74 28.69,313.2 C33.08,324.35 39.3,335.01 46.48,344.97 " fill="none" id="Idle-to-Calibrating" style="stroke:#424242;stroke-width:1.0;"/><polygon fill="#424242" points="49.42,348.9,47.2364,339.2963,46.4268,344.8949,40.8282,344.0853,49.42,348.9" style="stroke:#424242;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="55" x="72.69" y="235.084">กด Start /</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="69" x="65.69" y="251.984">ยกนิ้วโป้ง &#128077;</text><path d="M33.69,261 L33.69,304 L162.69,304 L162.69,271 L152.69,261 L33.69,261 " fill="#FBFB77" filter="url(#f11c06uxko8ib0)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M152.69,261 L152.69,271 L162.69,271 L152.69,261 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="108" x="39.69" y="279.884">startTrainingFlow()</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="94" x="39.69" y="296.784">calibrator.start()</text><!--MD5=[bd35698d9154a034df3061f70b16595b]
+link Calibrating to Idle--><path d="M163.95,342.79 C168.25,332.98 172.3,322.95 175.69,313.2 C188.87,275.29 198.71,231.15 205.22,196.87 " fill="none" id="Calibrating-to-Idle" style="stroke:#424242;stroke-width:1.0;"/><polygon fill="#424242" points="206.11,192.07,200.5313,200.1865,205.1955,196.9857,208.3963,201.6498,206.11,192.07" style="stroke:#424242;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="65" x="236.68" y="243.584">กด Cancel /</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="49" x="244.68" y="260.484">หมดเวลา</text><path d="M204.68,269.5 L204.68,295.5 L329.68,295.5 L329.68,279.5 L319.68,269.5 L204.68,269.5 " fill="#FBFB77" filter="url(#f11c06uxko8ib0)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M319.68,269.5 L319.68,279.5 L329.68,279.5 L319.68,269.5 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="104" x="210.68" y="288.384">calibrator.cancel()</text><!--MD5=[14ad3a2123e1bd1bf56c59c7223bba9e]
+link Calibrating to Countdown--><path d="M125.69,493.64 C125.69,540.13 125.69,598.7 125.69,639.52 " fill="none" id="Calibrating-to-Countdown" style="stroke:#424242;stroke-width:1.0;"/><polygon fill="#424242" points="125.69,644.41,129.69,635.41,125.69,639.41,121.69,635.41,125.69,644.41" style="stroke:#424242;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="122" x="160.19" y="538.084">Calibration Complete</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="121" x="160.69" y="554.984">(stableFrames &gt;= 90)</text><path d="M130.69,564 L130.69,607 L307.69,607 L307.69,574 L297.69,564 L130.69,564 " fill="#FBFB77" filter="url(#f11c06uxko8ib0)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M297.69,564 L297.69,574 L307.69,574 L297.69,564 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="109" x="136.69" y="582.884">calibrator.process()</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="156" x="136.69" y="599.784">returns {status: "complete"}</text><!--MD5=[c971b3b2b28ec0c5702fea5e80fc6faf]
+link Countdown to Training--><path d="M125.69,734.07 C125.69,772.91 125.69,831.25 125.69,880.03 " fill="none" id="Countdown-to-Training" style="stroke:#424242;stroke-width:1.0;"/><polygon fill="#424242" points="125.69,885.03,129.69,876.03,125.69,880.03,121.69,876.03,125.69,885.03" style="stroke:#424242;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="92" x="183.69" y="778.684">Countdown เสร็จ</text><path d="M130.69,787.7 L130.69,847.7 L324.69,847.7 L324.69,797.7 L314.69,787.7 L130.69,787.7 " fill="#FBFB77" filter="url(#f11c06uxko8ib0)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M314.69,787.7 L314.69,797.7 L324.69,797.7 L314.69,787.7 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="173" x="136.69" y="806.584">startTrainingAfterCalibration()</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="123" x="136.69" y="823.484">isTrainingMode = true</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="103" x="136.69" y="840.384">isRecording = true</text><!--MD5=[01d744849c1cec173d51d87f67697966]
+link Training to Ended--><path d="M146.05,1052.78 C158.1,1095.53 175.23,1147.98 196.69,1192.4 C200.62,1200.53 205.27,1208.8 210.17,1216.78 " fill="none" id="Training-to-Ended" style="stroke:#424242;stroke-width:1.0;"/><polygon fill="#424242" points="212.79,1220.97,211.4032,1211.2193,210.1362,1216.7324,204.623,1215.4654,212.79,1220.97" style="stroke:#424242;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="52" x="247.69" y="1097.284">กด Stop /</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="57" x="245.19" y="1114.184">กำมือ ✊ /</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="85" x="231.19" y="1131.084">หมดเวลา 5 นาที</text><path d="M201.69,1140.1 L201.69,1183.1 L341.69,1183.1 L341.69,1150.1 L331.69,1140.1 L201.69,1140.1 " fill="#FBFB77" filter="url(#f11c06uxko8ib0)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M331.69,1140.1 L331.69,1150.1 L341.69,1150.1 L331.69,1140.1 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="116" x="207.69" y="1158.984">endTrainingSession()</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="119" x="207.69" y="1175.884">scorer.getSummary()</text><!--MD5=[469c24cb0eb4947fe02ac74cb8eb1cb7]
+link Ended to Idle--><path d="M320.17,1232.03 C333.71,1220.87 346.29,1207.59 354.69,1192.4 C402.63,1105.71 376.69,1069.66 376.69,970.6 C376.69,417.2 376.69,417.2 376.69,417.2 C376.69,328.64 395.73,293.95 346.69,220.2 C334.19,201.4 315.65,186.25 296.4,174.39 " fill="none" id="Ended-to-Idle" style="stroke:#424242;stroke-width:1.0;"/><polygon fill="#424242" points="292.25,171.91,297.941,179.9482,296.5475,174.4657,302.03,173.0722,292.25,171.91" style="stroke:#424242;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="90" x="411.19" y="666.884">ปิด Score Popup</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="48" x="432.19" y="683.784">(3 วินาที)</text><path d="M381.69,692.8 L381.69,718.8 L526.69,718.8 L526.69,702.8 L516.69,692.8 L381.69,692.8 " fill="#FBFB77" filter="url(#f11c06uxko8ib0)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M516.69,692.8 L516.69,702.8 L526.69,702.8 L516.69,692.8 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="124" x="387.69" y="711.684">resetToHomeScreen()</text><!--MD5=[4f7116d012c72546cb0d8b5f1cb34cc3]
+link Idle to Idle--><path d="M290.95,123.37 C310.76,124.3 325.69,129.38 325.69,138.6 C325.69,146.81 313.84,151.74 297.26,153.38 " fill="none" id="Idle-to-Idle" style="stroke:#424242;stroke-width:1.0;"/><polygon fill="#424242" points="292.46,153.73,301.7228,157.0767,297.4472,153.3727,301.1512,149.0972,292.46,153.73" style="stroke:#424242;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="93" x="331.69" y="144.484">เปลี่ยนท่า / Level</text><!--MD5=[a914570dbb4feabb53db254e23ed840a]
+link Training to Training--><path d="M194.03,939.85 C213.6,941.01 228.69,950.93 228.69,969.6 C228.69,986.23 216.72,995.91 200.28,998.66 " fill="none" id="Training-to-Training" style="stroke:#424242;stroke-width:1.0;"/><polygon fill="#424242" points="195.54,999.18,204.9295,1002.1528,200.5089,998.6231,204.0385,994.2025,195.54,999.18" style="stroke:#424242;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="68" x="250.69" y="966.984">ทุก 3 frames</text><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="100" x="234.69" y="983.884">(วิเคราะห์ + บันทึก)</text><!--MD5=[1ed1f3a5a3aea4acaa3cf83db07d2d7b]
+@startuml StateDiagram_TrainingSession
+' ============================================================================
+' TaijiFlow AI - State Diagram: Training Session
+' ============================================================================
+' แสดง States และ Transitions ของ Training Session
+' อ้างอิง: script.js (isTrainingMode, isRecording, calibrator.isActive)
+' ============================================================================
+
+skinparam defaultFontName "Sarabun"
+skinparam backgroundColor transparent
+skinparam state {
+    BackgroundColor #FAFAFA
+    BorderColor #424242
+    FontColor #212121
+    ArrowColor #424242
+}
+
+' === State Colors ===
+skinparam state {
+    BackgroundColor<<idle>> #E3F2FD
+    BackgroundColor<<calibrating>> #FFF3E0
+    BackgroundColor<<countdown>> #E8F5E9
+    BackgroundColor<<training>> #E8F5E9
+    BackgroundColor<<ended>> #F3E5F5
+}
+
+' ============================================================================
+' STATES
+' ============================================================================
+
+[*] - -> Idle
+
+state "Idle\n(หน้าจอหลัก)" as Idle <<idle>> {
+    Idle : isTrainingMode = false
+    Idle : isRecording = false
+    Idle : calibrator.isActive = false
+}
+
+state "Calibrating\n(ปรับเทียบ T-Pose)" as Calibrating <<calibrating>> {
+    Calibrating : isTrainingMode = false
+    Calibrating : calibrator.isActive = true
+    Calibrating : - - -
+    Calibrating : ตรวจ visibility
+    Calibrating : ตรวจท่า T-Pose
+    Calibrating : นับถอยหลัง 3 วินาที
+}
+
+state "Countdown\n(นับถอยหลัง 3-2-1)" as Countdown <<countdown>> {
+    Countdown : showCountdown()
+    Countdown : แสดง overlay "3-2-1"
+}
+
+state "Training\n(ฝึกท่าม้วนไหม)" as Training <<training>> {
+    Training : isTrainingMode = true
+    Training : isRecording = true
+    Training : - - -
+    Training : วิเคราะห์ท่า (8 กฎ)
+    Training : บันทึก landmarks
+    Training : คำนวณคะแนน
+    Training : Timer นับเวลา
+}
+
+state "Ended\n(แสดงผลคะแนน)" as Ended <<ended>> {
+    Ended : isTrainingMode = false
+    Ended : แสดง Score Popup
+    Ended : Export Session Data
+}
+
+' ============================================================================
+' TRANSITIONS
+' ============================================================================
+
+Idle - -> Calibrating : กด Start /\nยกนิ้วโป้ง 👍
+note on link
+    startTrainingFlow()
+    calibrator.start()
+end note
+
+Calibrating - -> Countdown : Calibration Complete\n(stableFrames >= 90)
+note on link
+    calibrator.process()
+    returns {status: "complete"}
+end note
+
+Calibrating - -> Idle : กด Cancel /\nหมดเวลา
+note on link
+    calibrator.cancel()
+end note
+
+Countdown - -> Training : Countdown เสร็จ
+note on link
+    startTrainingAfterCalibration()
+    isTrainingMode = true
+    isRecording = true
+end note
+
+Training - -> Ended : กด Stop /\nกำมือ ✊ /\nหมดเวลา 5 นาที
+note on link
+    endTrainingSession()
+    scorer.getSummary()
+end note
+
+Ended - -> Idle : ปิด Score Popup\n(3 วินาที)
+note on link
+    resetToHomeScreen()
+end note
+
+Idle - -> Idle : เปลี่ยนท่า / Level
+Training - -> Training : ทุก 3 frames\n(วิเคราะห์ + บันทึก)
+
+@enduml
+
+@startuml StateDiagram_TrainingSession
+
+skinparam defaultFontName "Sarabun"
+skinparam backgroundColor transparent
+skinparam state {
+    BackgroundColor #FAFAFA
+    BorderColor #424242
+    FontColor #212121
+    ArrowColor #424242
+}
+
+skinparam state {
+    BackgroundColor<<idle>> #E3F2FD
+    BackgroundColor<<calibrating>> #FFF3E0
+    BackgroundColor<<countdown>> #E8F5E9
+    BackgroundColor<<training>> #E8F5E9
+    BackgroundColor<<ended>> #F3E5F5
+}
+
+
+[*] - -> Idle
+
+state "Idle\n(หน้าจอหลัก)" as Idle <<idle>> {
+    Idle : isTrainingMode = false
+    Idle : isRecording = false
+    Idle : calibrator.isActive = false
+}
+
+state "Calibrating\n(ปรับเทียบ T-Pose)" as Calibrating <<calibrating>> {
+    Calibrating : isTrainingMode = false
+    Calibrating : calibrator.isActive = true
+    Calibrating : - - -
+    Calibrating : ตรวจ visibility
+    Calibrating : ตรวจท่า T-Pose
+    Calibrating : นับถอยหลัง 3 วินาที
+}
+
+state "Countdown\n(นับถอยหลัง 3-2-1)" as Countdown <<countdown>> {
+    Countdown : showCountdown()
+    Countdown : แสดง overlay "3-2-1"
+}
+
+state "Training\n(ฝึกท่าม้วนไหม)" as Training <<training>> {
+    Training : isTrainingMode = true
+    Training : isRecording = true
+    Training : - - -
+    Training : วิเคราะห์ท่า (8 กฎ)
+    Training : บันทึก landmarks
+    Training : คำนวณคะแนน
+    Training : Timer นับเวลา
+}
+
+state "Ended\n(แสดงผลคะแนน)" as Ended <<ended>> {
+    Ended : isTrainingMode = false
+    Ended : แสดง Score Popup
+    Ended : Export Session Data
+}
+
+
+Idle - -> Calibrating : กด Start /\nยกนิ้วโป้ง 👍
+note on link
+    startTrainingFlow()
+    calibrator.start()
+end note
+
+Calibrating - -> Countdown : Calibration Complete\n(stableFrames >= 90)
+note on link
+    calibrator.process()
+    returns {status: "complete"}
+end note
+
+Calibrating - -> Idle : กด Cancel /\nหมดเวลา
+note on link
+    calibrator.cancel()
+end note
+
+Countdown - -> Training : Countdown เสร็จ
+note on link
+    startTrainingAfterCalibration()
+    isTrainingMode = true
+    isRecording = true
+end note
+
+Training - -> Ended : กด Stop /\nกำมือ ✊ /\nหมดเวลา 5 นาที
+note on link
+    endTrainingSession()
+    scorer.getSummary()
+end note
+
+Ended - -> Idle : ปิด Score Popup\n(3 วินาที)
+note on link
+    resetToHomeScreen()
+end note
+
+Idle - -> Idle : เปลี่ยนท่า / Level
+Training - -> Training : ทุก 3 frames\n(วิเคราะห์ + บันทึก)
+
+@enduml
+
+PlantUML version 1.2021.00(Sun Jan 10 17:25:05 ICT 2021)
+(MIT source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

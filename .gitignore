@@ -13,6 +13,9 @@ yarn-error.log*
 dist/
 build/
 
+# PlantUML generated output (can be regenerated from .wsd files)
+out/
+
 # Local environment files
 .env
 .env.*
@@ -25,3 +28,12 @@ Thumbs.db
 
 # Backup
 .backup/
+
+# Ebooks (copyrighted materials)
+docs/ebooks/
+
+# Large video files (optional - uncomment if videos are too large)
+# data/*.webm
+
+# Session exports (user-generated training data)
+*.json.gz

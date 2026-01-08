@@ -4,6 +4,91 @@
 
 ---
 
+## [v0.9] - 2026-01-08
+
+### 🎨 Landing Page Refactoring
+
+#### Added
+- **New Landing Page** (`index.html`) - Entry Point หลักของระบบ
+  - Hero Section: TaijiFlow AI branding + Silk Reeling animation
+  - About Section: ที่มาโครงการ, เทคโนโลยี, จุดเด่น, กิตติกรรมประกาศ
+  - Guide Section: 3 ขั้นตอนการใช้งาน (เลือกท่าฝึก → เลือกระดับ → กดเริ่มฝึก)
+  - Reference Section: วิดีโอ, หลักการ, 8 กฎ
+  - Footer: Copyright + Credits
+
+#### Changed
+- **File Structure Refactoring**:
+  - `index.html` → `app.html` (Training Application)
+  - `landing.html` → `index.html` (Landing Page - Entry Point)
+- **Navigation**: หน้าแรก | เกี่ยวกับ | คู่มือ | อ้างอิง | ▶️ เริ่มฝึก
+- **Branding**: 
+  - Logo: ☯️ TaijiFlow AI
+  - Badge: "🤖 ผู้ช่วยฝึกท่าม้วนไหม มวยไท้เก๊ก สกุลเฉิน"
+
+### 📐 UML Diagrams (สำหรับ Final Report ป.โท)
+
+#### Added - Sequence Diagrams (3 ไฟล์)
+- **SequenceDiagram_TrainingFlow.wsd** - Training Flow หลัก
+  - 6 participants: User, UI, Training, Calibrator, Heuristics, Scorer
+  - ครอบคลุม: เลือกท่า → Calibration → Countdown → Training → Summary
+- **SequenceDiagram_RealtimeAnalysis.wsd** - Real-time Pose Analysis
+  - แสดงการทำงานทุก 3 frames (~10 FPS)
+  - วิเคราะห์ 8 กฎไทเก๊ก: Path, Rotation, Elbow, Waist, Stability, Smooth, Continuity, Weight
+  - Rendering order: Silhouette → Ghost → Instructor → Path → Skeleton → Trail
+- **SequenceDiagram_Calibration.wsd** - Calibration Process
+  - 5 phases: Start → Visibility Check → T-Pose Check → Countdown → Calculate
+
+#### Added - State Diagram (1 ไฟล์)
+- **StateDiagram_TrainingSession.wsd** - Training Session States
+  - 5 states: Idle → Calibrating → Countdown → Training → Ended
+  - State variables: isTrainingMode, isRecording, calibrator.isActive
+
+#### Added - Component/Module Diagram (1 ไฟล์)
+- **ModuleDependencies.wsd** - Module Dependencies Diagram
+  - 21 modules organized in 5 layers
+  - Top-Down layout with orthogonal lines
+  - Categories: Core, Display, UI, Controllers, Utilities
+
+#### Added - Architecture Diagram (1 ไฟล์)
+- **LayerArchitecture.wsd** - Layer Architecture Diagram
+  - 4 layers: Presentation → Business Logic → Data → External APIs
+
+### 📚 Documentation
+
+#### Added
+- **MODULE_DEPENDENCIES.md** - Module Dependencies เอกสาร
+  - ASCII Diagram แสดง 21 modules
+  - Dependency Table แบ่งตามหมวด (6 categories)
+  - Load Order ตาม index.html
+  - External Dependencies (MediaPipe, Gemini, etc.)
+
+#### Updated
+- **ARCHITECTURE.md** - Full Update
+  - File Structure: 21 JS files, 3 CSS files
+  - Technology Stack: Frontend, AI/ML, Browser APIs, Dev Tools
+  - Design Patterns: 7 patterns (Module, Singleton, Observer, Facade, Factory, Strategy, Controller)
+  - Module Dependencies: ASCII diagram + tables
+  - Layer Architecture: 4 layers diagram
+- **ClassDiagram.wsd** - RulesConfigManager ย้ายจาก Core ไป UI & Feedback
+
+#### Fixed
+- **ARCHITECTURE.md** - แก้ไข MD060 linting errors (table column style)
+- **ModuleDependencies.wsd** - RulesConfigManager อยู่ใน UI Managers (ตรงกับ ClassDiagram)
+
+### 📊 Summary: UML Diagrams ทั้งหมด (15 ไฟล์)
+
+| ประเภท | จำนวน | ไฟล์ |
+|--------|:-----:|------|
+| Use Case | 1 | UseCaseDiagram.wsd |
+| Class | 1 | ClassDiagram.wsd |
+| Activity | 8 | ActivityDiagram_UC01-06.wsd, ActivityDiagram_Heuristics.wsd |
+| Sequence | 3 | TrainingFlow, RealtimeAnalysis, Calibration |
+| State | 1 | StateDiagram_TrainingSession.wsd |
+| Component | 1 | ModuleDependencies.wsd |
+| Architecture | 1 | LayerArchitecture.wsd |
+
+---
+
 ## [v0.8] - 2026-01-07
 
 ### 📐 UML Diagrams Update (สำหรับ Final Report ป.โท)

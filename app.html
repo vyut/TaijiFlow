@@ -1,0 +1,921 @@
+<!--
+================================================================================
+TaijiFlow AI - Main Application (index.html)
+================================================================================
+
+ไฟล์หลักของแอปพลิเคชัน TaijiFlow AI สำหรับฝึกท่าม้วนไหม
+
+โครงสร้างหลัก:
+  1. HEAD
+    - Meta tags และ Favicon
+    - Stylesheets (TailwindCSS, Google Fonts, Custom CSS)
+    - External Scripts (MediaPipe Pose, Camera, Drawing, Gesture)
+    - App Modules (JS files with defer)
+
+  2. BODY
+    - Privacy Modal: แจ้งความเป็นส่วนตัว (แสดงทุกครั้งที่โหลด)
+    - Header: ชื่อและเวอร์ชัน
+    - Main Card:
+      - Top Bar: Dropdowns (Exercise/Level) + Settings (Audio/Language/Theme)
+      - Canvas Container: Video + Skeleton + Overlays
+      - Control Buttons: Start/Stop Training
+      - Instructions (hidden)
+    - Hidden Legacy Elements: สำหรับ backward compatibility กับ script.js
+    - Notification Container: Toast notifications
+
+  3. OVERLAYS (inside Canvas Container)
+    - Loading: แสดงระหว่างโหลด AI Model
+    - Start: คำแนะนำการใช้งาน (แสดงก่อนเริ่มฝึก)
+    - Countdown: 3-2-1 (แสดงก่อนเริ่มฝึก)
+    - Fullscreen Button: มุมขวาล่าง (แสดงระหว่างฝึก)
+    - Training Controls: Timer + Stop Button มุมซ้ายล่าง (แสดงระหว่างฝึก)
+
+Dependencies:
+  - MediaPipe: Pose Detection, Camera Utils, Drawing Utils, Gesture Recognition
+  - TailwindCSS: Styling (CDN)
+  - Google Fonts: Sarabun
+  - Custom: css/styles.css, css/chatbot.css
+
+Related Files:
+  - js/script.js: Main controller
+  - js/translations.js: i18n strings
+  - js/ui_manager.js: UI state management
+
+Version: 0.6 (2024-12-24)
+================================================================================
+-->
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaijiFlow AI</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <!-- Stylesheets -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/chatbot.css" />
+    <link rel="stylesheet" href="css/feedback.css" />
+
+    <!-- MediaPipe -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <!-- MediaPipe Drawing Utils -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <!-- MediaPipe Pose -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <!-- MediaPipe Gesture Recognition -->
+    <!-- <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js"
+      crossorigin="anonymous"
+      defer
+    ></script> -->
+    <!-- MediaPipe Selfie Segmentation (for Silhouette) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+
+    <!-- =========================================================================
+        App Modules - โหลดเรียงตาม Dependencies (ไฟล์ที่ถูกพึ่งพาก่อน)
+        หมายเหตุ: defer = โหลดพร้อม HTML แต่รันหลัง DOM พร้อม
+        ========================================================================= -->
+    <!-- 1. Core Managers - ไม่พึ่งพาไฟล์อื่น -->
+    <!-- T-Pose Calibration -->
+    <script src="js/calibration_manager.js" defer></script>
+    <!-- 8 กฎวิเคราะห์ท่า -->
+    <script src="js/heuristics_engine.js" defer></script>
+    <!-- Rules Settings UI -->
+    <script src="js/rules_config_manager.js" defer></script>
+    <!-- วาด Skeleton/Path -->
+    <script src="js/drawing_manager.js" defer></script>
+    <!-- Export JSON/CSV -->
+    <script src="js/data_exporter.js" defer></script>
+    <!-- เสียงพูด TTS -->
+    <script src="js/audio_manager.js" defer></script>
+    <!-- คำนวณคะแนน -->
+    <script src="js/scoring_manager.js" defer></script>
+    <!-- Ghost Overlay -->
+    <script src="js/ghost_manager.js" defer></script>
+    <!-- Silhouette Overlay -->
+    <script src="js/silhouette_manager.js" defer></script>
+
+    <!-- 2. UI/Translation - พึ่งพา Core Managers -->
+    <!-- i18n TH/EN -->
+    <script src="js/translations.js" defer></script>
+    <!-- จัดการ UI State -->
+    <script src="js/ui_manager.js" defer></script>
+    <!-- Score Popup (แยกจาก ui_manager) -->
+    <script src="js/score_popup_manager.js" defer></script>
+    <!-- จัดการ UI State -->
+    <script src="js/gesture_manager.js" defer></script>
+    <!-- จัดการ UI State -->
+    <script src="js/tutorial_manager.js" defer></script>
+    <!-- Popup Tutorial -->
+    <script src="js/chatbot.js" defer></script>
+    <!-- Gemini Chatbot -->
+    <script src="js/feedback_manager.js" defer></script>
+    <!-- Feedback Popup -->
+
+    <!-- 3. Utility Modules (Refactored from script.js) -->
+    <script src="js/session_manager.js" defer></script>
+    <!-- Session/User ID management -->
+    <script src="js/path_generator.js" defer></script>
+    <!-- Dynamic Path Generator -->
+
+    <!-- 4. Main Controller - พึ่งพาทั้งหมดข้างบน -->
+    <script src="js/display_controller.js" defer></script>
+    <!-- Display Options Controller -->
+    <script src="js/keyboard_controller.js" defer></script>
+    <!-- Keyboard Shortcuts Controller -->
+    <script src="js/script.js" defer></script>
+    <!-- Entry Point หลัก -->
+
+    <!-- MediaPipe Tasks Vision for Gesture Recognition (loaded as module) -->
+    <script type="module">
+      import {
+        GestureRecognizer,
+        FilesetResolver,
+      } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8";
+      window.GestureRecognizerClass = GestureRecognizer;
+      window.FilesetResolverClass = FilesetResolver;
+      window.dispatchEvent(new Event("mediapipe-ready"));
+    </script>
+  </head>
+  <body
+    class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-900"
+  >
+    <!-- Privacy Popup Modal (แสดงทุกครั้งที่เปิดหน้า) -->
+    <div
+      id="privacy-modal"
+      class="fixed inset-0 bg-black bg-opacity-70 z-[100] flex items-center justify-center p-4"
+    >
+      <div
+        class="bg-gray-800 rounded-xl p-6 max-w-md w-full shadow-2xl border border-purple-500/30"
+      >
+        <h2
+          id="privacy-title"
+          class="text-xl font-bold text-purple-400 mb-4 text-center"
+        >
+          🔒 ความเป็นส่วนตัวของคุณ
+        </h2>
+        <ul class="text-gray-300 text-sm space-y-3 mb-6">
+          <li id="privacy-item1" class="flex items-start gap-2">
+            <span class="text-green-400">✓</span>
+            <span>วิดีโอประมวลผลในเครื่องคุณเท่านั้น ไม่มีการบันทึก</span>
+          </li>
+          <li id="privacy-item2" class="flex items-start gap-2">
+            <span class="text-green-400">✓</span>
+            <span>ข้อมูลท่าทางไม่ถูกส่งออกนอกเครื่อง</span>
+          </li>
+          <li id="privacy-item3" class="flex items-start gap-2">
+            <span class="text-blue-400">ℹ</span>
+            <span>Chatbot ใช้ Gemini API (ข้อความจะถูกส่งไป Google)</span>
+          </li>
+        </ul>
+        <button
+          id="privacy-accept-btn"
+          class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors"
+        >
+          เข้าใจแล้ว ✓
+        </button>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <h1 id="app-title" class="text-3xl font-bold mb-4 text-purple-400">
+      TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก (v0.8)
+    </h1>
+
+    <!-- Main Container -->
+    <div
+      id="main-card"
+      class="bg-gray-800 px-6 pt-6 pb-1 rounded-lg shadow-lg text-right w-full max-w-6xl"
+    >
+      <!-- Top Bar: Selectors + Settings + Timer -->
+      <div class="mb-4 flex flex-wrap justify-between items-center gap-4">
+        <!-- Left: Dropdowns -->
+        <div class="flex gap-4 flex-wrap">
+          <!-- Category Dropdown (สำหรับขยายในอนาคต) -->
+          <div>
+            <select
+              id="category-select"
+              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+              title="เลือกหมวดหมู่ของท่าฝึก - Select exercise category"
+            >
+              <option value="" disabled>-- เลือกหมวดหมู่ --</option>
+              <option value="silk_single" selected>
+                ท่าม้วนไหม - มือเดียว
+              </option>
+              <!-- <option value="silk_double" disabled>ท่าม้วนไหม - สองมือ</option> -->
+            </select>
+          </div>
+          <!-- Exercise Dropdown -->
+          <div>
+            <select
+              id="exercise-select"
+              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+              title="เลือกท่าฝึก: มือซ้าย/ขวา, ตาม/ทวนเข็ม - Select exercise"
+            >
+              <option value="" disabled>-- เลือกท่าฝึก --</option>
+              <option value="rh_cw" selected>1. มือขวา - ตามเข็ม</option>
+              <option value="rh_ccw">2. มือขวา - ทวนเข็ม</option>
+              <option value="lh_cw">3. มือซ้าย - ตามเข็ม</option>
+              <option value="lh_ccw">4. มือซ้าย - ทวนเข็ม</option>
+            </select>
+          </div>
+          <div>
+            <select
+              id="level-select"
+              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+              title="เลือกระดับ: นั่ง/ยืน/ยืนย่อ - Select difficulty level"
+            >
+              <option value="" disabled>-- เลือกระดับ --</option>
+              <option value="L1" selected>1. แบบนั่ง</option>
+              <option value="L2">2. แบบยืน</option>
+              <option value="L3">3. แบบยืนย่อ</option>
+            </select>
+          </div>
+          <!-- Display Options Dropdown -->
+          <div class="relative" id="display-dropdown-container">
+            <button
+              id="display-btn"
+              class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+              title="Display Settings - ตั้งค่าการแสดงผล"
+            >
+              👁️
+            </button>
+            <!-- Dropdown Menu -->
+            <div
+              id="display-menu"
+              class="hidden absolute left-0 mt-2 w-48 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-50"
+            >
+              <div
+                class="p-2 text-sm text-center border-b border-gray-600"
+                style="color: white"
+              >
+                Display Option
+              </div>
+
+              <!-- ===== 📚 Reference Section ===== -->
+              <div
+                class="px-3 py-1 text-xs text-center text-gray-400 bg-gray-750"
+              >
+                📚 ต้นแบบ
+              </div>
+              <!-- Path - Default ON -->
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                title="Show dynamic path guide"
+              >
+                <input type="checkbox" id="check-path" class="mr-2" checked />
+                <span style="color: white">🟢 Path (P)</span>
+              </label>
+              <!-- Instructor Thumbnail - Default ON -->
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                title="Show instructor shadow in corner thumbnail"
+              >
+                <input
+                  type="checkbox"
+                  id="check-instructor"
+                  class="mr-2"
+                  checked
+                />
+                <span style="color: white">🎬 Instructor (I)</span>
+              </label>
+              <!-- Ghost - Default OFF -->
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                title="Show instructor shadow on main video"
+              >
+                <input type="checkbox" id="check-ghost" class="mr-2" />
+                <span style="color: white">👻 Ghost (G)</span>
+              </label>
+
+              <!-- ===== 👤 You Section ===== -->
+              <div
+                class="px-3 py-1 text-center text-xs text-gray-400 bg-gray-750 border-t border-gray-600"
+              >
+                👤 ผู้ฝึก
+              </div>
+              <!-- Skeleton - Default ON -->
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                title="Show your skeleton overlay"
+              >
+                <input
+                  type="checkbox"
+                  id="check-skeleton"
+                  class="mr-2"
+                  checked
+                />
+                <span style="color: white">🦴 Skeleton (B)</span>
+              </label>
+              <!-- Trail - Default ON -->
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                title="Show wrist movement trail"
+              >
+                <input type="checkbox" id="check-trail" class="mr-2" checked />
+                <span style="color: white">🔵 Trail (R)</span>
+              </label>
+              <!-- Silhouette - Default OFF -->
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                title="Show your silhouette overlay"
+              >
+                <input type="checkbox" id="check-silhouette" class="mr-2" />
+                <span style="color: white">🎭 Silhouette (S)</span>
+              </label>
+              <!-- ===== 🛠️ Developer Section ===== -->
+              <div
+                class="px-3 py-1 text-center text-xs text-gray-400 bg-gray-750 border-t border-gray-600"
+              >
+                🛠️ Developer
+              </div>
+              <!-- Debug Mode -->
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                title="Show debug information (threshold values)"
+              >
+                <input type="checkbox" id="check-debug" class="mr-2" />
+                <span style="color: white">🐞 Debug (D)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Rules Settings Dropdown -->
+          <div class="relative">
+            <button
+              id="rules-btn"
+              class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+              title="Rules Settings - ปรับค่ากฎการตรวจสอบ"
+            >
+              ⚙️
+            </button>
+            <div
+              id="rules-menu"
+              class="absolute right-0 mt-2 w-80 bg-gray-800 rounded-lg shadow-lg hidden z-50"
+              style="max-height: 70vh; overflow-y: auto"
+            >
+              <div
+                class="p-2 text-sm text-center border-b border-gray-600 sticky top-0 bg-gray-800"
+                style="color: white"
+              >
+                Rules Settings
+              </div>
+
+              <!-- Rule 1: Path Shape -->
+              <div class="rule-item p-2 border-b border-gray-700">
+                <label class="flex items-center cursor-pointer">
+                  <input type="checkbox" id="rule-path" class="mr-2" />
+                  <span style="color: white">1. Path Shape</span>
+                </label>
+                <div class="ml-5 mt-1 text-xs text-gray-400">
+                  <div class="flex items-center gap-1">
+                    <span>Consistency:</span>
+                    <input
+                      type="number"
+                      id="threshold-path"
+                      value="0.6"
+                      step="0.05"
+                      min="0.3"
+                      max="0.9"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <div class="text-gray-500">(0.3-0.9)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rule 2: Arm Rotation -->
+              <div class="rule-item p-2 border-b border-gray-700">
+                <label class="flex items-center cursor-pointer">
+                  <input type="checkbox" id="rule-rotation" class="mr-2" />
+                  <span style="color: white">2. Arm Rotation</span>
+                  <span class="ml-auto text-xs px-1 bg-blue-600 rounded"
+                    >L2+</span
+                  >
+                </label>
+                <div class="ml-5 mt-1 text-xs text-gray-400">
+                  <div class="flex items-center gap-1">
+                    <span>Motion:</span>
+                    <input
+                      type="number"
+                      id="threshold-rotation"
+                      value="0.015"
+                      step="0.005"
+                      min="0.005"
+                      max="0.05"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <div class="text-gray-500">(0.005-0.05)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rule 3: Elbow Sinking -->
+              <div class="rule-item p-2 border-b border-gray-700">
+                <label class="flex items-center cursor-pointer">
+                  <input type="checkbox" id="rule-elbow" class="mr-2" />
+                  <span style="color: white">3. Elbow Sinking</span>
+                </label>
+                <div class="ml-5 mt-1 text-xs text-gray-400">
+                  <div class="flex items-center gap-1">
+                    <span>Tolerance:</span>
+                    <input
+                      type="number"
+                      id="threshold-elbow"
+                      value="0.01"
+                      step="0.005"
+                      min="0.005"
+                      max="0.05"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <div class="text-gray-500">(0.005-0.05)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rule 4: Waist Initiation -->
+              <div class="rule-item p-2 border-b border-gray-700">
+                <label class="flex items-center cursor-pointer">
+                  <input type="checkbox" id="rule-waist" class="mr-2" />
+                  <span style="color: white">4. Waist Initiation</span>
+                  <span class="ml-auto text-xs px-1 bg-blue-600 rounded"
+                    >L2+</span
+                  >
+                </label>
+                <div class="ml-5 mt-1 text-xs text-gray-400">
+                  <div class="flex items-center gap-1 mb-1">
+                    <span>Hip Vel:</span>
+                    <input
+                      type="number"
+                      id="threshold-hip-vel"
+                      value="2.0"
+                      step="0.5"
+                      min="0.5"
+                      max="10"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <span class="text-gray-500">(0.5-10.0)</span>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <span>S/H Ratio:</span>
+                    <input
+                      type="number"
+                      id="threshold-sh-ratio"
+                      value="3.0"
+                      step="0.5"
+                      min="1"
+                      max="10"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <span class="text-gray-500">(1.0-10.0)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rule 5: Vertical Stability -->
+              <div class="rule-item p-2 border-b border-gray-700">
+                <label class="flex items-center cursor-pointer">
+                  <input type="checkbox" id="rule-stability" class="mr-2" />
+                  <span style="color: white">5. Vertical Stability</span>
+                  <span class="ml-auto text-xs px-1 bg-blue-600 rounded"
+                    >L2+</span
+                  >
+                </label>
+                <div class="ml-5 mt-1 text-xs text-gray-400">
+                  <div class="flex items-center gap-1">
+                    <span>Threshold:</span>
+                    <input
+                      type="number"
+                      id="threshold-stability"
+                      value="0.05"
+                      step="0.01"
+                      min="0.01"
+                      max="0.15"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <div class="text-gray-500">(0.01-0.15)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rule 6: Smoothness -->
+              <div class="rule-item p-2 border-b border-gray-700">
+                <label class="flex items-center cursor-pointer">
+                  <input type="checkbox" id="rule-smooth" class="mr-2" />
+                  <span style="color: white">6. Smoothness</span>
+                  <span class="ml-auto text-xs px-1 bg-purple-600 rounded"
+                    >L3</span
+                  >
+                </label>
+                <div class="ml-5 mt-1 text-xs text-gray-400">
+                  <div class="flex items-center gap-1">
+                    <span>Threshold:</span>
+                    <input
+                      type="number"
+                      id="threshold-smooth"
+                      value="0.05"
+                      step="0.01"
+                      min="0.01"
+                      max="0.15"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <div class="text-gray-500">(0.01-0.15)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rule 7: Continuity -->
+              <div class="rule-item p-2 border-b border-gray-700">
+                <label class="flex items-center cursor-pointer">
+                  <input type="checkbox" id="rule-continuity" class="mr-2" />
+                  <span style="color: white">7. Continuity</span>
+                </label>
+                <div class="ml-5 mt-1 text-xs text-gray-400">
+                  <div class="flex items-center gap-1 mb-1">
+                    <span>Motion:</span>
+                    <input
+                      type="number"
+                      id="threshold-motion"
+                      value="0.001"
+                      step="0.001"
+                      min="0.001"
+                      max="0.01"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <span class="text-gray-500">(0.001-0.01)</span>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <span>Pause:</span>
+                    <input
+                      type="number"
+                      id="threshold-pause"
+                      value="15"
+                      step="5"
+                      min="5"
+                      max="60"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <span class="text-gray-500">(5-60)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rule 8: Weight Shift -->
+              <div class="rule-item p-2 border-b border-gray-700">
+                <label class="flex items-center cursor-pointer">
+                  <input type="checkbox" id="rule-weight" class="mr-2" />
+                  <span style="color: white">8. Weight Shift</span>
+                  <span class="ml-auto text-xs px-1 bg-purple-600 rounded"
+                    >L3</span
+                  >
+                </label>
+                <div class="ml-5 mt-1 text-xs text-gray-400">
+                  <div class="flex items-center gap-1">
+                    <span>Buffer:</span>
+                    <input
+                      type="number"
+                      id="threshold-weight"
+                      value="0.1"
+                      step="0.05"
+                      min="0.05"
+                      max="0.30"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <div class="text-gray-500">(0.05-0.30)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reset Button -->
+              <div class="p-2 sticky bottom-0 bg-gray-800">
+                <button
+                  id="rules-reset-btn"
+                  class="w-full py-2 bg-gray-700 hover:bg-gray-600 text-white rounded text-sm"
+                >
+                  🔄 Reset to Defaults
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Settings Buttons -->
+        <div class="flex gap-2">
+          <!-- Audio Button -->
+          <button
+            id="audio-btn"
+            class="px-3 py-2 bg-green-600 text-white border border-green-700 rounded hover:bg-green-700 transition-colors"
+            title="เปิด/ปิดเสียงพูด"
+          >
+            🔊
+          </button>
+
+          <!-- Language Button -->
+          <button
+            id="lang-btn"
+            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 font-bold transition-colors"
+            title="เปลี่ยนภาษา TH/EN - Switch language"
+          >
+            🇹🇭
+          </button>
+          <!-- Theme Button -->
+          <button
+            id="theme-btn"
+            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+            title="เปลี่ยนธีม สว่าง/มืด - Toggle dark/light mode"
+          >
+            🌙
+          </button>
+          <!-- Tutorial/Help Button -->
+          <button
+            id="tutorial-btn"
+            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+            title="คู่มือการฝึก (H)"
+          >
+            ❓
+          </button>
+        </div>
+      </div>
+
+      <!-- Canvas Container (Full Width) -->
+      <div
+        class="canvas-container bg-black rounded overflow-hidden shadow-xl mb-6"
+      >
+        <video
+          id="input_video"
+          style="display: none"
+          autoplay
+          playsinline
+        ></video>
+        <canvas id="output_canvas" width="1280" height="720"></canvas>
+
+        <!-- Instructor Thumbnail (มุมขวาบน) -->
+        <canvas id="instructor-thumbnail"></canvas>
+
+        <!-- Feedback Overlay (HTML - ไม่ถูก CSS mirror) -->
+        <div
+          id="feedback-overlay"
+          class="absolute top-4 left-4 z-30 hidden"
+          style="
+            background: rgba(0, 0, 0, 0.75);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-family: 'Sarabun', sans-serif;
+            min-width: 280px;
+            max-width: 450px;
+          "
+        >
+          <div
+            id="feedback-content"
+            style="
+              color: #ffd700;
+              font-size: 18px;
+              font-weight: bold;
+              line-height: 1.5;
+            "
+          >
+            <!-- Feedback messages will be inserted here by JS -->
+          </div>
+        </div>
+
+        <!-- Debug Overlay (HTML - ไม่ถูก CSS mirror) -->
+        <div
+          id="debug-overlay"
+          class="absolute top-4 right-4 z-30 hidden"
+          style="
+            background: rgba(0, 0, 40, 0.95);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            min-width: 280px;
+          "
+        >
+          <div
+            style="
+              color: #00ffff;
+              font-size: 16px;
+              font-weight: bold;
+              margin-bottom: 8px;
+            "
+          >
+            🐞 DEBUG MODE
+          </div>
+          <div
+            id="debug-content"
+            style="color: #00ff00; font-size: 14px; line-height: 1.6"
+          >
+            <!-- Debug values will be inserted here by JS -->
+          </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div
+          id="loading-overlay"
+          class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80 text-white text-xl z-20 hidden rounded-lg"
+        >
+          <div class="flex flex-col items-center">
+            <svg
+              class="animate-spin h-10 w-10 text-white mb-3"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            <span id="loading-text">กำลังโหลดโมเดล AI...</span>
+          </div>
+        </div>
+
+        <!-- Start Overlay (คำแนะนำการใช้งาน) -->
+        <div
+          id="start-overlay"
+          class="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-70 z-10 rounded-lg transition-opacity duration-300 p-8"
+        >
+          <h2
+            id="overlay-title"
+            class="text-white text-2xl font-bold mb-6 drop-shadow-md"
+          >
+            📋 วิธีเริ่มต้นใช้งาน
+          </h2>
+          <div class="text-white text-lg text-left space-y-3 max-w-md">
+            <p class="flex items-center gap-3">
+              <span
+                class="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
+                >1</span
+              >
+              <span id="overlay-step1"
+                >เลือก <strong>"ท่าฝึก"</strong> จากเมนูด้านบน</span
+              >
+            </p>
+            <p class="flex items-center gap-3">
+              <span
+                class="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
+                >2</span
+              >
+              <span id="overlay-step2"
+                >เลือก <strong>"ระดับ"</strong> ที่ต้องการฝึก</span
+              >
+            </p>
+            <p class="flex items-center gap-3">
+              <span
+                class="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
+                >3</span
+              >
+              <span id="overlay-step3"
+                >กดปุ่ม <strong>"🏃 เริ่มการฝึก"</strong></span
+              >
+            </p>
+          </div>
+          <!-- Gesture Hint Section -->
+          <div
+            id="gesture-hint"
+            class="mt-6 p-4 bg-gray-800 bg-opacity-20 rounded-lg border border-gray-600 max-w-md"
+          >
+            <div class="flex justify-center gap-6 text-white text-sm">
+              <div class="flex items-center gap-2">
+                <span class="text-2xl">👍</span>
+                <span id="gesture-start-hint">ยกนิ้วโป้ง = เริ่มการฝึก</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-2xl">✊</span>
+                <span id="gesture-stop-hint">กำมือ = หยุดการฝึก</span>
+              </div>
+            </div>
+          </div>
+          <p id="overlay-note" class="text-gray-400 mt-6 text-sm text-center">
+            ⏱️ ฝึกท่าละ 5 นาที • ไม่บันทึกวิดีโอ | 📏
+            ปรับเทียบสัดส่วนอัตโนมัติทุกครั้ง
+          </p>
+        </div>
+
+        <!-- Countdown Overlay (3-2-1) -->
+        <div id="countdown-overlay" class="countdown-overlay hidden">
+          <span id="countdown-number" class="countdown-number">3</span>
+        </div>
+
+        <!-- Fullscreen Button (มุมขวาล่าง - แสดงระหว่างฝึก) -->
+        <div
+          id="fullscreen-overlay-btn"
+          class="absolute bottom-4 right-4 z-20 hidden"
+        >
+          <button
+            id="video-fullscreen-btn"
+            class="flex items-center gap-2 bg-black bg-opacity-70 px-3 py-2 rounded-full text-white font-bold hover:bg-opacity-90 transition"
+            title="เต็มจอ"
+          >
+            ⛶ <span id="fullscreen-btn-text">เต็มจอ</span>
+          </button>
+        </div>
+
+        <!-- Training Timer Overlay (มุมซ้ายล่าง - แสดงระหว่างฝึก) -->
+        <div
+          id="training-controls"
+          class="absolute bottom-4 left-4 z-20 hidden"
+        >
+          <div
+            class="flex items-center gap-3 bg-black bg-opacity-70 px-4 py-2 rounded-full"
+          >
+            <span class="text-white font-bold">⏱️</span>
+            <span id="training-timer-overlay" class="text-white font-bold"
+              >5:00</span
+            >
+            <span class="text-gray-400">|</span>
+            <button
+              id="stop-training-overlay-btn"
+              class="text-red-400 hover:text-red-300 font-bold flex items-center gap-1 transition-colors"
+              title="หยุดการฝึก"
+            >
+              🛑 <span id="stop-btn-text">หยุด</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Control Buttons (Start/Stop - Separate) -->
+      <div class="flex justify-center gap-4 mb-6">
+        <button
+          id="start-training-btn"
+          class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition text-lg opacity-50 cursor-not-allowed"
+          disabled
+        >
+          🏃 เริ่มการฝึก
+        </button>
+        <button
+          id="stop-training-btn"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition text-lg opacity-50 cursor-not-allowed"
+          disabled
+        >
+          ⏹️ หยุดการฝึก
+        </button>
+      </div>
+
+      <!-- Instructions (Hidden for now - will add more useful tips later) -->
+      <div class="instructions-box p-4 rounded text-left hidden">
+        <h3 id="instr-title" class="font-bold mb-2">💡 คำแนะนำ:</h3>
+        <ul class="list-disc list-inside text-sm space-y-1">
+          <li id="instr-1">เลือกท่าฝึกและระดับ แล้วกด 'เริ่มการฝึก'</li>
+          <li id="instr-2">ยืนให้เห็นเต็มตัว ห่างจากกล้อง 2-3 เมตร</li>
+          <li id="instr-3">ปรับเทียบสัดส่วนอัตโนมัติทุกครั้งก่อนเริ่มฝึก</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Hidden Legacy Elements (for script.js compatibility) -->
+    <div class="hidden">
+      <button id="small-calibrate-btn"></button>
+      <button id="cancel-calib-btn"></button>
+      <button id="fullscreen-btn"></button>
+      <button id="record-btn"></button>
+      <div id="level-buttons">
+        <button class="level-btn" data-level="L1"></button>
+        <button class="level-btn" data-level="L2"></button>
+        <button class="level-btn" data-level="L3"></button>
+      </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div
+      id="notification-container"
+      class="fixed top-5 right-5 z-50 flex flex-col items-end gap-3"
+    >
+      <!-- Notifications will be injected here by JavaScript -->
+    </div>
+  </body>
+</html>

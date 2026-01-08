@@ -19,9 +19,9 @@
 
 ```text
 TaijiFlow/
-├── 📄 index.html                    # Entry Point หลัก
+├── 📄 index.html                    # Landing Page (Entry Point)
+├── 📄 app.html                      # Training Application (Main App)
 ├── 📄 data_collector.html           # เครื่องมือเก็บข้อมูล Reference
-├── 📄 landing.html                  # Landing Page
 │
 ├── 📁 css/                          # Stylesheets (3 files)
 │   ├── styles.css                   # Main Styles

@@ -1,0 +1,169 @@
+@startuml SystemArchitecture
+' ============================================================================
+' TaijiFlow AI - System Architecture Diagram
+' ============================================================================
+' แสดงภาพรวมสถาปัตยกรรมระบบทั้งหมด
+' ประกอบด้วย: Hardware, Web Application (4 Layers), External APIs
+' อัปเดต: 2026-01-09
+' ============================================================================
+
+skinparam defaultFontName "Sarabun"
+skinparam backgroundColor transparent
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+' === Direction ===
+top to bottom direction
+
+' === Colors ===
+skinparam package {
+    BackgroundColor<<hardware>> #ECEFF1
+    BackgroundColor<<presentation>> #E3F2FD
+    BackgroundColor<<business>> #FFF3E0
+    BackgroundColor<<data>> #E8F5E9
+    BackgroundColor<<external>> #FFEBEE
+    BorderColor #666666
+}
+
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor #999999
+}
+
+skinparam node {
+    BackgroundColor #F5F5F5
+    BorderColor #666666
+}
+
+' ============================================================================
+' HARDWARE LAYER (Top)
+' ============================================================================
+
+package "🖥️ USER HARDWARE" <<hardware>> {
+    node "Desktop/Laptop" as Desktop {
+        [Chrome/Edge/Safari\nBrowser] as Browser
+    }
+    
+    node "Input Devices" as Input {
+        [Webcam\n720p+] as Webcam
+        [Keyboard] as Keyboard
+    }
+    
+    node "Output" as Output {
+        [Display] as Display
+        [Speaker] as Speaker
+    }
+}
+
+' ============================================================================
+' WEB APPLICATION (Main Container)
+' ============================================================================
+
+package "🌐 TaijiFlow AI Web Application" as WebApp {
+    
+    ' --- Presentation Layer ---
+    package "🖥️ PRESENTATION LAYER" <<presentation>> {
+        [index.html\nLanding Page] as IndexHtml
+        [app.html\nTraining App] as AppHtml
+        
+        [ui_manager.js] as UIManager
+        [drawing_manager.js] as DrawingManager
+        [tutorial_manager.js] as TutorialManager
+        [score_popup_manager.js] as ScorePopup
+        [chatbot.js] as Chatbot
+    }
+    
+    ' --- Business Logic Layer ---
+    package "⚙️ BUSINESS LOGIC LAYER" <<business>> {
+        [script.js\nMain Controller] as Script
+        [heuristics_engine.js\n8 Rules] as Heuristics
+        [calibration_manager.js\nT-Pose] as Calibration
+        [scoring_manager.js\nScore] as Scoring
+        [gesture_manager.js\n👍✊] as Gesture
+        [audio_manager.js\nTTS] as Audio
+    }
+    
+    ' --- Data Layer ---
+    package "💾 DATA LAYER" <<data>> {
+        [session_manager.js] as Session
+        [data_exporter.js] as Exporter
+        [translations.js\ni18n] as Translations
+        [LocalStorage] as LocalStorage
+    }
+    
+    ' --- Reference Data ---
+    database "Reference Data" as RefData {
+        [*.json\nGhost Landmarks]
+        [*.webm\nInstructor Videos]
+    }
+}
+
+' ============================================================================
+' EXTERNAL APIs (Bottom)
+' ============================================================================
+
+package "🌐 EXTERNAL APIs (CDN)" <<external>> {
+    cloud "Google CDN" as GoogleCDN {
+        [MediaPipe Pose\n33 Landmarks] as MPPose
+        [MediaPipe Gesture\n👍✊] as MPGesture
+    }
+    
+    cloud "Google AI" as GoogleAI {
+        [Gemini API\nChatbot] as Gemini
+    }
+    
+    cloud "Web APIs" as WebAPIs {
+        [Web Speech API\nTTS] as WebSpeech
+        [Canvas API\n2D Graphics] as CanvasAPI
+    }
+}
+
+' ============================================================================
+' RELATIONSHIPS
+' ============================================================================
+
+' Hardware → Browser
+Browser -down-> AppHtml : loads
+Webcam -down-> Browser : video stream
+Keyboard -down-> Browser : input
+Browser -down-> Display : renders
+Browser -down-> Speaker : audio
+
+' Presentation → Business Logic
+AppHtml --> Script
+UIManager --> Script
+DrawingManager --> Heuristics
+ScorePopup --> Scoring
+
+' Business Logic → Data
+Script --> Session
+Script --> Exporter
+UIManager --> Translations
+Session --> LocalStorage
+Script --> RefData
+
+' Business Logic → External APIs
+Heuristics ..> MPPose : uses
+Gesture ..> MPGesture : uses
+Audio ..> WebSpeech : uses
+DrawingManager ..> CanvasAPI : uses
+Chatbot ..> Gemini : uses
+
+' ============================================================================
+' LEGEND
+' ============================================================================
+
+legend right
+  |= Layer |= หน้าที่หลัก |
+  | Hardware | อุปกรณ์ผู้ใช้ |
+  | Presentation | แสดงผล UI |
+  | Business Logic | ประมวลผล AI |
+  | Data | จัดการข้อมูล |
+  | External APIs | บริการภายนอก |
+  --
+  **Architecture:** Client-Side Only
+  **No Backend Server Required**
+endlegend
+
+@enduml

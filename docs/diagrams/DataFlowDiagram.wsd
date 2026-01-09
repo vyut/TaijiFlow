@@ -1,0 +1,148 @@
+@startuml DataFlowDiagram
+' ============================================================================
+' TaijiFlow AI - Data Flow Diagram
+' ============================================================================
+' แสดงการไหลของข้อมูลตั้งแต่ Webcam → Processing → Output
+' ประเภท: DFD Level 1
+' อัปเดต: 2026-01-09
+' ============================================================================
+
+skinparam defaultFontName "Sarabun"
+skinparam backgroundColor transparent
+skinparam linetype ortho
+
+' === Styles ===
+skinparam rectangle {
+    BackgroundColor #E3F2FD
+    BorderColor #1976D2
+}
+
+skinparam database {
+    BackgroundColor #E8F5E9
+    BorderColor #388E3C
+}
+
+skinparam storage {
+    BackgroundColor #FFF3E0
+    BorderColor #F57C00
+}
+
+skinparam actor {
+    BackgroundColor #FFEBEE
+    BorderColor #D32F2F
+}
+
+' ============================================================================
+' EXTERNAL ENTITIES
+' ============================================================================
+
+actor "👤 User\n(ผู้ฝึก)" as User
+actor "🤖 MediaPipe\n(AI Model)" as MediaPipe
+
+database "📁 Reference Data\n(JSON/WebM)" as RefData
+storage "💾 LocalStorage" as LocalStorage
+
+' ============================================================================
+' PROCESSES (Rectangles)
+' ============================================================================
+
+rectangle "1.0\n📹 Capture\nVideo" as P1 #E3F2FD
+rectangle "2.0\n🔍 Detect\nPose" as P2 #E3F2FD
+rectangle "3.0\n📐 Calibrate\nT-Pose" as P3 #FFF3E0
+rectangle "4.0\n⚖️ Analyze\nHeuristics" as P4 #FFF3E0
+rectangle "5.0\n📊 Calculate\nScore" as P5 #FFF3E0
+rectangle "6.0\n🎨 Render\nCanvas" as P6 #E8F5E9
+rectangle "7.0\n🔊 Play\nFeedback" as P7 #E8F5E9
+
+' ============================================================================
+' DATA STORES
+' ============================================================================
+
+storage "D1: Calibration Data\n(armLength, shoulderWidth)" as D1 #ECEFF1
+storage "D2: Frame Buffer\n(feedbacks[])" as D2 #ECEFF1
+storage "D3: Settings\n(theme, language)" as D3 #ECEFF1
+
+' ============================================================================
+' DATA FLOWS
+' ============================================================================
+
+' Input Flows
+User -right-> P1 : "Webcam Stream\n(720p video)"
+MediaPipe <-down- P2 : "Video Frame"
+MediaPipe -down-> P2 : "33 Landmarks\n(x, y, z, visibility)"
+
+' Process Flows
+P1 -right-> P2 : "Video Frame"
+P2 -down-> P3 : "Landmarks\n(first time)"
+P2 -down-> P4 : "Landmarks\n(every frame)"
+
+P3 -right-> D1 : "Store Calibration"
+D1 -down-> P4 : "Calibration Data"
+
+' Reference Data
+RefData -right-> P4 : "Ghost Landmarks"
+RefData -right-> P6 : "Instructor Video"
+
+' Analysis Flow
+P4 -right-> D2 : "Feedbacks[]\n(rule, severity)"
+D2 -right-> P5 : "All Feedbacks"
+P4 -down-> P6 : "Violations\n(for highlight)"
+P4 -down-> P7 : "Errors\n(for TTS)"
+
+' Output Flows
+P5 -down-> User : "Score Summary\n(%, grade)"
+P6 -down-> User : "Canvas\n(Skeleton, Path, Ghost)"
+P7 -down-> User : "Audio\n(เสียงเตือน)"
+
+' Settings
+LocalStorage <--> D3 : "Read/Write"
+D3 --> P6 : "Display Options"
+D3 --> P7 : "Audio Settings"
+
+' ============================================================================
+' DATA DICTIONARY
+' ============================================================================
+
+note right of P2
+  **Landmarks (33 points)**
+  - x: 0.0-1.0 (normalized)
+  - y: 0.0-1.0 (normalized)
+  - z: depth (negative = closer)
+  - visibility: 0.0-1.0
+end note
+
+note right of P4
+  **Feedbacks[]**
+  - rule: "R-01" to "R-08"
+  - type: error/warning/info
+  - message: string
+  - severity: 1-3
+end note
+
+note bottom of P5
+  **Score Summary**
+  - overallScore: 0-100%
+  - grade: A-F
+  - ruleScores: {}
+  - topErrors: []
+end note
+
+' ============================================================================
+' LEGEND
+' ============================================================================
+
+legend right
+  |= Symbol |= Meaning |
+  | Rectangle | Process |
+  | Actor | External Entity |
+  | Database | External Data |
+  | Storage | Data Store |
+  | Arrow | Data Flow |
+  --
+  **Data Flow Levels:**
+  Blue = Input/Detection
+  Orange = Processing
+  Green = Output
+endlegend
+
+@enduml

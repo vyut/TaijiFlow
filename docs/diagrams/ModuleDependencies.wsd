@@ -2,8 +2,8 @@
 ' ============================================================================
 ' TaijiFlow AI - Module Dependencies Diagram (Top-Down Layers)
 ' ============================================================================
-' แสดงความสัมพันธ์ระหว่าง 21 Modules แบ่งเป็น 4 ชั้น
-' อัปเดต: 2025-01-08
+' แสดงความสัมพันธ์ระหว่าง 22 Modules แบ่งเป็น 5 ชั้น
+' อัปเดต: 2026-01-09
 ' ============================================================================
 
 skinparam defaultFontName "Sarabun"
@@ -79,6 +79,10 @@ package "Layer 4: Utilities" <<utility>> {
     [PathGenerator] as PathGen
     [SessionManager] as Session
     [translations.js] as Translations
+}
+
+package "Layer 4: Landing Page" <<utility>> {
+    [silk-animation.js] as SilkAnim
 }
 
 ' ============================================================================

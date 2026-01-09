@@ -27,7 +27,7 @@ out/
 Thumbs.db
 
 # Backup
-.backup/
+backup/
 
 # Ebooks (copyrighted materials)
 docs/ebooks/

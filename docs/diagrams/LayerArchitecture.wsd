@@ -44,10 +44,6 @@ package "🖥️ PRESENTATION LAYER" <<presentation>> {
     [feedback_manager.js] as FeedbackManager
 }
 
-note right of IndexHtml
-  **หน้าที่:** แสดงผล UI, รับ input, วาด Canvas
-end note
-
 ' ============================================================================
 ' LAYER 2: BUSINESS LOGIC LAYER
 ' ============================================================================
@@ -61,10 +57,6 @@ package "⚙️ BUSINESS LOGIC LAYER" <<business>> {
     [audio_manager.js] as Audio
 }
 
-note right of Script
-  **หน้าที่:** ประมวลผลหลัก, วิเคราะห์ท่า, คำนวณคะแนน
-end note
-
 ' ============================================================================
 ' LAYER 3: DATA LAYER
 ' ============================================================================
@@ -77,10 +69,6 @@ package "💾 DATA LAYER" <<data>> {
     [translations.js] as Translations
 }
 
-note right of Session
-  **หน้าที่:** จัดการข้อมูล, Session, Export
-end note
-
 ' ============================================================================
 ' LAYER 4: EXTERNAL APIs (Bottom)
 ' ============================================================================
@@ -91,10 +79,6 @@ package "🌐 EXTERNAL APIs" <<external>> {
     [Web Speech API] as WebSpeech
     [Gemini API] as Gemini
 }
-
-note right of MPPose
-  **หน้าที่:** APIs ภายนอก
-end note
 
 ' ============================================================================
 ' RELATIONSHIPS (Layer-to-Layer Communication Only)

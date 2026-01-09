@@ -28,7 +28,14 @@ end note
 
 partition "System Initialization" {
     if (เข้าถึงกล้องได้?) then (ไม่ได้ (E1))
-        :แจ้งเตือน "ไม่พบกล้อง";
+        note right
+            **Camera Error Types**
+            - not_allowed: ไม่อนุญาต
+            - not_found: ไม่พบกล้อง
+            - not_readable: กล้องใช้งานอยู่
+        end note
+        :แจ้งเตือน Error (Toast + Overlay);
+        :แสดงคำแนะนำแก้ปัญหา;
         stop
     else (ได้)
         :โหลดข้อมูลท่าต้นแบบ (JSON);

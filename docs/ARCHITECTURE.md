@@ -12,6 +12,7 @@
 3. [Design Patterns](#3-design-patterns)
 4. [Module Dependencies](#4-module-dependencies)
 5. [Layer Architecture](#5-layer-architecture)
+6. [Error Handling](#6-error-handling)
 
 ---
 
@@ -23,12 +24,13 @@ TaijiFlow/
 ├── 📄 app.html                      # Training Application (Main App)
 ├── 📄 data_collector.html           # เครื่องมือเก็บข้อมูล Reference
 │
-├── 📁 css/                          # Stylesheets (3 files)
-│   ├── styles.css                   # Main Styles
+├── 📁 css/                          # Stylesheets (4 files)
+│   ├── styles.css                   # Main Styles (App)
+│   ├── landing.css                  # Landing Page Styles
 │   ├── chatbot.css                  # Chatbot Popup Styles
 │   └── feedback.css                 # Feedback Modal Styles
 │
-├── 📁 js/                           # JavaScript Modules (21 files)
+├── 📁 js/                           # JavaScript Modules (22 files)
 │   │
 │   │   # ═══════════════════════════════════════════════════════
 │   │   # CORE MANAGERS (ไม่พึ่งพา Module อื่น)
@@ -73,7 +75,12 @@ TaijiFlow/
 │   │   # ═══════════════════════════════════════════════════════
 │   │   # MAIN CONTROLLER (Entry Point)
 │   │   # ═══════════════════════════════════════════════════════
-│   └── script.js                    # Main Controller (~72KB)
+│   ├── script.js                    # Main Controller (~72KB)
+│   │
+│   │   # ═══════════════════════════════════════════════════════
+│   │   # LANDING PAGE (Standalone)
+│   │   # ═══════════════════════════════════════════════════════
+│   └── silk-animation.js            # Silk Reeling Animation (~7KB)
 │
 ├── 📁 data/                         # Reference Data
 │   ├── rh_cw_L1.json                # Ghost landmarks (มือขวา-ตามเข็ม L1)
@@ -307,4 +314,35 @@ this.RULES_CONFIG = {
 
 ---
 
-*Document updated: 2026-01-08 for Master's Thesis SE*
+## 6. Error Handling
+
+### Camera Errors
+
+ระบบจัดการ Camera Error ได้ครบถ้วน โดยจำแนก 4 ประเภท:
+
+| Error Type | สาเหตุ | ข้อความ TH | ข้อความ EN |
+| ---------- | ------ | ---------- | ---------- |
+| `not_allowed` | ไม่ได้รับอนุญาต | ไม่ได้รับอนุญาตใช้กล้อง | Camera access denied |
+| `not_found` | ไม่พบกล้อง | ไม่พบกล้อง | No camera found |
+| `not_readable` | กล้องถูกใช้งาน | กล้องถูกใช้งานโดยโปรแกรมอื่น | Camera in use |
+| `unknown` | ไม่ทราบสาเหตุ | เกิดข้อผิดพลาด | Camera error |
+
+**การแสดงผล:**
+1. ซ่อน Loading Overlay
+2. แสดง Toast Notification (สีแดง, 10 วินาที)
+3. อัปเดตหัวข้อบน Start Overlay
+4. บันทึกลง Console
+
+**อ้างอิง:** `script.js` → `showCameraError()`, `initCamera()`
+
+### Reference Data Errors
+
+| Error Type | สาเหตุ | การจัดการ |
+| ---------- | ------ | --------- |
+| JSON Not Found | ไม่พบไฟล์ Reference | แจ้งเตือน + หยุดทำงาน |
+| Video Load Error | วิดีโอครูโหลดไม่ได้ | ซ่อน Instructor thumbnail |
+
+---
+
+*Document updated: 2026-01-09 for Master's Thesis SE*
+

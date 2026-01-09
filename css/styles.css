@@ -215,3 +215,134 @@ body.light .instructions-box strong {
 #instructor-thumbnail.hidden {
   display: none;
 }
+
+/* =============================================================================
+   RESPONSIVE - Tablet Support
+   ============================================================================= */
+
+/* Tablet Landscape (1024px and below) */
+@media (max-width: 1024px) {
+  /* Main container */
+  #main-card {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  /* App title */
+  #app-title {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  /* Top bar - wrap controls */
+  #main-card > div:first-of-type {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Dropdowns row */
+  #main-card .flex.gap-4 {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Instructor thumbnail smaller */
+  #instructor-thumbnail {
+    max-width: 200px;
+    min-width: 120px;
+  }
+
+  /* Countdown number smaller */
+  .countdown-number {
+    font-size: 6rem;
+  }
+}
+
+/* Tablet Portrait (768px and below) */
+@media (max-width: 768px) {
+  /* Body padding */
+  body {
+    padding: 0.5rem;
+  }
+
+  /* Main card */
+  #main-card {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+  }
+
+  /* App title */
+  #app-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Dropdown selects */
+  select {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  /* Settings buttons */
+  button {
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Instructor thumbnail */
+  #instructor-thumbnail {
+    max-width: 150px;
+    min-width: 100px;
+    top: 5px;
+    right: 5px;
+  }
+
+  /* Countdown number */
+  .countdown-number {
+    font-size: 4rem;
+  }
+
+  /* Overlays text */
+  #start-overlay h2 {
+    font-size: 1.25rem;
+  }
+
+  #start-overlay p {
+    font-size: 0.875rem;
+  }
+
+  /* Training controls (bottom left) */
+  .training-controls {
+    left: 5px;
+    bottom: 5px;
+  }
+}
+
+/* Small Tablet / Large Phone (640px and below) */
+@media (max-width: 640px) {
+  /* Stack dropdowns vertically */
+  #main-card .flex.gap-4.flex-wrap {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* Full width dropdowns */
+  select {
+    width: 100%;
+  }
+
+  /* Settings buttons - smaller */
+  #main-card .flex.gap-2 {
+    justify-content: center;
+  }
+
+  /* Instructor thumbnail even smaller */
+  #instructor-thumbnail {
+    max-width: 120px;
+    min-width: 80px;
+  }
+
+  /* Hide some overlay text on very small screens */
+  #start-overlay .space-y-3 {
+    max-width: 90%;
+  }
+}

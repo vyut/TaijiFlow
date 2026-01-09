@@ -1,0 +1,540 @@
+/**
+ * ============================================================================
+ * TaijiFlow AI - Landing Page Styles
+ * ============================================================================
+ *
+ * Stylesheet สำหรับ Landing Page (index.html)
+ *
+ * Sections:
+ *   1. Base/Reset
+ *   2. Navigation
+ *   3. Hero Section
+ *   4. About Section
+ *   5. Guide Section
+ *   6. Reference Section
+ *   7. Footer
+ *   8. Animations
+ *   9. Responsive
+ *
+ * ============================================================================
+ */
+
+/* =============================================================================
+   1. BASE / RESET
+   ============================================================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body.landing {
+  font-family: "Sarabun", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  background: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* =============================================================================
+   2. NAVIGATION
+   ============================================================================= */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.logo::before {
+  content: "☯️";
+  font-size: 24px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #fff;
+}
+
+.nav-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-search:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Navigation Primary Button (purple gradient) */
+.nav-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #a855f7, #6366f1);
+  color: #fff !important;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.nav-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(168, 85, 247, 0.4);
+}
+
+/* =============================================================================
+   3. HERO SECTION
+   ============================================================================= */
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Canvas for Silk Reeling Animation */
+#silk-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Hero Content */
+.hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 8px 20px;
+  background: rgba(168, 85, 247, 0.2);
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  margin-bottom: 30px;
+  animation: fadeIn 0.8s ease-out;
+}
+
+h1 {
+  font-size: 80px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 40px;
+  animation: fadeInUp 1s ease-out 0.2s both;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #fff 0%, rgba(168, 85, 247, 0.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.button-group {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+.btn {
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: #fff;
+  color: #000;
+}
+
+.btn-primary:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+  animation: fadeIn 1s ease-out 0.6s both;
+  z-index: 10;
+}
+
+.scroll-indicator::before {
+  content: "";
+  width: 4px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 2px;
+  animation: scroll 2s ease-in-out infinite;
+}
+
+/* =============================================================================
+   4. ABOUT SECTION
+   ============================================================================= */
+.about-section {
+  padding: 100px 40px;
+  background: linear-gradient(180deg, #000 0%, #1a1a2e 100%);
+}
+
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about-section h2 {
+  font-size: 48px;
+  text-align: center;
+  margin-bottom: 60px;
+  color: #fff;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.about-card {
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 16px;
+  padding: 30px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 40px rgba(168, 85, 247, 0.2);
+}
+
+.about-card h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #a855f7;
+}
+
+.about-card p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.8;
+}
+
+.about-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.about-card ul li {
+  color: rgba(255, 255, 255, 0.8);
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.about-card ul li:last-child {
+  border-bottom: none;
+}
+
+/* =============================================================================
+   5. GUIDE SECTION
+   ============================================================================= */
+.guide-section {
+  padding: 100px 40px;
+  background: #0a0a15;
+  text-align: center;
+}
+
+.guide-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.guide-section h2 {
+  font-size: 48px;
+  margin-bottom: 60px;
+  color: #fff;
+}
+
+.guide-steps {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+.guide-step {
+  flex: 1;
+  max-width: 280px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #a855f7, #6366f1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 auto 20px;
+}
+
+.guide-step h4 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.guide-step p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.guide-cta {
+  margin-top: 40px;
+}
+
+/* =============================================================================
+   6. REFERENCE SECTION
+   ============================================================================= */
+.reference-section {
+  padding: 100px 40px;
+  background: linear-gradient(180deg, #0a0a15 0%, #1a1a2e 100%);
+}
+
+.reference-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.reference-section h2 {
+  font-size: 48px;
+  text-align: center;
+  margin-bottom: 60px;
+  color: #fff;
+}
+
+.reference-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.reference-card {
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 16px;
+  padding: 30px;
+}
+
+.reference-card h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #a855f7;
+}
+
+.reference-card p {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.reference-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.reference-card ul li {
+  color: rgba(255, 255, 255, 0.7);
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.ref-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #a855f7;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.ref-link:hover {
+  color: #c084fc;
+}
+
+/* =============================================================================
+   7. FOOTER
+   ============================================================================= */
+.footer {
+  padding: 40px;
+  text-align: center;
+  background: #000;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* =============================================================================
+   8. ANIMATIONS
+   ============================================================================= */
+@keyframes scroll {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(12px);
+    opacity: 0.3;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =============================================================================
+   9. RESPONSIVE
+   ============================================================================= */
+@media (max-width: 768px) {
+  nav {
+    padding: 15px 20px;
+  }
+
+  .nav-links {
+    gap: 20px;
+    font-size: 12px;
+  }
+
+  h1 {
+    font-size: 48px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+  }
+
+  .about-content {
+    grid-template-columns: 1fr;
+  }
+
+  .guide-steps {
+    flex-direction: column;
+  }
+
+  .reference-content {
+    grid-template-columns: 1fr;
+  }
+}

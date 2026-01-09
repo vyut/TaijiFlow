@@ -4,6 +4,33 @@
 
 ---
 
+## [v0.9.1] - 2026-01-09
+
+### 🔧 Landing Page Code Separation
+
+#### Added
+- **`/css/landing.css`** (~400 lines) - แยก CSS จาก index.html
+  - Organized 9 sections: Base, Navigation, Hero, About, Guide, Reference, Footer, Animations, Responsive
+- **`/js/silk-animation.js`** (~220 lines) - แยก Animation จาก index.html
+  - Class-based: `SilkReelingAnimation` reusable
+  - Auto-initialize เมื่อ DOM ready
+  - Responsive ตาม viewport
+
+#### Changed
+- **`index.html`**: ลดจาก 915 → ~220 บรรทัด (76% reduction)
+  - ใช้ external CSS: `<link href="css/landing.css">`
+  - ใช้ external JS: `<script src="js/silk-animation.js" defer>`
+  - เพิ่ม `body.landing` class สำหรับ scoped styles
+- **`/css/styles.css`**: เพิ่ม Responsive breakpoints สำหรับ Tablet
+  - 1024px (Tablet Landscape)
+  - 768px (Tablet Portrait)
+  - 640px (Small Tablet)
+
+#### Updated Docs
+- **ARCHITECTURE.md**: อัปเดต File Structure (4 CSS, 22 JS)
+
+---
+
 ## [v0.9] - 2026-01-08
 
 ### 🎨 Landing Page Refactoring

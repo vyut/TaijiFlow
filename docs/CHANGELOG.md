@@ -4,6 +4,36 @@
 
 ---
 
+## [v0.9.2] - 2026-01-10
+
+### 📚 Thesis Documentation Finalization
+
+#### Added - Thesis Documents
+- **`abstract.md`** - บทคัดย่อภาษาไทย + English Abstract
+- **`acknowledgments.md`** - กิตติกรรมประกาศ (ร่าง)
+- **`references.md`** - เอกสารอ้างอิง 19 รายการ (IEEE Style)
+- **`test_plan.md`** - แผนการทดสอบครบถ้วน (21 test cases)
+- **`configuration_item_table.md`** - ตาราง CI 100+ รายการ
+- **`progress_status_record.md`** - บันทึกความก้าวหน้า v0.1-v0.9.1
+
+#### Changed
+- **`abstract.md`** - แก้ไขคำศัพท์ "มวยไท่จี๋" → "มวยไท้เก๊ก" ให้สอดคล้องทั้งเอกสาร
+- **`chapter1.md`** - เพิ่มหมายเหตุอธิบายการใช้ "Taijiquan" แทน "Tai Chi"
+- **`keyboard_controller.js`** - ใช้ `e.code` แทน `e.key` สำหรับ Thai keyboard compatibility
+- **`app.html`** - อัปเดตเวอร์ชันเป็น v0.9.1
+
+#### Terminology Updates (Global)
+- เปลี่ยน "มวยไท่จี๋" → "มวยไท้เก๊ก" (43 instances, 8 files)
+- เปลี่ยน "Tai Chi" → "Taijiquan" ใน abstract, chapter3, chapter5
+
+#### Documentation Improvements
+- **`chapter4.md`** - แก้ไขตาราง Keyboard Shortcuts (grouped by function)
+- **`appendix_e_user_guide.md`** - อัปเดต Keyboard Shortcuts ให้ตรงกับ code
+- **`use_case_descriptions.md`** - แก้ไข UC-01, UC-02, UC-04 ให้ตรงกับ implementation
+
+---
+
+
 ## [v0.9.1] - 2026-01-09
 
 ### 🔧 Landing Page Code Separation

@@ -59,35 +59,20 @@ class KeyboardController {
       resetToHomeScreen,
     } = this.deps;
 
-    switch (e.key.toLowerCase()) {
-      // -----------------------------------------------------------------------
-      // F = Fullscreen Toggle
-      // -----------------------------------------------------------------------
-      case "f":
-        e.preventDefault();
-        fullscreenBtn.click();
-        break;
-
-      // -----------------------------------------------------------------------
-      // D = Debug Mode Toggle
-      // -----------------------------------------------------------------------
-      case "d":
-        e.preventDefault();
-        this.deps.engine.setDebugMode(!this.deps.engine.debugMode);
-        toggleDebugOverlay(this.deps.engine.debugMode);
-        const debugCheckbox = document.getElementById("check-debug");
-        if (debugCheckbox) debugCheckbox.checked = this.deps.engine.debugMode;
-        uiManager.showNotification(
-          `Debug Mode: ${this.deps.engine.debugMode ? "ON" : "OFF"}`,
-          "info",
-          1500
-        );
-        break;
+    // =========================================================================
+    // ใช้ e.code แทน e.key เพื่อรองรับ Thai Keyboard Layout
+    // e.code = Physical key position (ไม่ขึ้นกับ layout)
+    // e.key = Character produced (ขึ้นกับ layout - TH จะได้ ด, เ, etc.)
+    // =========================================================================
+    switch (e.code) {
+      // =======================================================================
+      // 🎮 CONTROL GROUP
+      // =======================================================================
 
       // -----------------------------------------------------------------------
       // Space = Start/Stop Training
       // -----------------------------------------------------------------------
-      case " ":
+      case "Space":
         e.preventDefault();
         if (calibrator.isActive) {
           calibrator.cancel();
@@ -103,33 +88,34 @@ class KeyboardController {
         break;
 
       // -----------------------------------------------------------------------
-      // M = Mute/Unmute Audio
+      // Escape = Cancel Calibration / Close
       // -----------------------------------------------------------------------
-      case "m":
-        e.preventDefault();
-        audioBtn.click();
+      case "Escape":
+        if (calibrator.isActive) {
+          e.preventDefault();
+          calibrator.cancel();
+          loadReferenceData();
+          resetToHomeScreen();
+          uiManager.showNotification("ยกเลิกการปรับเทียบ", "info", 2000);
+        }
         break;
 
       // -----------------------------------------------------------------------
-      // L = Language Toggle (TH/EN)
+      // F = Fullscreen Toggle
       // -----------------------------------------------------------------------
-      case "l":
+      case "KeyF":
         e.preventDefault();
-        langBtn.click();
+        fullscreenBtn.click();
         break;
 
-      // -----------------------------------------------------------------------
-      // T = Theme Toggle (Dark/Light)
-      // -----------------------------------------------------------------------
-      case "t":
-        e.preventDefault();
-        themeBtn.click();
-        break;
+      // =======================================================================
+      // 👁️ DISPLAY GROUP
+      // =======================================================================
 
       // -----------------------------------------------------------------------
       // G = Ghost Overlay Toggle
       // -----------------------------------------------------------------------
-      case "g":
+      case "KeyG":
         e.preventDefault();
         if (checkGhost) {
           checkGhost.checked = !checkGhost.checked;
@@ -140,7 +126,7 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       // I = Instructor Thumbnail Toggle
       // -----------------------------------------------------------------------
-      case "i":
+      case "KeyI":
         e.preventDefault();
         displayController.toggleInstructor(!displayController.showInstructor);
         break;
@@ -148,7 +134,7 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       // P = Path Overlay Toggle
       // -----------------------------------------------------------------------
-      case "p":
+      case "KeyP":
         e.preventDefault();
         if (checkPath) {
           checkPath.checked = !checkPath.checked;
@@ -159,7 +145,7 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       // B = Skeleton (Bones) Toggle
       // -----------------------------------------------------------------------
-      case "b":
+      case "KeyB":
         e.preventDefault();
         if (checkSkeleton) {
           checkSkeleton.checked = !checkSkeleton.checked;
@@ -170,7 +156,7 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       // S = Silhouette Toggle
       // -----------------------------------------------------------------------
-      case "s":
+      case "KeyS":
         e.preventDefault();
         if (checkSilhouette) {
           checkSilhouette.checked = !checkSilhouette.checked;
@@ -181,7 +167,7 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       // R = Trail Visualization Toggle
       // -----------------------------------------------------------------------
-      case "r":
+      case "KeyR":
         e.preventDefault();
         const checkTrail = document.getElementById("check-trail");
         if (checkTrail) {
@@ -190,32 +176,72 @@ class KeyboardController {
         }
         break;
 
+      // =======================================================================
+      // ⚙️ SETTINGS GROUP
+      // =======================================================================
+
       // -----------------------------------------------------------------------
-      // ? = Open Tutorial Popup
+      // M = Mute/Unmute Audio
       // -----------------------------------------------------------------------
-      case "?":
+      case "KeyM":
+        e.preventDefault();
+        audioBtn.click();
+        break;
+
+      // -----------------------------------------------------------------------
+      // L = Language Toggle (TH/EN)
+      // -----------------------------------------------------------------------
+      case "KeyL":
+        e.preventDefault();
+        langBtn.click();
+        break;
+
+      // -----------------------------------------------------------------------
+      // T = Theme Toggle (Dark/Light)
+      // -----------------------------------------------------------------------
+      case "KeyT":
+        e.preventDefault();
+        themeBtn.click();
+        break;
+
+      // -----------------------------------------------------------------------
+      // D = Debug Mode Toggle
+      // -----------------------------------------------------------------------
+      case "KeyD":
+        e.preventDefault();
+        this.deps.engine.setDebugMode(!this.deps.engine.debugMode);
+        toggleDebugOverlay(this.deps.engine.debugMode);
+        const debugCheckbox = document.getElementById("check-debug");
+        if (debugCheckbox) debugCheckbox.checked = this.deps.engine.debugMode;
+        uiManager.showNotification(
+          `Debug Mode: ${this.deps.engine.debugMode ? "ON" : "OFF"}`,
+          "info",
+          1500
+        );
+        break;
+
+      // =======================================================================
+      // ❓ HELP GROUP
+      // =======================================================================
+
+      // -----------------------------------------------------------------------
+      // H = Open Tutorial Popup
+      // -----------------------------------------------------------------------
+      case "KeyH":
         e.preventDefault();
         tutorialManager.open(uiManager.currentLang);
         break;
 
       // -----------------------------------------------------------------------
-      // / = Show Keyboard Shortcuts
+      // Slash = Show Keyboard Shortcuts
       // -----------------------------------------------------------------------
-      case "/":
+      case "Slash":
         e.preventDefault();
-        this.showShortcutsHelp();
-        break;
-
-      // -----------------------------------------------------------------------
-      // Escape = Cancel Calibration
-      // -----------------------------------------------------------------------
-      case "escape":
-        if (calibrator.isActive) {
-          e.preventDefault();
-          calibrator.cancel();
-          loadReferenceData();
-          resetToHomeScreen();
-          uiManager.showNotification("ยกเลิกการปรับเทียบ", "info", 2000);
+        // "/" = Show shortcuts, "?" (Shift+/) = Open Tutorial
+        if (e.shiftKey) {
+          tutorialManager.open(uiManager.currentLang);
+        } else {
+          this.showShortcutsHelp();
         }
         break;
     }

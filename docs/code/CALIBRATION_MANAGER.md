@@ -1,7 +1,7 @@
 # TaijiFlow AI - Calibration Manager Documentation
 
 **Version:** 1.1  
-**Last Updated:** 2024-12-24  
+**Last Updated:** 2026-01-10  
 **Lines:** 362  
 **Class:** CalibrationManager
 

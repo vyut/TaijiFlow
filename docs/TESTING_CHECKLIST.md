@@ -1,7 +1,7 @@
 # TaijiFlow AI - Manual Testing Checklist
 
-**Version:** 1.0  
-**Last Updated:** 2024-12-26  
+**Version:** 2.0  
+**Last Updated:** 2026-01-09  
 **Tester:** _______________  
 **Date:** _______________
 
@@ -130,6 +130,39 @@
 
 ---
 
+## 10. Gesture Control (v0.8)
+
+| # | Feature | Steps | Expected | Result | Notes |
+|---|---------|-------|----------|:------:|-------|
+| 10.1 | Thumbs Up Start | ยกนิ้วโป้ง 👍 | เริ่มการฝึก | ☐ | |
+| 10.2 | Closed Fist Stop | กำมือ ✊ | หยุดการฝึก | ☐ | |
+| 10.3 | Gesture Disabled | ปิด Gesture จาก Settings | ไม่ตอบสนอง | ☐ | |
+| 10.4 | Start Overlay Hint | เปิดหน้าฝึก | เห็นคำแนะนำ gesture | ☐ | |
+
+---
+
+## 11. AI Chatbot (v0.8)
+
+| # | Feature | Steps | Expected | Result | Notes |
+|---|---------|-------|----------|:------:|-------|
+| 11.1 | Open Chatbot | กดปุ่ม 💬 | เปิด popup | ☐ | |
+| 11.2 | Send Message | พิมพ์ + Enter | ได้รับคำตอบ | ☐ | |
+| 11.3 | Thai Language | ถามภาษาไทย | ตอบภาษาไทย | ☐ | |
+| 11.4 | No API Key | ไม่ใส่ API Key | แสดง error | ☐ | |
+
+---
+
+## 12. Landing Page (v0.8)
+
+| # | Feature | Steps | Expected | Result | Notes |
+|---|---------|-------|----------|:------:|-------|
+| 12.1 | Load Landing | เปิด index.html | แสดง Landing Page | ☐ | |
+| 12.2 | Silk Animation | ดู background | Animation ทำงาน | ☐ | |
+| 12.3 | Start Button | กดปุ่มเริ่มฝึก | ไปที่ app.html | ☐ | |
+| 12.4 | Language Toggle | กดปุ่มภาษา | เปลี่ยนภาษา | ☐ | |
+
+---
+
 ## Summary
 
 | Category | Pass | Fail | Total |
@@ -143,7 +176,10 @@
 | Performance | /3 | /3 | 3 |
 | Low Light Warning | /4 | /4 | 4 |
 | UX Enhancements | /5 | /5 | 5 |
-| **Total** | **/52** | **/52** | **52** |
+| Gesture Control | /4 | /4 | 4 |
+| AI Chatbot | /4 | /4 | 4 |
+| Landing Page | /4 | /4 | 4 |
+| **Total** | **/64** | **/64** | **64** |
 
 ---
 

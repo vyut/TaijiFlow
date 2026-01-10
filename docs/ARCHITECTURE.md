@@ -1,7 +1,7 @@
 # TaijiFlow AI - System Architecture
 
 **Version:** 0.7.0  
-**Last Updated:** 2025-01-08
+**Last Updated:** 2026-01-10
 
 ---
 
@@ -304,7 +304,7 @@ this.RULES_CONFIG = {
 ```
 
 | Layer | หน้าที่ | ไฟล์หลัก |
-|-------|------|--------|
+| ----- | ---- | ------ |
 | **Presentation** | แสดงผล UI, รับ input, วาด Canvas | `index.html`, `ui_manager.js`, `drawing_manager.js` |
 | **Business Logic** | ประมวลผลหลัก, วิเคราะห์ท่า, คำนวณคะแนน | `script.js`, `heuristics_engine.js`, `scoring_manager.js` |
 | **Data** | จัดการข้อมูล, Session, Export | `session_manager.js`, `data_exporter.js` |
@@ -328,6 +328,7 @@ this.RULES_CONFIG = {
 | `unknown` | ไม่ทราบสาเหตุ | เกิดข้อผิดพลาด | Camera error |
 
 **การแสดงผล:**
+
 1. ซ่อน Loading Overlay
 2. แสดง Toast Notification (สีแดง, 10 วินาที)
 3. อัปเดตหัวข้อบน Start Overlay
@@ -344,5 +345,4 @@ this.RULES_CONFIG = {
 
 ---
 
-*Document updated: 2026-01-09 for Master's Thesis SE*
-
+*Document updated: 2026-01-10*

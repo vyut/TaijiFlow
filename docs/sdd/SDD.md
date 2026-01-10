@@ -823,7 +823,7 @@ const response = await fetch(`https://generativelanguage.googleapis.com/v1/model
 | Diagram Type | File | Description |
 |--------------|------|-------------|
 | **Use Case** | UseCaseDiagram.wsd | 6 Use Cases (UC-01 to UC-06) |
-| **Class** | ClassDiagram.wsd | 21 Classes ใน 5 Packages |
+| **Class** | ClassDiagram.wsd | 22 Classes ใน 6 Packages |
 | **Sequence** | SequenceDiagram_TrainingFlow.wsd | Training Flow หลัก |
 | **Sequence** | SequenceDiagram_RealtimeAnalysis.wsd | Real-time Pose Analysis |
 | **Sequence** | SequenceDiagram_Calibration.wsd | Calibration Process |
@@ -833,10 +833,12 @@ const response = await fetch(`https://generativelanguage.googleapis.com/v1/model
 | **Activity** | ActivityDiagram_UC03.wsd | UC-03: View Results |
 | **Activity** | ActivityDiagram_UC04.wsd | UC-04: Tutorial |
 | **Activity** | ActivityDiagram_UC05.wsd | UC-05: AI Chatbot |
-| **Activity** | ActivityDiagram_UC06.wsd | UC-06: Bug Report |
+| **Activity** | ActivityDiagram_UC06.wsd | UC-06: Manage Reference Data |
 | **Activity** | ActivityDiagram_Heuristics.wsd | 8 Heuristic Rules Flow |
-| **Component** | ModuleDependencies.wsd | 21 Modules Dependencies |
+| **Component** | SystemArchitecture.wsd | ภาพรวมสถาปัตยกรรมระบบ |
+| **Component** | ModuleDependencies.wsd | 22 Modules Dependencies |
 | **Component** | LayerArchitecture.wsd | 4-Layer Architecture |
+| **Data Flow** | DataFlowDiagram.wsd | การไหลของข้อมูลในระบบ |
 
 ### 7.2 Key Diagrams
 

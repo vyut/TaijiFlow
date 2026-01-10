@@ -29,6 +29,12 @@ Thumbs.db
 # Backup
 backup/
 
+# Documentation
+docs/
+
+# Thesis
+thesis/
+
 # Ebooks (copyrighted materials)
 docs/ebooks/
 

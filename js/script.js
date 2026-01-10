@@ -101,6 +101,11 @@ let trainingStartTime = 0; // เวลาเริ่มฝึก
 // -----------------------------------------------------------------------------
 // Performance Optimization - ลด CPU Load & Feedback Frequency
 // -----------------------------------------------------------------------------
+// Setting	Checks/sec	CPU Load	Feedback Delay
+// INTERVAL = 3	~10/sec	🔴 สูง	~100ms
+// INTERVAL = 9	~3.3/sec	🟢 ต่ำ	~300ms
+// INTERVAL = 15	~2/sec	🟢 ต่ำมาก	~500ms
+//
 // เช็ค Heuristics ทุก 9 frames แทนทุก frame
 // ~30 FPS → ~3 FPS สำหรับ Heuristics = feedback ไม่กระพริบถี่เกินไป
 const HEURISTICS_CHECK_INTERVAL = 9;
@@ -109,7 +114,7 @@ let frameCounter = 0;
 // -----------------------------------------------------------------------------
 // Feedback Display Cooldown - ให้ feedback ค้างไว้ให้อ่านได้
 // -----------------------------------------------------------------------------
-const FEEDBACK_DISPLAY_COOLDOWN_MS = 5000; // 5 วินาที
+const FEEDBACK_DISPLAY_COOLDOWN_MS = 3000; // 3 วินาที
 let lastDisplayedFeedbacks = []; // feedback ล่าสุดที่แสดง
 let lastFeedbackDisplayTime = 0; // เวลาที่แสดง feedback ล่าสุด
 
@@ -221,7 +226,7 @@ function toggleFeedbackOverlay(show) {
 }
 
 // -----------------------------------------------------------------------------
-// NOTE: Session/User ID Functions ย้ายไปอยู่ที่ js/session_manager.js แล้ว
+// NOTE: Session/User ID Functions ย้ายไปอยู่ที่ js/session_manager.js
 //   - getOrCreateUserId()
 //   - generateSessionId()
 //   - getPlatformInfo()
@@ -381,7 +386,7 @@ uiManager.init();
 // Sync ภาษาจาก localStorage กับ Components อื่น
 // -----------------------------------------------------------------------------
 // หลังจาก uiManager.init() โหลดภาษาจาก localStorage แล้ว
-// ต้อง sync กับ AudioManager, CalibrationManager และ ธง
+// ต้อง sync กับ AudioManager, CalibrationManager และ Language
 const initLang = uiManager.currentLang || "th";
 langBtn.innerText = initLang === "th" ? "🇹🇭" : "🇺🇸";
 audioManager.setLanguage(initLang);

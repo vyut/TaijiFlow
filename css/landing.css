@@ -4,40 +4,22 @@
  * ============================================================================
  *
  * Stylesheet สำหรับ Landing Page (index.html)
- *
- * Sections:
- *   1. Base/Reset
- *   2. Navigation
- *   3. Hero Section
- *   4. About Section
- *   5. Guide Section
- *   6. Reference Section
- *   7. Footer
- *   8. Animations
- *   9. Responsive
+ * Imports base.css for shared styles
  *
  * ============================================================================
  */
 
+/* Import base styles */
+@import url("base.css");
+
 /* =============================================================================
-   1. BASE / RESET
+   LANDING PAGE SPECIFIC STYLES
    ============================================================================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
+/* Override body for landing class */
 body.landing {
-  font-family: "Sarabun", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
-  background: #000;
-  color: #fff;
-  overflow-x: hidden;
-}
-
-html {
-  scroll-behavior: smooth;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
 }
 
 /* =============================================================================
@@ -478,25 +460,7 @@ h1 {
   }
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* fadeIn and fadeInUp are now in base.css */
 
 /* =============================================================================
    9. RESPONSIVE

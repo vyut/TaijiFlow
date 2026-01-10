@@ -1,3 +1,27 @@
+/**
+ * ============================================================================
+ * TaijiFlow AI - App Styles
+ * ============================================================================
+ *
+ * Stylesheet สำหรับ App Page (app.html)
+ * Imports base.css for shared styles
+ *
+ * ============================================================================
+ */
+
+/* Import base styles */
+@import url("base.css");
+
+/* =============================================================================
+   APP PAGE SPECIFIC STYLES
+   ============================================================================= */
+
+/* Override Tailwind defaults - must use !important due to CDN load order */
+body {
+  background-color: #000 !important;
+  color: #fff;
+}
+
 /* --- Notification System --- */
 .notification {
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
@@ -10,34 +34,13 @@
   opacity: 1;
 }
 
-/* --- Global Styles --- */
-body {
-  font-family: "Sarabun", sans-serif;
-  transition: background-color 0.3s;
-}
-
 /* --- Canvas Styling --- */
 canvas {
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-/* --- Animation: Pulse Effect --- */
-.pulse-btn {
-  animation: pulse-shadow 2s infinite;
-}
-
-@keyframes pulse-shadow {
-  0% {
-    box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 15px rgba(147, 51, 234, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(147, 51, 234, 0);
-  }
-}
+/* pulse-btn animation is now in base.css */
 
 /* --- Fullscreen Handling --- */
 /* ปรับให้รองรับหลาย Browser Engine */

@@ -24,8 +24,9 @@ TaijiFlow/
 ├── 📄 app.html                      # Training Application (Main App)
 ├── 📄 data_collector.html           # เครื่องมือเก็บข้อมูล Reference
 │
-├── 📁 css/                          # Stylesheets (4 files)
-│   ├── styles.css                   # Main Styles (App)
+├── 📁 css/                          # Stylesheets (5 files)
+│   ├── base.css                     # Shared Styles (Variables, Reset, Components)
+│   ├── styles.css                   # App Styles (app.html)
 │   ├── landing.css                  # Landing Page Styles
 │   ├── chatbot.css                  # Chatbot Popup Styles
 │   └── feedback.css                 # Feedback Modal Styles

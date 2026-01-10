@@ -4,6 +4,38 @@
 
 ---
 
+## [v0.9.3] - 2026-01-10
+
+### 🎨 Theme Matching & CSS Refactoring
+
+#### Added
+- **`/css/base.css`** (~230 lines) - สร้างใหม่ Shared styles สำหรับทั้ง Landing และ App
+  - CSS Variables สำหรับ colors, spacing, radius
+  - Shared animations (fadeIn, fadeInUp, pulse)
+  - Glass card component
+  - Light/Dark mode support via CSS variables
+
+#### Changed
+- **`/css/landing.css`** - Import base.css, ลบ code ซ้ำ (~20 lines saved)
+- **`/css/styles.css`** - Import base.css, รองรับ dark/light mode ถูกต้อง
+  - ใช้ `body.dark` selector แทน `body.light` ให้ตรงกับ JS toggle
+  - เพิ่ม `!important` เพื่อ override Tailwind CDN
+- **`app.html`** - ใช้ `glass-card` class แทน Tailwind bg classes
+
+#### Fixed
+- **Theme Toggle** - Dark/Light mode ทำงานถูกต้องทั้ง body และ main-card
+- **Background Color** - ทั้ง index.html และ app.html ใช้พื้นดำ (#000) เมื่อเป็น Dark mode
+- **Glass Card Hover** - ลบ hover animation ที่ทำให้ video container ขยับ
+
+#### Updated Docs
+- **`docs/guides/THEME_MATCHING_PLAN.md`** - Mark as completed
+- **`docs/code/AUDIO_MANAGER.md`** - Updated to detailed style
+- **`docs/code/SCORING_MANAGER.md`** - Updated to detailed style  
+- **`docs/code/DRAWING_MANAGER.md`** - Updated to detailed style
+
+---
+
+
 ## [v0.9.2] - 2026-01-10
 
 ### 📚 Thesis Documentation Finalization

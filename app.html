@@ -772,52 +772,85 @@ Version: 0.6 (2024-12-24)
           >
             📋 วิธีเริ่มต้นใช้งาน
           </h2>
-          <div class="text-white text-lg text-left space-y-3 max-w-md">
+
+          <!-- Quickstart Box (เน้น) -->
+          <div
+            id="quickstart-box"
+            class="p-4 bg-gray-800 bg-opacity-50 rounded-lg border border-green-500 max-w-md mb-4"
+          >
+            <h3
+              id="quickstart-title"
+              class="text-green-400 text-lg font-bold mb-2 text-center"
+            >
+              ⚡ เริ่มทันที
+            </h3>
+            <p id="quickstart-action" class="text-white text-center mb-2">
+              กดปุ่ม "🏃 เริ่มการฝึก" หรือ ยกนิ้วโป้ง 👍
+            </p>
+            <p
+              id="quickstart-default"
+              class="text-gray-400 text-sm text-center"
+            >
+              ค่าเริ่มต้น: ท่าม้วนไหม - มือขวา - ตามเข็ม - ระดับนั่ง
+            </p>
+          </div>
+
+          <!-- Divider -->
+          <p id="or-customize" class="text-gray-500 text-sm mb-4">
+            ─── หรือเลือกเอง ───
+          </p>
+
+          <!-- Optional Steps (1-2-3) -->
+          <div
+            class="text-white text-base text-left space-y-2 max-w-md opacity-80"
+          >
             <p class="flex items-center gap-3">
               <span
-                class="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
+                class="bg-purple-600 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-sm"
                 >1</span
               >
-              <span id="overlay-step1"
+              <span id="overlay-step1" class="text-sm"
                 >เลือก <strong>"ท่าฝึก"</strong> จากเมนูด้านบน</span
               >
             </p>
             <p class="flex items-center gap-3">
               <span
-                class="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
+                class="bg-purple-600 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-sm"
                 >2</span
               >
-              <span id="overlay-step2"
+              <span id="overlay-step2" class="text-sm"
                 >เลือก <strong>"ระดับ"</strong> ที่ต้องการฝึก</span
               >
             </p>
             <p class="flex items-center gap-3">
               <span
-                class="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold"
+                class="bg-green-600 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold text-sm"
                 >3</span
               >
-              <span id="overlay-step3"
+              <span id="overlay-step3" class="text-sm"
                 >กดปุ่ม <strong>"🏃 เริ่มการฝึก"</strong></span
               >
             </p>
           </div>
+
           <!-- Gesture Hint Section -->
           <div
             id="gesture-hint"
-            class="mt-6 p-4 bg-gray-800 bg-opacity-20 rounded-lg border border-gray-600 max-w-md"
+            class="mt-4 p-3 bg-gray-800 bg-opacity-20 rounded-lg border border-gray-600 max-w-md"
           >
             <div class="flex justify-center gap-6 text-white text-sm">
               <div class="flex items-center gap-2">
-                <span class="text-2xl">👍</span>
+                <span class="text-xl">👍</span>
                 <span id="gesture-start-hint">ยกนิ้วโป้ง = เริ่มการฝึก</span>
               </div>
               <div class="flex items-center gap-2">
-                <span class="text-2xl">✊</span>
+                <span class="text-xl">✊</span>
                 <span id="gesture-stop-hint">กำมือ = หยุดการฝึก</span>
               </div>
             </div>
           </div>
-          <p id="overlay-note" class="text-gray-400 mt-6 text-sm text-center">
+
+          <p id="overlay-note" class="text-gray-400 mt-4 text-sm text-center">
             ⏱️ ฝึกท่าละ 5 นาที • ไม่บันทึกวิดีโอ | 📏
             ปรับเทียบสัดส่วนอัตโนมัติทุกครั้ง
           </p>

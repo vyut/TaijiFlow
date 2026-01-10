@@ -32,6 +32,25 @@
 - **`docs/code/AUDIO_MANAGER.md`** - Updated to detailed style
 - **`docs/code/SCORING_MANAGER.md`** - Updated to detailed style  
 - **`docs/code/DRAWING_MANAGER.md`** - Updated to detailed style
+- **`docs/technical/ARCHITECTURE.md`** - CSS 4 → 5 files
+- **`docs/sdd/SDD.md`** - CSS 4 → 5 files
+- **`docs/thesis/chapter5.md`** - File structure updated
+- **`docs/thesis/appendix_d_source_code.md`** - File structure updated
+- **`docs/thesis/configuration_item_table.md`** - Added base.css (CI-CSS-01)
+- **`docs/thesis/progress_status_record.md`** - Added v0.9.3, CSS 5
+
+### ⚡ Quickstart UI
+
+#### Added
+- **`index.html`** - เพิ่ม Quickstart box ในส่วนคู่มือการใช้งาน
+- **`app.html`** - เพิ่ม Quickstart box ใน Start Overlay
+- **`translations.js`** - เพิ่ม quickstart translations (TH/EN)
+- **`landing.css`** - เพิ่ม `.guide-quickstart` และ `.guide-divider` styles
+- **`ui_manager.js`** - เพิ่ม setText calls สำหรับ quickstart elements
+
+#### ข้อความใหม่
+- ⚡ เริ่มทันที: กดปุ่ม "เริ่มฝึก" หรือ ยกนิ้วโป้ง 👍
+- ค่าเริ่มต้น: ท่าม้วนไหม - มือขวา - ตามเข็ม - ระดับนั่ง
 
 ---
 

@@ -526,6 +526,12 @@ class UIManager {
 
     // Overlay Screen
     setText("overlay-title", "overlay_how_to");
+    // Quickstart Section (new)
+    setText("quickstart-title", "quickstart_title");
+    setText("quickstart-action", "quickstart_action");
+    setText("quickstart-default", "quickstart_default");
+    setText("or-customize", "or_customize");
+    // Steps
     setText("overlay-step1", "overlay_step1");
     setText("overlay-step2", "overlay_step2");
     setText("overlay-step3", "overlay_step3");

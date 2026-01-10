@@ -183,6 +183,12 @@ const TRANSLATIONS = {
     overlay_desc: "*กดเพื่อเริ่มวัดตัวก่อนการฝึก",
     // หัวข้อ How-to Section
     overlay_how_to: "วิธีเริ่มต้นใช้งาน",
+    // Quickstart Section
+    quickstart_title: "⚡ เริ่มทันที",
+    quickstart_action: 'กดปุ่ม "🏃 เริ่มการฝึก" หรือ ยกนิ้วโป้ง 👍',
+    quickstart_default:
+      "ค่าเริ่มต้น: ท่าม้วนไหม - มือขวา - ตามเข็ม - ระดับนั่ง",
+    or_customize: "หรือเลือกเอง",
     // ขั้นตอนที่ 1
     overlay_step1: 'เลือก "ท่าฝึก" จากเมนูด้านบน',
     // ขั้นตอนที่ 2
@@ -335,6 +341,12 @@ const TRANSLATIONS = {
     overlay_title: "Ready to Train?",
     overlay_desc: "*Press to calibrate your body proportions",
     overlay_how_to: "How to Start",
+    // Quickstart Section
+    quickstart_title: "⚡ Quickstart",
+    quickstart_action: 'Press "🏃 Start Training" or Thumbs Up 👍',
+    quickstart_default:
+      "Default: Silk Reeling - Right Hand - Clockwise - Sitting",
+    or_customize: "or customize",
     overlay_step1: 'Select "Exercise" from menu above',
     overlay_step2: 'Select "Level" to train',
     overlay_step3: 'Press "🏃 Start Training"',

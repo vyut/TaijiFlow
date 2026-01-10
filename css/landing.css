@@ -316,8 +316,44 @@ h1 {
 
 .guide-section h2 {
   font-size: 48px;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
   color: #fff;
+}
+
+/* Quickstart Box */
+.guide-quickstart {
+  max-width: 500px;
+  margin: 0 auto 20px;
+  padding: 24px 32px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(74, 222, 128, 0.5);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.guide-quickstart h4 {
+  color: #4ade80;
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.guide-quickstart p {
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.guide-quickstart small {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+}
+
+/* Divider */
+.guide-divider {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  margin-bottom: 30px;
+  text-align: center;
 }
 
 .guide-steps {

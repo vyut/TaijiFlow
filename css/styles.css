@@ -16,10 +16,40 @@
    APP PAGE SPECIFIC STYLES
    ============================================================================= */
 
-/* Override Tailwind defaults - must use !important due to CDN load order */
-body {
+/* 
+ * Theme Background Colors
+ * 
+ * JS toggle uses:
+ * - Dark mode: body.dark + bg-gray-900 class
+ * - Light mode: no dark class + bg-f3f4f6 class
+ * 
+ * We use body.dark selector to override Tailwind classes
+ */
+
+/* Dark mode (when body has 'dark' class) */
+body.dark {
   background-color: #000 !important;
   color: #fff;
+}
+
+/* Light mode (default, when body doesn't have 'dark' class) */
+body:not(.dark) {
+  background-color: #f8fafc !important;
+  color: #1e293b;
+}
+
+/* Main card - Dark mode */
+body.dark #main-card {
+  background: rgba(168, 85, 247, 0.1) !important;
+  border: 1px solid rgba(168, 85, 247, 0.3) !important;
+  border-radius: 16px;
+}
+
+/* Main card - Light mode */
+body:not(.dark) #main-card {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(168, 85, 247, 0.2) !important;
+  border-radius: 16px;
 }
 
 /* --- Notification System --- */

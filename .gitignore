@@ -30,13 +30,13 @@ Thumbs.db
 backup/
 
 # Documentation
-docs/
+# docs/
 
 # Thesis
 thesis/
 
 # Code
-code/
+# code/
 
 # Ebooks (copyrighted materials)
 docs/ebooks/

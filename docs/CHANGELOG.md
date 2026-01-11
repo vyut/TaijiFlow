@@ -3,8 +3,37 @@
 รายการการเปลี่ยนแปลงทั้งหมดของโปรเจค
 
 ---
+---
 
-## [v0.9.3] - 2026-01-10
+## [v0.9.4] - 2026-01-11
+
+### 🌟 Landing Page Refinement (Thesis-Ready)
+
+#### Added
+- **Project Stats Section** (index.html) - แสดงผลลัพธ์จาก Usability Testing (Chapter 6)
+  - ⭐️ 4.2/5 User Satisfaction
+  - 🚀 87.5% Intent to Use
+  - 🎯 100% Training Success
+  - *Note: Commented out pending final data confirmation.*
+- **Learn More Grid** (index.html) - ปรับปรุงเป็น 2x2 Grid Layout
+  - **Definition:** What is Silk Reeling? (Circular, Continuous)
+  - **Principles:** Key concepts (Waist Axis, Whole Body Connection)
+  - **Benefits:** Mental, Balance/Strength, Energy (Qi)
+  - **Practice:** How to practice (Relax, Slow, Focus)
+- **Responsive Layouts** (css/landing.css) - New grid systems for:
+  - `.guide-extras-grid` (Tips vs Warnings)
+  - `.reference-content` (2x2 Learn More)
+  - `.stats-container` (3-column Stats)
+
+#### Changed
+- **About Section** - Refined content to focus on "Heritage meets Technology".
+- **User Guide** - Streamlined to 3 steps (Prep -> Train -> Eval).
+- **Tips & Warnings** - Consolidated into a side-by-side responsive grid.
+- **Visuals** - Added icons to Stats and improved spacing/typography.
+
+#### Updated Docs
+- **`walkthrough.md`** - Finalized for v0.9.4 release.
+
 
 ### 🎨 Theme Matching & CSS Refactoring
 

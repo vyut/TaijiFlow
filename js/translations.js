@@ -243,11 +243,11 @@ const TRANSLATIONS = {
     // Placeholder - ข้อความเริ่มต้นใน Dropdown
     level_placeholder: "-- เลือกรูปแบบ --",
     // Level 1: Seated Position
-    level_l1: "1. นั่ง",
+    level_l1: "1. แบบนั่ง",
     // Level 2: Standing Position
-    level_l2: "2. ยืน",
+    level_l2: "2. แบบยืน",
     // Level 3: Bow Stance (弓步)
-    level_l3: "3. ยืนย่อ",
+    level_l3: "3. แบบยืนย่อ",
 
     // -------------------------------------------------------------------------
     // Privacy Modal (หน้าต่างความเป็นส่วนตัว)

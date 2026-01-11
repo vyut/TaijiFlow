@@ -88,7 +88,9 @@ package "Core Managers" <<Core>> {
         - checkPathShape()
         - checkElbowSinking()
         - checkContinuity()
-        .. +5 more rules ..
+        - checkContinuity()
+        - checkArmRotation()
+        .. +4 more rules ..
     }
     
     class CalibrationManager {
@@ -128,6 +130,10 @@ package "Display Managers" <<Display>> {
         + drawFeedbackPanel(feedbacks)
         + drawDebugOverlay(debugInfo)
         + drawGhostSkeleton(landmarks)
+        + drawSilhouetteVideo(video, opacity)
+        + drawSilhouette(mask, color)
+        + drawGestureFeedback(feedback)
+        + drawCircularityIndicator(score)
     }
     
     class GhostManager {
@@ -140,7 +146,10 @@ package "Display Managers" <<Display>> {
         + start()
         + stop()
         + update()
+        + update()
         + getCurrentFrame()
+        + setSpeed(speed)
+        + setOpacity(opacity)
     }
     
     class SilhouetteManager {
@@ -236,7 +245,7 @@ package "Utilities" <<Utility>> {
         }
         
         class PathGenerator <<Utility>> {
-            + generatePath(exercise, level)
+            + generateDynamicPath(landmarks, exercise)
         }
         
         class DataExporter <<Utility>> {

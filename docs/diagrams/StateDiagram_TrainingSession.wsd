@@ -76,7 +76,7 @@ note on link
     calibrator.start()
 end note
 
-Calibrating --> Countdown : Calibration Complete\n(stableFrames >= 90)
+Calibrating --> Countdown : Calibration Complete\n(Time >= 3000ms)
 note on link
     calibrator.process()
     returns {status: "complete"}
@@ -106,6 +106,6 @@ note on link
 end note
 
 Idle --> Idle : เปลี่ยนท่า / Level
-Training --> Training : ทุก 3 frames\n(วิเคราะห์ + บันทึก)
+Training --> Training : Camera 30 FPS\nAI 7.5 FPS (Throttled)
 
 @enduml

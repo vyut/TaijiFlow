@@ -109,7 +109,8 @@ let trainingStartTime = 0; // เวลาเริ่มฝึก
 // เช็ค Heuristics ทุก 9 frames แทนทุก frame
 // ~30 FPS → ~3 FPS สำหรับ Heuristics = feedback ไม่กระพริบถี่เกินไป
 const HEURISTICS_CHECK_INTERVAL = 9;
-let frameCounter = 0;
+let frameCounter = 0; // สำหรับ Heuristics Check (increment ใน onResults)
+let throttleFrameCounter = 0; // สำหรับ Throttling Check (increment ใน onFrame)
 
 // -----------------------------------------------------------------------------
 // Feedback Display Cooldown - ให้ feedback ค้างไว้ให้อ่านได้
@@ -124,6 +125,8 @@ let lastFeedbackDisplayTime = 0; // เวลาที่แสดง feedback �
 let lastFpsTime = performance.now();
 let fpsFrameCount = 0;
 let currentFps = 0;
+let camFrameCount = 0;
+let currentCamFps = 0;
 
 // -----------------------------------------------------------------------------
 // Low Light Warning - เตือนเมื่อแสงไม่เพียงพอ
@@ -165,7 +168,10 @@ function updateDebugOverlay(debugInfo) {
   // แปลง object เป็น HTML
   const html = Object.entries(debugInfo)
     .map(([key, value]) => {
-      const displayKey = key.replace(/([A-Z])/g, " $1").trim();
+      // Regex: Insert space before capital letters, but handle consecutive caps correctly
+      // e.g. "camFPS" -> "cam FPS", "AI FPS" -> "AI FPS"
+      // Or safer: just capitalize first letter if it's camelCase
+      const displayKey = key.replace(/([A-Z][a-z])/g, " $1").trim();
       return `<div>${displayKey}: <strong>${value}</strong></div>`;
     })
     .join("");
@@ -1195,7 +1201,7 @@ async function onResults(results) {
         // Calibration สำเร็จ → บันทึกและเริ่มฝึก
         // หมายเหตุ: Low Light check ทำไปแล้วระหว่าง Calibration (ถ้าแสงไม่พอจะเตือนไปแล้ว)
         engine.setCalibration(calibResult.data);
-        calibrator.saveToStorage(); // บันทึก Calibration Data ลง LocalStorage
+        // calibrator.saveToStorage(); // Commented out: Unused legacy storage (Diagram updated)
         audioManager.announce("calib_success"); // พูดแจ้งเตือน
 
         // ใช้ข้อความจาก uiManager
@@ -1403,11 +1409,13 @@ async function onResults(results) {
           if (engine.debugMode) {
             // รวม debugInfo จาก engine กับค่า performance อื่นๆ
             const debugInfo = {
-              fps: currentFps,
+              FPS: currentCamFps, // โชว์ FPS กล้อง (ควร ~30)
+              "AI Rate": currentFps, // โชว์ AI Process Rate (ควร ~7-8)
               frameCount: frameCounter,
               score: scorer.getCurrentScore().toFixed(1) + "%",
               ...engine.getDebugInfo(),
             };
+            fpsFrameCount++; // Increment AI FPS counter on processing completion
             updateDebugOverlay(debugInfo);
           }
         }
@@ -1550,10 +1558,36 @@ loadingOverlay.classList.remove("hidden");
 // onFrame จะถูกเรียกทุก Frame (~30 FPS)
 const camera = new Camera(videoElement, {
   onFrame: async () => {
-    // ส่งภาพจาก Video ไปให้ Pose Model ประมวลผล
-    await pose.send({ image: videoElement });
-    // ซ่อน Loading หลังจากได้ผลลัพธ์ Frame แรก
-    loadingOverlay.classList.add("hidden");
+    // Throttling: ลดภาระเครื่องโดยการข้ามเฟรม
+    // SKIP_FRAMES = 3 หมายถึงประมวลผล 1 เฟรม ข้าม 3 เฟรม (Process every 4th frame)
+    // ผลลัพธ์: Input 30 FPS -> AI ~7.5 FPS
+    // วิธีนี้ช่วยลดความร้อนและ CPU Load ได้มหาศาลสำหรับ Tablet/Mobile
+    throttleFrameCounter++;
+    camFrameCount++; // นับทุกเฟรมที่กล้องส่งมา
+
+    // คำนวณ FPS ทุก 1 วินาที
+    const now = performance.now();
+    if (now - lastFpsTime >= 1000) {
+      currentFps = fpsFrameCount; // AI FPS
+      currentCamFps = camFrameCount; // Camera FPS
+      fpsFrameCount = 0;
+      camFrameCount = 0;
+      lastFpsTime = now;
+    }
+
+    if (throttleFrameCounter % 4 === 0) {
+      await pose.send({ image: videoElement });
+      // fpsFrameCount++; // Removed: Moved to onResults for accurate counting
+    }
+
+    // ซ่อน Loading หลังจากได้ผลลัพธ์ Frame แรก (เช็คแค่ครั้งเดียวพอ)
+    // เปลี่ยนมาใช้ throttleFrameCounter เพื่อความถูกต้อง
+    if (
+      !loadingOverlay.classList.contains("hidden") &&
+      throttleFrameCounter > 10
+    ) {
+      loadingOverlay.classList.add("hidden");
+    }
   },
   width: 1280, // ความกว้าง (px)
   height: 720, // ความสูง (px) - 720p HD

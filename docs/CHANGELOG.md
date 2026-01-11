@@ -5,6 +5,48 @@
 ---
 ---
 
+## [v0.9.6] - 2026-01-12
+
+### ⚡ Performance Optimization & Verification
+
+#### Added
+- **Frame Throttling Logic** (`script.js`) - Implemented "Process 1, Skip 3" logic.
+  - Camera Input: ~30 FPS (Smooth visual)
+  - AI Inference: ~7.5 FPS (Reduced CPU/GPU load)
+  - Fixed double-counting bug in fps counters.
+- **Time-based Calibration** (`calibration_manager.js`) - Refactored from Frame-based to Time-based.
+  - Uses `Date.now()` (3000ms) for countdown instead of frame counting.
+  - Solves lag issues where calibration took too long at low FPS.
+- **VS Code Settings** (`.vscode/settings.json`) - Added configuration for PlantUML Graphviz path (Fixes MacPorts/Homebrew mismatch).
+
+#### Changed
+- **Diagrams Synchronization** - Updated diagrams to strictly match codebase (v0.9.6).
+  - `ClassDiagram.wsd`: Added missing methods in DrawingManager/GhostManager, fixed PathGenerator name.
+  - `SequenceDiagram_Calibration.wsd`: Removed `saveToStorage` (Dead Code).
+  - `SequenceDiagram_RealtimeAnalysis.wsd`: Updated to show Throttling Loop.
+- **Code Cleanup** - Commented out unused `saveToStorage` call in `script.js`.
+
+#### Updated Docs
+- **`task.md`** - Marked all tasks as complete.
+- **`walkthrough.md`** - Added final session summary.
+
+---
+
+## [v0.9.5] - 2026-01-11
+
+### 💎 Final UI Polish & Refactoring
+
+#### Changed
+- **Speaker Button Refactor** - Changed style from Green to Default Gray to match theme Consistency.
+  - Replaced icon toggle logic with pure text content update (`🔊`/`🔇`).
+- **Stop Control UI** - Moved Stop instructions to a dedicated bottom box.
+  - Added Red "Stop" header for clear visual hierarchy.
+  - Added "Auto-finish after 5 mins" reassurance text.
+  - Removed redundant gesture hints and floating note.
+  - Implemented auto-width sizing for better balance.
+- **Header Typography** - Fixed Thai vowel clipping issue.
+  - Added `leading-relaxed` and `py-1` to main title.
+
 ## [v0.9.4] - 2026-01-11
 
 ### 🌟 Landing Page Refinement (Thesis-Ready)

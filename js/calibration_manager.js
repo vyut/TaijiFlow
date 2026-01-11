@@ -45,10 +45,8 @@ class CalibrationManager {
     this.lang = "th"; // ภาษาปัจจุบัน (th/en)
     this.currentLevel = null; // Level ที่เลือก (L1, L2, L3) - ใช้กำหนด visibility requirement
 
-    // --- Stability Timer ---
-    // นับจำนวนเฟรมที่ยืนนิ่งต่อเนื่อง เพื่อป้องกันการวัดขณะเคลื่อนไหว
-    this.stableFrames = 0;
-    this.REQUIRED_STABLE_FRAMES = 90; // ~3 วินาที ที่ 30fps
+    this.stabilityStartTime = null; // เริ่มนับเวลาเมื่อยืนนิ่ง
+    this.REQUIRED_STABLE_TIME = 3000; // 3 วินาที
     this.statusText = ""; // ข้อความที่จะแสดงบน Overlay
 
     // =========================================================================
@@ -59,7 +57,7 @@ class CalibrationManager {
         tpose: "กรุณายืนกางแขน (T-Pose)",
         backUp: "กรุณายืนกางแขน (T-Pose)",
         armsUp: "กางแขนระดับไหล่",
-        holdStill: "อยู่นิ่งๆ...",
+        holdStill: "อยู่นิ่งๆ... ",
         complete: "✅ ปรับเทียบเสร็จสมบูรณ์!",
         cancel: "ถอยหลังอีกนิด! (ให้เห็นทั้งตัว)",
       },
@@ -67,7 +65,7 @@ class CalibrationManager {
         tpose: "Stand with arms out (T-Pose)",
         backUp: "Stand with arms out (T-Pose)",
         armsUp: "Raise arms to shoulder level",
-        holdStill: "Hold still...",
+        holdStill: "Hold still... ",
         complete: "✅ Calibration complete!",
         cancel: "Step back! (Full body visible)",
       },
@@ -174,7 +172,7 @@ class CalibrationManager {
   start() {
     this.isActive = true;
     this.isComplete = false;
-    this.stableFrames = 0;
+    this.stabilityStartTime = null;
     this.calibrationData = null;
     this.statusText = this.getText("tpose");
     console.log("Calibration Started");
@@ -186,7 +184,7 @@ class CalibrationManager {
   cancel() {
     this.isActive = false;
     this.isComplete = false;
-    this.stableFrames = 0;
+    this.stabilityStartTime = null;
     this.statusText = "";
     console.log("Calibration Cancelled");
   }
@@ -195,25 +193,11 @@ class CalibrationManager {
   // 🎯 PROCESS: ตรวจสอบท่า T-Pose และวัดสัดส่วน
   // ===========================================================================
 
-  /**
-   * ประมวลผล landmarks และตรวจสอบท่า T-Pose
-   *
-   * Flow:
-   *   1. ตรวจ visibility (ต้องเห็นทั้งตัว)
-   *   2. ตรวจท่า (มือต้องอยู่ระดับไหล่)
-   *   3. นับถอยหลัง 3 วินาที
-   *   4. บันทึกสัดส่วน
-   *
-   * @param {Object[]} landmarks - 33 จุดจาก MediaPipe
-   * @returns {Object} { status: 'adjusting'|'measuring'|'complete', message, data? }
-   */
   process(landmarks) {
     // Guard: ไม่ได้เปิด active หรือ Calibrate เสร็จแล้ว
     if (!this.isActive || this.isComplete) return null;
 
     // ----- Step 1: ตรวจ Visibility -----
-    // L1-L2: ไหล่ (11,12), สะโพก (23,24) - ไม่ต้องเห็นข้อเท้า
-    // L3: เพิ่มข้อเท้า (27,28) - ต้องเห็นทั้งตัว
     const requiredIndices =
       this.currentLevel === "L3"
         ? [11, 12, 23, 24, 27, 28] // L3: เห็นทั้งตัว
@@ -225,29 +209,32 @@ class CalibrationManager {
 
     if (!isVisible) {
       this.statusText = this.getText("backUp");
-      this.stableFrames = 0; // Reset เมื่อท่าไม่ถูก
+      this.stabilityStartTime = null; // Reset เมื่อท่าไม่ถูก
       return { status: "adjusting", message: this.statusText };
     }
 
     // ----- Step 2: ตรวจท่า T-Pose -----
-    // มือต้องอยู่ระดับเดียวกับไหล่ (คุณภาพ Y ใกล้กัน)
     const wristY = (landmarks[15].y + landmarks[16].y) / 2;
     const shoulderY = (landmarks[11].y + landmarks[12].y) / 2;
     const armThreshold = 0.2; // 20% ของหน้าจอ
 
     if (Math.abs(wristY - shoulderY) > armThreshold) {
       this.statusText = this.getText("armsUp");
-      this.stableFrames = 0;
+      this.stabilityStartTime = null;
       return { status: "adjusting", message: this.statusText };
     }
 
-    // ----- Step 3: นับถอยหลัง -----
-    // ท่าถูกแล้ว รอยืนนิ่ง 3 วินาที
-    this.stableFrames++;
-    if (this.stableFrames < this.REQUIRED_STABLE_FRAMES) {
-      const timeLeft = Math.ceil(
-        (this.REQUIRED_STABLE_FRAMES - this.stableFrames) / 30
-      );
+    // ----- Step 3: นับถอยหลัง (Time-based Logic) -----
+    // เริ่มนับเวลาถ้ายืนนิ่งครั้งแรก
+    if (this.stabilityStartTime === null) {
+      this.stabilityStartTime = Date.now();
+    }
+
+    const elapsed = Date.now() - this.stabilityStartTime;
+
+    if (elapsed < this.REQUIRED_STABLE_TIME) {
+      // ยังไม่ครบ 3 วิ
+      const timeLeft = Math.ceil((this.REQUIRED_STABLE_TIME - elapsed) / 1000);
       this.statusText = `${this.getText("holdStill")} ${timeLeft}`;
       return { status: "measuring", message: this.statusText };
     }

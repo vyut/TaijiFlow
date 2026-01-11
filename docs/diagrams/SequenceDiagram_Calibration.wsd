@@ -65,9 +65,10 @@ group #FFF3E0 ตรวจท่า T-Pose
         
         alt |wristY - shoulderY| > 0.2
             Calibrator --> UI : "กางแขนระดับไหล่"
+            Calibrator -> Calibrator : Reset Timer
             Calibrator --> Training : {status: "adjusting"}
         else ท่าถูกต้อง
-            Calibrator -> Calibrator : stableFrames++
+            Calibrator -> Calibrator : Check Timer (Date.now())
         end
     end
 end
@@ -77,7 +78,7 @@ end
 ' ============================================================================
 
 group #E8F5E9 นับถอยหลัง (3 วินาที)
-    loop stableFrames < 90 (~3 วินาที)
+    loop Time Elapsed < 3000ms
         Calibrator --> UI : "อยู่นิ่งๆ... 3"
         Calibrator --> UI : "อยู่นิ่งๆ... 2"
         Calibrator --> UI : "อยู่นิ่งๆ... 1"
@@ -98,10 +99,9 @@ group #E8F5E9 วัดสัดส่วน
         - armLength (ความยาวแขน)
     end note
     
-    Calibrator -> Calibrator : saveToStorage()
-    note right: เก็บใน LocalStorage
-    
     Calibrator --> Training : {status: "complete", data}
+    deactivate Calibrator
+    
     deactivate Calibrator
     
     Training -> Heuristics : setCalibration(data)

@@ -51,9 +51,9 @@ group #FFF3E0 Calibration (T-Pose)
     Calibration --> UI : แสดง "กางแขนท่า T"
     User -> User : ทำท่า T-Pose 🧍
     
-    loop ทุก frame จนกว่าจะ T-Pose ถูกต้อง
+    loop จนกว่าจะครบ 3 วินาที (Time-based)
         Training -> Calibration : process(landmarks)
-        Calibration --> Training : {status: "adjusting"}
+        Calibration --> Training : {status: "adjusting" | "measuring"}
     end
     
     Calibration --> Training : {status: "complete", data}
@@ -71,16 +71,18 @@ group #E8F5E9 การฝึก (Training Loop)
     Training -> Scoring : start()
     activate Scoring
     
-    loop ทุก frame (~30 fps) จนกว่าจะหยุด
+    loop Frame Loop (30 FPS)
         User -> User : ฝึกท่าม้วนไหม 🌀
         
-        Training -> Heuristics : analyze(landmarks)
-        activate Heuristics
-        Heuristics --> Training : feedbacks[]
-        deactivate Heuristics
-        
-        Training -> Scoring : recordFrame(feedbacks)
-        Training --> UI : แสดง feedback
+        opt Throttled Analysis (~7.5 FPS)
+            Training -> Heuristics : analyze(landmarks)
+            activate Heuristics
+            Heuristics --> Training : feedbacks[]
+            deactivate Heuristics
+            
+            Training -> Scoring : recordFrame(feedbacks)
+            Training --> UI : แสดง feedback
+        end
     end
 end
 

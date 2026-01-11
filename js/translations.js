@@ -71,7 +71,7 @@
  * @example
  *   // ดึงข้อความ
  *   const text = TRANSLATIONS["th"]["app_title"];
- *   // Output: "TaijiFlow AI: ผู้ช่วยฝึกท่าม้วนไหม (v0.4)"
+ *   // Output: "TaijiFlow AI: ผู้ช่วยฝึกท่าม้วนไหม"
  */
 const TRANSLATIONS = {
   // ===========================================================================
@@ -83,7 +83,7 @@ const TRANSLATIONS = {
     // Header & Title
     // -------------------------------------------------------------------------
     // ชื่อแอปพลิเคชัน แสดงที่ Header
-    app_title: "TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก (v0.91)",
+    app_title: "TaijiFlow AI: ผู้ช่วยฝึกท่าม้วนไหม (v0.91)",
 
     // -------------------------------------------------------------------------
     // Selection Controls (Dropdown Labels)
@@ -184,7 +184,7 @@ const TRANSLATIONS = {
     // หัวข้อ How-to Section
     overlay_how_to: "วิธีใช้งาน",
     // Quickstart Section
-    quickstart_title: "⚡ Quickstart",
+    quickstart_title: "Quickstart",
     quickstart_action: 'กดปุ่ม "▶️ เริ่มการฝึก" หรือ ยกนิ้วโป้ง 👍',
     quickstart_default: "ค่าเริ่มต้น: ท่าม้วนไหม - มือขวา - ตามเข็ม - แบบนั่ง",
     or_customize: "หรือเลือกเอง",
@@ -194,11 +194,10 @@ const TRANSLATIONS = {
     overlay_step2: 'เลือก "รูปแบบ" ที่ต้องการฝึก',
     // ขั้นตอนที่ 3
     overlay_step3: 'กดปุ่ม "▶️ เริ่มการฝึก"',
-    // หมายเหตุ
-    overlay_note: "⏱️ ฝึกท่าละ 5 นาที • กด 🛑 เพื่อหยุดก่อนเวลา",
-    // Gesture Hint
-    gesture_start_hint: "ยกนิ้วโป้ง = เริ่มการฝึก",
-    gesture_stop_hint: "กำมือ = หยุดการฝึก",
+    // Stop Section (New)
+    stop_title: "Stop",
+    stop_action: 'กดปุ่ม "⏹️ หยุดการฝึก" หรือ ✊ กำมือ',
+    stop_auto_finish: "ระบบจบการฝึกอัตโนมัติเมื่อครบ 5 นาที",
     // Feedback Link
     feedback_link: "📝 ช่วยพัฒนาแอป • ตอบแบบสอบถาม",
 
@@ -275,7 +274,7 @@ const TRANSLATIONS = {
     // -------------------------------------------------------------------------
     // Header & Title
     // -------------------------------------------------------------------------
-    app_title: "TaijiFlow AI: Taijiquan Assistant (v0.91)",
+    app_title: "TaijiFlow AI: Silk Reeling Assistant (v0.91)",
 
     // -------------------------------------------------------------------------
     // Selection Controls
@@ -341,19 +340,23 @@ const TRANSLATIONS = {
     overlay_desc: "*Press to calibrate your body proportions",
     overlay_how_to: "How to Start",
     // Quickstart Section
-    quickstart_title: "⚡ Quickstart",
+    quickstart_title: "Quickstart",
     quickstart_action: 'Press "▶️ Start Training" or Thumbs Up 👍',
     quickstart_default:
       "Default: Silk Reeling - Right Hand - Clockwise - Sitting",
     or_customize: "or customize",
     overlay_step1: 'Select "Exercise" from menu above',
     overlay_step2: 'Select "Level" to train',
-    overlay_step3: 'Press "▶️ Start Training"',
+    overlay_step3: 'Click "▶️ Start Training"',
+    // Stop Section (New)
+    stop_title: "Stop",
+    stop_action: 'Click "⏹️ Stop" or Hold Fist ✊',
+    stop_auto_finish: "Auto-finish after 5 mins",
     overlay_note: "⏱️ 5 min per exercise • Press 🛑 to stop early",
     // Gesture Hint
     gesture_start_hint: "Thumb Up = Start Training",
     gesture_stop_hint: "Closed Fist = Stop Training",
-    feedback_link: "📝 Help improve this app • Give Feedback",
+    feedback_link: "📝 Feedback / Survey",
 
     // -------------------------------------------------------------------------
     // Alert Messages

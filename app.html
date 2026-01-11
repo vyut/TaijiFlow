@@ -201,7 +201,7 @@ Version: 0.6 (2024-12-24)
 
     <!-- Header -->
     <h1 id="app-title" class="text-3xl font-bold mb-4 text-purple-400">
-      TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก (v0.9.1)
+      TaijiFlow AI: ผู้ช่วยฝึกท่าม้วนไหม (v0.9.1)
     </h1>
 
     <!-- Main Container -->
@@ -627,7 +627,7 @@ Version: 0.6 (2024-12-24)
           <!-- Audio Button -->
           <button
             id="audio-btn"
-            class="px-3 py-2 bg-green-600 text-white border border-green-700 rounded hover:bg-green-700 transition-colors"
+            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
             title="เปิด/ปิดเสียงพูด"
           >
             🔊
@@ -834,27 +834,24 @@ Version: 0.6 (2024-12-24)
             </p>
           </div>
 
-          <!-- Gesture Hint Section -->
+          <!-- Stop Box (New) -->
           <div
-            id="gesture-hint"
-            class="mt-4 p-3 bg-gray-800 bg-opacity-20 rounded-lg border border-gray-600 max-w-md"
+            id="stop-box"
+            class="mt-6 p-4 bg-gray-800 bg-opacity-50 rounded-lg border border-white/30 max-w-md"
           >
-            <div class="flex justify-center gap-6 text-white text-sm">
-              <div class="flex items-center gap-2">
-                <span class="text-xl">👍</span>
-                <span id="gesture-start-hint">ยกนิ้วโป้ง = เริ่มการฝึก</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="text-xl">✊</span>
-                <span id="gesture-stop-hint">กำมือ = หยุดการฝึก</span>
-              </div>
-            </div>
+            <h3
+              id="stop-title"
+              class="text-red-400 text-lg font-bold mb-2 text-center"
+            >
+              Stop
+            </h3>
+            <p id="stop-action" class="text-white text-center mb-2">
+              กดปุ่ม "⏹️ หยุดการฝึก" หรือ ✊ กำมือ
+            </p>
+            <p id="stop-auto-finish" class="text-gray-400 text-sm text-center">
+              ระบบจบการฝึกอัตโนมัติเมื่อครบ 5 นาที
+            </p>
           </div>
-
-          <p id="overlay-note" class="text-gray-400 mt-4 text-sm text-center">
-            ⏱️ ฝึกท่าละ 5 นาที • ไม่บันทึกวิดีโอ | 📏
-            ปรับเทียบสัดส่วนอัตโนมัติทุกครั้ง
-          </p>
         </div>
 
         <!-- Countdown Overlay (3-2-1) -->

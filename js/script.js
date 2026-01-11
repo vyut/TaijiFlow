@@ -354,8 +354,6 @@ const audioBtn = document.getElementById("audio-btn");
 audioBtn.addEventListener("click", () => {
   const isEnabled = audioManager.toggle();
   audioBtn.innerText = isEnabled ? "🔊" : "🔇";
-  audioBtn.classList.toggle("bg-green-600", isEnabled);
-  audioBtn.classList.toggle("bg-gray-500", !isEnabled);
 });
 
 // Display Controller (extracted to display_controller.js)

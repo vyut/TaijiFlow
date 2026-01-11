@@ -535,11 +535,10 @@ class UIManager {
     setText("overlay-step1", "overlay_step1");
     setText("overlay-step2", "overlay_step2");
     setText("overlay-step3", "overlay_step3");
-    setText("overlay-note", "overlay_note");
-
-    // Gesture Hints (new)
-    setText("gesture-start-hint", "gesture_start_hint");
-    setText("gesture-stop-hint", "gesture_stop_hint");
+    // Stop Box (New)
+    setText("stop-title", "stop_title");
+    setText("stop-action", "stop_action");
+    setText("stop-auto-finish", "stop_auto_finish");
 
     // Video Overlay Buttons (แสดงระหว่างฝึก)
     setText("stop-btn-text", "stop_btn");

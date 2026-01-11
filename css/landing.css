@@ -326,13 +326,13 @@ h1 {
   margin: 0 auto 20px;
   padding: 24px 32px;
   background: rgba(255, 255, 255, 0.08);
-  border: 2px solid rgba(74, 222, 128, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 16px;
   text-align: center;
 }
 
 .guide-quickstart h4 {
-  color: #4ade80;
+  color: #fff;
   font-size: 24px;
   margin-bottom: 12px;
 }

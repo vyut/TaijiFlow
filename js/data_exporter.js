@@ -24,6 +24,8 @@
  *       "exercise": "rh_cw",
  *       "level": "L2",
  *       "timestamp": "2024-12-17T12:00:00Z",
+ *       "timestamp": "2024-12-17T12:00:00Z",
+ *       "thresholds": { ... },
  *       "platform": { ... }
  *     },
  *     "score_summary": {

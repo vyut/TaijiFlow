@@ -40,6 +40,11 @@ taiji_data_{exercise}_{timestamp}.json
       "shoulderWidth": 0.156,
       "armLength": 0.312
     },
+    "thresholds": {
+      "checkPath": true,
+      "checkRotation": true,
+      ...
+    },
     "platform": {
       "userAgent": "Mozilla/5.0...",
       "platform": "MacIntel",
@@ -101,6 +106,7 @@ taiji_data_{exercise}_{timestamp}.json
 | `exercise` | ท่าที่ฝึก (rh_cw, lh_ccw, etc.) | **Classification Label** |
 | `level` | ระดับ (L1, L2, L3) | Stratified Training |
 | `user_calibration` | สัดส่วนร่างกาย | **Normalization** |
+| `thresholds` | ค่า Config ของตรวจจับ (Sensitivity) | Reproducibility |
 | `platform` | ข้อมูลอุปกรณ์ | Filter ตาม Device |
 
 ### 📊 Summary

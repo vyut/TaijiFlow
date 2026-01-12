@@ -18,6 +18,9 @@
   - Uses `Date.now()` (3000ms) for countdown instead of frame counting.
   - Solves lag issues where calibration took too long at low FPS.
 - **VS Code Settings** (`.vscode/settings.json`) - Added configuration for PlantUML Graphviz path (Fixes MacPorts/Homebrew mismatch).
+- **Data Export Update** (`script.js`, `data_exporter.js`) - Added `thresholds` (Heuristic Config) to exported JSON metadata.
+  - Ensures research reproducibility by recording exact sensitivity settings used during training.
+  - Supports future Machine Learning model training (Phase 3).
 
 #### Changed
 - **Diagrams Synchronization** - Updated diagrams to strictly match codebase (v0.9.6).

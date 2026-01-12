@@ -913,6 +913,7 @@ recordBtn.addEventListener("click", () => {
           level: currentLevel,
           user_calibration: engine.calibrationData,
           platform: getPlatformInfo(),
+          thresholds: engine.CONFIG,
         },
 
         // === สรุปผล (Summary) ===

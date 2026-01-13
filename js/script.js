@@ -523,26 +523,36 @@ levelButtons.forEach((btn) => {
  *
  * @description
  *   แสดง Overlay พร้อมตัวเลขนับถอยหลัง 3, 2, 1
- *   ให้ผู้ฝึกเตรียมตัวก่อนเริ่มบันทึก
- *   ใช้ Promise เพื่อให้ await ได้
+ *   ใช้ Smart Wait (waitForIdle) เพื่อให้เสียงไม่ตีกัน
  *
- * @returns {Promise} Resolves เมื่อนับถอยหลังเสร็จ
+ * @returns {Promise} Resolves เมื่อนับถอยหลังเสร็จ + เสียงพูดจบ
  */
 function showCountdown() {
-  return new Promise((resolve) => {
+  return new Promise(async (resolve) => {
     countdownOverlay.classList.remove("hidden");
     let count = 3;
     countdownNumber.textContent = count;
-    audioManager.speak(count.toString(), true);
 
-    const interval = setInterval(() => {
+    // 1. รอให้เสียงเก่า (Calibration) จบก่อน 100%
+    await audioManager.waitForIdle();
+
+    // 2. พูดชื่อท่า (Speaking...)
+    const exerciseText = audioManager.getExerciseSpokenText(
+      currentExercise,
+      currentLevel
+    );
+    audioManager.speak(exerciseText, true);
+
+    const interval = setInterval(async () => {
       count--;
       if (count > 0) {
         countdownNumber.textContent = count;
-        audioManager.speak(count.toString(), true); // Speak the number
       } else {
         clearInterval(interval);
         countdownOverlay.classList.add("hidden");
+
+        // 3. รอให้เสียงชื่อท่าจบก่อน 100% แล้วค่อยเริ่มฝึก
+        await audioManager.waitForIdle();
         resolve();
       }
     }, 1000);
@@ -1192,7 +1202,11 @@ async function onResults(results) {
           "warning",
           6000
         );
-        audioManager.speak(uiManager.getText("alert_low_light_calibration"));
+        audioManager.speak(
+          uiManager.currentLang === "th"
+            ? "แสงสว่างไม่เพียงพอ"
+            : "Not enough light"
+        );
       }
 
       const calibResult = calibrator.process(results.poseLandmarks);
@@ -1466,7 +1480,11 @@ async function onResults(results) {
             // พูดเตือนด้วยเสียง (TTS) - ใช้ข้อความสั้นกว่าเพื่อไม่รบกวน
             // หมายเหตุ: ใช้ข้อความเดียวกับ notification แต่ AudioManager
             //          จะพูดเฉพาะเมื่อเปิดเสียงอยู่ (audioEnabled = true)
-            audioManager.speak(uiManager.getText("alert_low_light"));
+            const shortMsg =
+              uiManager.currentLang === "th"
+                ? "แสงสว่างไม่เพียงพอ"
+                : "Not enough light";
+            audioManager.speak(shortMsg);
           }
 
           // เก็บ Snapshot ของเฟรมนี้
@@ -1512,7 +1530,11 @@ async function onResults(results) {
           "warning",
           6000
         );
-        audioManager.speak(uiManager.getText("alert_low_light_calibration"));
+        audioManager.speak(
+          uiManager.currentLang === "th"
+            ? "แสงสว่างไม่เพียงพอ"
+            : "Not enough light"
+        );
       }
     }
   }

@@ -545,7 +545,7 @@ class AudioManager {
       // record_stop - หยุดการฝึก
       // -------------------------------------------------------------------------
       // แจ้งให้ผู้ฝึกรู้ว่าหยุดบันทึกแล้ว
-      record_stop: isThaiLang ? "หยุดการฝึก" : "Stop training",
+      record_stop: isThaiLang ? "สิ้นสุดการฝึก" : "Training ended",
 
       // -------------------------------------------------------------------------
       // calib_success - Calibration สำเร็จ
@@ -575,6 +575,87 @@ class AudioManager {
       // ประกาศพิเศษต้องพูดทันทีเสมอ
       this.speak(announcements[type], true);
     }
+  }
+  // ===========================================================================
+  // METHOD: getExerciseSpokenText
+  // ===========================================================================
+
+  /**
+   * แปลงรหัสท่าและระดับเป็นข้อความเสียง (Short Phrase)
+   *
+   * @param {string} exerciseId - รหัสท่า (e.g. 'right_cw')
+   * @param {string} level - ระดับ (e.g. 'L1', 'L2', 'L3')
+   * @returns {string} ข้อความสำหรับพูด (e.g. "มือขวา ตามเข็ม แบบนั่ง")
+   */
+  getExerciseSpokenText(exerciseId, level) {
+    const isThai = this.lang === "th-TH";
+    const parts = [];
+
+    // 1. แยก Hand & Direction จาก ID
+    // ID format: 'rh_cw', 'lh_ccw', 'right_cw' (support legacy)
+    if (exerciseId.includes("right") || exerciseId.startsWith("rh")) {
+      parts.push(isThai ? "มือขวา" : "Right hand");
+    } else if (exerciseId.includes("left") || exerciseId.startsWith("lh")) {
+      parts.push(isThai ? "มือซ้าย" : "Left hand");
+    }
+
+    if (exerciseId.includes("cw") && !exerciseId.includes("ccw")) {
+      // cw
+      parts.push(isThai ? "ตามเข็ม" : "Clockwise");
+    } else if (exerciseId.includes("ccw")) {
+      // ccw
+      parts.push(isThai ? "ทวนเข็ม" : "Counter clockwise");
+    }
+
+    // 2. แปลง Level
+    if (level === "L1") {
+      parts.push(isThai ? "แบบนั่ง" : "Seated");
+    } else if (level === "L2") {
+      parts.push(isThai ? "แบบยืน" : "Standing");
+    } else if (level === "L3") {
+      parts.push(isThai ? "แบบยืนย่อ" : "Stepping");
+    }
+
+    // Join ด้วยจังหวะหยุดเล็กน้อย (Space) หรือ Comma
+    return parts.join(isThai ? " " : ", ");
+  }
+
+  // ===========================================================================
+  // METHOD: waitForIdle
+  // ===========================================================================
+
+  /**
+   * รอจนกว่าเสียงปัจจุบันจะพูดจบ (Smart Wait)
+   *
+   * @description
+   *   ใช้ Promise + Polling เพื่อรอให้ speechSynthesis.speaking เป็น false
+   *   ช่วยแก้ปัญหาเสียงซ้อนทับกัน (Audio Overlap) ได้ 100%
+   *
+   * @param {number} timeoutMs - เวลา Max รอสูงสุด (กันค้าง) Default 5วิ
+   * @returns {Promise} Resolve เมื่อเสียงเงียบลง
+   */
+  waitForIdle(timeoutMs = 5000) {
+    return new Promise((resolve) => {
+      // ถ้าไม่ได้พูดอยู่แล้ว -> จบเลย
+      if (!window.speechSynthesis.speaking) {
+        resolve();
+        return;
+      }
+
+      // เริ่มจับเวลา
+      const startTime = Date.now();
+
+      const timer = setInterval(() => {
+        // เงื่อนไขจบ: เลิกพูด หรือ หมดเวลา
+        if (
+          !window.speechSynthesis.speaking ||
+          Date.now() - startTime > timeoutMs
+        ) {
+          clearInterval(timer);
+          resolve();
+        }
+      }, 100); // เช็คทุก 100ms
+    });
   }
 }
 

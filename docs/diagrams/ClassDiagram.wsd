@@ -99,6 +99,7 @@ package "Core Managers" <<Core>> {
         - level: string
         --
         + start()
+        + stop()
         + cancel()
         + process(landmarks)
         + setLevel(level)

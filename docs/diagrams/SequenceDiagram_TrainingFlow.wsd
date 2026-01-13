@@ -57,6 +57,7 @@ group #FFF3E0 Calibration (T-Pose)
     end
     
     Calibration --> Training : {status: "complete", data}
+    Training -> Calibration : stop()
     deactivate Calibration
     
     Training -> Heuristics : setCalibration(data)

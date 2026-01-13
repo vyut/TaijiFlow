@@ -199,6 +199,8 @@ this.RULES_CONFIG = {
 
 ### Dependency Diagram
 
+![Module Dependencies Diagram](../../out/docs/diagrams/ModuleDependencies/ModuleDependencies.svg)
+
 ```text
 ┌─────────────────────────────────────────────────────────────┐
 │                     Layer 1: Entry Point                     │
@@ -288,6 +290,8 @@ this.RULES_CONFIG = {
 
 ## 5. Layer Architecture
 
+![Layer Architecture Diagram](../../out/docs/diagrams/LayerArchitecture/LayerArchitecture.svg)
+
 ```text
 ┌────────────────────────────────────────────────────────────────┐
 │                    🖥️ PRESENTATION LAYER                       │
@@ -346,4 +350,4 @@ this.RULES_CONFIG = {
 
 ---
 
-*Document updated: 2026-01-10*
+*Document updated: 2026-01-12*

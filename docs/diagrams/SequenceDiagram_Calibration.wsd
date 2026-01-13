@@ -100,8 +100,7 @@ group #E8F5E9 วัดสัดส่วน
     end note
     
     Calibrator --> Training : {status: "complete", data}
-    deactivate Calibrator
-    
+    Training -> Calibrator : stop()
     deactivate Calibrator
     
     Training -> Heuristics : setCalibration(data)

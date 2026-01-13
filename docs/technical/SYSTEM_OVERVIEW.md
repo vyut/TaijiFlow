@@ -1,7 +1,7 @@
 # TaijiFlow AI - System Overview
 
-**Version:** 0.6.0  
-**Last Updated:** 2024-12-24  
+**Version:** 0.9.1
+**Last Updated:** 2026-01-12
 **Author:** TaijiFlow AI Team
 
 ---
@@ -26,9 +26,10 @@ TaijiFlow AI เป็นแอปพลิเคชันฝึกท่าม�
 |---------|---------|
 | **Pose Detection** | ตรวจจับท่าทาง 33 จุดด้วย MediaPipe |
 | **Pose Analysis** | วิเคราะห์ท่าตาม 8 กฎไทเก๊ก |
-| **Visual Feedback** | แสดง Path, Ghost, Skeleton |
+| **Visual Feedback** | แสดง Path, Ghost, Skeleton, Silhouette |
 | **Audio Feedback** | พูดแจ้งเตือนด้วย TTS |
 | **Scoring** | คำนวณคะแนนแบบ Real-time |
+| **Data Export** | บันทึกข้อมูล Session (JSON/CSV) |
 
 ### 🏗️ เทคโนโลยีที่ใช้
 
@@ -45,7 +46,7 @@ TaijiFlow AI เป็นแอปพลิเคชันฝึกท่าม�
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                          index.html                                  │
+│                          app.html                                  │
 │                     (Entry Point, DOM Structure)                     │
 └───────────────────────────────┬─────────────────────────────────────┘
                                 │
@@ -71,6 +72,7 @@ TaijiFlow AI เป็นแอปพลิเคชันฝึกท่าม�
 │ manager.js    │   │ audio_manager     │   │                   │
 └───────────────┘   └───────────────────┘   └───────────────────┘
 ```
+![Module Diagram](../../out/docs/diagrams/ModuleDiagram/ModuleDiagram.svg)
 
 ### Data Flow
 
@@ -87,6 +89,8 @@ Camera → MediaPipe → Landmarks → Heuristics Engine → Feedbacks
                               (คำนวณคะแนน)
 ```
 
+![Simple Data Flow Diagram](../../out/docs/diagrams/TaijiFlow_SimpleDataFlow/TaijiFlow_SimpleDataFlow.svg)
+
 ---
 
 ## 3. โครงสร้างไฟล์
@@ -95,22 +99,37 @@ Camera → MediaPipe → Landmarks → Heuristics Engine → Feedbacks
 
 ```
 TaijiFlow/
-├── index.html           # Entry Point
+├── index.html           # Landing Page
+├── app.html             # Application Entry Point
 ├── css/
-│   ├── styles.css       # Main Styles
-│   └── chatbot.css      # Chatbot Styles
+│   ├── styles.css       # Main App Styles
+│   ├── landing.css      # Landing Page Styles
+│   ├── chatbot.css      # Chatbot Styles
+│   ├── feedback.css     # Feedback Box Styles
+│   └── base.css         # Base/Reset Styles
 ├── js/
-│   ├── script.js              # Main Controller (1,720 lines)
-│   ├── heuristics_engine.js   # Pose Analysis (973 lines)
-│   ├── ui_manager.js          # UI Management (1,091 lines)
-│   ├── audio_manager.js       # Audio Feedback (584 lines)
-│   ├── drawing_manager.js     # Canvas Drawing (430 lines)
-│   ├── calibration_manager.js # Calibration (357 lines)
-│   ├── scoring_manager.js     # Scoring (270 lines)
-│   ├── ghost_manager.js       # Ghost Overlay (261 lines)
-│   ├── session_manager.js     # Session/User ID (115 lines)
-│   ├── path_generator.js      # Dynamic Path (85 lines)
-│   └── ... (และอื่นๆ)
+│   ├── script.js              # Main Entry Point
+│   ├── heuristics_engine.js   # Pose Analysis Core
+│   ├── ui_manager.js          # Main UI Manager
+│   ├── audio_manager.js       # Audio Feedback
+│   ├── drawing_manager.js     # Canvas Drawing
+│   ├── calibration_manager.js # Calibration Logic
+│   ├── scoring_manager.js     # Scoring System
+│   ├── ghost_manager.js       # Ghost Overlay
+│   ├── silhouette_manager.js  # Silhouette Overlay
+│   ├── path_generator.js      # Dynamic Path Logic
+│   ├── session_manager.js     # Session/User ID
+│   ├── data_exporter.js       # Data Export Logic
+│   ├── translations.js        # i18n Data
+│   ├── chatbot.js             # Gemini AI Chatbot
+│   ├── display_controller.js  # Display Settings
+│   ├── keyboard_controller.js # Shortcuts
+│   ├── rules_config_manager.js# Rules Settings
+│   ├── gesture_manager.js     # Hand Gestures
+│   ├── tutorial_manager.js    # Tutorial System
+│   ├── score_popup_manager.js # Result Popup
+│   ├── feedback_manager.js    # Feedback UI
+│   └── silk-animation.js      # Landing Animation
 ├── data/
 │   └── *.json           # Reference Data
 ├── audio/
@@ -123,16 +142,27 @@ TaijiFlow/
 
 | ไฟล์ | บทบาท | Dependencies |
 |------|-------|--------------|
-| `script.js` | Main Controller | ทุกไฟล์ |
-| `heuristics_engine.js` | วิเคราะห์ท่า | - |
-| `calibration_manager.js` | ปรับเทียบสัดส่วน | - |
-| `scoring_manager.js` | คำนวณคะแนน | - |
-| `ui_manager.js` | จัดการ UI | translations.js |
-| `audio_manager.js` | เสียงพูด | - |
-| `drawing_manager.js` | วาด Canvas | - |
-| `ghost_manager.js` | เงาครูฝึก | - |
+| `script.js` | Main Entry Point / Glue Code | All Modules |
+| `heuristics_engine.js` | วิเคราะห์ท่า (Core Logic) | - |
+| `calibration_manager.js` | ปรับเทียบสัดส่วน (T-Pose) | - |
+| `scoring_manager.js` | คำนวณคะแนนและเกรด | - |
+| `ui_manager.js` | จัดการ UI หน้าจอหลัก | translations.js |
+| `audio_manager.js` | จัดการเสียงพูด (TTS) | - |
+| `drawing_manager.js` | วาด Canvas (Skeleton, Path) | - |
+| `ghost_manager.js` | วาดเงาครูฝึก (Instructor) | - |
+| `silhouette_manager.js` | วาดเงาผู้เล่น (User Silhouette) | - |
 | `path_generator.js` | สร้าง Dynamic Path | - |
-| `session_manager.js` | จัดการ Session | - |
+| `session_manager.js` | จัดการ Session User | - |
+| `data_exporter.js` | Export ข้อมูลการฝึก | - |
+| `display_controller.js` | จัดการเมนูแสดงผล | - |
+| `keyboard_controller.js` | จัดการคีย์ลัด | - |
+| `chatbot.js` | AI Chatbot (Gemini) | - |
+| `rules_config_manager.js` | จัดการตั้งค่า Rules | - |
+| `gesture_manager.js` | สั่งงานด้วยมือ (Gesture) | - |
+| `tutorial_manager.js` | ระบบสอนใช้งาน | - |
+| `score_popup_manager.js` | หน้าต่างสรุปผลคะแนน | - |
+| `feedback_manager.js` | แสดง Feedback UI | - |
+| `silk-animation.js` | Animation หน้า Landing | - |
 
 ---
 
@@ -192,6 +222,8 @@ TaijiFlow/
 └────────────────┘
 ```
 
+![Training Flow Diagram](../../out/docs/diagrams/TrainingFlow/TrainingFlow.svg)
+
 ### 4.3 Frame Processing (onResults)
 
 ```javascript
@@ -240,29 +272,36 @@ function onResults(results) {
 
 ```html
 <!-- 1. External Libraries -->
-<script src="mediapipe/pose.js"></script>
-<script src="mediapipe/camera_utils.js"></script>
-<script src="mediapipe/drawing_utils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
+...
 
-<!-- 2. App Modules (order matters!) -->
-<script src="js/translations.js" defer></script>
+<!-- 2. Core Managers (Independent) -->
+<script src="js/calibration_manager.js" defer></script>
 <script src="js/heuristics_engine.js" defer></script>
 <script src="js/rules_config_manager.js" defer></script>
-<script src="js/calibration_manager.js" defer></script>
-<script src="js/scoring_manager.js" defer></script>
-<script src="js/audio_manager.js" defer></script>
 <script src="js/drawing_manager.js" defer></script>
-<script src="js/ghost_manager.js" defer></script>
 <script src="js/data_exporter.js" defer></script>
+<script src="js/audio_manager.js" defer></script>
+<script src="js/scoring_manager.js" defer></script>
+<script src="js/ghost_manager.js" defer></script>
+<script src="js/silhouette_manager.js" defer></script>
+
+<!-- 3. UI/Translation (Dependent on Core) -->
+<script src="js/translations.js" defer></script>
 <script src="js/ui_manager.js" defer></script>
+<script src="js/score_popup_manager.js" defer></script>
 <script src="js/gesture_manager.js" defer></script>
 <script src="js/tutorial_manager.js" defer></script>
 <script src="js/chatbot.js" defer></script>
 <script src="js/feedback_manager.js" defer></script>
+
+<!-- 4. Utility Modules -->
 <script src="js/session_manager.js" defer></script>
 <script src="js/path_generator.js" defer></script>
 
-<!-- 3. Main Controller (last) -->
+<!-- 5. Controllers & Entry Point -->
+<script src="js/display_controller.js" defer></script>
+<script src="js/keyboard_controller.js" defer></script>
 <script src="js/script.js" defer></script>
 ```
 

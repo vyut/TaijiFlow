@@ -3,7 +3,7 @@
 ' TaijiFlow AI - Module Dependencies Diagram (Top-Down Layers)
 ' ============================================================================
 ' แสดงความสัมพันธ์ระหว่าง 22 Modules แบ่งเป็น 5 ชั้น
-' อัปเดต: 2026-01-09
+' อัปเดต: 2026-01-12 (Refined Layout)
 ' ============================================================================
 
 skinparam defaultFontName "Sarabun"
@@ -11,6 +11,8 @@ skinparam backgroundColor transparent
 skinparam componentStyle rectangle
 skinparam packageStyle rectangle
 skinparam linetype ortho
+skinparam nodesep 0.8
+skinparam ranksep 1.0
 
 ' === Direction ===
 top to bottom direction
@@ -27,7 +29,7 @@ skinparam package {
 }
 
 ' ============================================================================
-' LAYER 1: ENTRY POINT (Top)
+' LAYER 1: ENTRY POINT
 ' ============================================================================
 
 package "Layer 1: Entry Point" <<entry>> {
@@ -47,16 +49,16 @@ package "Layer 2: Controllers" <<controller>> {
 ' LAYER 3: MANAGERS (Core + Display + UI)
 ' ============================================================================
 
-package "Layer 3: Core Managers" <<core>> {
-    [HeuristicsEngine] as Heuristics
-    [CalibrationManager] as Calibration
-    [ScoringManager] as Scoring
-}
-
 package "Layer 3: Display Managers" <<display>> {
     [DrawingManager] as Drawing
     [GhostManager] as Ghost
     [SilhouetteManager] as Silhouette
+}
+
+package "Layer 3: Core Managers" <<core>> {
+    [HeuristicsEngine] as Heuristics
+    [CalibrationManager] as Calibration
+    [ScoringManager] as Scoring
 }
 
 package "Layer 3: UI Managers" <<ui>> {
@@ -86,7 +88,7 @@ package "Layer 4: Landing Page" <<utility>> {
 }
 
 ' ============================================================================
-' LAYER 5: EXTERNAL APIs (Bottom)
+' LAYER 5: EXTERNAL APIs
 ' ============================================================================
 
 package "Layer 5: External APIs" <<external>> {
@@ -97,7 +99,23 @@ package "Layer 5: External APIs" <<external>> {
 }
 
 ' ============================================================================
-' RELATIONSHIPS (Simplified - Main flows only)
+' LAYOUT HELPER (Hidden Links for Sequencing)
+' ============================================================================
+' Force vertical ordering
+Script -[hidden]-> DisplayCtrl
+DisplayCtrl -[hidden]-> Heuristics
+Heuristics -[hidden]-> Exporter
+Exporter -[hidden]-> MPPose
+
+' Force horizontal alignment for Layer 3 (Display - Core - UI)
+Drawing -[hidden]- Heuristics
+Heuristics -[hidden]- UI
+
+' Force horizontal alignment for Layer 4
+Exporter -[hidden]- SilkAnim
+
+' ============================================================================
+' RELATIONSHIPS (Main flows)
 ' ============================================================================
 
 ' Layer 1 → Layer 2

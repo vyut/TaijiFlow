@@ -128,12 +128,10 @@ let currentFps = 0;
 let camFrameCount = 0;
 let currentCamFps = 0;
 
-// -----------------------------------------------------------------------------
-// Low Light Warning - เตือนเมื่อแสงไม่เพียงพอ
-// -----------------------------------------------------------------------------
 const LOW_LIGHT_THRESHOLD = 0.5; // visibility ต่ำกว่านี้จะเตือน (0-1)
-const LOW_LIGHT_WARNING_COOLDOWN = 30000; // cooldown 30 วินาที (เพิ่มจาก 10s เพื่อลดการรบกวน)
+const LOW_LIGHT_WARNING_COOLDOWN = 30000; // cooldown 30 วินาที
 let lastLowLightWarningTime = 0; // เวลาที่เตือนล่าสุด
+const STARTUP_DELAY = 3000; // รอ 3 วินาทีก่อนเริ่มตรวจ (ให้กล้องปรับแสง)
 
 // -----------------------------------------------------------------------------
 // Fullscreen State
@@ -535,11 +533,13 @@ function showCountdown() {
     countdownOverlay.classList.remove("hidden");
     let count = 3;
     countdownNumber.textContent = count;
+    audioManager.speak(count.toString(), true);
 
     const interval = setInterval(() => {
       count--;
       if (count > 0) {
         countdownNumber.textContent = count;
+        audioManager.speak(count.toString(), true); // Speak the number
       } else {
         clearInterval(interval);
         countdownOverlay.classList.add("hidden");
@@ -594,6 +594,7 @@ async function startTrainingFlow() {
   // 2. เริ่ม Calibrate (กำหนด Level ก่อน เพื่อ visibility requirement)
   calibrator.setLevel(currentLevel); // L1-L2 ไม่ต้องเห็นข้อเท้า, L3 ต้องเห็นทั้งตัว
   calibrator.start();
+  sessionStartTime = Date.now(); // เริ่มนับเวลาสำหรับ Startup Delay
   audioManager.announce("calib_start");
 
   // 3. อัปเดตสถานะปุ่ม: Disable Start, Enable Stop
@@ -1164,10 +1165,9 @@ async function onResults(results) {
       drawer.drawSkeleton(results.poseLandmarks);
 
       // ---------------------------------------------------------------------
-      // Low Light Check ระหว่าง Calibration (ทุกเฟรม)
+      // Low Light Check (Visibility-Based with Delay)
       // ---------------------------------------------------------------------
-      // เหตุผล: ถ้าแสงไม่เพียงพอ → ตรวจจับ T-Pose ไม่ได้ → Calibration ไม่เสร็จ
-      // วิธี: เตือนผู้ใช้ทันทีเมื่อแสงต่ำเกินไป (มี cooldown ป้องกันเตือนซ้ำ)
+      // กลับมาใช้ Visibility Check แต่เพิ่ม Delay ตามที่ user ขอ
       // ---------------------------------------------------------------------
       const keyIndices = [11, 12, 13, 14, 15, 16, 23, 24]; // ไหล่, ศอก, ข้อมือ, สะโพก
       const visibilitySum = keyIndices.reduce(
@@ -1177,11 +1177,15 @@ async function onResults(results) {
       const avgVisibility = visibilitySum / keyIndices.length;
       const now = Date.now();
 
+      // เงื่อนไข:
+      // 1. ผ่าน Startup Delay แล้ว (ป้องกันเตือนตอนเริ่ม)
+      // 2. Visibility ต่ำกว่าเกณฑ์
+      // 3. ไม่อยู่ใน Cooldown
       if (
+        now - sessionStartTime > STARTUP_DELAY &&
         avgVisibility < LOW_LIGHT_THRESHOLD &&
         now - lastLowLightWarningTime > LOW_LIGHT_WARNING_COOLDOWN
       ) {
-        // แสงไม่พอ → เตือนผู้ใช้ (ไม่ยกเลิก calibration ทันที แต่เตือนให้แก้ไข)
         lastLowLightWarningTime = now;
         uiManager.showNotification(
           uiManager.getText("alert_low_light_calibration"),
@@ -1690,6 +1694,22 @@ loadReferenceData();
 checkSelectionComplete(); // เรียกเพื่อแสดง highlight ตั้งแต่เริ่มต้น
 initCamera();
 
-// =============================================================================
-// END OF FILE: script.js
+/**
+ * ตรวจสอบความสว่างของแสงจาก Video Frame
+ * @param {HTMLVideoElement} video - วิดีโอต้นฉบับ
+ * @returns {number} ค่าความสว่างเฉลี่ย (0-255)
+ */
+// สร้าง Canvas ชั่วคราวขนาดเล็กสำหรับ checkBrightness (Reuse เพื่อลด Memory Overhead)
+const tempBrightnessCanvas = document.createElement("canvas");
+tempBrightnessCanvas.width = 32;
+tempBrightnessCanvas.height = 24;
+const tempBrightnessCtx = tempBrightnessCanvas.getContext("2d", {
+  willReadFrequently: true,
+});
+
+/**
+ * ตรวจสอบความสว่างของแสงจาก Video Frame
+ * @param {HTMLVideoElement} video - วิดีโอต้นฉบับ
+ * @returns {number} ค่าความสว่างเฉลี่ย (0-255)
+ */
 // =============================================================================

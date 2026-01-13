@@ -6,6 +6,10 @@
 
 ## 📊 Module Dependencies Diagram
 
+![Module Dependencies Diagram](../../out/docs/diagrams/ModuleDependencies/ModuleDependencies.svg)
+
+![TaijiFlow Structure](../../out/docs/diagrams/TaijiFlow_Structure/TaijiFlow_Structure.svg)
+
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                              script.js                                       │

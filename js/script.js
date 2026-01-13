@@ -598,6 +598,23 @@ function updateTrainingTimer() {
  * - ใช้ feature detection และ timeout fallback
  */
 async function startTrainingFlow() {
+  // Random Exercise Logic (Surprise Me!)
+  if (currentExercise === "random") {
+    const exercises = ["rh_cw", "rh_ccw", "lh_cw", "lh_ccw"];
+    const randomIndex = Math.floor(Math.random() * exercises.length);
+    currentExercise = exercises[randomIndex];
+
+    // Update UI and Data
+    exerciseSelect.value = currentExercise;
+    // Notify user of the choice (Small delay to let them see it before fullscreen)
+    uiManager.showNotification(
+      `🎲 Random Selected: ${uiManager.getText("ex_" + currentExercise)}`,
+      "info"
+    );
+    // await new Promise((r) => setTimeout(r, 800)); // Delay removed to fix "Double Click" issue
+    await loadReferenceData();
+  }
+
   // 1. ซ่อน Overlay คำแนะนำ
   startOverlay.classList.add("hidden");
 
@@ -1043,6 +1060,14 @@ async function loadReferenceData() {
     return; // ไม่แสดง Error
   }
 
+  // Random Mode: ไม่ต้องโหลดข้อมูล (จะโหลดจริงตอน Start)
+  if (currentExercise === "random") {
+    referencePath = [];
+    referenceDataLoaded = true; // Pretend loaded so start button works
+    console.log("🎲 Random mode selected. Waiting for start.");
+    return;
+  }
+
   const filename = `data/${currentExercise}_${currentLevel}.json`;
   console.log(`Loading reference data from: ${filename}`);
 
@@ -1202,11 +1227,7 @@ async function onResults(results) {
           "warning",
           6000
         );
-        audioManager.speak(
-          uiManager.currentLang === "th"
-            ? "แสงสว่างไม่เพียงพอ"
-            : "Not enough light"
-        );
+        audioManager.speak(uiManager.getText("alert_low_light_short"));
       }
 
       const calibResult = calibrator.process(results.poseLandmarks);
@@ -1315,6 +1336,16 @@ async function onResults(results) {
         }
       }
 
+      // 1.8. Draw Calibration Overlay (ถ้ากำลัง Calibrate)
+      // [FIX] ต้องเรียก drawOverlay เพื่อให้ข้อความ "ถอยหลังอีกนิด" หรือ "Countdown" ปรากฏ
+      if (calibrator.isActive) {
+        calibrator.drawOverlay(
+          canvasCtx,
+          canvasElement.width,
+          canvasElement.height
+        );
+      }
+
       // 2. สร้าง Dynamic Path (เฟรมแรกของการฝึกเท่านั้น)
       if (
         isTrainingMode &&
@@ -1408,6 +1439,7 @@ async function onResults(results) {
           );
 
           // 1.0 Feedback Display Cooldown - ให้ข้อความค้างไว้ให้อ่านได้
+          // 1.0 Feedback Display Cooldown - ให้ข้อความค้างไว้ให้อ่านได้
           const now = Date.now();
           if (feedbacks.length > 0) {
             // มี feedback ใหม่
@@ -1417,7 +1449,12 @@ async function onResults(results) {
               lastFeedbackDisplayTime = now;
             }
             // ถ้ายังไม่ครบ cooldown จะใช้ lastDisplayedFeedbacks ที่มีอยู่
+          } else {
+            // [FIX] ไม่มี feedback (ถูกต้อง) - เคลียร์ทันทีไม่ต้องรอ Cooldown
+            // ถ้า Engine ส่ง empty array มา แปลว่า Sticky Logic ของ Engine (1วินาที) หมดเวลาแล้ว
+            lastDisplayedFeedbacks = [];
           }
+
           // แสดง feedback (ใช้ค่าล่าสุดที่ไม่เปลี่ยนถี่เกินไป) - ใช้ HTML overlay
           updateFeedbackOverlay(lastDisplayedFeedbacks);
 
@@ -1480,11 +1517,7 @@ async function onResults(results) {
             // พูดเตือนด้วยเสียง (TTS) - ใช้ข้อความสั้นกว่าเพื่อไม่รบกวน
             // หมายเหตุ: ใช้ข้อความเดียวกับ notification แต่ AudioManager
             //          จะพูดเฉพาะเมื่อเปิดเสียงอยู่ (audioEnabled = true)
-            const shortMsg =
-              uiManager.currentLang === "th"
-                ? "แสงสว่างไม่เพียงพอ"
-                : "Not enough light";
-            audioManager.speak(shortMsg);
+            audioManager.speak(uiManager.getText("alert_low_light_short"));
           }
 
           // เก็บ Snapshot ของเฟรมนี้
@@ -1530,11 +1563,7 @@ async function onResults(results) {
           "warning",
           6000
         );
-        audioManager.speak(
-          uiManager.currentLang === "th"
-            ? "แสงสว่างไม่เพียงพอ"
-            : "Not enough light"
-        );
+        audioManager.speak(uiManager.getText("alert_low_light_short"));
       }
     }
   }
@@ -1637,29 +1666,13 @@ function showCameraError(errorType) {
   loadingOverlay.classList.add("hidden");
   startOverlay.classList.remove("hidden");
 
-  // ข้อความ Error แยกตามประเภทและภาษา
-  const messages = {
-    not_allowed: {
-      th: "❌ ไม่ได้รับอนุญาตใช้กล้อง\n\nกรุณาอนุญาตการเข้าถึงกล้องใน Browser Settings แล้วรีเฟรชหน้า",
-      en: "❌ Camera access denied\n\nPlease allow camera access in browser settings and refresh",
-    },
-    not_found: {
-      th: "❌ ไม่พบกล้อง\n\nกรุณาเชื่อมต่อ Webcam แล้วรีเฟรชหน้า",
-      en: "❌ No camera found\n\nPlease connect a webcam and refresh",
-    },
-    not_readable: {
-      th: "❌ กล้องถูกใช้งานโดยโปรแกรมอื่น\n\nกรุณาปิดโปรแกรมอื่นที่ใช้กล้องแล้วรีเฟรชหน้า",
-      en: "❌ Camera in use by another app\n\nPlease close other apps using the camera and refresh",
-    },
-    unknown: {
-      th: "❌ เกิดข้อผิดพลาดในการเข้าถึงกล้อง\n\nกรุณารีเฟรชหน้าแล้วลองใหม่",
-      en: "❌ Camera error\n\nPlease refresh and try again",
-    },
-  };
+  // ข้อความ Error แยกตามประเภทและภาษา (ใช้ Translations)
+  let msgKey = "camera_error_unknown";
+  if (errorType === "not_allowed") msgKey = "camera_error_not_allowed";
+  else if (errorType === "not_found") msgKey = "camera_error_not_found";
+  else if (errorType === "not_readable") msgKey = "camera_error_not_readable";
 
-  const lang = uiManager.currentLang;
-  const msg = messages[errorType] || messages.unknown;
-  const errorText = lang === "th" ? msg.th : msg.en;
+  const errorText = uiManager.getText(msgKey);
 
   // แสดง Notification
   uiManager.showNotification(errorText.split("\n")[0], "error", 10000);

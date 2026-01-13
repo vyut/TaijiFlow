@@ -569,12 +569,13 @@ class UIManager {
     // -------------------------------------------------------------------------
     // Dropdown มี Options หลายตัว ต้องอัปเดตทีละ Option
     const exSelect = document.getElementById("exercise-select");
-    if (exSelect && exSelect.options.length >= 5) {
+    if (exSelect && exSelect.options.length >= 6) {
       exSelect.options[0].text = t["ex_placeholder"]; // -- เลือกท่าฝึก --
-      exSelect.options[1].text = t["ex_rh_cw"]; // มือขวา - ตามเข็ม
-      exSelect.options[2].text = t["ex_rh_ccw"]; // มือขวา - ทวนเข็ม
-      exSelect.options[3].text = t["ex_lh_cw"]; // มือซ้าย - ตามเข็ม
-      exSelect.options[4].text = t["ex_lh_ccw"]; // มือซ้าย - ทวนเข็ม
+      exSelect.options[1].text = t["ex_rh_cw"]; // 1. มือขวา - ตามเข็ม
+      exSelect.options[2].text = t["ex_rh_ccw"]; // 2. มือขวา - ทวนเข็ม
+      exSelect.options[3].text = t["ex_lh_cw"]; // 3. มือซ้าย - ตามเข็ม
+      exSelect.options[4].text = t["ex_lh_ccw"]; // 4. มือซ้าย - ทวนเข็ม
+      exSelect.options[5].text = t["ex_random"]; // 🎲 สุ่มท่าฝึก (New - Moved to bottom)
     }
 
     // -------------------------------------------------------------------------

@@ -33,9 +33,16 @@ group #E3F2FD เริ่มการฝึก (Start Training)
     UI -> Training : startTrainingFlow()
     activate Training
     
+    
     alt ใช้ Gesture Start
         Training -> Gesture : detectGestures()
         Gesture --> Training : thumbsUp detected
+    end
+
+    opt Random Mode Selected
+        Training -> Training : สุ่มท่า (exercises[calc])
+        Training -> UI : updateDropdown(newExercise)
+        Training -> Training : await loadReferenceData()
     end
     
     Training -> Calibration : setLevel(currentLevel)
@@ -51,16 +58,19 @@ group #FFF3E0 Calibration (T-Pose)
     Calibration --> UI : แสดง "กางแขนท่า T"
     User -> User : ทำท่า T-Pose 🧍
     
-    loop จนกว่าจะครบ 3 วินาที (Time-based)
-        Training -> Calibration : process(landmarks)
-        Calibration --> Training : {status: "adjusting" | "measuring"}
-    end
+    ref over Training, Calibration, UI : **SequenceDiagram_Calibration**\n(ดูรายละเอียด Step การวัดตัวและจัดท่า)
     
-    Calibration --> Training : {status: "complete", data}
     Training -> Calibration : stop()
     deactivate Calibration
     
     Training -> Heuristics : setCalibration(data)
+    
+    Training -> UI : syncAudioAndCountdown()
+    note right: รอจังหวะเสียง (Smart Wait)\nเพื่อให้คำสั่งไม่ซ้อนทับกัน
+    activate UI
+    UI -> Training : resolve()
+    deactivate UI
+
     Training -> Training : startTrainingAfterCalibration()
 end
 
@@ -72,19 +82,7 @@ group #E8F5E9 การฝึก (Training Loop)
     Training -> Scoring : start()
     activate Scoring
     
-    loop Frame Loop (30 FPS)
-        User -> User : ฝึกท่าม้วนไหม 🌀
-        
-        opt Throttled Analysis (~7.5 FPS)
-            Training -> Heuristics : analyze(landmarks)
-            activate Heuristics
-            Heuristics --> Training : feedbacks[]
-            deactivate Heuristics
-            
-            Training -> Scoring : recordFrame(feedbacks)
-            Training --> UI : แสดง feedback
-        end
-    end
+    ref over Training, Heuristics, Scoring : **SequenceDiagram_RealtimeAnalysis**\n(ดูรายละเอียด Loop การวิเคราะห์และคำนวณคะแนน)
 end
 
 ' ============================================================================

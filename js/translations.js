@@ -189,7 +189,7 @@ const TRANSLATIONS = {
     quickstart_default: "ค่าเริ่มต้น: ท่าม้วนไหม - มือขวา - ตามเข็ม - แบบนั่ง",
     or_customize: "หรือเลือกเอง",
     // ขั้นตอนที่ 1
-    overlay_step1: 'เลือก "ท่าฝึก" จากเมนูด้านบน',
+    overlay_step1: 'เลือก "ท่าฝึก" หรือ "สุ่มท่าฝึก"',
     // ขั้นตอนที่ 2
     overlay_step2: 'เลือก "รูปแบบ" ที่ต้องการฝึก',
     // ขั้นตอนที่ 3
@@ -216,6 +216,29 @@ const TRANSLATIONS = {
     alert_low_light: "แสงไม่เพียงพอ กรุณาเปิดไฟหรือเลี่ยงย้อนแสง",
     // แจ้งเมื่อแสงไม่เพียงพอตอน Calibration (block)
     alert_low_light_calibration: "แสงไม่เพียงพอ กรุณาปรับแสงแล้วลองวัดใหม่",
+    // แจ้งเมื่อแสงไม่เพียงพอ (เสียงพูดแบบสั้น)
+    alert_low_light_short: "แสงสว่างไม่เพียงพอ",
+
+    // -------------------------------------------------------------------------
+    // Camera Errors
+    // -------------------------------------------------------------------------
+    camera_error_not_allowed:
+      "❌ ไม่ได้รับอนุญาตใช้กล้อง\n\nกรุณาอนุญาตการเข้าถึงกล้องใน Browser Settings แล้วรีเฟรชหน้า",
+    camera_error_not_found:
+      "❌ ไม่พบกล้อง\n\nกรุณาเชื่อมต่อ Webcam แล้วรีเฟรชหน้า",
+    camera_error_not_readable:
+      "❌ กล้องถูกใช้งานโดยโปรแกรมอื่น\n\nกรุณาปิดโปรแกรมอื่นที่ใช้กล้องแล้วรีเฟรชหน้า",
+    camera_error_unknown:
+      "❌ เกิดข้อผิดพลาดในการเข้าถึงกล้อง\n\nกรุณารีเฟรชหน้าแล้วลองใหม่",
+
+    // -------------------------------------------------------------------------
+    // Audio Announcements (เสียงประกาศ)
+    // -------------------------------------------------------------------------
+    announce_record_start: "เริ่มการฝึก",
+    announce_record_stop: "สิ้นสุดการฝึก",
+    announce_calib_success: "ปรับเทียบสำเร็จ",
+    announce_calib_start: "กรุณายืนกางแขน", // แก้คำผิดจาก กางเขน -> กางแขน
+    announce_calib_cancel: "ยกเลิกการปรับเทียบ",
 
     // -------------------------------------------------------------------------
     // Exercise Options (ตัวเลือกท่าฝึก)
@@ -235,6 +258,8 @@ const TRANSLATIONS = {
     ex_lh_cw: "3. มือซ้าย - ตามเข็ม",
     // Left Hand Counter-Clockwise - มือซ้าย หมุนทวนเข็มนาฬิกา
     ex_lh_ccw: "4. มือซ้าย - ทวนเข็ม",
+    // Random Exercise
+    ex_random: "🎲 สุ่มท่าฝึก (Surprise Me)",
 
     // -------------------------------------------------------------------------
     // Level Options (ตัวเลือกรูปแบบ)
@@ -345,7 +370,7 @@ const TRANSLATIONS = {
     quickstart_default:
       "Default: Silk Reeling - Right Hand - Clockwise - Sitting",
     or_customize: "or customize",
-    overlay_step1: 'Select "Exercise" from menu above',
+    overlay_step1: 'Select "Exercise" or "Random Exercise"',
     overlay_step2: 'Select "Level" to train',
     overlay_step3: 'Click "▶️ Start Training"',
     // Stop Section (New)
@@ -371,6 +396,28 @@ const TRANSLATIONS = {
     // Low light warning during Calibration (blocks)
     alert_low_light_calibration:
       "Low lighting detected. Please adjust lighting and try calibration again.",
+    // Low light warning (Short speech)
+    alert_low_light_short: "Not enough light",
+
+    // -------------------------------------------------------------------------
+    // Camera Errors
+    // -------------------------------------------------------------------------
+    camera_error_not_allowed:
+      "❌ Camera access denied\n\nPlease allow camera access in browser settings and refresh",
+    camera_error_not_found:
+      "❌ No camera found\n\nPlease connect a webcam and refresh",
+    camera_error_not_readable:
+      "❌ Camera in use by another app\n\nPlease close other apps using the camera and refresh",
+    camera_error_unknown: "❌ Camera error\n\nPlease refresh and try again",
+
+    // -------------------------------------------------------------------------
+    // Audio Announcements
+    // -------------------------------------------------------------------------
+    announce_record_start: "Start training",
+    announce_record_stop: "Training ended",
+    announce_calib_success: "Calibration complete",
+    announce_calib_start: "Please stand in T pose",
+    announce_calib_cancel: "Calibration cancelled",
 
     // -------------------------------------------------------------------------
     // Exercise Options
@@ -380,6 +427,7 @@ const TRANSLATIONS = {
     ex_rh_ccw: "2. Right Hand - Counter-Clock",
     ex_lh_cw: "3. Left Hand - Clockwise",
     ex_lh_ccw: "4. Left Hand - Counter-Clock",
+    ex_random: "🎲 Random (Surprise Me)",
 
     // -------------------------------------------------------------------------
     // Level Options

@@ -189,6 +189,8 @@ package "UI & Feedback" <<UI>> {
             --
             + speak(message)
             + speakFeedback(feedbacks)
+            + waitForIdle(timeout)
+            + getExerciseSpokenText(id, level)
         }
         
         class TutorialManager {

@@ -33,6 +33,15 @@ loop Camera Loop: ทุก Frame (~30 fps)
         Training -> MediaPipe : pose.send(video)
         MediaPipe -> Training : onResults(results)
         
+        ' === Environmental Check (Low Light) ===
+        opt Environmental Check
+            Training -> Training : checkAvgVisibility()
+            alt visibility < 0.5 (Low Light)
+                Training -> UI : showNotification("แสงน้อย")
+                Training -> UI : audioManager.speak()
+            end
+        end
+
         ' === Step 1: Analyze Pose (8 Rules) ===
         group #FFF3E0 วิเคราะห์ท่า (8 กฎ)
             Training -> Heuristics : analyze(landmarks)

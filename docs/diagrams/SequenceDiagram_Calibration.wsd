@@ -63,7 +63,7 @@ group #FFF3E0 ตรวจท่า T-Pose
     loop จนกว่าแขนจะอยู่ระดับไหล่
         Training -> Calibrator : process(landmarks)
         
-        alt |wristY - shoulderY| > 0.2
+        alt ท่าผิด (แขนไม่ขนานพื้น)
             Calibrator --> UI : "กางแขนระดับไหล่"
             Calibrator -> Calibrator : Reset Timer
             Calibrator --> Training : {status: "adjusting"}
@@ -78,12 +78,8 @@ end
 ' ============================================================================
 
 group #E8F5E9 นับถอยหลัง (3 วินาที)
-    loop Time Elapsed < 3000ms
-        Calibrator --> UI : "อยู่นิ่งๆ... 3"
-        Calibrator --> UI : "อยู่นิ่งๆ... 2"
-        Calibrator --> UI : "อยู่นิ่งๆ... 1"
-        Calibrator --> Training : {status: "measuring"}
-    end
+    Calibrator --> UI : Countdown (3... 2... 1...)
+    Calibrator --> Training : {status: "measuring"}
 end
 
 ' ============================================================================

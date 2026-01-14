@@ -845,14 +845,14 @@ class UIManager {
         icon = "⚠️";
         break;
       default:
-        // ข้อมูลทั่วไป - สีน้ำเงิน
-        bgColor = "bg-blue-500";
+        // ข้อมูลทั่วไป - สีม่วง (Gradient เหมือนปุ่มเริ่มฝึก)
+        bgColor = "bg-gradient-to-br from-purple-500 to-indigo-500";
         icon = "ℹ️";
         break;
     }
 
-    // เพิ่ม Background Color Class
-    notification.classList.add(bgColor);
+    // เพิ่ม Background Color Class (รองรับ multiple classes)
+    bgColor.split(" ").forEach((cls) => notification.classList.add(cls));
 
     // กำหนด HTML Content
     // หมายเหตุ: แปลง \n เป็น <br> เพื่อรองรับ multi-line notifications

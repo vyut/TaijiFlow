@@ -57,6 +57,7 @@ package "Controllers" <<Controller>> {
         - showSkeleton: boolean
         - showSilhouette: boolean
         - showTrail: boolean
+        - showBlurBackground: boolean
         - trailHistory: array
         --
         + init()
@@ -64,13 +65,14 @@ package "Controllers" <<Controller>> {
         + resetToDefaults()
         + addTrailPoint(x, y)
         + clearTrail()
+        + initBlurBackgroundCheckbox()
     }
     
     note as NC
         **จัดการ Application Flow**
         Script = Main Controller
-        Keyboard = 14 Shortcuts
-        Display = 6 Options
+        Keyboard = 15 Shortcuts (เพิ่ม K)
+        Display = 7 Options (เพิ่ม Blur)
     end note
 }
 
@@ -135,6 +137,7 @@ package "Display Managers" <<Display>> {
         + drawSilhouette(mask, color)
         + drawGestureFeedback(feedback)
         + drawCircularityIndicator(score)
+        + drawBlurredBackground(ctx, image, mask)
     }
     
     class GhostManager {

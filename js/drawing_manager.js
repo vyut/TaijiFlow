@@ -259,6 +259,55 @@ class DrawingManager {
   }
 
   // ===========================================================================
+  // 🌫️ BLURRED BACKGROUND: เบลอฉากหลัง (Visual Effects)
+  // ===========================================================================
+
+  /**
+   * วาดภาพพร้อมเบลอฉากหลัง (Person foreground, blurred background)
+   *
+   * @param {CanvasRenderingContext2D} ctx - Canvas context (output)
+   * @param {HTMLVideoElement|ImageBitmap} image - ภาพ webcam ต้นฉบับ
+   * @param {CanvasImageSource} mask - Segmentation mask จาก MediaPipe
+   */
+  drawBlurredBackground(ctx, image, mask) {
+    if (!image || !mask) return;
+
+    const width = this.canvasWidth;
+    const height = this.canvasHeight;
+
+    // ----- Step 1: สร้าง temp canvas สำหรับ blurred background -----
+    const blurCanvas = document.createElement("canvas");
+    blurCanvas.width = width;
+    blurCanvas.height = height;
+    const blurCtx = blurCanvas.getContext("2d");
+
+    // วาดภาพต้นฉบับลง temp พร้อม blur filter
+    blurCtx.filter = "blur(15px)";
+    blurCtx.drawImage(image, 0, 0, width, height);
+    blurCtx.filter = "none";
+
+    // ----- Step 2: สร้าง temp canvas สำหรับ person (sharp) -----
+    const personCanvas = document.createElement("canvas");
+    personCanvas.width = width;
+    personCanvas.height = height;
+    const personCtx = personCanvas.getContext("2d");
+
+    // วาดภาพต้นฉบับ (ไม่ blur)
+    personCtx.drawImage(image, 0, 0, width, height);
+
+    // ใช้ mask เพื่อตัดเฉพาะส่วนคน (destination-in)
+    personCtx.globalCompositeOperation = "destination-in";
+    personCtx.drawImage(mask, 0, 0, width, height);
+    personCtx.globalCompositeOperation = "source-over";
+
+    // ----- Step 3: รวมกัน: blurred background + sharp person -----
+    // วาดพื้นหลังเบลอก่อน
+    ctx.drawImage(blurCanvas, 0, 0, width, height);
+    // วาดคนทับ
+    ctx.drawImage(personCanvas, 0, 0, width, height);
+  }
+
+  // ===========================================================================
   // ⭕ GESTURE FEEDBACK: วาดวงกลมความคืบหน้าท่าทาง
   // ===========================================================================
 

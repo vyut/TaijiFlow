@@ -143,9 +143,21 @@ class KeyboardController {
         break;
 
       // -----------------------------------------------------------------------
-      // B = Skeleton (Bones) Toggle
+      // B = Blur Background Toggle (Visual Effects)
       // -----------------------------------------------------------------------
       case "KeyB":
+        e.preventDefault();
+        const checkBlurBg = document.getElementById("check-blur-bg");
+        if (checkBlurBg) {
+          checkBlurBg.checked = !checkBlurBg.checked;
+          checkBlurBg.dispatchEvent(new Event("change"));
+        }
+        break;
+
+      // -----------------------------------------------------------------------
+      // K = Skeleton (sKeleton) Toggle
+      // -----------------------------------------------------------------------
+      case "KeyK":
         e.preventDefault();
         if (checkSkeleton) {
           checkSkeleton.checked = !checkSkeleton.checked;
@@ -254,22 +266,27 @@ class KeyboardController {
     const shortcuts = [
       "⌨️ คีย์ลัด",
       "━━━━━━━━━━━━",
-      "",
       "Space = เริ่ม/หยุด",
       "F = เต็มจอ",
-      "D = Debug Mode",
-      "",
-      "G = Ghost (เงาต้นแบบ)",
+      "━━━━━━━━━━━━",
       "P = Path (เส้นทางต้นแบบ)",
-      "B = Skeleton (โครงผู้ฝึก)",
+      "I = Instructor (ผู้สอน)",
+      "G = Ghost (เงาต้นแบบ)",
+      "━━━━━━━━━━━━",
+      "K = Skeleton (โครงผู้ฝึก)",
+      "R = Trail (เส้นสัมผัส)",
       "S = Silhouette (เงาผู้ฝึก)",
-      "",
+      "━━━━━━━━━━━━",
+      "D = Debug Mode",
+      "━━━━━━━━━━━━",
+      "B = Blur Background",
+      "━━━━━━━━━━━━",
       "M = เปิด/ปิดเสียง",
       "L = เปลี่ยนภาษา",
       "T = เปลี่ยน Theme",
-      "",
       "? = วิธีใช้งาน",
-      "/ = คีย์ลัด (นี้)",
+      "━━━━━━━━━━━━",
+      "/ = แสดงคีย์ลัด",
       "Esc = ยกเลิก",
     ].join("\n");
 

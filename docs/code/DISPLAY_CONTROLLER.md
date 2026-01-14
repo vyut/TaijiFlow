@@ -1,8 +1,8 @@
 # TaijiFlow AI - Display Controller Documentation
 
-**Version:** 1.0  
-**Last Updated:** 2026-01-10  
-**Lines:** 258  
+**Version:** 1.1  
+**Last Updated:** 2026-01-14  
+**Lines:** 296  
 **Class:** DisplayController
 
 ---
@@ -61,6 +61,7 @@ const displayController = new DisplayController({
 | `showSkeleton` | boolean | `true` | โครงกระดูกผู้ฝึก |
 | `showSilhouette` | boolean | `false` | เงาผู้ฝึก |
 | `showTrail` | boolean | `true` | เส้นทางการเคลื่อนไหว |
+| `showBlurBackground` | boolean | `false` | 🆕 Visual Effects: เบลอฉากหลัง |
 
 ### Toggle Behavior
 
@@ -71,9 +72,12 @@ const displayController = new DisplayController({
 │ ☐ Ghost      - เงาครูบนวิดีโอ     │
 │ ☑ Instructor - Thumbnail มุมบน    │
 │ ☑ Path       - เส้นทางอ้างอิง     │
-│ ☑ Skeleton   - โครงกระดูก        │
+│ ☑ Skeleton   - โครงกระดูก (K)   │
 │ ☐ Silhouette - เงาผู้ฝึก         │
 │ ☑ Trail      - เส้นทางมือ        │
+├─────────────────────────────────────┤
+│ 🎨 Visual Effects                   │
+│ ☐ Blur Background - เบลอฉากหลัง (B)│
 └─────────────────────────────────────┘
 ```
 
@@ -115,6 +119,7 @@ trailHistory = [
 | `initSkeletonCheckbox()` | Setup Skeleton checkbox |
 | `initSilhouetteCheckbox()` | Setup Silhouette checkbox |
 | `initTrailCheckbox()` | Setup Trail checkbox |
+| `initBlurBackgroundCheckbox()` | 🆕 Setup Blur Background checkbox |
 
 ### Control Methods
 

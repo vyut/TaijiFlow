@@ -9,6 +9,13 @@
 
 ### 🎨 UI & UX Refinement (Purple Theme & Feedback)
 
+#### Added
+- **Visual Effects: Background Blur** - New optional feature to blur the background for privacy.
+  - Toggle: Display Options → 🎨 Visual Effects → Blur Background (B).
+  - Implementation: Uses MediaPipe Segmentation Mask + Canvas blur filter.
+  - Performance: Off by default. Shows warning if FPS drops below 18.
+- **Low FPS Warning** (`script.js`) - Added `checkLowFpsPerformance()` to notify users when blur impacts performance.
+
 #### Changed
 - **Feedback Button Redesign** - Moved from bottom-right floating button into a **Right-Side Sticky Tab** (Vertical).
   - Shape: Rounded-left pill attached to the right edge.
@@ -22,14 +29,20 @@
   - Main App Title & Quickstart Title.
   - Start Training Button.
   - 1-2-3 Step Overlays.
+  - **Info Notifications** (Previously blue, now purple gradient).
 - **Popup Controls** - Added "X" Close Button to both Score and Feedback popups for better usability.
+- **Keyboard Shortcuts** (`keyboard_controller.js`):
+  - `B` = Blur Background (New - Visual Effects).
+  - `K` = Skeleton (Moved from B).
+  - Updated `/` shortcuts help display.
 
 #### Refactored
-- **Centralized Translations** - Moved all Popup text strings (Score/Feedback) from JS files to `translations.js`.
-  - Keys: `score_popup` and `feedback_popup`.
+- **Centralized Translations** - Moved all Popup text strings (Score/Feedback) to `translations.js`.
+  - Keys: `score_popup`, `feedback_popup`, `visual_effects_title`, `blur_background`.
   - Ensures 100% consistency between Thai and English.
 - **Global UI State** (`script.js`) - Exposed `window.uiManager` to allow independent modules (like FeedbackManager) to access language state reliably.
   - Fixes bug where Feedback Popup always defaulted to Thai.
+- **Notification Multi-Class Fix** (`ui_manager.js`) - Fixed `classList.add()` to support gradient classes with spaces.
 
 ## [v0.9.7] - 2026-01-13
 

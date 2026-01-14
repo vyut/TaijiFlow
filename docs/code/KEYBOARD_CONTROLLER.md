@@ -1,8 +1,8 @@
 # TaijiFlow AI - Keyboard Controller Documentation
 
-**Version:** 1.0  
-**Last Updated:** 2026-01-10  
-**Lines:** 279  
+**Version:** 1.1  
+**Last Updated:** 2026-01-14  
+**Lines:** 296  
 **Class:** KeyboardController
 
 ---
@@ -24,7 +24,7 @@
 ### 🎯 หน้าที่หลัก
 
 | หน้าที่ | คำอธิบาย |
-|---------|---------|
+|---------|---------| 
 | **Keyboard Listening** | รับ keydown events |
 | **Shortcut Mapping** | Map keys ไปยัง actions |
 | **Dependency Injection** | ใช้ deps object แทน globals |
@@ -64,24 +64,25 @@ const keyboardController = new KeyboardController({
 | `KeyF` | F | Toggle Fullscreen | เปิด/ปิดเต็มจอ |
 | `KeyD` | D | Toggle Debug | เปิด/ปิด Debug Overlay |
 | `KeyP` | P | Toggle Path | เปิด/ปิดเส้นทาง |
-| `KeyB` | B | Toggle Skeleton | เปิด/ปิดโครงกระดูก |
+| `KeyK` | K | Toggle Skeleton | 🆕 เปิด/ปิดโครงกระดูก (ย้ายจาก B) |
+| `KeyB` | B | Toggle Blur Background | 🆕 เปิด/ปิด Visual Effects |
 | `KeyS` | S | Toggle Silhouette | เปิด/ปิดเงา |
 | `KeyG` | G | Toggle Ghost | เปิด/ปิดเงาครู |
 | `KeyI` | I | Toggle Instructor | เปิด/ปิด Thumbnail ครู |
+| `KeyR` | R | Toggle Trail | เปิด/ปิดเส้นทางมือ |
 
 ### Settings Shortcuts
 
 | Key Code | Key | Function | Description |
 |----------|-----|----------|-------------|
 | `KeyT` | T | Toggle Theme | สลับ Dark/Light |
-| `KeyR` | R | Cycle Rules | สลับ L1→L2→L3 rules |
 
 ### Help Shortcuts
 
 | Key Code | Key | Function | Description |
 |----------|-----|----------|-------------|
 | `KeyH` | H | Open Tutorial | เปิดคู่มือ |
-| `Slash` | ? | Open Tutorial | เปิดคู่มือ (เหมือน H) |
+| `Shift+Slash` | ? | Open Tutorial | เปิดคู่มือ (เหมือน H) |
 | `Slash` | / | Show Shortcuts | แสดงรายการ shortcuts |
 
 ---

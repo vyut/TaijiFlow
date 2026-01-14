@@ -30,6 +30,7 @@ class DisplayController {
     this.showSkeleton = true;
     this.showSilhouette = false;
     this.showTrail = true;
+    this.showBlurBackground = false;
 
     // Trail Visualization
     this.TRAIL_LENGTH = 60;
@@ -50,6 +51,7 @@ class DisplayController {
     this.initSkeletonCheckbox();
     this.initSilhouetteCheckbox();
     this.initTrailCheckbox();
+    this.initBlurBackgroundCheckbox();
   }
 
   /**
@@ -202,6 +204,36 @@ class DisplayController {
   }
 
   /**
+   * 🆕 Background Blur checkbox (เบลอฉากหลัง สำหรับ Visual Effects)
+   */
+  initBlurBackgroundCheckbox() {
+    const checkBlurBg = document.getElementById("check-blur-bg");
+
+    if (checkBlurBg) {
+      checkBlurBg.checked = this.showBlurBackground;
+      checkBlurBg.addEventListener("change", () => {
+        this.showBlurBackground = checkBlurBg.checked;
+
+        // Toggle Segmentation (จำเป็นสำหรับ Blur Background)
+        // Note: Silhouette ก็ใช้ Segmentation ดังนั้นถ้า Silhouette เปิดอยู่ ไม่ต้องปิด
+        const needSegmentation = this.showBlurBackground || this.showSilhouette;
+        if (typeof pose !== "undefined") {
+          pose.setOptions({
+            enableSegmentation: needSegmentation,
+            smoothSegmentation: needSegmentation,
+          });
+        }
+
+        if (this.showBlurBackground) {
+          console.log("🌫️ Background Blur enabled");
+        } else {
+          console.log("✅ Background Blur disabled");
+        }
+      });
+    }
+  }
+
+  /**
    * Reset display options to defaults
    */
   resetToDefaults() {
@@ -219,6 +251,7 @@ class DisplayController {
     this.showSkeleton = true;
     this.showSilhouette = false;
     this.showTrail = true;
+    this.showBlurBackground = false; // 🆕
     this.trailHistory = [];
     this.circularityScore = null;
 
@@ -231,6 +264,9 @@ class DisplayController {
 
     const checkTrail = document.getElementById("check-trail");
     if (checkTrail) checkTrail.checked = true;
+
+    const checkBlurBg = document.getElementById("check-blur-bg");
+    if (checkBlurBg) checkBlurBg.checked = false; // 🆕
   }
 
   /**

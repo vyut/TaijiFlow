@@ -5,6 +5,45 @@
 ---
 ---
 
+## [v0.9.8] - 2026-01-14
+
+### 🎨 UI & UX Refinement (Purple Theme & Feedback)
+
+#### Added
+- **Visual Effects: Background Blur** - New optional feature to blur the background for privacy.
+  - Toggle: Display Options → 🎨 Visual Effects → Blur Background (B).
+  - Implementation: Uses MediaPipe Segmentation Mask + Canvas blur filter.
+  - Performance: Off by default. Shows warning if FPS drops below 18.
+- **Low FPS Warning** (`script.js`) - Added `checkLowFpsPerformance()` to notify users when blur impacts performance.
+
+#### Changed
+- **Feedback Button Redesign** - Moved from bottom-right floating button into a **Right-Side Sticky Tab** (Vertical).
+  - Shape: Rounded-left pill attached to the right edge.
+  - Content: Star Icon + Vertical Text ("Feedback" / "ข้อเสนอแนะ").
+  - Purpose: Reduces clutter in the chatbot area and improves visibility.
+- **Score Popup Layout** - Redesigned for compactness.
+  - Layout: "Grade" and "Score Ring" are now side-by-side.
+  - Added new Title: "Training Result" / "สรุปผลการฝึก".
+  - Refined gradients to match the unified Purple Theme.
+- **Unified Purple Theme** - Standardized gradients (`from-purple-500 to-indigo-500`) across:
+  - Main App Title & Quickstart Title.
+  - Start Training Button.
+  - 1-2-3 Step Overlays.
+  - **Info Notifications** (Previously blue, now purple gradient).
+- **Popup Controls** - Added "X" Close Button to both Score and Feedback popups for better usability.
+- **Keyboard Shortcuts** (`keyboard_controller.js`):
+  - `B` = Blur Background (New - Visual Effects).
+  - `K` = Skeleton (Moved from B).
+  - Updated `/` shortcuts help display.
+
+#### Refactored
+- **Centralized Translations** - Moved all Popup text strings (Score/Feedback) to `translations.js`.
+  - Keys: `score_popup`, `feedback_popup`, `visual_effects_title`, `blur_background`.
+  - Ensures 100% consistency between Thai and English.
+- **Global UI State** (`script.js`) - Exposed `window.uiManager` to allow independent modules (like FeedbackManager) to access language state reliably.
+  - Fixes bug where Feedback Popup always defaulted to Thai.
+- **Notification Multi-Class Fix** (`ui_manager.js`) - Fixed `classList.add()` to support gradient classes with spaces.
+
 ## [v0.9.7] - 2026-01-13
 
 ### 🐛 Critical Bug Fixes & Tuning

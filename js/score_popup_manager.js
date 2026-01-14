@@ -137,11 +137,11 @@ class ScorePopupManager {
         <div class="flex flex-row items-center justify-center gap-8 mb-6 mt-2">
             <!-- Left: Grade -->
             <div class="flex flex-col items-center">
-               <h2 class="text-7xl font-black bg-clip-text text-transparent bg-gradient-to-br from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 filter drop-shadow-sm leading-none" 
-                   style="background-image: linear-gradient(135deg, ${gradeInfo.color}, ${gradeInfo.color}); -webkit-text-fill-color: transparent; -webkit-background-clip: text;">
-                 ${gradeInfo.grade}
-               </h2>
-               <p class="text-lg font-medium text-gray-500 dark:text-gray-400 mt-2">${gradeInfo.label}</p>
+              <h2 class="text-7xl font-black bg-clip-text text-transparent bg-gradient-to-br from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 filter drop-shadow-sm leading-none" 
+                  style="background-image: linear-gradient(135deg, ${gradeInfo.color}, ${gradeInfo.color}); -webkit-text-fill-color: transparent; -webkit-background-clip: text;">
+                ${gradeInfo.grade}
+              </h2>
+              <p class="text-lg font-medium text-gray-500 dark:text-gray-400 mt-2">${gradeInfo.label}</p>
             </div>
 
             <!-- Right: Ring -->
@@ -154,18 +154,18 @@ class ScorePopupManager {
         <div class="grid grid-cols-3 gap-2 mb-4">
           <!-- Correct -->
           <div class="bg-gray-50 dark:bg-gray-800 p-2 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
-             <div class="text-3xl font-black text-green-500">${summary.correctFrames}</div>
-             <div class="text-[9px] text-gray-500 uppercase tracking-wider">${t.correct}</div>
+            <div class="text-3xl font-black text-green-500">${summary.correctFrames}</div>
+            <div class="text-[9px] text-gray-500 uppercase tracking-wider">${t.correct}</div>
           </div>
           <!-- Error -->
           <div class="bg-gray-50 dark:bg-gray-800 p-2 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
-             <div class="text-3xl font-black text-red-500">${summary.errorFrames}</div>
-             <div class="text-[9px] text-gray-500 uppercase tracking-wider">${t.fix}</div>
+            <div class="text-3xl font-black text-red-500">${summary.errorFrames}</div>
+            <div class="text-[9px] text-gray-500 uppercase tracking-wider">${t.fix}</div>
           </div>
-           <!-- Duration -->
+          <!-- Duration -->
           <div class="bg-gray-50 dark:bg-gray-800 p-2 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
-             <div class="text-3xl font-black text-blue-500">${duration}</div>
-             <div class="text-[9px] text-gray-500 uppercase tracking-wider">${t.time}</div>
+            <div class="text-3xl font-black text-blue-500">${duration}</div>
+            <div class="text-[9px] text-gray-500 uppercase tracking-wider">${t.time}</div>
           </div>
         </div>
 
@@ -185,31 +185,31 @@ class ScorePopupManager {
         
         <!-- Feedback Section (Matched with Feedback Popup) -->
         <div class="mb-2 text-center mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
-             <!-- 1. Header -->
-             <h3 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 mb-2">
-               ${t.feedback_title}
-             </h3>
-             
-             <!-- 2. Sub-Header -->
-             <p class="text-sm text-gray-600 dark:text-gray-300 font-medium mb-4">
-               ${t.feedback_sub}
-             </p>
+          <!-- 1. Header -->
+          <h3 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 mb-2">
+            ${t.feedback_title}
+          </h3>
+          
+          <!-- 2. Sub-Header -->
+          <p class="text-sm text-gray-600 dark:text-gray-300 font-medium mb-4">
+            ${t.feedback_sub}
+          </p>
 
-             <!-- 3. QR Code with Background -->
-             <div class="relative bg-white p-2 rounded-xl shadow-inner border border-gray-100 dark:border-gray-800 mx-auto w-fit mb-4">
-               <img src="images/qr_feedback.png" alt="QR" class="w-32 h-32 rounded-lg object-contain">
-             </div>
+          <!-- 3. QR Code with Background -->
+          <div class="relative bg-white p-2 rounded-xl shadow-inner border border-gray-100 dark:border-gray-800 mx-auto w-fit mb-4">
+            <img src="images/qr_feedback.png" alt="QR" class="w-32 h-32 rounded-lg object-contain">
+          </div>
 
-             <!-- 4. Text Below QR -->
-             <p class="text-xs text-gray-400 mb-4">
-               ${t.qr_instruction}
-             </p>
-             
-             <!-- 5. Primary Action: Survey Button (Purple) -->
-             <a href="${this.formUrl}" target="_blank" 
-                class="block w-fit mx-auto px-8 py-3 bg-gradient-to-br from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-full font-semibold shadow-md shadow-purple-500/20 transform transition active:scale-95 mb-3 text-sm">
-                ${t.take_survey_btn}
-             </a>
+          <!-- 4. Text Below QR -->
+          <p class="text-xs text-gray-400 mb-4">
+            ${t.qr_instruction}
+          </p>
+          
+          <!-- 5. Primary Action: Survey Button (Purple)-->
+          <a href="${this.formUrl}" target="_blank" 
+            class="block w-fit mx-auto px-8 py-3 bg-gradient-to-br from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-full font-semibold shadow-md shadow-purple-500/20 transform transition active:scale-95 mb-3 text-sm">
+            ${t.take_survey_btn}
+          </a>
         </div>
 
         <!-- 6. Secondary Action: Close Button (Text Only) -->

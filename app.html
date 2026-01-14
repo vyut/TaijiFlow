@@ -264,7 +264,7 @@ Version: 0.6 (2024-12-24)
             <button
               id="display-btn"
               class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
-              title="Display Settings - ตั้งค่าการแสดงผล"
+              title="Display Options - ตั้งค่าการแสดงผล"
             >
               👁️
             </button>
@@ -277,14 +277,14 @@ Version: 0.6 (2024-12-24)
                 class="p-2 text-sm text-center border-b border-gray-600"
                 style="color: white"
               >
-                Display Option
+                Display Options
               </div>
 
               <!-- ===== 📚 Reference Section ===== -->
               <div
                 class="px-3 py-1 text-xs text-center text-gray-400 bg-gray-750"
               >
-                📚 ต้นแบบ
+                📚 Expert/Instructor
               </div>
               <!-- Path - Default ON -->
               <label
@@ -320,7 +320,7 @@ Version: 0.6 (2024-12-24)
               <div
                 class="px-3 py-1 text-center text-xs text-gray-400 bg-gray-750 border-t border-gray-600"
               >
-                👤 ผู้ฝึก
+                👤 Trainee/You
               </div>
               <!-- Skeleton - Default ON -->
               <label
@@ -333,7 +333,7 @@ Version: 0.6 (2024-12-24)
                   class="mr-2"
                   checked
                 />
-                <span style="color: white">🦴 Skeleton (B)</span>
+                <span style="color: white">🦴 Skeleton (K)</span>
               </label>
               <!-- Trail - Default ON -->
               <label
@@ -365,6 +365,23 @@ Version: 0.6 (2024-12-24)
                 <input type="checkbox" id="check-debug" class="mr-2" />
                 <span style="color: white">🐞 Debug (D)</span>
               </label>
+
+              <!-- ===== 🎨 Visual Effects Section ===== -->
+              <div
+                class="px-3 py-1 text-center text-xs text-gray-400 bg-gray-750 border-t border-gray-600"
+              >
+                🎨 Visual Effects
+              </div>
+              <!-- Background Blur - Default OFF -->
+              <label
+                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                title="Blur background for privacy (may reduce performance)"
+              >
+                <input type="checkbox" id="check-blur-bg" class="mr-2" />
+                <span style="color: white" id="label-blur-bg"
+                  >Blur Background (B)</span
+                >
+              </label>
             </div>
           </div>
 
@@ -379,7 +396,7 @@ Version: 0.6 (2024-12-24)
             </button>
             <div
               id="rules-menu"
-              class="absolute right-0 mt-2 w-80 bg-gray-800 rounded-lg shadow-lg hidden z-50"
+              class="absolute left-0 mt-2 w-60 bg-gray-800 rounded-lg shadow-lg hidden z-50"
               style="max-height: 70vh; overflow-y: auto"
             >
               <div

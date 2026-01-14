@@ -135,6 +135,14 @@ let lastLowLightWarningTime = 0; // เวลาที่เตือนล่�
 const STARTUP_DELAY = 3000; // รอ 3 วินาทีก่อนเริ่มตรวจ (ให้กล้องปรับแสง)
 
 // -----------------------------------------------------------------------------
+// Low Performance FPS Detection (Visual Effects Warning)
+// -----------------------------------------------------------------------------
+const LOW_FPS_THRESHOLD = 18; // ถ้าต่ำกว่านี้จะเตือนให้ปิด Blur
+const LOW_FPS_CHECK_INTERVAL = 5000; // เช็คทุก 5 วินาที
+let lowFpsWarningShown = false; // แสดงเตือนแค่ครั้งเดียวต่อ session
+let lastLowFpsCheckTime = 0; // เวลาที่เช็คล่าสุด
+
+// -----------------------------------------------------------------------------
 // Fullscreen State
 // -----------------------------------------------------------------------------
 let isFullscreen = false; // ใช้สำหรับ Mirror canvas ใน Fullscreen
@@ -227,6 +235,32 @@ function toggleFeedbackOverlay(show) {
     feedbackOverlay.classList.remove("hidden");
   } else {
     feedbackOverlay.classList.add("hidden");
+  }
+}
+
+/**
+ * 🆕 ตรวจ Low FPS สำหรับ Visual Effects (Blur Background)
+ * ถ้าเปิด Blur อยู่และ FPS ต่ำกว่า 18 จะแจ้งเตือน
+ */
+function checkLowFpsPerformance() {
+  const now = Date.now();
+  if (now - lastLowFpsCheckTime < LOW_FPS_CHECK_INTERVAL) return;
+  lastLowFpsCheckTime = now;
+
+  // เช็คเฉพาะเมื่อเปิด Blur และยังไม่เคยเตือน
+  if (
+    displayController &&
+    displayController.showBlurBackground &&
+    currentFps < LOW_FPS_THRESHOLD &&
+    !lowFpsWarningShown
+  ) {
+    lowFpsWarningShown = true;
+    uiManager.showNotification(
+      uiManager.getText("blur_bg_warning"),
+      "warning",
+      8000
+    );
+    console.log(`⚠️ Low FPS Warning: ${currentFps} FPS with Blur enabled`);
   }
 }
 
@@ -1165,6 +1199,9 @@ async function onResults(results) {
     lastFpsTime = timestamp;
   }
 
+  // 🆕 Low FPS Warning (Visual Effects)
+  checkLowFpsPerformance();
+
   // Gesture Detection - ตรวจจับท่ามือสำหรับควบคุม UI
   if (gestureManager.getIsReady() && videoElement.readyState >= 2) {
     gestureManager.detectGestures(
@@ -1276,6 +1313,15 @@ async function onResults(results) {
           results.segmentationMask,
           drawer.canvasWidth,
           drawer.canvasHeight
+        );
+      }
+
+      // 0.1 🆕 วาด Background Blur (ถ้าเปิดใช้งาน Visual Effects)
+      if (displayController.showBlurBackground && results.segmentationMask) {
+        drawer.drawBlurredBackground(
+          canvasCtx,
+          results.image,
+          results.segmentationMask
         );
       }
 

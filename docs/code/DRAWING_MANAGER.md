@@ -1,8 +1,8 @@
 # TaijiFlow AI - Drawing Manager Documentation
 
-**Version:** 1.1  
-**Last Updated:** 2026-01-10  
-**Lines:** ~650  
+**Version:** 1.2  
+**Last Updated:** 2026-01-14  
+**Lines:** ~661  
 **Class:** DrawingManager
 
 ---
@@ -32,6 +32,7 @@
 | **Trail Drawing** | วาดเส้นทางการเคลื่อนไหว |
 | **Feedback Panel** | กล่องแสดงข้อผิดพลาด |
 | **Debug Overlay** | แสดงค่า Threshold |
+| **Blurred Background** | 🆕 เบลอฉากหลัง (Visual Effects) |
 
 ### 📊 การใช้งาน
 
@@ -191,6 +192,7 @@ gradient.addColorStop(1, 'rgba(236, 72, 153, 0.1)'); // เก่าสุด
 | `drawGhostSkeleton(landmarks, options)` | Array, Object | วาด Ghost |
 | `drawPath(points, options)` | Array, Object | วาด Reference Path |
 | `drawTrail(history, options)` | Array, Object | วาด Trail |
+| `drawBlurredBackground(ctx, image, mask)` | Context, Image, Mask | 🆕 วาดฉากหลังเบลอ |
 | `drawFeedbackPanel(msgs, options)` | Array, Object | วาดกล่อง feedback |
 | `drawDebugOverlay(data)` | Object | วาด debug info |
 
@@ -398,4 +400,4 @@ drawFeedbackPanel(messages, options = {}) {
 
 ---
 
-*เอกสารนี้อัปเดต: 2026-01-10*
+*เอกสารนี้อัปเดต: 2026-01-14*

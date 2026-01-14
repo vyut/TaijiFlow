@@ -61,7 +61,7 @@ const displayController = new DisplayController({
 | `showSkeleton` | boolean | `true` | โครงกระดูกผู้ฝึก |
 | `showSilhouette` | boolean | `false` | เงาผู้ฝึก |
 | `showTrail` | boolean | `true` | เส้นทางการเคลื่อนไหว |
-| `showBlurBackground` | boolean | `false` | 🆕 Visual Effects: เบลอฉากหลัง |
+| `showBlurBackground` | boolean | `false` | 🆕 Visual Effects: เบลอฉากหลัง (Desktop Only - Hidden on Mobile) |
 
 ### Toggle Behavior
 
@@ -78,6 +78,7 @@ const displayController = new DisplayController({
 ├─────────────────────────────────────┤
 │ 🎨 Visual Effects                   │
 │ ☐ Blur Background - เบลอฉากหลัง (B)│
+│ (Desktop Chrome/Edge Only)        │
 └─────────────────────────────────────┘
 ```
 
@@ -119,7 +120,7 @@ trailHistory = [
 | `initSkeletonCheckbox()` | Setup Skeleton checkbox |
 | `initSilhouetteCheckbox()` | Setup Silhouette checkbox |
 | `initTrailCheckbox()` | Setup Trail checkbox |
-| `initBlurBackgroundCheckbox()` | 🆕 Setup Blur Background checkbox |
+| `initBlurBackgroundCheckbox()` | 🆕 Setup Blur Background (Hidden on Mobile/Tablet) |
 
 ### Control Methods
 
@@ -138,6 +139,30 @@ trailHistory = [
 ---
 
 ## 5. Code Examples
+
+### Blur Background with Mobile Detection
+
+```javascript
+initBlurBackgroundCheckbox() {
+  const { checkBlurBg } = this.deps;
+  
+  // 1. Mobile/Tablet Check (Hide completely)
+  if (isMobileDevice()) {
+      checkBlurBg.closest('label').style.display = 'none';
+      return;
+  }
+
+  checkBlurBg.addEventListener('change', () => {
+      // 2. Safari Check (Warning as fallback)
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      if (checkBlurBg.checked && isSafari) {
+         uiManager.showNotification("Not supported on Safari", "warning");
+         checkBlurBg.checked = false;
+      }
+      // ...
+  });
+}
+```
 
 ### Ghost Toggle with Manager
 

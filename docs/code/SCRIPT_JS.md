@@ -1,9 +1,9 @@
 # TaijiFlow AI - Script.js Documentation
 
-**Version:** 3.0  
-**Last Updated:** 2026-01-10  
-**Lines:** 1,723  
-**Functions:** 66
+**Version:** 3.1  
+**Last Updated:** 2026-01-14  
+**Lines:** 1,850+  
+**Functions:** 68
 
 ---
 
@@ -278,11 +278,14 @@ function onResults(results) {
 | `G` | Toggle Ghost Overlay |
 | `I` | Toggle Instructor |
 | `P` | Toggle Path |
-| `B` | Toggle Skeleton (Bones) |
+| `K` | Toggle Skeleton |
+| `B` | Toggle Blur Background |
 | `S` | Toggle Silhouette |
+| `R` | Toggle Trail |
 | `M` | Toggle Mute |
-| `L` | Toggle Language |
+| `L` | Cycle Levels |
 | `T` | Toggle Theme |
+| `H` | Open Tutorial |
 | `/` | Show Shortcuts Help |
 | `Esc` | Cancel Calibration |
 

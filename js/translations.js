@@ -110,6 +110,8 @@ const TRANSLATIONS = {
     blur_background: "🌫️ เบลอฉากหลัง",
     blur_bg_warning:
       "FPS ต่ำ! ลองปิด Background Blur เพื่อประสิทธิภาพที่ดีขึ้น",
+    blur_bg_safari_warning:
+      "ฟีเจอร์ Background Blur ไม่รองรับบน Safari กรุณาใช้ Chrome หรือ Edge",
 
     // -------------------------------------------------------------------------
     // Category Options (ประเภทท่า - สำหรับขยายในอนาคต)
@@ -372,6 +374,8 @@ const TRANSLATIONS = {
     blur_background: "🌫️ Blur Background",
     blur_bg_warning:
       "Low FPS! Try turning off Background Blur for better performance",
+    blur_bg_safari_warning:
+      "Background Blur is not supported on Safari. Please use Chrome or Edge.",
 
     // -------------------------------------------------------------------------
     // Category Options

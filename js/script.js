@@ -410,6 +410,8 @@ const displayController = new DisplayController({
   // Managers
   ghostManager,
   silhouetteManager,
+  uiManager, // 🆕 สำหรับ Safari Warning
+  translations: TRANSLATIONS, // 🆕 สำหรับข้อความ Warning
   // Note: pose จะถูก access ผ่าน window.pose ใน display_controller.js
 });
 

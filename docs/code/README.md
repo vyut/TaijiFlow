@@ -1,7 +1,7 @@
 # TaijiFlow AI - Code Documentation Index
 
-**Version:** 0.9.2  
-**Last Updated:** 2026-01-10
+**Version:** 0.9.8  
+**Last Updated:** 2026-01-14
 
 ---
 
@@ -30,8 +30,8 @@
 
 | ไฟล์ | เอกสาร | คำอธิบาย |
 |------|--------|---------|
-| keyboard_controller.js | [KEYBOARD_CONTROLLER.md](KEYBOARD_CONTROLLER.md) | Keyboard Shortcuts (14 keys) |
-| display_controller.js | [DISPLAY_CONTROLLER.md](DISPLAY_CONTROLLER.md) | Display Options (6 toggles) |
+| keyboard_controller.js | [KEYBOARD_CONTROLLER.md](KEYBOARD_CONTROLLER.md) | Keyboard Shortcuts (16 keys) |
+| display_controller.js | [DISPLAY_CONTROLLER.md](DISPLAY_CONTROLLER.md) | Display Options (7 toggles) |
 | gesture_manager.js | [GESTURE_MANAGER.md](GESTURE_MANAGER.md) | Hand Gesture Control |
 
 ---
@@ -118,4 +118,4 @@
 
 ---
 
-*เอกสารนี้อัปเดต: 2026-01-10*
+*เอกสารนี้อัปเดต: 2026-01-14*

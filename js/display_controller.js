@@ -211,8 +211,49 @@ class DisplayController {
 
     if (checkBlurBg) {
       checkBlurBg.checked = this.showBlurBackground;
+
+      // 🆕 Mobile/Tablet Detection - ซ่อนฟีเจอร์นี้บน Tablet/Mobile (Experimental Support)
+      if (typeof isMobileDevice === "function" && isMobileDevice()) {
+        // ซ่อน Option
+        const container = checkBlurBg.closest("label");
+        if (container) container.style.display = "none";
+
+        // ซ่อน Header "Visual Effects" ที่อยู่ก่อนหน้า
+        const header = container?.previousElementSibling;
+        if (header && header.textContent.includes("Visual Effects")) {
+          header.style.display = "none";
+        }
+
+        this.showBlurBackground = false;
+        console.log("📱 Mobile/Tablet detected - Visual Effects hidden");
+        return;
+      }
+
       checkBlurBg.addEventListener("change", () => {
         this.showBlurBackground = checkBlurBg.checked;
+
+        // 🆕 Safari Detection (Desktop) - Safari ไม่รองรับ MediaPipe Segmentation
+        const isSafari =
+          /^((?!chrome|android).)*safari/i.test(navigator.userAgent) ||
+          (navigator.userAgent.includes("AppleWebKit") &&
+            !navigator.userAgent.includes("Chrome"));
+
+        if (this.showBlurBackground && isSafari) {
+          // แสดง Warning และปิด checkbox
+          const { uiManager, translations } = this.deps;
+          if (uiManager && translations) {
+            const lang = uiManager.currentLanguage || "th";
+            const message =
+              translations[lang]?.blur_bg_safari_warning ||
+              "Background Blur is not supported on Safari.";
+            uiManager.showNotification(message, "warning");
+          }
+          // ปิด checkbox กลับเพราะไม่รองรับ
+          checkBlurBg.checked = false;
+          this.showBlurBackground = false;
+          console.warn("⚠️ Safari detected - Background Blur not supported");
+          return;
+        }
 
         // Toggle Segmentation (จำเป็นสำหรับ Blur Background)
         // Note: Silhouette ก็ใช้ Segmentation ดังนั้นถ้า Silhouette เปิดอยู่ ไม่ต้องปิด

@@ -340,7 +340,7 @@ const TRANSLATIONS = {
     // -------------------------------------------------------------------------
     // Header & Title
     // -------------------------------------------------------------------------
-    app_title: "TaijiFlow AI: Silk Reeling Assistant (v0.91)",
+    app_title: "TaijiFlow AI: Silk Reeling Assistant",
 
     // -------------------------------------------------------------------------
     // Selection Controls

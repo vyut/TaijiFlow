@@ -1,8 +1,7 @@
 # TaijiFlow AI - Feedback Manager Documentation
 
-**Version:** 1.0  
-**Last Updated:** 2026-01-10  
-**Lines:** 115  
+**Version:** 2.0  
+**Last Updated:** 2026-01-14  
 **Class:** FeedbackManager
 
 ---
@@ -18,15 +17,16 @@
 
 ## 1. ภาพรวม
 
-`FeedbackManager` จัดการปุ่มและ Popup สำหรับแบบสอบถาม
+`FeedbackManager` จัดการปุ่มและ Popup สำหรับแบบสอบถาม โดยใช้ **Right-Side Sticky Tab** และ **Glassmorphism Popup**
 
 ### 🎯 หน้าที่หลัก
 
 | หน้าที่ | คำอธิบาย |
 |---------|---------|
-| **Floating Button** | ปุ่ม 📝 มุมขวาล่าง |
-| **QR Code Popup** | แสดง QR สแกนไป Google Form |
-| **Bilingual Support** | รองรับ TH/EN |
+| **Sticky Side Tab** | แท็บด้านขวา (Right Edge) พร้อมข้อความแนวตั้ง |
+| **QR Code Popup** | Popup แบบ Glassmorphism แสดง QR และปุ่ม Survey |
+| **Bilingual Support** | รองรับ TH/EN ผ่าน `translations.js` |
+| **Independent Logic** | ใช้ Pull Model ในการดึงค่าภาษาจาก `window.uiManager` |
 
 ### 📊 การใช้งาน
 
@@ -39,31 +39,33 @@ window.feedbackManager = new FeedbackManager();
 
 ## 2. UI Components
 
-### Floating Button
+### Sticky Side Tab (v2.0)
 
 | Property | Value |
 |----------|-------|
-| Position | Fixed bottom-right |
-| Icon | 📝 |
-| Size | 48px × 48px |
+| Position | Fixed Right-Center (`top-1/2 right-0`) |
+| Icon | ⭐ Star (SVG) |
+| Shape | Rounded Left Pill (Vertical) |
+| Style | Purple-Indigo Gradient (Vertical) |
+| Interaction | Slide-out on hover |
 
 ### Popup Structure
 
 ```
 ┌─────────────────────────────────────┐
-│        📝 แบบสอบถาม                 │
-├─────────────────────────────────────┤
-│  ช่วยพัฒนาแอป TaijiFlow AI          │
+[X] (Close Button)                    │
+│        ⭐ Your Feedback             │
+│   Help improve TaijiFlow AI         │
 │                                     │
 │         ┌─────────────┐             │
 │         │   QR Code   │             │
-│         │    150px    │             │
+│         │    128px    │             │
 │         └─────────────┘             │
 │                                     │
-│  สแกน QR Code หรือคลิกปุ่มด้านล่าง   │
+│     Scan QR or click below          │
 │                                     │
-│      [🔗 เปิดแบบสอบถาม]              │
-│          [ปิด]                      │
+│    (🟣 Take Survey Button)          │
+│          (Close Text)               │
 └─────────────────────────────────────┘
 ```
 
@@ -76,90 +78,58 @@ window.feedbackManager = new FeedbackManager();
 | Method | Description |
 |--------|-------------|
 | `constructor()` | ตั้งค่า formUrl, เรียก init() |
-| `init()` | สร้างปุ่มและ bind events |
+| `init()` | สร้างปุ่ม `createButton()` |
 
 ### UI Creation
 
 | Method | Description |
 |--------|-------------|
-| `createButton()` | สร้างปุ่ม floating |
-| `bindEvents()` | ผูก click event |
-| `showPopup()` | แสดง popup |
+| `createButton()` | สร้างปุ่ม Sticky Tab ที่ขอบขวาของจอ |
+| `showPopup()` | แสดง Popup (ใช้ translations.js) |
 
 ### Utility
 
 | Method | Returns | Description |
 |--------|---------|-------------|
-| `getLang()` | string | ดึงภาษาจาก uiManager |
+| `getLang()` | string | ดึงภาษาจาก `window.uiManager.currentLang` |
 
 ---
 
 ## 4. Code Examples
 
-### Create Floating Button
+### Create Sticky Tab Button
 
 ```javascript
 createButton() {
-  const btn = document.createElement('button');
-  btn.id = 'feedback-btn';
-  btn.innerHTML = '📝';
-  btn.title = this.getLang() === 'th'
-    ? 'ช่วยพัฒนาแอป TaijiFlow AI ให้ดียิ่งขึ้น'
-    : 'Help improve TaijiFlow AI';
+  const btn = document.createElement("button");
+  // ... Tailwind classes for Right fixed position ...
+  
+  // Vertical Logic
+  btn.innerHTML = `
+    ${starIconSvg}
+    <span style="writing-mode: vertical-rl;">
+      ${isThai ? "ข้อเสนอแนะ" : "Feedback"}
+    </span>
+  `;
   document.body.appendChild(btn);
 }
 ```
 
-### Show Popup
+### Show Popup (With Translations)
 
 ```javascript
 showPopup() {
-  const isThaiLang = this.getLang() === 'th';
-  const qrPath = 'images/qr_feedback.png';
+  const lang = this.getLang();
+  // Fetch texts from centralized dict
+  const t = TRANSLATIONS[lang]?.feedback_popup;
   
-  const popup = document.createElement('div');
-  popup.id = 'feedback-popup';
-  popup.className = 'feedback-overlay';
-  popup.innerHTML = `
-    <div class="feedback-modal">
-      <h3>${isThaiLang ? '📝 แบบสอบถาม' : '📝 Feedback'}</h3>
-      <p class="feedback-desc">${
-        isThaiLang
-          ? 'ช่วยพัฒนาแอป TaijiFlow AI ให้ดียิ่งขึ้น'
-          : 'Help improve TaijiFlow AI'
-      }</p>
-      <img src="${qrPath}" alt="QR Feedback" class="feedback-qr" />
-      <p class="feedback-hint">${
-        isThaiLang
-          ? 'สแกน QR Code หรือคลิกปุ่มด้านล่าง'
-          : 'Scan QR Code or click button below'
-      }</p>
-      <a href="${this.formUrl}" target="_blank" class="feedback-link">${
-        isThaiLang ? '🔗 เปิดแบบสอบถาม' : '🔗 Open Feedback Form'
-      }</a>
-      <button class="feedback-close">${isThaiLang ? 'ปิด' : 'Close'}</button>
-    </div>
-  `;
+  // Create Glassmorphism Modal
+  // ...
   
-  document.body.appendChild(popup);
-  
-  // Close handlers
-  popup.querySelector('.feedback-close')
-    .addEventListener('click', () => popup.remove());
-  popup.addEventListener('click', (e) => {
-    if (e.target === popup) popup.remove();
-  });
-}
-```
-
-### Get Language
-
-```javascript
-getLang() {
-  return window.uiManager?.currentLang || 'th';
+  // Use t.title, t.qr_instruction, etc.
 }
 ```
 
 ---
 
-*เอกสารนี้สร้างจาก code analysis โดยอัตโนมัติ*
+*เอกสารนี้อัปเดตสำหรับ v0.9.8*

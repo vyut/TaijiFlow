@@ -5,6 +5,32 @@
 ---
 ---
 
+## [v0.9.8] - 2026-01-14
+
+### 🎨 UI & UX Refinement (Purple Theme & Feedback)
+
+#### Changed
+- **Feedback Button Redesign** - Moved from bottom-right floating button into a **Right-Side Sticky Tab** (Vertical).
+  - Shape: Rounded-left pill attached to the right edge.
+  - Content: Star Icon + Vertical Text ("Feedback" / "ข้อเสนอแนะ").
+  - Purpose: Reduces clutter in the chatbot area and improves visibility.
+- **Score Popup Layout** - Redesigned for compactness.
+  - Layout: "Grade" and "Score Ring" are now side-by-side.
+  - Added new Title: "Training Result" / "สรุปผลการฝึก".
+  - Refined gradients to match the unified Purple Theme.
+- **Unified Purple Theme** - Standardized gradients (`from-purple-500 to-indigo-500`) across:
+  - Main App Title & Quickstart Title.
+  - Start Training Button.
+  - 1-2-3 Step Overlays.
+- **Popup Controls** - Added "X" Close Button to both Score and Feedback popups for better usability.
+
+#### Refactored
+- **Centralized Translations** - Moved all Popup text strings (Score/Feedback) from JS files to `translations.js`.
+  - Keys: `score_popup` and `feedback_popup`.
+  - Ensures 100% consistency between Thai and English.
+- **Global UI State** (`script.js`) - Exposed `window.uiManager` to allow independent modules (like FeedbackManager) to access language state reliably.
+  - Fixes bug where Feedback Popup always defaulted to Thai.
+
 ## [v0.9.7] - 2026-01-13
 
 ### 🐛 Critical Bug Fixes & Tuning

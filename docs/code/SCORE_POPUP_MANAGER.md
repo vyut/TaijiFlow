@@ -1,8 +1,7 @@
 # TaijiFlow AI - Score Popup Manager Documentation
 
-**Version:** 1.0  
-**Last Updated:** 2026-01-10  
-**Lines:** ~180  
+**Version:** 3.0  
+**Last Updated:** 2026-01-14  
 **Class:** ScorePopupManager
 
 ---
@@ -19,61 +18,56 @@
 
 ## 1. ภาพรวม
 
-`ScorePopupManager` แสดง Score Summary หลังจบการฝึก
+`ScorePopupManager` แสดงสรุปผลการฝึกหลังจบ Session โดยใช้ **Compact Layout** และธีมสีม่วง
 
 ### 🎯 หน้าที่หลัก
 
 | หน้าที่ | คำอธิบาย |
 |---------|---------|
-| **Score Display** | แสดงคะแนนขนาดใหญ่ |
-| **Grading** | แสดงเกรด A/B/C/D/F |
-| **Statistics** | ระยะเวลา, frames, feedback |
-| **Animations** | เอฟเฟกต์การแสดงผล |
+| **Score Summary** | แสดงเกรด (A-F) และวงแหวนคะแนน (Ring) |
+| **Bilingual** | ใช้ข้อความจาก `translations.js` (score_popup) |
+| **Statistics** | แสดงเวลาฝึก, ข้อผิดพลาดหลัก (Top Errors) |
+| **Interactive** | ปุ่มลงแบบสอบถาม, ปุ่มปิด (X), ปุ่มเริ่มใหม่ |
 
 ### 📊 การใช้งาน
 
 ```javascript
 const scorePopup = new ScorePopupManager();
-
-// แสดง popup
 scorePopup.show({
   score: 85,
   grade: 'B',
-  duration: 30,
-  totalFrames: 900,
-  correctFrames: 765,
-  feedbackSummary: { ... }
+  duration: "0:45",
+  metrics: { ... },
+  feedbacks: [ ... ]
 });
-
-// ปิด popup
-scorePopup.hide();
 ```
 
 ---
 
 ## 2. Score Display
 
-### Popup Layout
+### Popup Layout (v3.0)
 
 ```
 ┌─────────────────────────────────────────────────────┐
+│  🟣 สรุปผลการฝึก (Title)                        [X] │
+├─────────────────────────────────────────────────────┤
 │                                                     │
-│              🎉 ยินดีด้วย!                           │
-│                                                     │
-│                    85                               │
-│                   คะแนน                              │
-│                   เกรด B                            │
+│        [ Grade B ]         ( 85% )                  │
+│        (Blue Card)       (Score Ring)               │
 │                                                     │
 ├─────────────────────────────────────────────────────┤
-│  ⏱️ ระยะเวลา: 30 วินาที                             │
-│  📊 Frames: 765/900 (85%)                          │
+│  ⏱️ เวลาที่ใช้: 0:45 นาที                             │
+│                                                     │
+│  ⚠️ ข้อผิดพลาดที่พบ:                                 │
+│  - ศอกลอย (20%)                                     │
+│  - หมุนมือผิดทิศ (5%)                                │
+│                                                     │
+│  💡 คำแนะนำ:                                        │
+│  "ฝึกซ้ำอีกนิด! ลองลดระดับข้อศอกลง"                     │
 ├─────────────────────────────────────────────────────┤
-│  Feedback Summary:                                  │
-│  • เส้นทาง: 📖 ดีมาก (90%)                          │
-│  • ศอก: ⚠️ ปรับปรุง (70%)                          │
-│  • ความต่อเนื่อง: ✅ ดี (85%)                       │
-├─────────────────────────────────────────────────────┤
-│               [ฝึกอีกครั้ง]                          │
+│         [ 📝 ตอบแบบสอบถาม (Survey) ]                 │
+│         [ 🔄 ฝึกอีกครั้ง (Restart) ]                  │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -83,25 +77,12 @@ scorePopup.hide();
 
 ### Grade Criteria
 
-| เกรด | คะแนน | สี | คำอธิบาย |
+| เกรด | คะแนน | สี | ความหมาย |
 |:----:|:-----:|:--:|----------|
-| A | 90-100 | 🟢 Green | ยอดเยี่ยม |
-| B | 75-89 | 🔵 Blue | ดีมาก |
-| C | 60-74 | 🟡 Yellow | ดี |
-| D | 50-59 | 🟠 Orange | พอใช้ |
-| F | 0-49 | 🔴 Red | ต้องปรับปรุง |
-
-### Grade Colors
-
-```javascript
-const GRADE_COLORS = {
-  A: { bg: '#10b981', text: '#ffffff' }, // Green
-  B: { bg: '#3b82f6', text: '#ffffff' }, // Blue
-  C: { bg: '#f59e0b', text: '#000000' }, // Yellow
-  D: { bg: '#f97316', text: '#000000' }, // Orange
-  F: { bg: '#ef4444', text: '#ffffff' }  // Red
-};
-```
+| A | ≥ 80 | 🟢 Teal | ยอดเยี่ยม Excellent |
+| B | 60-79 | 🔵 Blue | ดีมาก Very Good |
+| C | 40-59 | 🟡 Yellow | พอใช้ Fair |
+| F | < 40 | 🔴 Red | ต้องปรับปรุง Try Again |
 
 ---
 
@@ -111,127 +92,60 @@ const GRADE_COLORS = {
 
 | Method | Parameters | Description |
 |--------|------------|-------------|
-| `show(data)` | Object | แสดง popup พร้อมข้อมูล |
-| `hide()` | - | ปิด popup |
-| `createPopup(data)` | Object | สร้าง HTML structure |
+| `show(data)` | Object | แสดง popup, คำนวณเกรด, เรียก translations |
+| `close()` | - | ปิด popup, เคลียร์ UI |
 
-### Rendering
+### Logic
 
-| Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
-| `renderScore(score)` | number | string | Render คะแนน |
-| `renderGrade(grade)` | string | string | Render เกรด |
-| `renderStats(data)` | Object | string | Render สถิติ |
-| `renderFeedback(summary)` | Object | string | Render feedback |
-
-### Utility
-
-| Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
-| `getGradeColor(grade)` | string | Object | ดึงสีของเกรด |
-| `formatDuration(sec)` | number | string | Format เวลา |
+| Method | Parameters | Return | Description |
+|--------|------------|--------|-------------|
+| `calculateGrade(score)` | number | string | คำนวณเกรด A, B, C, F |
+| `getGradeColor(grade)` | string | string | คืนค่า Tailwind class `text-xxx` |
+| `getGradeColorBg(grade)` | string | string | คืนค่า Tailwind class `bg-xxx` |
+| `createRing(score)` | number | string | สร้าง SVG Ring Chart |
 
 ---
 
 ## 5. Code Examples
 
-### Show Popup
+### Show Logic (Simplified)
 
 ```javascript
 show(data) {
-  // Remove existing popup
-  this.hide();
-  
-  const popup = this.createPopup(data);
-  document.body.appendChild(popup);
-  
-  // Animation
-  requestAnimationFrame(() => {
-    popup.classList.add('visible');
-  });
-  
-  // Close on overlay click
-  popup.addEventListener('click', (e) => {
-    if (e.target === popup) this.hide();
-  });
-}
-```
-
-### Create Popup Structure
-
-```javascript
-createPopup(data) {
-  const { score, grade, duration, totalFrames, correctFrames, feedbackSummary } = data;
-  const gradeColor = this.getGradeColor(grade);
+  // 1. Get Translations
   const lang = window.uiManager?.currentLang || 'th';
+  const t = TRANSLATIONS[lang].score_popup;
+
+  // 2. Calculate Grade
+  const grade = this.calculateGrade(data.score);
   
-  const popup = document.createElement('div');
-  popup.id = 'score-popup';
-  popup.className = 'score-overlay';
-  
+  // 3. Build HTML (Compact)
+  const popup = document.createElement("div");
   popup.innerHTML = `
-    <div class="score-modal">
-      <h2>${lang === 'th' ? '🎉 ยินดีด้วย!' : '🎉 Congratulations!'}</h2>
-      
-      <div class="score-main">
-        <div class="score-number" style="color: ${gradeColor.bg}">${score}</div>
-        <div class="score-label">${lang === 'th' ? 'คะแนน' : 'Score'}</div>
-        <div class="score-grade" style="background: ${gradeColor.bg}; color: ${gradeColor.text}">
-          ${lang === 'th' ? 'เกรด' : 'Grade'} ${grade}
-        </div>
-      </div>
-      
-      ${this.renderStats(data, lang)}
-      ${this.renderFeedback(feedbackSummary, lang)}
-      
-      <button class="score-close-btn">${lang === 'th' ? 'ฝึกอีกครั้ง' : 'Train Again'}</button>
+    <!-- Header with Title & Close Btn -->
+    <div class="header">
+      <h3>${t.title}</h3>
+      <button onclick="close()">X</button>
+    </div>
+    
+    <!-- Side-by-Side Content -->
+    <div class="flex-row">
+      <div class="grade-card">${grade}</div>
+      <div class="ring-chart">${this.createRing(data.score)}</div>
+    </div>
+    
+    <!-- Stats & Feedback -->
+    <div class="stats">...</div>
+    
+    <!-- Actions Stack -->
+    <div class="actions">
+      <button class="survey-btn">${t.take_survey_btn}</button>
+      <button class="restart-btn">${t.close_btn}</button>
     </div>
   `;
-  
-  popup.querySelector('.score-close-btn').onclick = () => this.hide();
-  
-  return popup;
-}
-```
-
-### Render Statistics
-
-```javascript
-renderStats(data, lang) {
-  const { duration, totalFrames, correctFrames } = data;
-  const percentage = Math.round((correctFrames / totalFrames) * 100);
-  
-  return `
-    <div class="score-stats">
-      <div class="stat-item">
-        <span class="stat-icon">⏱️</span>
-        <span>${lang === 'th' ? 'ระยะเวลา' : 'Duration'}: ${duration} ${lang === 'th' ? 'วินาที' : 'sec'}</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-icon">📊</span>
-        <span>Frames: ${correctFrames}/${totalFrames} (${percentage}%)</span>
-      </div>
-    </div>
-  `;
-}
-```
-
-### Get Grade Color
-
-```javascript
-getGradeColor(grade) {
-  const colors = {
-    A: { bg: '#10b981', text: '#ffffff' },
-    B: { bg: '#3b82f6', text: '#ffffff' },
-    C: { bg: '#f59e0b', text: '#000000' },
-    D: { bg: '#f97316', text: '#000000' },
-    F: { bg: '#ef4444', text: '#ffffff' }
-  };
-  
-  return colors[grade] || colors['C'];
 }
 ```
 
 ---
 
-*เอกสารนี้สร้างจาก code analysis โดยอัตโนมัติ*
+*เอกสารนี้อัปเดตสำหรับ v0.9.8*

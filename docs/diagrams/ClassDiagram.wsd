@@ -224,6 +224,7 @@ package "UI & Feedback" <<UI>> {
             --
             + createButton()
             + showPopup()
+            + getLang()
         }
     }
     

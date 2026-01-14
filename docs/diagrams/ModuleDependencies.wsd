@@ -144,6 +144,9 @@ KeyboardCtrl --> Tutorial
 ' Layer 3 Internal
 RulesConfig --> Heuristics
 UI --> Translations
+Feedback --> UI : Reads State (Window)
+Feedback --> Translations
+ScorePopup --> Translations
 
 ' Layer 3 → Layer 5 (External)
 Heuristics --> MPPose

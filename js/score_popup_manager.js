@@ -1,13 +1,15 @@
 /**
  * ============================================================================
- * TaijiFlow AI - Score Popup Manager v3.1 (Visual Balance)
+ * TaijiFlow AI - Score Popup Manager v3.3 (Feedback Alignment)
  * ============================================================================
  *
  * แสดง Popup สรุปคะแนนหลังจบ Session การฝึก (UI ใหม่)
  *
- * @version 3.1 (2026-01-13)
- * - Refined Text: Shorter, more direct wording
- * - UI Polish: Close button width adjusted (pill shape) for better balance
+ * @version 3.3 (2026-01-14)
+ * - Aligned Feedback Section with Feedback Popup Design
+ * - Survey Button is now Primary (Purple Gradient)
+ * - Close Button is now Secondary (Text Only)
+ * - Updated Text Headers as requested
  */
 
 class ScorePopupManager {
@@ -18,18 +20,18 @@ class ScorePopupManager {
   }
 
   createProgressRing(percentage, color) {
-    const radius = 60;
+    const radius = 50; // Reduced radius for w-32 (128px) container
     const circumference = 2 * Math.PI * radius;
     const offset = circumference - (percentage / 100) * circumference;
 
     return `
-      <div class="relative flex items-center justify-center w-40 h-40 mx-auto my-2">
-        <svg class="w-full h-full transform -rotate-90">
-          <circle cx="50%" cy="50%" r="${radius}" stroke="currentColor" stroke-width="10" fill="transparent" class="text-gray-100 dark:text-gray-800" />
-          <circle cx="50%" cy="50%" r="${radius}" stroke="${color}" stroke-width="10" fill="transparent" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}" stroke-linecap="round" class="transition-all duration-1000 ease-out" style="stroke-dashoffset: ${circumference}; animation: progress 1.5s ease-out forwards;" />
+      <div class="relative flex items-center justify-center w-32 h-32">
+        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="${radius}" stroke="currentColor" stroke-width="8" fill="transparent" class="text-gray-100 dark:text-gray-800" />
+          <circle cx="60" cy="60" r="${radius}" stroke="${color}" stroke-width="8" fill="transparent" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}" stroke-linecap="round" class="transition-all duration-1000 ease-out" style="stroke-dashoffset: ${circumference}; animation: progress 1.5s ease-out forwards;" />
         </svg>
         <div class="absolute inset-0 flex flex-col items-center justify-center">
-          <span class="text-4xl font-black dark:text-white filter drop-shadow-sm" style="color:${color}">${percentage}%</span>
+          <span class="text-3xl font-black dark:text-white filter drop-shadow-sm" style="color:${color}">${percentage}%</span>
         </div>
       </div>
       <style>@keyframes progress { to { stroke-dashoffset: ${offset}; } }</style>
@@ -75,7 +77,8 @@ class ScorePopupManager {
 
   show(summary, gradeInfo, lang = "th") {
     this.close();
-    const isThaiLang = lang === "th";
+    // Helper for translations
+    const t = TRANSLATIONS[lang]?.score_popup || TRANSLATIONS["th"].score_popup;
 
     // Data Preparation
     const progressRingHtml = this.createProgressRing(
@@ -93,7 +96,7 @@ class ScorePopupManager {
       errorListHtml = `
         <div class="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 text-left">
           <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-            ${isThaiLang ? "รายละเอียดข้อผิดพลาด" : "Error Breakdown"}
+            ${t.error_breakdown}
           </p>
           <ul class="space-y-1">
             ${limitedErrors
@@ -120,50 +123,49 @@ class ScorePopupManager {
     this.popup.innerHTML = `
       <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-6 max-w-sm w-full text-center relative transform scale-95 opacity-0 animate-popup-in border border-gray-100 dark:border-gray-700 max-h-[90vh] overflow-y-auto custom-scrollbar">
         
-        <!-- Header: Grade -->
-        <div class="">
-           <h2 class="text-6xl font-black bg-clip-text text-transparent bg-gradient-to-br from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 filter drop-shadow-sm" 
-               style="background-image: linear-gradient(135deg, ${
-                 gradeInfo.color
-               }, ${
-      gradeInfo.color
-    }); -webkit-text-fill-color: transparent; -webkit-background-clip: text;">
-             ${gradeInfo.grade}
-           </h2>
-           <p class="text-xl font-medium text-gray-500 dark:text-gray-400">${
-             gradeInfo.label
-           }</p>
-        </div>
+        <!-- Title -->
+        <h3 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-purple-500 to-indigo-500 mb-2">
+          ${t.title}
+        </h3>
 
-        <!-- Ring Chart -->
-        ${progressRingHtml}
+        <!-- Close X Button -->
+        <button id="close-x-btn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition z-10">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+
+        <!-- Compact Header: Grade + Ring (Side-by-Side) -->
+        <div class="flex flex-row items-center justify-center gap-8 mb-6 mt-2">
+            <!-- Left: Grade -->
+            <div class="flex flex-col items-center">
+               <h2 class="text-7xl font-black bg-clip-text text-transparent bg-gradient-to-br from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 filter drop-shadow-sm leading-none" 
+                   style="background-image: linear-gradient(135deg, ${gradeInfo.color}, ${gradeInfo.color}); -webkit-text-fill-color: transparent; -webkit-background-clip: text;">
+                 ${gradeInfo.grade}
+               </h2>
+               <p class="text-lg font-medium text-gray-500 dark:text-gray-400 mt-2">${gradeInfo.label}</p>
+            </div>
+
+            <!-- Right: Ring -->
+            <div class="flex-shrink-0">
+                ${progressRingHtml}
+            </div>
+        </div>
 
         <!-- 3-Column Stats Grid (Larger Fonts) -->
         <div class="grid grid-cols-3 gap-2 mb-4">
           <!-- Correct -->
           <div class="bg-gray-50 dark:bg-gray-800 p-2 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
-             <div class="text-3xl font-black text-green-500">${
-               summary.correctFrames
-             }</div>
-             <div class="text-[9px] text-gray-500 uppercase tracking-wider">${
-               isThaiLang ? "ถูกต้อง" : "Correct"
-             }</div>
+             <div class="text-3xl font-black text-green-500">${summary.correctFrames}</div>
+             <div class="text-[9px] text-gray-500 uppercase tracking-wider">${t.correct}</div>
           </div>
           <!-- Error -->
           <div class="bg-gray-50 dark:bg-gray-800 p-2 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
-             <div class="text-3xl font-black text-red-500">${
-               summary.errorFrames
-             }</div>
-             <div class="text-[9px] text-gray-500 uppercase tracking-wider">${
-               isThaiLang ? "แก้ไข" : "Fix"
-             }</div>
+             <div class="text-3xl font-black text-red-500">${summary.errorFrames}</div>
+             <div class="text-[9px] text-gray-500 uppercase tracking-wider">${t.fix}</div>
           </div>
            <!-- Duration -->
           <div class="bg-gray-50 dark:bg-gray-800 p-2 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
              <div class="text-3xl font-black text-blue-500">${duration}</div>
-             <div class="text-[9px] text-gray-500 uppercase tracking-wider">${
-               isThaiLang ? "เวลา" : "Time"
-             }</div>
+             <div class="text-[9px] text-gray-500 uppercase tracking-wider">${t.time}</div>
           </div>
         </div>
 
@@ -171,9 +173,7 @@ class ScorePopupManager {
         <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl mb-4 border-l-4 border-blue-500">
             <div class="text-left">
               <p class="text-[10px] font-bold text-blue-600 dark:text-blue-300 mb-1 uppercase flex items-center gap-1">
-                <span class="text-base">💡</span> ${
-                  isThaiLang ? "คำแนะนำจากโค้ช" : "Coach's Tip"
-                }
+                <span class="text-base">💡</span> ${t.coach_tip}
               </p>
               <p class="text-sm text-gray-800 dark:text-gray-200 leading-snug font-medium">
                 "${tipText}"
@@ -183,33 +183,39 @@ class ScorePopupManager {
             ${errorListHtml}
         </div>
         
-        <!-- Feedback Section (Refined Text) -->
-        <div class="mb-4 text-center mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
-             <p class="text-sm text-gray-600 dark:text-gray-300 font-medium mb-1">
-               ${
-                 isThaiLang
-                   ? "ช่วยพัฒนา TaijiFlow AI ให้ดียิ่งขึ้น"
-                   : "Help make TaijiFlow AI even better"
-               }
+        <!-- Feedback Section (Matched with Feedback Popup) -->
+        <div class="mb-2 text-center mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
+             <!-- 1. Header -->
+             <h3 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 mb-2">
+               ${t.feedback_title}
+             </h3>
+             
+             <!-- 2. Sub-Header -->
+             <p class="text-sm text-gray-600 dark:text-gray-300 font-medium mb-4">
+               ${t.feedback_sub}
              </p>
-             <p class="text-[10px] text-gray-400 mb-2">
-               ${
-                 isThaiLang
-                   ? "สแกน QR Code หรือคลิกปุ่มด้านล่าง"
-                   : "Scanning QR or clicking below"
-               }
+
+             <!-- 3. QR Code with Background -->
+             <div class="relative bg-white p-2 rounded-xl shadow-inner border border-gray-100 dark:border-gray-800 mx-auto w-fit mb-4">
+               <img src="images/qr_feedback.png" alt="QR" class="w-32 h-32 rounded-lg object-contain">
+             </div>
+
+             <!-- 4. Text Below QR -->
+             <p class="text-xs text-gray-400 mb-4">
+               ${t.qr_instruction}
              </p>
-             <img src="images/qr_feedback.png" alt="QR" class="w-28 h-28 mx-auto rounded-lg shadow-md border border-white dark:border-gray-700 bg-white p-1">
+             
+             <!-- 5. Primary Action: Survey Button (Purple) -->
              <a href="${this.formUrl}" target="_blank" 
-                class="inline-block mt-3 px-6 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs rounded-full transition font-bold">
-                ${isThaiLang ? "📋 ตอบแบบสอบถาม" : "📋 Take Survey"}
+                class="block w-fit mx-auto px-8 py-3 bg-gradient-to-br from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-full font-semibold shadow-md shadow-purple-500/20 transform transition active:scale-95 mb-3 text-sm">
+                ${t.take_survey_btn}
              </a>
         </div>
 
-        <!-- Actions (Balanced Width Pill Button) -->
+        <!-- 6. Secondary Action: Close Button (Text Only) -->
         <button id="close-score-popup" 
-          class="px-12 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-full font-bold shadow-lg shadow-purple-500/30 transform transition active:scale-95 duration-200 text-base">
-          ${isThaiLang ? "ปิดหน้าต่าง" : "Close"}
+          class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm font-medium transition-colors">
+          ${t.close_btn}
         </button>
 
       </div>
@@ -229,6 +235,11 @@ class ScorePopupManager {
     if (!this.popup) return;
     const closeBtn = this.popup.querySelector("#close-score-popup");
     if (closeBtn) closeBtn.addEventListener("click", () => this.close());
+
+    // Bind Close X Button
+    const closeXBtn = this.popup.querySelector("#close-x-btn");
+    if (closeXBtn) closeXBtn.addEventListener("click", () => this.close());
+
     this.popup.addEventListener("click", (e) => {
       // Close only if clicking strictly outside the content
       if (e.target.id === "score-popup") this.close();

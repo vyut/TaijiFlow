@@ -254,6 +254,34 @@ const TRANSLATIONS = {
     },
 
     // -------------------------------------------------------------------------
+    // Score Popup Strings
+    // -------------------------------------------------------------------------
+    score_popup: {
+      title: "สรุปผลการฝึก",
+      correct: "ถูกต้อง",
+      fix: "แก้ไข",
+      time: "เวลา",
+      coach_tip: "คำแนะนำจากโค้ช",
+      error_breakdown: "รายละเอียดข้อผิดพลาด",
+      feedback_title: "ความคิดเห็นของคุณ",
+      feedback_sub: "ช่วยพัฒนา TaijiFlow AI ให้ดียิ่งขึ้น",
+      qr_instruction: "สแกน QR Code หรือคลิกปุ่มด้านล่าง",
+      take_survey_btn: "📝 ตอบแบบสอบถาม",
+      close_btn: "ปิดหน้าต่าง",
+    },
+
+    // -------------------------------------------------------------------------
+    // Feedback Popup Strings
+    // -------------------------------------------------------------------------
+    feedback_popup: {
+      title: "ความคิดเห็นของคุณ",
+      feedback_sub: "ช่วยพัฒนา TaijiFlow AI ให้ดียิ่งขึ้น",
+      qr_instruction: "สแกน QR Code หรือคลิกปุ่มด้านล่าง",
+      take_survey_btn: "📝 ตอบแบบสอบถาม",
+      close_btn: "ปิดหน้าต่าง",
+    },
+
+    // -------------------------------------------------------------------------
     // Exercise Options (ตัวเลือกท่าฝึก)
     // -------------------------------------------------------------------------
     // ท่าม้วนไหม (纏絲勁 - Chán Sī Jìn / Silk Reeling)
@@ -443,6 +471,34 @@ const TRANSLATIONS = {
       FEEDBACK_STABILITY: "💡 Keep your spine straight and balanced.",
       FEEDBACK_PATH: "💡 Follow the path with wide, circular movements.",
       FEEDBACK_CONTINUITY: "💡 Flow like water, keep moving.",
+    },
+
+    // -------------------------------------------------------------------------
+    // Score Popup Strings
+    // -------------------------------------------------------------------------
+    score_popup: {
+      title: "Training Result",
+      correct: "Correct",
+      fix: "Fix",
+      time: "Time",
+      coach_tip: "Coach's Tip",
+      error_breakdown: "Error Breakdown",
+      feedback_title: "Your Feedback",
+      feedback_sub: "Help improve TaijiFlow AI",
+      qr_instruction: "Scan QR below or click button",
+      take_survey_btn: "📝 Take Survey",
+      close_btn: "Close",
+    },
+
+    // -------------------------------------------------------------------------
+    // Feedback Popup Strings
+    // -------------------------------------------------------------------------
+    feedback_popup: {
+      title: "Your Feedback",
+      feedback_sub: "Help improve TaijiFlow AI",
+      qr_instruction: "Scan QR below or click button",
+      take_survey_btn: "📝 Take Survey",
+      close_btn: "Close",
     },
 
     // -------------------------------------------------------------------------

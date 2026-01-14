@@ -73,6 +73,7 @@ const engine = new HeuristicsEngine(); // วิเคราะห์ท่า�
 const rulesConfigManager = new RulesConfigManager(engine); // ปรับค่ากฎ (Rules Settings UI)
 const calibrator = new CalibrationManager(); // ปรับเทียบสัดส่วนร่างกาย
 const uiManager = new UIManager(); // จัดการ UI และภาษา
+window.uiManager = uiManager; // Expose globally for other managers (e.g. FeedbackManager)
 const drawer = new DrawingManager(canvasCtx, canvasElement); // วาดภาพบน Canvas
 const scorer = new ScoringManager(); // คำนวณคะแนน
 const audioManager = new AudioManager(); // เสียงพูดแจ้งเตือน

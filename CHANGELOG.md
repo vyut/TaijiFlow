@@ -3,6 +3,38 @@
 รายการการเปลี่ยนแปลงทั้งหมดของโปรเจค
 
 ---
+
+## [v0.9.9] - 2026-01-14
+
+### 🐛 Critical Bug Fix: Rule 7 (Continuity) Time-Based Detection
+
+#### Fixed
+- **Rule 7 Not Triggering** (`heuristics_engine.js`) - Fixed critical bug where Continuity rule never triggered pause warnings.
+  - **Root Cause 1:** Frame-based counter (`pauseCounter`) was affected by Skip Frame Logic, requiring 18+ seconds to trigger instead of 0.5s.
+  - **Root Cause 2:** `results.image.timeStamp` from MediaPipe was `undefined`, causing `wristHistory.t` to be `NaN`.
+  - **Solution:** Implemented **Time-Based Average Velocity** detection using `Date.now()`.
+- **Rule 1 False Positive on Pause** - Added `isPaused()` check to skip Path Shape analysis during pause (jitter caused false "move in circle" warnings).
+
+#### Changed
+- **Rule 7 CONFIG** - Replaced frame-based with time-based parameters:
+  - `PAUSE_FRAME_THRESHOLD: 15` → `PAUSE_WINDOW_MS: 2000` (2 seconds)
+  - `MOTION_THRESHOLD: 0.005` → `PAUSE_AVG_VELOCITY_THRESHOLD: 0.003`
+- **Feedback Messages** - Extended Rule 7 message for clarity:
+  - TH: "อย่าหยุดนิ่ง" → "เคลื่อนไหวต่อเนื่อง อย่าหยุดนิ่ง"
+  - EN: "Keep Moving" → "Keep Moving, Don't Stop"
+
+#### Refactored
+- **Centralized Translations** (`translations.js`) - Moved all heuristics feedback messages (9) from `heuristics_engine.js`.
+  - Keys: `heur_move_in_circle`, `heur_wrong_direction`, `heur_incorrect_rotation`, `heur_elbow_too_high`, `heur_start_with_waist`, `heur_head_unstable`, `heur_not_smooth`, `heur_keep_moving`, `heur_off_balance`.
+- **Circle Score Labels** (`drawing_manager.js`) - Moved to `translations.js`.
+  - Keys: `circle_good`, `circle_can_improve`, `circle_poor`.
+- **getMessage() Refactor** - Now uses `TRANSLATIONS` lookup with key mapping, removing hardcoded strings from engine.
+
+#### Added
+- **isPaused() Helper** (`heuristics_engine.js`) - Shared method for detecting paused state using time-windowed average velocity.
+  - Used by: Rule 1 (skip check when paused), Rule 7 (trigger warning when paused).
+
+---
 ---
 
 ## [v0.9.8] - 2026-01-14

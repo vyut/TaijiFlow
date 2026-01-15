@@ -720,81 +720,80 @@ checkSmoothness(wrist, timestamp) {
 ### 🎯 วัตถุประสงค์
 ตรวจสอบว่า**ไม่หยุดนิ่ง**ระหว่างการฝึก
 
-### 🔄 Algorithm ทีละขั้นตอน
+### 📝 Implementation Notes (v0.9.9)
+
+> **เปลี่ยนจาก Frame-Based เป็น Time-Based**
+> 
+> เดิม: นับ frames ที่ velocity ต่ำ (pauseCounter > 15)
+> 
+> ใหม่: คำนวณ Average Velocity ใน time window (2 วินาที)
+> 
+> **เหตุผล:** Skip Frame Logic ทำให้ Heuristics ถูกเรียกแค่ ~0.83 ครั้ง/วินาที
+
+### 🔄 Algorithm ทีละขั้นตอน (Time-Based)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  checkContinuity()                                          │
+│  checkContinuity() → isPaused()                             │
 └─────────────────────────────────────────────────────────────┘
                           │
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ ขั้นที่ 1: คำนวณ Velocity ระหว่าง 2 frames ล่าสุด              │
-│                                                             │
-│   p1 = wristHistory[length - 2]                             │
-│   p2 = wristHistory[length - 1]                             │
-│   velocity = distance(p1, p2)                               │
+│ 1. Filter wristHistory ใน time window (2 วินาทีล่าสุด)       │
+│    recentPoints = filter(p => p.t >= now - PAUSE_WINDOW_MS) │
 └─────────────────────────────────────────────────────────────┘
                           │
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ ขั้นที่ 2: นับ frames ที่หยุดนิ่ง                               │
-│                                                             │
-│   ถ้า velocity < 0.001 (เกือบไม่ขยับ):                        │
-│     pauseCounter++                                          │
-│   ถ้าไม่ (ยังเคลื่อนที่อยู่):                                  │
-│     pauseCounter = 0 (reset)                                │
+│ 2. คำนวณ Total Distance และ Average Velocity                │
+│    avgVelocity = totalDistance / timeSpan                   │
 └─────────────────────────────────────────────────────────────┘
                           │
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ ขั้นที่ 3: ส่ง Feedback ถ้าหยุดนานเกินไป                        │
-│                                                             │
-│   ถ้า pauseCounter > 15 (~0.5 วินาที ที่ 30fps)               │
-│     → "⚠️ อย่าหยุดนิ่ง (Keep Moving)"                         │
-│   ถ้าไม่เข้าเงื่อนไข                                          │
-│     → null (ถูกต้อง)                                        │
+│ 3. ถ้า avgVelocity < PAUSE_AVG_VELOCITY_THRESHOLD           │
+│    → "⚠️ เคลื่อนไหวต่อเนื่อง อย่าหยุดนิ่ง"                     │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### 📊 แผนภาพ
+### 📊 แผนภาพ Time Window
 
 ```
-   Velocity
-     │
-     │  ●     ●
-     │ ╱ ╲   ╱ ╲
-     │╱   ╲ ╱   ╲     ●
-   ──●─────●─────●─────●──────────────
-     │               │← pauseCounter++
-   0 ┼───────────────●────●────●────●─
-     │               └─ velocity < 0.001 เกิน 15 frames
-     └────────────────────────────── time
-     
-   ถ้า pauseCounter > 15 → "อย่าหยุดนิ่ง"
+   wristHistory:  ──●──●──●──●──●──●──●──●──●──●──●──
+                             │← PAUSE_WINDOW_MS →│now
+                             └── recentPoints ───┘
+   
+   avgVelocity = totalDistance / timeSpan
+   ถ้า avgVelocity < 0.003 → "หยุดนิ่ง"
 ```
 
 ### 💻 โค้ด
 
 ```javascript
-checkContinuity() {
-  if (this.wristHistory.length < 2) return null;
-
-  const p2 = this.wristHistory[this.wristHistory.length - 1];
-  const p1 = this.wristHistory[this.wristHistory.length - 2];
-  const velocity = this.calculateDistance(p1, p2);
-
-  // นับจำนวน frames ที่หยุดนิ่ง
-  if (velocity < 0.001) {
-    this.pauseCounter++;
-  } else {
-    this.pauseCounter = 0;
+// isPaused() - Shared helper (Rule 1 + Rule 7)
+isPaused() {
+  if (this.wristHistory.length < 3) return false;
+  
+  const now = Date.now();
+  const windowStart = now - this.CONFIG.PAUSE_WINDOW_MS;
+  const recentPoints = this.wristHistory.filter(p => p.t >= windowStart);
+  
+  if (recentPoints.length < 2) return false;
+  
+  let totalDistance = 0;
+  for (let i = 1; i < recentPoints.length; i++) {
+    totalDistance += this.calculateDistance(recentPoints[i-1], recentPoints[i]);
   }
+  
+  const timeSpanMs = recentPoints[recentPoints.length-1].t - recentPoints[0].t;
+  const avgVelocity = totalDistance / (timeSpanMs / 1000);
+  
+  return avgVelocity < this.CONFIG.PAUSE_AVG_VELOCITY_THRESHOLD;
+}
 
-  // ถ้าหยุดนิ่งเกิน 15 frames (~0.5 วินาที)
-  return this.pauseCounter > 15
-    ? "⚠️ อย่าหยุดนิ่ง (Keep Moving)"
-    : null;
+// checkContinuity() - Rule 7
+checkContinuity() {
+  return this.isPaused() ? this.getMessage("keepMoving") : null;
 }
 ```
 
@@ -802,8 +801,12 @@ checkContinuity() {
 
 | Parameter | ค่า | คำอธิบาย |
 |-----------|-----|----------|
-| `MOTION_THRESHOLD` | 0.001 | ถ้าเคลื่อนที่น้อยกว่านี้ = หยุดนิ่ง |
-| `PAUSE_FRAME_THRESHOLD` | 15 | ~0.5 วินาที ที่ 30fps |
+| `PAUSE_WINDOW_MS` | 2000 | วิเคราะห์ย้อนหลัง 2 วินาที |
+| `PAUSE_AVG_VELOCITY_THRESHOLD` | 0.003 | avgVelocity ต่ำกว่า = หยุดนิ่ง |
+
+### 📐 หลักการ
+
+> **"ต่อเนื่องไม่ขาดตอน"** (绵绵不断) - การเคลื่อนไหวต้องต่อเนื่องเหมือนดึงเส้นไหม
 
 ---
 

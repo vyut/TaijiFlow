@@ -83,10 +83,12 @@ class HeuristicsEngine {
       SMOOTHNESS_THRESHOLD_DEFAULT: 0.05, // Acceleration ไม่เกิน 0.05 units/sec² (เดิม 0.02)
       SMOOTHNESS_CALIBRATION_RATIO: 0.08, // 8% ของความยาวแขน (เดิม 0.05)
 
-      // ----- Rule 7: Continuity (ความต่อเนื่อง) -----
+      // ----- Rule 7: Continuity (ความต่อเนื่อง) - TIME-BASED -----
       // หลัก "绵绵不断" (เหมียนเหมียนปู้ต้วน) - ต่อเนื่องไม่ขาดตอน
-      MOTION_THRESHOLD: 0.005, // ปรับเพิ่มจาก 0.001 -> 0.005 (ป้องกัน Jitter นัดว่าเคลื่อนไหว)
-      PAUSE_FRAME_THRESHOLD: 15, // หยุดนิ่งเกิน 15 เฟรม (~0.5 วินาที) = แจ้งเตือน
+      // ใช้ Time-Based แทน Frame-Based เพื่อไม่ขึ้นกับ Skip Frame Logic
+      // Note: Heuristics ถูกเรียก ~0.83/sec ดังนั้น 2 วินาที ≈ 1-2 points
+      PAUSE_WINDOW_MS: 2000, // วิเคราะห์ช่วง 2 วินาทีล่าสุด
+      PAUSE_AVG_VELOCITY_THRESHOLD: 0.003, // avg velocity ต่ำกว่านี้ = หยุดนิ่ง
 
       // ----- Rule 8: Weight Shift (ถ่ายน้ำหนัก) -----
       // หลัก "分虚实" (เฟินซวี่ซวื่อ) - รู้จักแยกเต็ม/ว่าง แต่ไม่เอียงจนเสียสมดุล
@@ -117,7 +119,6 @@ class HeuristicsEngine {
     // เก็บประวัติการเคลื่อนไหวเพื่อคำนวณความเร็ว/ความเร่ง
     this.headYHistory = []; // ประวัติตำแหน่ง Y ของศีรษะ (สำหรับ Vertical Stability)
     this.wristHistory = []; // ประวัติข้อมือ [{x, y, t}] (สำหรับ Smoothness, Continuity)
-    this.pauseCounter = 0; // นับเฟรมที่หยุดนิ่งต่อเนื่องกัน (สำหรับ Continuity)
 
     // --- Sticky Feedback (Anti-Flicker) ---
     // ป้องกันข้อความกระพริบเร็วเกินไป - แสดงข้อความค้างไว้ 1.5 วินาที
@@ -237,42 +238,39 @@ class HeuristicsEngine {
 
   /**
    * ดึงข้อความ Feedback ตามภาษาปัจจุบัน
-   * @param {string} key - Key ของข้อความ
-   * @returns {string} ข้อความตามภาษา
+   * @param {string} key - Key ของข้อความ (internal key)
+   * @returns {string} ข้อความตามภาษาจาก TRANSLATIONS
    */
   getMessage(key) {
-    const isEn = this.lang === "en";
-    const messages = {
+    // Mapping จาก internal key ไปยัง translation key
+    const keyMap = {
       // Rule 1: Path Shape
-      moveInCircle: isEn
-        ? "⚠️ Move your hand in a circle"
-        : "⚠️ เคลื่อนไหวมือให้เป็นวงโค้ง",
-      wrongDirection: isEn ? "⚠️ Wrong direction" : "⚠️ หมุนมือผิดทิศทาง",
-
+      moveInCircle: "heur_move_in_circle",
+      wrongDirection: "heur_wrong_direction",
       // Rule 2: Rotation
-      incorrectRotation: isEn
-        ? "⚠️ Incorrect Arm Rotation"
-        : "⚠️ หมุนแขนไม่ถูกต้อง",
-
+      incorrectRotation: "heur_incorrect_rotation",
       // Rule 3: Elbow
-      elbowTooHigh: isEn ? "⚠️ Elbow too high" : "⚠️ ศอกลอย",
-
+      elbowTooHigh: "heur_elbow_too_high",
       // Rule 4: Waist
-      startWithWaist: isEn ? "⚠️ Start with Waist" : "⚠️ ใช้เอวนำ",
-
+      startWithWaist: "heur_start_with_waist",
       // Rule 5: Stability
-      headUnstable: isEn ? "⚠️ Head Unstable" : "⚠️ ศีรษะไม่นิ่ง",
-
+      headUnstable: "heur_head_unstable",
       // Rule 6: Smoothness
-      notSmooth: isEn ? "⚠️ Not Smooth" : "⚠️ การเคลื่อนไหวสะดุด",
-
+      notSmooth: "heur_not_smooth",
       // Rule 7: Continuity
-      keepMoving: isEn ? "⚠️ Keep Moving" : "⚠️ อย่าหยุดนิ่ง",
-
+      keepMoving: "heur_keep_moving",
       // Rule 8: Weight
-      offBalance: isEn ? "⚠️ Off Balance" : "⚠️ เสียสมดุล",
+      offBalance: "heur_off_balance",
     };
-    return messages[key] || key;
+
+    const translationKey = keyMap[key];
+    if (translationKey && typeof TRANSLATIONS !== "undefined") {
+      const text = TRANSLATIONS[this.lang]?.[translationKey];
+      if (text) return text;
+    }
+
+    // Fallback: return key if not found
+    return key;
   }
 
   /**
@@ -364,7 +362,8 @@ class HeuristicsEngine {
       this.wristHistory.push({
         x: activeWrist.x,
         y: activeWrist.y,
-        t: timestamp,
+        // 🆕 ใช้ Date.now() แทน timestamp จาก MediaPipe ซึ่งอาจเป็น undefined
+        t: Date.now(),
       });
       // จำกัดขนาด buffer
       if (this.wristHistory.length > this.CONFIG.WRIST_HISTORY_LENGTH) {
@@ -532,6 +531,48 @@ class HeuristicsEngine {
   }
 
   // ===========================================================================
+  // 📋 HELPER METHODS: ฟังก์ชันช่วยเหลือ
+  // ===========================================================================
+
+  /**
+   * ตรวจสอบว่าผู้ใช้กำลังหยุดนิ่งหรือไม่
+   * ใช้ร่วมกันโดย Rule 1 (ข้าม) และ Rule 7 (แจ้งเตือน)
+   *
+   * @returns {boolean} true = หยุดนิ่ง, false = กำลังเคลื่อนไหว
+   */
+  isPaused() {
+    if (this.wristHistory.length < 3) return false;
+
+    const latestPoint = this.wristHistory[this.wristHistory.length - 1];
+    const windowStartTime = latestPoint.t - this.CONFIG.PAUSE_WINDOW_MS;
+
+    // Filter points ภายใน time window
+    const recentPoints = this.wristHistory.filter(
+      (p) => p.t >= windowStartTime
+    );
+    if (recentPoints.length < 2) return false;
+
+    // คำนวณ total distance traveled ใน window
+    let totalDistance = 0;
+    for (let i = 1; i < recentPoints.length; i++) {
+      totalDistance += this.calculateDistance(
+        recentPoints[i - 1],
+        recentPoints[i]
+      );
+    }
+
+    // Time span
+    const timeSpanMs =
+      recentPoints[recentPoints.length - 1].t - recentPoints[0].t;
+    if (timeSpanMs <= 0) return false;
+
+    // Average velocity
+    const avgVelocity = totalDistance / (timeSpanMs / 1000);
+
+    return avgVelocity < this.CONFIG.PAUSE_AVG_VELOCITY_THRESHOLD;
+  }
+
+  // ===========================================================================
   // 📋 RULE IMPLEMENTATIONS: การตรวจสอบแต่ละกฎ
   // ===========================================================================
 
@@ -560,6 +601,12 @@ class HeuristicsEngine {
 
     // ต้องมี frame เพียงพอก่อนวิเคราะห์
     if (this.wristHistory.length < minFrames) {
+      return null;
+    }
+
+    // 🆕 ถ้าหยุดนิ่ง ให้ข้าม Rule 1 และปล่อยให้ Rule 7 (Continuity) จัดการ
+    // เพราะ Jitter จะทำให้ได้ผล false positive
+    if (this.isPaused()) {
       return null;
     }
 
@@ -911,31 +958,25 @@ class HeuristicsEngine {
   }
 
   // ---------------------------------------------------------------------------
-  // Rule 7: Continuity - ความต่อเนื่อง (绵绵不断)
+  // Rule 7: Continuity - ความต่อเนื่อง (绵绵不断) - TIME-BASED
   // ---------------------------------------------------------------------------
   /**
    * ตรวจสอบว่าไม่หยุดนิ่งระหว่างการฝึก
    * หลัก "绵绵不断" (เหมียนเหมียนปู้ต้วน) - ต่อเนื่องไม่ขาดตอน
+   *
+   * 🆕 ใช้ isPaused() helper ซึ่งคำนวณ Time-Based Average Velocity
    */
   checkContinuity() {
-    if (this.wristHistory.length < 2) return null;
-
-    // คำนวณความเร็วของข้อมือ
-    const p2 = this.wristHistory[this.wristHistory.length - 1];
-    const p1 = this.wristHistory[this.wristHistory.length - 2];
-    const velocity = this.calculateDistance(p1, p2);
-
-    // นับเฟรมที่หยุดนิ่งต่อเนื่องกัน
-    if (velocity < this.CONFIG.MOTION_THRESHOLD) {
-      this.pauseCounter++;
-    } else {
-      this.pauseCounter = 0; // Reset เมื่อมีการเคลื่อนไหว
+    // Debug info
+    if (this.debugMode) {
+      this.debugInfo.isPaused = this.isPaused();
     }
 
-    // หยุดเกิน 0.5 วินาที = แจ้งเตือน
-    if (this.pauseCounter > this.CONFIG.PAUSE_FRAME_THRESHOLD) {
+    // ใช้ isPaused() ที่คำนวณ avg velocity แล้ว
+    if (this.isPaused()) {
       return this.getMessage("keepMoving");
     }
+
     return null;
   }
 

@@ -34,8 +34,8 @@ class RulesConfigManager {
       SHOULDER_HIP_RATIO: 3.0,
       STABILITY_THRESHOLD_DEFAULT: 0.05,
       SMOOTHNESS_THRESHOLD_DEFAULT: 0.05,
-      MOTION_THRESHOLD: 0.001,
-      PAUSE_FRAME_THRESHOLD: 15,
+      PAUSE_AVG_VELOCITY_THRESHOLD: 0.003, // Rule 7: Average velocity threshold
+      PAUSE_WINDOW_MS: 2000, // Rule 7: Time window (ms)
       WEIGHT_BUFFER_RATIO: 0.1,
     };
 
@@ -109,8 +109,11 @@ class RulesConfigManager {
         checkboxId: "rule-continuity",
         configKey: "checkContinuity",
         thresholds: [
-          { inputId: "threshold-motion", configKey: "MOTION_THRESHOLD" },
-          { inputId: "threshold-pause", configKey: "PAUSE_FRAME_THRESHOLD" },
+          {
+            inputId: "threshold-motion",
+            configKey: "PAUSE_AVG_VELOCITY_THRESHOLD",
+          },
+          { inputId: "threshold-pause", configKey: "PAUSE_WINDOW_MS" },
         ],
       },
       {
@@ -207,6 +210,10 @@ class RulesConfigManager {
 
   setThreshold(configKey, value) {
     if (this.engine && this.engine.CONFIG) {
+      // Convert seconds to milliseconds for PAUSE_WINDOW_MS
+      if (configKey === "PAUSE_WINDOW_MS") {
+        value = value * 1000;
+      }
       this.engine.CONFIG[configKey] = value;
       console.log(`[RulesConfig] ${configKey} = ${value}`);
     }
@@ -331,7 +338,14 @@ class RulesConfigManager {
       rule.thresholds.forEach((threshold) => {
         const input = document.getElementById(threshold.inputId);
         if (input && this.engine?.CONFIG) {
-          const value = this.engine.CONFIG[threshold.configKey];
+          let value = this.engine.CONFIG[threshold.configKey];
+          // Convert milliseconds to seconds for PAUSE_WINDOW_MS display
+          if (
+            threshold.configKey === "PAUSE_WINDOW_MS" &&
+            value !== undefined
+          ) {
+            value = value / 1000;
+          }
           if (value !== undefined) {
             input.value = value;
           }

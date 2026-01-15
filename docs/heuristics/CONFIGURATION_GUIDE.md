@@ -36,9 +36,9 @@ this.CONFIG = {
   SMOOTHNESS_THRESHOLD_DEFAULT: 0.02, // normalized units/sec²
   SMOOTHNESS_CALIBRATION_RATIO: 0.05, // 5% of armLength
 
-  // === Continuity ===
-  MOTION_THRESHOLD: 0.001,            // normalized units (min movement)
-  PAUSE_FRAME_THRESHOLD: 15,          // frames (~0.5 sec at 30fps)
+  // === Continuity (Time-Based v0.9.9) ===
+  PAUSE_WINDOW_MS: 2000,              // 2 seconds window
+  PAUSE_AVG_VELOCITY_THRESHOLD: 0.003, // avg velocity threshold
 
   // === Weight Shift ===
   WEIGHT_BUFFER_RATIO: 0.1,           // 10% of stanceWidth
@@ -70,7 +70,7 @@ this.CONFIG = {
 ```javascript
 // เพิ่ม threshold → ยอมรับความผิดพลาดมากขึ้น
 PATH_THRESHOLD_DEFAULT: 0.12,  // 0.08 → 0.12
-PAUSE_FRAME_THRESHOLD: 25,     // 15 → 25
+PAUSE_WINDOW_MS: 3000,         // 2000 → 3000 (ยอมหยุดนานขึ้น)
 ```
 
 ### 2. ทำให้ตรวจจับยากขึ้น (Stricter)

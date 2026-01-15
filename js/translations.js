@@ -199,14 +199,14 @@ const TRANSLATIONS = {
     quickstart_default: "ค่าเริ่มต้น: ท่าม้วนไหม - มือขวา - ตามเข็ม - แบบนั่ง",
     or_customize: "หรือเลือกเอง",
     // ขั้นตอนที่ 1
-    overlay_step1: 'เลือก "ท่าฝึก" หรือ "สุ่มท่าฝึก"',
+    overlay_step1: 'เลือก "ท่าฝึก" หรือ "🎲 สุ่มท่าฝึก"',
     // ขั้นตอนที่ 2
     overlay_step2: 'เลือก "รูปแบบ" ที่ต้องการฝึก',
     // ขั้นตอนที่ 3
-    overlay_step3: 'กดปุ่ม "▶️ เริ่มการฝึก"',
+    overlay_step3: 'กดปุ่ม "▶️ เริ่มการฝึก" ด้านล่าง',
     // Stop Section (New)
     stop_title: "Stop",
-    stop_action: 'กดปุ่ม "⏹️ หยุดการฝึก" หรือ ✊ กำมือ',
+    stop_action: 'กดปุ่ม "⏹️ หยุดการฝึก" หรือ กำมือ ✊',
     stop_auto_finish: "ระบบจบการฝึกอัตโนมัติเมื่อครบ 5 นาที",
     // Feedback Link
     feedback_link: "📝 ช่วยพัฒนาแอป • ตอบแบบสอบถาม",
@@ -228,6 +228,34 @@ const TRANSLATIONS = {
     alert_low_light_calibration: "แสงไม่เพียงพอ กรุณาปรับแสงแล้วลองวัดใหม่",
     // แจ้งเมื่อแสงไม่เพียงพอ (เสียงพูดแบบสั้น)
     alert_low_light_short: "แสงสว่างไม่เพียงพอ",
+
+    // -------------------------------------------------------------------------
+    // Heuristics Feedback (ข้อความเตือนจากการวิเคราะห์กฎ 8 ข้อ)
+    // -------------------------------------------------------------------------
+    // Rule 1: Path Shape - เส้นทางเป็นวงกลม
+    heur_move_in_circle: "⚠️ เคลื่อนไหวมือให้เป็นวงโค้ง",
+    heur_wrong_direction: "⚠️ หมุนมือผิดทิศทาง",
+    // Rule 2: Arm Rotation - หมุนแขน
+    heur_incorrect_rotation: "⚠️ หมุนแขนไม่ถูกต้อง",
+    // Rule 3: Elbow Sinking - ศอกจม
+    heur_elbow_too_high: "⚠️ ศอกลอย",
+    // Rule 4: Waist Initiation - เอวนำ
+    heur_start_with_waist: "⚠️ ใช้เอวนำ",
+    // Rule 5: Vertical Stability - ศีรษะนิ่ง
+    heur_head_unstable: "⚠️ ศีรษะไม่นิ่ง",
+    // Rule 6: Smoothness - ความลื่นไหล
+    heur_not_smooth: "⚠️ การเคลื่อนไหวสะดุด",
+    // Rule 7: Continuity - ความต่อเนื่อง
+    heur_keep_moving: "⚠️ เคลื่อนไหวต่อเนื่อง อย่าหยุดนิ่ง",
+    // Rule 8: Weight Shift - ถ่ายน้ำหนัก
+    heur_off_balance: "⚠️ เสียสมดุล",
+
+    // -------------------------------------------------------------------------
+    // Circle Score Labels (สำหรับแสดงคะแนนวงกลม)
+    // -------------------------------------------------------------------------
+    circle_good: "วงกลมดี",
+    circle_can_improve: "ปรับปรุงได้",
+    circle_poor: "วงกลมเบี้ยว",
 
     // -------------------------------------------------------------------------
     // Camera Errors
@@ -310,7 +338,7 @@ const TRANSLATIONS = {
     // Left Hand Counter-Clockwise - มือซ้าย หมุนทวนเข็มนาฬิกา
     ex_lh_ccw: "4. มือซ้าย - ทวนเข็ม",
     // Random Exercise
-    ex_random: "🎲 สุ่มท่าฝึก (Surprise Me)",
+    ex_random: "🎲 สุ่มท่าฝึก",
 
     // -------------------------------------------------------------------------
     // Level Options (ตัวเลือกรูปแบบ)
@@ -431,7 +459,7 @@ const TRANSLATIONS = {
     quickstart_default:
       "Default: Silk Reeling - Right Hand - Clockwise - Sitting",
     or_customize: "or customize",
-    overlay_step1: 'Select "Exercise" or "Random Exercise"',
+    overlay_step1: 'Select "Exercise" or "🎲 Random Exercise"',
     overlay_step2: 'Select "Level" to train',
     overlay_step3: 'Click "▶️ Start Training"',
     // Stop Section (New)
@@ -459,6 +487,34 @@ const TRANSLATIONS = {
       "Low lighting detected. Please adjust lighting and try calibration again.",
     // Low light warning (Short speech)
     alert_low_light_short: "Not enough light",
+
+    // -------------------------------------------------------------------------
+    // Heuristics Feedback (Rule Analysis Warning Messages)
+    // -------------------------------------------------------------------------
+    // Rule 1: Path Shape
+    heur_move_in_circle: "⚠️ Move your hand in a circle",
+    heur_wrong_direction: "⚠️ Wrong direction",
+    // Rule 2: Arm Rotation
+    heur_incorrect_rotation: "⚠️ Incorrect Arm Rotation",
+    // Rule 3: Elbow Sinking
+    heur_elbow_too_high: "⚠️ Elbow too high",
+    // Rule 4: Waist Initiation
+    heur_start_with_waist: "⚠️ Start with Waist",
+    // Rule 5: Vertical Stability
+    heur_head_unstable: "⚠️ Head Unstable",
+    // Rule 6: Smoothness
+    heur_not_smooth: "⚠️ Not Smooth",
+    // Rule 7: Continuity
+    heur_keep_moving: "⚠️ Keep Moving, Don't Stop",
+    // Rule 8: Weight Shift
+    heur_off_balance: "⚠️ Off Balance",
+
+    // -------------------------------------------------------------------------
+    // Circle Score Labels
+    // -------------------------------------------------------------------------
+    circle_good: "Good Circle",
+    circle_can_improve: "Can Improve",
+    circle_poor: "Poor Circle",
 
     // -------------------------------------------------------------------------
     // Camera Errors
@@ -529,7 +585,7 @@ const TRANSLATIONS = {
     ex_rh_ccw: "2. Right Hand - Counter-Clock",
     ex_lh_cw: "3. Left Hand - Clockwise",
     ex_lh_ccw: "4. Left Hand - Counter-Clock",
-    ex_random: "🎲 Random (Surprise Me)",
+    ex_random: "🎲 Random Exercise",
 
     // -------------------------------------------------------------------------
     // Level Options

@@ -577,11 +577,11 @@ Version: 0.6 (2024-12-24)
                 </label>
                 <div class="ml-5 mt-1 text-xs text-gray-400">
                   <div class="flex items-center gap-1 mb-1">
-                    <span>Motion:</span>
+                    <span>Threshold:</span>
                     <input
                       type="number"
                       id="threshold-motion"
-                      value="0.001"
+                      value="0.003"
                       step="0.001"
                       min="0.001"
                       max="0.01"
@@ -590,17 +590,17 @@ Version: 0.6 (2024-12-24)
                     <span class="text-gray-500">(0.001-0.01)</span>
                   </div>
                   <div class="flex items-center gap-1">
-                    <span>Pause:</span>
+                    <span>Window (s):</span>
                     <input
                       type="number"
                       id="threshold-pause"
-                      value="15"
-                      step="5"
-                      min="5"
-                      max="60"
+                      value="2"
+                      step="0.5"
+                      min="1"
+                      max="5"
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
-                    <span class="text-gray-500">(5-60)</span>
+                    <span class="text-gray-500">(1-5)</span>
                   </div>
                 </div>
               </div>

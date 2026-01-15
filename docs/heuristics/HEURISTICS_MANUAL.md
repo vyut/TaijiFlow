@@ -135,17 +135,18 @@ if (acceleration > threshold) return "⚠️ การเคลื่อนไ�
 ### 7. Continuity (ความต่อเนื่อง)
 **Purpose:** ไม่หยุดนิ่งระหว่างฝึก
 
-**Algorithm:**
+**Algorithm (Time-Based v0.9.9):**
 ```javascript
-const velocity = calculateDistance(p1, p2);
-if (velocity < 0.001) {
-  pauseCounter++;
-} else {
-  pauseCounter = 0;
-}
+// isPaused() - คำนวณ avg velocity ใน time window
+const now = Date.now();
+const windowStart = now - PAUSE_WINDOW_MS; // 2 seconds
+const recentPoints = wristHistory.filter(p => p.t >= windowStart);
+const avgVelocity = totalDistance / timeSpan;
 
-// ถ้าหยุดนิ่งเกิน 0.5 วินาที (~15 frames)
-if (pauseCounter > 15) return "⚠️ อย่าหยุดนิ่ง";
+// ถ้า avgVelocity < 0.003 → หยุดนิ่ง
+if (avgVelocity < PAUSE_AVG_VELOCITY_THRESHOLD) {
+  return "⚠️ เคลื่อนไหวต่อเนื่อง อย่าหยุดนิ่ง";
+}
 ```
 
 **หลักการ:** "เคลื่อนไหวไม่หยุด" พลังต้องไหลต่อเนื่อง
@@ -173,16 +174,16 @@ if (hipCenter > rightEdge) return "⚠️ น้ำหนักเอียง�
 
 กฎที่ใช้ในแต่ละระดับ:
 
-| Rule | L1 (นั่ง) | L2 (ยืน) | L3 (ยืนย่อ) |
-|------|-----------|----------|-------------|
-| Path Accuracy | ✅ | ✅ | ✅ |
-| Arm Rotation | ✅ | ✅ | ✅ |
-| Elbow Sinking | ✅ | ✅ | ✅ |
-| Waist Initiation | ✅ | ✅ | ✅ |
-| Vertical Stability | ❌ | ✅ | ✅ |
-| Smoothness | ✅ | ✅ | ✅ |
-| Continuity | ✅ | ✅ | ✅ |
-| Weight Shift | ❌ | ❌ | ✅ |
+| Rule | L1 (นั่ง - 3 กฎ) | L2 (ยืน - 6 กฎ) | L3 (ยืนย่อ - 8 กฎ) |
+|------|-----------------|-----------------|-------------------|
+| 1. Path Accuracy | ✅ | ✅ | ✅ |
+| 2. Arm Rotation | ❌ | ✅ | ✅ |
+| 3. Elbow Sinking | ✅ | ✅ | ✅ |
+| 4. Waist Initiation | ❌ | ✅ | ✅ |
+| 5. Vertical Stability | ❌ | ✅ | ✅ |
+| 6. Smoothness | ❌ | ❌ | ✅ |
+| 7. Continuity | ✅ | ✅ | ✅ |
+| 8. Weight Shift | ❌ | ❌ | ✅ |
 
 ---
 

@@ -176,13 +176,21 @@ const feedbacks = engine.analyze(
 - ต่อเนื่องไม่ขาดตอน
 - ไม่หยุดนิ่งระหว่างทาง
 
-**Algorithm:**
-1. คำนวณ velocity ของข้อมือ
-2. ถ้า velocity ≈ 0 นานเกินไป → หยุดนิ่ง
+**Algorithm (Time-Based Average Velocity - v0.9.9):**
+1. ใช้ `isPaused()` helper method
+2. Filter wristHistory ใน time window (2 วินาทีล่าสุด)
+3. คำนวณ total distance traveled ใน window
+4. คำนวณ avgVelocity = distance / timeSpan
+5. ถ้า avgVelocity < threshold → หยุดนิ่ง
 
-**Threshold:** `STOP_VELOCITY_THRESHOLD`: 0.001
+**หมายเหตุ:** ใช้ Time-Based แทน Frame-Based เพราะ Skip Frame Logic ทำให้นับ frames ไม่ตรง
+
+**Thresholds:**
+- `PAUSE_WINDOW_MS`: 2000 (2 วินาที)
+- `PAUSE_AVG_VELOCITY_THRESHOLD`: 0.003
 
 ---
+
 
 ### 2.8 Rule 8: Weight Shift (ถ่ายน้ำหนัก)
 

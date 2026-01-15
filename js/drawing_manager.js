@@ -561,16 +561,18 @@ class DrawingManager {
 
     this.ctx.save();
 
-    // ----- กำหนดข้อความและสี -----
+    // ----- กำหนดข้อความและสี (ใช้ TRANSLATIONS) -----
     let labelText, bgColor;
+    const t = (key) => TRANSLATIONS?.[lang]?.[key] || key;
+
     if (score >= 80) {
-      labelText = lang === "th" ? "วงกลมดี" : "Good Circle";
+      labelText = t("circle_good");
       bgColor = "rgba(34, 197, 94, 0.85)"; // Green
     } else if (score >= 50) {
-      labelText = lang === "th" ? "ปรับปรุงได้" : "Can Improve";
+      labelText = t("circle_can_improve");
       bgColor = "rgba(234, 179, 8, 0.85)"; // Yellow
     } else {
-      labelText = lang === "th" ? "วงกลมเบี้ยว" : "Poor Circle";
+      labelText = t("circle_poor");
       bgColor = "rgba(239, 68, 68, 0.85)"; // Red
     }
 

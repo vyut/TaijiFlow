@@ -37,7 +37,7 @@ const text = translations[lang][key];
 
 // ตัวอย่าง
 const title = translations['th']['app_title'];
-// = "TaijiFlow AI: ผู้ช่วยฝึกมวยไท้เก๊ก (v0.91)"
+// = "TaijiFlow AI: ผู้ช่วยฝึกท่าม้วนไหม"
 ```
 
 ---

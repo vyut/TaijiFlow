@@ -369,6 +369,26 @@ const TRANSLATIONS = {
     privacy_item3: "Chatbot ใช้ Gemini API (ข้อความจะถูกส่งไป Google โดยตรง)",
     // ปุ่มยอมรับ
     privacy_accept: "เข้าใจแล้ว ✓",
+
+    // -------------------------------------------------------------------------
+    // Warning Modal (ข้อควรระวัง - แสดงรวมกับ Privacy Modal)
+    // -------------------------------------------------------------------------
+    warning_title: "⚠️ ข้อควรระวัง",
+    warning_item1: "AI เป็นผู้ช่วยฝึก ไม่สามารถแทนครูผู้สอนจริง",
+    warning_item2: "หากมีอาการไม่สบาย หรือไม่ปกติ ให้หยุดฝึกทันที",
+    warning_item3: "สำหรับผู้มีปัญหาสุขภาพ ปรึกษาแพทย์ก่อนใช้",
+
+    // -------------------------------------------------------------------------
+    // Mobile Warning Modal (คำเตือนสำหรับมือถือ)
+    // -------------------------------------------------------------------------
+    mobile_title: "📱 อุปกรณ์ไม่เหมาะสม",
+    mobile_desc: "TaijiFlow AI ออกแบบมาสำหรับ Mac/PC ที่มี Webcam",
+    mobile_issue_title: "การใช้งานบนมือถืออาจพบปัญหา:",
+    mobile_issue1: "หน้าจอเล็กเกินไป",
+    mobile_issue2: "ต้องมีขาตั้งมือถือ",
+    mobile_issue3: "ประสิทธิภาพอาจช้ากว่า",
+    mobile_back_btn: "← กลับหน้าแรก",
+    mobile_continue_btn: "ดำเนินการต่อ →",
   },
 
   // ===========================================================================
@@ -605,6 +625,27 @@ const TRANSLATIONS = {
       "Pose data is used for system development, not sent externally",
     privacy_item3: "Chatbot uses Gemini API (messages sent directly to Google)",
     privacy_accept: "I Understand ✓",
+
+    // -------------------------------------------------------------------------
+    // Warning Modal (displayed with Privacy Modal)
+    // -------------------------------------------------------------------------
+    warning_title: "⚠️ Warnings",
+    warning_item1:
+      "AI is a training assistant, not a replacement for a real teacher",
+    warning_item2: "If you feel unwell or abnormal, stop training immediately",
+    warning_item3: "Consult a doctor before use if you have health issues",
+
+    // -------------------------------------------------------------------------
+    // Mobile Warning Modal
+    // -------------------------------------------------------------------------
+    mobile_title: "📱 Unsupported Device",
+    mobile_desc: "TaijiFlow AI is designed for Mac/PC with Webcam",
+    mobile_issue_title: "Using on mobile may cause issues:",
+    mobile_issue1: "Screen too small",
+    mobile_issue2: "Requires phone stand",
+    mobile_issue3: "Performance may be slower",
+    mobile_back_btn: "← Back to Home",
+    mobile_continue_btn: "Continue Anyway →",
   },
 
   // ===========================================================================

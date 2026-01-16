@@ -50,7 +50,7 @@ class HeuristicsEngine {
       // ----- Rule 1: Path Shape (รูปทรงเส้นทาง) -----
       // ตรวจว่าเส้นทางที่ผู้ฝึกวาดเป็นวงโค้ง (ไม่เช็คตำแหน่ง)
       SHAPE_CONSISTENCY_THRESHOLD: 0.6, // 60% ขึ้นไป = เป็นวงโค้ง (0.0-1.0)
-      SHAPE_ANALYSIS_FRAMES: 30, // วิเคราะห์ 30 frames ล่าสุด (~1 วินาที)
+      SHAPE_ANALYSIS_POINTS: 10, // 🆕 ใช้ 10 จุดล่าสุด (slice-based แทน time-based เพราะ timestamps ไม่เชื่อถือได้)
 
       // (เก็บไว้เผื่อใช้ในอนาคต - Position-Based)
       // PATH_THRESHOLD_DEFAULT: 0.08,
@@ -577,13 +577,13 @@ class HeuristicsEngine {
   // ===========================================================================
 
   // ---------------------------------------------------------------------------
-  // Rule 1: Path Shape - รูปทรงเส้นทาง (Shape-Based)
+  // Rule 1: Path Shape - รูปทรงเส้นทาง (Time-Based v0.9.10)
   // ---------------------------------------------------------------------------
   /**
    * ตรวจสอบว่าเส้นทางที่ผู้ฝึกวาดเป็นวงโค้งหรือไม่
    *
-   * Algorithm (Direction Consistency):
-   *   1. เก็บ wrist history ตามจำนวน SHAPE_ANALYSIS_FRAMES
+   * Algorithm (Time-Based Direction Consistency) v0.9.10:
+   *   1. Filter wristHistory ใน time window (1 วินาทีล่าสุด)
    *   2. คำนวณ cross product ทุก 3 จุดติดกันเพื่อหาทิศทางหมุน
    *   3. ถ้าทิศทางหมุน (CW/CCW) สม่ำเสมอ >= threshold = ผ่าน
    *
@@ -591,27 +591,38 @@ class HeuristicsEngine {
    *   - ไม่ขึ้นกับตำแหน่งบนหน้าจอ
    *   - ไม่ขึ้นกับขนาดวงกลม (เล็ก/ใหญ่ = ถูก)
    *   - ไม่ขึ้นกับความเร็ว (ช้า/เร็ว = ถูก)
+   *   - 🆕 ไม่ขึ้นกับ Frame Rate หรือ Skip Interval
    *
    * @param {string} currentExercise - ท่าที่ฝึก ('rh_cw', 'lh_cw', etc.)
    * @returns {string|null} ข้อความผิดพลาด หรือ null ถ้าถูกต้อง
    */
   checkPathShape(currentExercise = "rh_cw") {
-    const minFrames = this.CONFIG.SHAPE_ANALYSIS_FRAMES;
     const threshold = this.CONFIG.SHAPE_CONSISTENCY_THRESHOLD;
+    const analysisPoints = this.CONFIG.SHAPE_ANALYSIS_POINTS; // 🆕 ใช้จำนวน points แทน time window
 
-    // ต้องมี frame เพียงพอก่อนวิเคราะห์
-    if (this.wristHistory.length < minFrames) {
+    // 🐛 DEBUG
+    console.log(
+      "[Rule1] checkPathShape, wristHistory:",
+      this.wristHistory.length,
+      "analysisPoints:",
+      analysisPoints
+    );
+
+    // ต้องมี points เพียงพอก่อนวิเคราะห์
+    if (this.wristHistory.length < analysisPoints) {
+      console.log("[Rule1] EXIT: wristHistory < analysisPoints");
       return null;
     }
 
     // 🆕 ถ้าหยุดนิ่ง ให้ข้าม Rule 1 และปล่อยให้ Rule 7 (Continuity) จัดการ
-    // เพราะ Jitter จะทำให้ได้ผล false positive
     if (this.isPaused()) {
+      console.log("[Rule1] EXIT: isPaused() = true");
       return null;
     }
 
-    // ใช้เฉพาะ N frames ล่าสุด
-    const recentHistory = this.wristHistory.slice(-minFrames);
+    // 🆕 Slice-Based: ใช้ N จุดล่าสุด (ง่ายกว่า time-based และเชื่อถือได้)
+    const recentHistory = this.wristHistory.slice(-analysisPoints);
+    console.log("[Rule1] recentHistory.length:", recentHistory.length);
 
     // นับทิศทางหมุน (clockwise vs counter-clockwise)
     let clockwiseTurns = 0;
@@ -635,14 +646,31 @@ class HeuristicsEngine {
       // ถ้าใกล้ 0 = เส้นตรง ไม่นับ
     }
 
-    // คำนวณ consistency
+    // คำนวณ totals และ consistency
     const total = clockwiseTurns + counterClockwiseTurns;
+
+    console.log(
+      "[Rule1] cwTurns:",
+      clockwiseTurns,
+      "ccwTurns:",
+      counterClockwiseTurns,
+      "total:",
+      total
+    );
+
+    // 🆕 Fix: ถ้า total = 0 แปลว่าเคลื่อนที่เป็นเส้นตรง → แจ้งเตือน
     if (total === 0) {
-      // ไม่มีการหมุนเลย (เส้นตรง หรือ ยังไม่ขยับ)
-      return null;
+      console.log("[Rule1] STRAIGHT LINE DETECTED (total=0)");
+      return this.getMessage("moveInCircle");
     }
 
     const consistency = Math.max(clockwiseTurns, counterClockwiseTurns) / total;
+    console.log(
+      "[Rule1] consistency:",
+      consistency.toFixed(2),
+      "threshold:",
+      threshold
+    );
 
     // Debug Mode
     if (this.debugMode) {
@@ -650,22 +678,33 @@ class HeuristicsEngine {
       this.debugInfo.shapeThreshold = threshold.toFixed(2);
       this.debugInfo.cwTurns = clockwiseTurns;
       this.debugInfo.ccwTurns = counterClockwiseTurns;
+      this.debugInfo.shapePoints = recentHistory.length;
+    }
+
+    // 🆕 ตรวจทิศทางก่อน (สำคัญกว่า consistency)
+    // เพราะถ้าหมุนผิดทิศ ควรบอกทันที ไม่ต้องรอ consistency สูงขึ้น
+    const expectedCW = currentExercise.includes("cw");
+    const actualCW = counterClockwiseTurns > clockwiseTurns; // สลับเพราะ mirror
+
+    // ตรวจทิศทางเมื่อมี turn ชัดเจน (dominance > 60%)
+    const dominance = Math.max(clockwiseTurns, counterClockwiseTurns) / total;
+    if (dominance >= 0.6 && expectedCW !== actualCW) {
+      console.log(
+        "[Rule1] WRONG DIRECTION: expected",
+        expectedCW ? "CW" : "CCW",
+        "got",
+        actualCW ? "CW" : "CCW"
+      );
+      return this.getMessage("wrongDirection");
     }
 
     // ตัดสิน: ถ้า consistency ต่ำกว่า threshold = ไม่เป็นวงโค้ง
     if (consistency < threshold) {
+      console.log("[Rule1] LOW CONSISTENCY:", consistency.toFixed(2));
       return this.getMessage("moveInCircle");
     }
 
-    // ตรวจทิศทางหมุน (CW vs CCW)
-    // หมายเหตุ: วิดีโอถูก mirror กลับซ้ายขวา
-    // ดังนั้น CW จากมุมมองผู้ใช้ = CCW จากมุมมองกล้อง
-    const expectedCW = currentExercise.includes("cw");
-    const actualCW = counterClockwiseTurns > clockwiseTurns; // สลับเพราะ mirror
-    if (expectedCW !== actualCW) {
-      return this.getMessage("wrongDirection");
-    }
-
+    console.log("[Rule1] ALL GOOD");
     return null;
   }
 

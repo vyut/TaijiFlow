@@ -198,12 +198,43 @@ class TutorialManager {
             { icon: "7️⃣", text: "ดูคะแนนและข้อผิดพลาดเพื่อปรับปรุง" },
           ],
           tips: {
-            heading: "💡 เคล็ดลับ",
+            heading: "� ข้อแนะนำ",
             items: [
-              "ฝึกในที่แสงสว่างเพียงพอ",
-              "ยืนห่างจากกล้อง 1.5-2 เมตร",
-              "สวมเสื้อผ้าที่ตัดกับพื้นหลัง",
-              "เริ่มจากระดับ L1 ก่อนเสมอ",
+              {
+                icon: "✅",
+                label: "Device:",
+                text: "รองรับ Mac/PC Desktop/Laptop ที่มี Webcam",
+              },
+              {
+                icon: "✅",
+                label: "Space:",
+                text: "แสงสว่างเพียงพอ ยืนห่างจากกล้อง 1.5-2 เมตร",
+              },
+              {
+                icon: "✅",
+                label: "Wear:",
+                text: "สวมเสื้อที่มีสีตัดกับพื้นหลัง",
+              },
+            ],
+          },
+          warnings: {
+            heading: "⚠️ ข้อควรระวัง",
+            items: [
+              {
+                icon: "🛑",
+                label: "Limitation:",
+                text: "AI เป็นผู้ช่วยฝึก ไม่สามารถแทนครูผู้สอนจริง",
+              },
+              {
+                icon: "🛑",
+                label: "Health:",
+                text: "หากมีอาการไม่สบาย หรือไม่ปกติ ให้หยุดฝึกทันที",
+              },
+              {
+                icon: "🛑",
+                label: "Disclaimer:",
+                text: "สำหรับผู้มีปัญหาสุขภาพ ปรึกษาแพทย์ก่อนใช้",
+              },
             ],
           },
         },
@@ -329,12 +360,43 @@ class TutorialManager {
             { icon: "7️⃣", text: "Review your score and errors to improve" },
           ],
           tips: {
-            heading: "💡 Tips",
+            heading: "� Tips",
             items: [
-              "Practice in well-lit area",
-              "Stand 1.5-2 meters from camera",
-              "Wear clothes that contrast with background",
-              "Always start with Level 1",
+              {
+                icon: "✅",
+                label: "Device:",
+                text: "Supports Mac/PC Desktop/Laptop with Webcam",
+              },
+              {
+                icon: "✅",
+                label: "Space:",
+                text: "Well-lit area, stand 1.5-2m from camera",
+              },
+              {
+                icon: "✅",
+                label: "Wear:",
+                text: "Clothes that contrast with background",
+              },
+            ],
+          },
+          warnings: {
+            heading: "⚠️ Warnings",
+            items: [
+              {
+                icon: "🛑",
+                label: "Limitation:",
+                text: "AI is a training assistant, not a replacement for a real teacher",
+              },
+              {
+                icon: "🛑",
+                label: "Health:",
+                text: "If you feel unwell or abnormal, stop training immediately",
+              },
+              {
+                icon: "🛑",
+                label: "Disclaimer:",
+                text: "Consult a doctor before use if you have health issues",
+              },
             ],
           },
         },
@@ -698,7 +760,43 @@ class TutorialManager {
             .join("")}
         </div>
         
-        <!-- Tips hidden for now -->
+        <!-- Tips Section -->
+        <div class="bg-blue-900/20 border border-blue-600/30 rounded-xl p-4">
+          <h4 class="text-lg font-semibold text-blue-400 mb-3">${
+            h.tips.heading
+          }</h4>
+          <div class="space-y-2">
+            ${h.tips.items
+              .map(
+                (item) => `
+              <div class="flex items-start gap-2 text-gray-300">
+                <span class="text-green-400">${item.icon}</span>
+                <span><strong>${item.label}</strong> ${item.text}</span>
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+        </div>
+        
+        <!-- Warnings Section -->
+        <div class="bg-amber-900/20 border border-amber-600/30 rounded-xl p-4">
+          <h4 class="text-lg font-semibold text-amber-400 mb-3">${
+            h.warnings.heading
+          }</h4>
+          <div class="space-y-2">
+            ${h.warnings.items
+              .map(
+                (item) => `
+              <div class="flex items-start gap-2 text-gray-300">
+                <span class="text-red-400">${item.icon}</span>
+                <span><strong>${item.label}</strong> ${item.text}</span>
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+        </div>
       </div>
     `;
   }

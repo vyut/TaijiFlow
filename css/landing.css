@@ -108,6 +108,135 @@ nav {
 }
 
 /* =============================================================================
+   2.1 HAMBURGER MENU & MOBILE NAV
+   ============================================================================= */
+
+/* Nav Actions (Mobile: Start + Hamburger) */
+.nav-actions {
+  display: none;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-actions .nav-btn-primary {
+  padding: 8px 16px;
+  font-size: 12px;
+}
+
+/* Hamburger Button */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hamburger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #fff;
+  margin: 2px 0;
+  transition: all 0.3s ease;
+}
+
+/* Hamburger Animation when open */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(4px, 4px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(4px, -4px);
+}
+
+/* Desktop: Show Start in menu, hide nav-actions */
+.nav-start-desktop {
+  display: block;
+}
+
+/* =============================================================================
+   2.2 RESPONSIVE NAV STYLES
+   ============================================================================= */
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+  }
+
+  /* Show mobile actions (Start + Hamburger) */
+  .nav-actions {
+    display: flex;
+  }
+
+  /* Hide hamburger button initially visible */
+  .hamburger {
+    display: flex;
+  }
+
+  /* Hide desktop Start button in menu */
+  .nav-start-desktop {
+    display: none;
+  }
+
+  /* Nav Links - Dropdown style */
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 0;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+  }
+
+  .nav-links.active {
+    max-height: 300px;
+    padding: 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-links li {
+    text-align: center;
+    width: 100%;
+  }
+
+  .nav-links li a {
+    display: block;
+    padding: 15px 20px;
+    font-size: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .nav-links li:last-child a {
+    border-bottom: none;
+  }
+
+  .nav-links li a:hover {
+    background: rgba(168, 85, 247, 0.2);
+  }
+}
+
+/* =============================================================================
    3. HERO SECTION
    ============================================================================= */
 .hero {
@@ -599,11 +728,6 @@ h1 {
 @media (max-width: 768px) {
   nav {
     padding: 15px 20px;
-  }
-
-  .nav-links {
-    gap: 20px;
-    font-size: 12px;
   }
 
   h1 {

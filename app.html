@@ -162,6 +162,58 @@ Version: 0.6 (2024-12-24)
     </script>
   </head>
   <body class="flex flex-col items-center justify-center min-h-screen p-4">
+    <!-- Mobile Warning Modal (แสดงเมื่อใช้งานบนมือถือ) -->
+    <div
+      id="mobile-modal"
+      class="fixed inset-0 bg-black bg-opacity-80 z-[110] hidden items-center justify-center p-4"
+    >
+      <div
+        class="bg-gray-800 rounded-xl p-6 max-w-md w-full shadow-2xl border border-amber-500/50"
+      >
+        <h2
+          id="mobile-title"
+          class="text-xl font-bold text-amber-400 mb-4 text-center"
+        >
+          📱 อุปกรณ์ไม่เหมาะสม
+        </h2>
+        <p id="mobile-desc" class="text-gray-300 text-center mb-4">
+          TaijiFlow AI ออกแบบมาสำหรับ Mac/PC ที่มี Webcam
+        </p>
+        <p id="mobile-issue-title" class="text-gray-400 text-sm mb-2">
+          การใช้งานบนมือถืออาจพบปัญหา:
+        </p>
+        <ul class="text-gray-300 text-sm space-y-2 mb-6">
+          <li id="mobile-issue1" class="flex items-start gap-2">
+            <span class="text-amber-400">•</span>
+            <span>หน้าจอเล็กเกินไป</span>
+          </li>
+          <li id="mobile-issue2" class="flex items-start gap-2">
+            <span class="text-amber-400">•</span>
+            <span>ต้องมีขาตั้งมือถือ</span>
+          </li>
+          <li id="mobile-issue3" class="flex items-start gap-2">
+            <span class="text-amber-400">•</span>
+            <span>ประสิทธิภาพอาจช้ากว่า</span>
+          </li>
+        </ul>
+        <div class="flex gap-3">
+          <a
+            id="mobile-back-btn"
+            href="index.html"
+            class="flex-1 py-3 bg-gray-600 hover:bg-gray-500 text-white font-semibold rounded-lg transition-colors text-center"
+          >
+            ← กลับหน้าแรก
+          </a>
+          <button
+            id="mobile-continue-btn"
+            class="flex-1 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition-colors"
+          >
+            ดำเนินการต่อ →
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Privacy Popup Modal (แสดงทุกครั้งที่เปิดหน้า) -->
     <div
       id="privacy-modal"
@@ -176,7 +228,7 @@ Version: 0.6 (2024-12-24)
         >
           🔒 ความเป็นส่วนตัวของคุณ
         </h2>
-        <ul class="text-gray-300 text-sm space-y-3 mb-6">
+        <ul class="text-gray-300 text-sm space-y-3 mb-4">
           <li id="privacy-item1" class="flex items-start gap-2">
             <span class="text-green-400">✓</span>
             <span>วิดีโอประมวลผลในเครื่องคุณเท่านั้น ไม่มีการบันทึก</span>
@@ -188,6 +240,40 @@ Version: 0.6 (2024-12-24)
           <li id="privacy-item3" class="flex items-start gap-2">
             <span class="text-blue-400">ℹ</span>
             <span>Chatbot ใช้ Gemini API (ข้อความจะถูกส่งไป Google)</span>
+          </li>
+        </ul>
+
+        <!-- Divider -->
+        <div class="border-t border-gray-600 my-4"></div>
+
+        <!-- Warning Section -->
+        <h3
+          id="warning-title"
+          class="text-lg font-bold text-amber-400 mb-3 text-center"
+        >
+          ⚠️ ข้อควรระวัง
+        </h3>
+        <ul class="text-gray-300 text-sm space-y-3 mb-6">
+          <li id="warning-item1" class="flex items-start gap-2">
+            <span class="text-red-400">🛑</span>
+            <span
+              ><strong>Limitation:</strong> AI เป็นผู้ช่วยฝึก
+              ไม่สามารถแทนครูผู้สอนจริง</span
+            >
+          </li>
+          <li id="warning-item2" class="flex items-start gap-2">
+            <span class="text-red-400">🛑</span>
+            <span
+              ><strong>Health:</strong> หากมีอาการไม่สบาย หรือไม่ปกติ
+              ให้หยุดฝึกทันที</span
+            >
+          </li>
+          <li id="warning-item3" class="flex items-start gap-2">
+            <span class="text-red-400">🛑</span>
+            <span
+              ><strong>Disclaimer:</strong> สำหรับผู้มีปัญหาสุขภาพ
+              ปรึกษาแพทย์ก่อนใช้</span
+            >
           </li>
         </ul>
         <button

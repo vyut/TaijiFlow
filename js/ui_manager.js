@@ -254,6 +254,103 @@ class UIManager {
     // อัปเดต UI ตามค่าที่โหลดมา
     // -------------------------------------------------------------------------
     this.updateText();
+
+    // -------------------------------------------------------------------------
+    // ตรวจสอบ Mobile Device และแสดง Warning Modal
+    // -------------------------------------------------------------------------
+    this.checkMobileDevice();
+  }
+
+  // ===========================================================================
+  // METHOD: checkMobileDevice
+  // ===========================================================================
+
+  /**
+   * Check Mobile Device - ตรวจสอบว่าผู้ใช้เปิดจากมือถือหรือไม่
+   *
+   * @description
+   *   ตรวจสอบ User Agent เพื่อระบุว่าเป็น Mobile Phone (ไม่รวม Tablet)
+   *   - iPhone: เช็คจาก 'iPhone' ใน User Agent
+   *   - Android Phone: เช็คจาก 'Android' + 'Mobile' ใน User Agent
+   *   - iPad และ Android Tablet: อนุญาตให้ใช้งานได้
+   */
+  checkMobileDevice() {
+    const ua = navigator.userAgent;
+
+    // เช็ค iPhone (ไม่รวม iPad)
+    const isIPhone = /iPhone/i.test(ua) && !/iPad/i.test(ua);
+
+    // เช็ค Android Phone (Android + Mobile = Phone, Android without Mobile = Tablet)
+    const isAndroidPhone = /Android/i.test(ua) && /Mobile/i.test(ua);
+
+    // เช็ค Mobile Phones อื่นๆ (BlackBerry, Windows Phone, etc.)
+    const isOtherPhone =
+      /webOS|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(ua);
+
+    const isMobilePhone = isIPhone || isAndroidPhone || isOtherPhone;
+
+    if (isMobilePhone) {
+      // ซ่อน Privacy Modal ก่อน
+      const privacyModal = document.getElementById("privacy-modal");
+      if (privacyModal) {
+        privacyModal.classList.add("hidden");
+      }
+
+      // แสดง Mobile Warning Modal
+      const mobileModal = document.getElementById("mobile-modal");
+      if (mobileModal) {
+        mobileModal.classList.remove("hidden");
+        mobileModal.classList.add("flex");
+
+        // อัปเดตข้อความตามภาษา
+        this.updateMobileModalText();
+
+        // ปุ่ม "ดำเนินการต่อ" - ปิด Mobile Modal และแสดง Privacy Modal
+        const continueBtn = document.getElementById("mobile-continue-btn");
+        if (continueBtn) {
+          continueBtn.addEventListener("click", () => {
+            mobileModal.classList.add("hidden");
+            mobileModal.classList.remove("flex");
+            if (privacyModal) {
+              privacyModal.classList.remove("hidden");
+            }
+          });
+        }
+      }
+    }
+  }
+
+  // ===========================================================================
+  // METHOD: updateMobileModalText
+  // ===========================================================================
+
+  /**
+   * Update Mobile Modal Text - อัปเดตข้อความใน Mobile Modal ตามภาษา
+   */
+  updateMobileModalText() {
+    const t = this.translations[this.currentLang];
+
+    const setText = (id, key) => {
+      const el = document.getElementById(id);
+      if (el) el.innerText = t[key];
+    };
+
+    const setTextSpan = (id, key) => {
+      const el = document.getElementById(id);
+      if (el) {
+        const span = el.querySelector("span:last-child");
+        if (span) span.innerText = t[key];
+      }
+    };
+
+    setText("mobile-title", "mobile_title");
+    setText("mobile-desc", "mobile_desc");
+    setText("mobile-issue-title", "mobile_issue_title");
+    setTextSpan("mobile-issue1", "mobile_issue1");
+    setTextSpan("mobile-issue2", "mobile_issue2");
+    setTextSpan("mobile-issue3", "mobile_issue3");
+    setText("mobile-back-btn", "mobile_back_btn");
+    setText("mobile-continue-btn", "mobile_continue_btn");
   }
 
   // ===========================================================================
@@ -550,6 +647,12 @@ class UIManager {
     setTextSpan("privacy-item2", "privacy_item2");
     setTextSpan("privacy-item3", "privacy_item3");
     setText("privacy-accept-btn", "privacy_accept");
+
+    // Warning Section (inside Privacy Modal)
+    setText("warning-title", "warning_title");
+    setTextSpan("warning-item1", "warning_item1");
+    setTextSpan("warning-item2", "warning_item2");
+    setTextSpan("warning-item3", "warning_item3");
 
     // Training Buttons
     setText("start-training-btn", "start_training_btn");

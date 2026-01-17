@@ -695,6 +695,44 @@ h1 {
 }
 
 /* =============================================================================
+   7.5 MOTIVATIONAL QUOTE SECTION
+   ============================================================================= */
+.quote-section {
+  padding: 60px 40px;
+  background: linear-gradient(
+    135deg,
+    rgba(168, 85, 247, 0.1),
+    rgba(99, 102, 241, 0.1)
+  );
+  text-align: center;
+  border-top: 1px solid rgba(168, 85, 247, 0.2);
+  border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.quote-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.quote-text {
+  font-size: 1.4rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.8;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .quote-section {
+    padding: 40px 20px;
+  }
+
+  .quote-text {
+    font-size: 1.1rem;
+  }
+}
+
+/* =============================================================================
    8. FOOTER
    ============================================================================= */
 .footer {

@@ -211,7 +211,7 @@
     <!-- Guide Section -->
     <section id="guide" class="guide-section">
       <div class="guide-container">
-        <h2>📚 คู่มือใช้งาน</h2>
+        <h2>คู่มือใช้งาน</h2>
 
         <!-- Quickstart Box -->
 
@@ -309,7 +309,7 @@
     <!-- Reference Section -->
     <section id="reference" class="reference-section">
       <div class="reference-container">
-        <h2>📚 เรียนรู้เพิ่มเติม</h2>
+        <h2>เรียนรู้เพิ่มเติม</h2>
         <div class="reference-content">
           <div class="reference-card">
             <h3>🌀 ท่าม้วนไหมคืออะไร? (What is Silk Reeling?)</h3>
@@ -441,6 +441,13 @@
       </p>
     </section> -->
 
+    <!-- Motivational Quote Section -->
+    <section class="quote-section">
+      <div class="quote-container">
+        <p id="quote-text" class="quote-text"></p>
+      </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
       <p>© 2026 TaijiFlow AI. All rights reserved.</p>
@@ -481,6 +488,40 @@
               navMenu.classList.remove("active");
             }
           });
+        }
+
+        // Random Motivational Quote
+        const quotes = [
+          {
+            zh: "水滴石穿",
+            th: "น้ำหยดทีละหยด เจาะทะลุหินได้",
+            en: "Dripping water pierces stone",
+          },
+          {
+            zh: "千里之行，始於足下",
+            th: "เส้นทางพันลี้ เริ่มต้นจากก้าวแรก",
+            en: "A journey of a thousand miles begins with a single step",
+          },
+          {
+            zh: "以柔克剛",
+            th: "ใช้ความอ่อนเอาชนะความแข็ง",
+            en: "Softness overcomes hardness",
+          },
+          {
+            zh: "熟能生巧",
+            th: "ฝึกบ่อยย่อมชำนาญ",
+            en: "Practice makes perfect",
+          },
+          {
+            zh: "功夫不負有心人",
+            th: "ความพยายามไม่เคยทำให้ผู้มุ่งมั่นผิดหวัง",
+            en: "Hard work never disappoints those who are dedicated",
+          },
+        ];
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        const quoteText = document.getElementById("quote-text");
+        if (quoteText && randomQuote) {
+          quoteText.innerHTML = `"${randomQuote.zh}" — ${randomQuote.th}<br><span style="font-size: 0.9em; opacity: 0.8;">${randomQuote.en}</span>`;
         }
       });
     </script>

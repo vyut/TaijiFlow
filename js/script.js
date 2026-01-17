@@ -155,6 +155,8 @@ const privacyAcceptBtn = document.getElementById("privacy-accept-btn");
 if (privacyAcceptBtn) {
   privacyAcceptBtn.addEventListener("click", () => {
     privacyModal.classList.add("hidden");
+    // เริ่มกล้องหลังจากผู้ใช้ยินยอม Privacy Policy
+    initCamera();
   });
 }
 // -----------------------------------------------------------------------------
@@ -1653,8 +1655,8 @@ pose.setOptions({
 // ผูก Callback Function
 pose.onResults(onResults);
 
-// แสดง Loading Overlay ระหว่างโหลด
-loadingOverlay.classList.remove("hidden");
+// หมายเหตุ: Loading Overlay จะแสดงตอน initCamera() (หลังกด "เข้าใจแล้ว")
+// ไม่แสดงตั้งแต่ตอนนี้เพราะยังไม่ได้เปิดกล้อง
 
 // -----------------------------------------------------------------------------
 // Camera Setup
@@ -1742,6 +1744,9 @@ function showCameraError(errorType) {
  *   พยายามเริ่มกล้อง ถ้าเกิด Error จะจำแนกประเภทและแสดงข้อความ
  */
 async function initCamera() {
+  // แสดง Loading Overlay ตอนเริ่มกล้อง (หลังกด "เข้าใจแล้ว")
+  loadingOverlay.classList.remove("hidden");
+
   try {
     await camera.start();
     console.log("✅ Camera started successfully");
@@ -1773,10 +1778,12 @@ async function initCamera() {
 // =============================================================================
 // START APPLICATION
 // =============================================================================
-// โหลด Reference Data และเริ่มกล้อง
+// โหลด Reference Data (AI Models จะ preload ขณะแสดง Privacy Modal)
 loadReferenceData();
 checkSelectionComplete(); // เรียกเพื่อแสดง highlight ตั้งแต่เริ่มต้น
-initCamera();
+// initCamera(); // ย้ายไปเรียกใน Privacy Accept Button handler (line ~156)
+// หมายเหตุ: MediaPipe Pose Model จะถูกโหลดเมื่อสร้าง instance (line 1635)
+//           ดังนั้น AI preload ไปพร้อมกับ Privacy Modal อยู่แล้ว
 
 /**
  * ตรวจสอบความสว่างของแสงจาก Video Frame

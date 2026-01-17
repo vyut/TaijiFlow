@@ -5,6 +5,59 @@
 ---
 ---
 
+## [v0.9.9] - 2026-01-17
+
+### 🌐 Multi-Language Support & Privacy Enhancements
+
+#### Added
+- **English Language Support** (`translations.js`) - เพิ่มภาษาอังกฤษครบทุก UI elements
+  - Privacy Modal, Warning Modal, Mobile Warning
+  - Tutorial (How To Tab) Tips & Warnings
+  - All buttons, dropdowns, notifications
+
+- **Combined Privacy + Warning Modal** (`app.html`) - รวม 2 popups เป็น 1
+  - 🔒 Privacy Section: 3 items (Local processing, No external data, Gemini API)
+  - ⚠️ Warning Section: 3 items (Limitation, Health, Disclaimer)
+  - Visual separation with divider and color coding
+
+- **Mobile Warning Modal** (`app.html`, `ui_manager.js`) - ป้องกันการใช้งานบนมือถือ
+  - Detection: User Agent + Screen Width < 768px
+  - Excludes Tablets (iPad, Android Tablet allowed)
+  - Options: "← Back to Home" or "Continue Anyway →"
+  - Full TH/EN support
+
+- **Responsive Hamburger Navbar** (`index.html`, `landing.css`) - เมนูสำหรับ Mobile
+  - Logo clickable → scroll to #hero (removed "หน้าแรก" menu item)
+  - "Start Now" button always visible on mobile
+  - Hamburger menu (☰ ↔ ✕) with smooth animation
+  - Auto-close when clicking links or outside
+
+- **MediaPipe Model Prefetch** (`index.html`) - Preload AI จากหน้า Landing
+  - 5 prefetch links for Pose model files (WASM, Data, Script)
+  - Faster load time when entering app.html
+
+- **Privacy-Gated Camera** (`script.js`) - เปิดกล้องหลังยินยอม
+  - Camera starts ONLY after clicking "เข้าใจแล้ว"
+  - AI Models preload during Privacy Modal (parallel loading)
+  - Loading Overlay shows only after consent
+
+#### Changed
+- **Tutorial How To Tab** (`tutorial_manager.js`) - เพิ่ม Tips & Warnings sections
+  - 📌 Tips: Device, Space, Wear requirements
+  - ⚠️ Warnings: Limitation, Health, Disclaimer
+  - Both sections support TH/EN
+
+#### Files Modified
+- `app.html` - Mobile Modal, Privacy+Warning Modal
+- `index.html` - Prefetch links, Hamburger Navbar, Remove "หน้าแรก"
+- `js/script.js` - Privacy-gated camera, Loading overlay timing
+- `js/ui_manager.js` - Mobile detection, Modal text updates
+- `js/translations.js` - All new translation keys (TH/EN)
+- `js/tutorial_manager.js` - Tips & Warnings in How To tab
+- `css/landing.css` - Hamburger menu styles, Responsive nav
+
+---
+
 ## [v0.9.8] - 2026-01-14
 
 ### 🎨 UI & UX Refinement (Purple Theme & Feedback)

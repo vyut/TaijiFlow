@@ -13,6 +13,39 @@
       href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- 🚀 Prefetch MediaPipe Models (ให้ app.html โหลดเร็วขึ้น) -->
+    <link
+      rel="prefetch"
+      href="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose_solution_packed_assets.data"
+      as="fetch"
+      crossorigin
+    />
+    <link
+      rel="prefetch"
+      href="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose_solution_packed_assets_loader.js"
+      as="script"
+      crossorigin
+    />
+    <link
+      rel="prefetch"
+      href="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose_solution_simd_wasm_bin.wasm"
+      as="fetch"
+      crossorigin
+    />
+    <link
+      rel="prefetch"
+      href="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose_solution_simd_wasm_bin.js"
+      as="script"
+      crossorigin
+    />
+    <link
+      rel="prefetch"
+      href="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose_web.binarypb"
+      as="fetch"
+      crossorigin
+    />
+
     <!-- Landing Page Styles -->
     <link rel="stylesheet" href="css/landing.css" />
   </head>

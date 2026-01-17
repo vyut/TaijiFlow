@@ -88,6 +88,13 @@ class ScorePopupManager {
     const tipText = this.getSmartTip(summary.topErrors, lang);
     const duration = summary.durationFormatted || summary.durationSeconds + "s";
 
+    // Random Motivational Quote
+    const quotes = t.motivational_quotes || [];
+    const randomQuote =
+      quotes.length > 0
+        ? quotes[Math.floor(Math.random() * quotes.length)]
+        : null;
+
     const limitedErrors = (summary.topErrors || []).slice(0, 3);
 
     // Top Errors List Generation
@@ -121,102 +128,144 @@ class ScorePopupManager {
       "fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50 transition-opacity duration-300";
 
     this.popup.innerHTML = `
-      <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-6 max-w-sm w-full text-center relative transform scale-95 opacity-0 animate-popup-in border border-gray-100 dark:border-gray-700 max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-6 w-full text-center relative transform scale-95 opacity-0 animate-popup-in border border-gray-100 dark:border-gray-700 max-w-[700px] max-h-[90vh] overflow-y-auto custom-scrollbar">
         
-        <!-- Title -->
-        <h3 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-purple-500 to-indigo-500 mb-2">
-          ${t.title}
-        </h3>
-
         <!-- Close X Button -->
         <button id="close-x-btn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition z-10">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
 
-        <!-- Compact Header: Grade + Ring (Side-by-Side) -->
-        <div class="flex flex-row items-center justify-center gap-8 mb-6 mt-2">
-            <!-- Left: Grade -->
-            <div class="flex flex-col items-center">
-              <h2 class="text-7xl font-black bg-clip-text text-transparent bg-gradient-to-br from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 filter drop-shadow-sm leading-none" 
-                  style="background-image: linear-gradient(135deg, ${gradeInfo.color}, ${gradeInfo.color}); -webkit-text-fill-color: transparent; -webkit-background-clip: text;">
-                ${gradeInfo.grade}
-              </h2>
-              <p class="text-lg font-medium text-gray-500 dark:text-gray-400 mt-2">${gradeInfo.label}</p>
-            </div>
+        <!-- Title (Full Width) -->
+        <h3 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-purple-500 to-indigo-500 mb-4">
+          ${t.title}
+        </h3>
 
-            <!-- Right: Ring -->
-            <div class="flex-shrink-0">
-                ${progressRingHtml}
-            </div>
-        </div>
-
-        <!-- 3-Column Stats Grid (Larger Fonts) -->
-        <div class="grid grid-cols-3 gap-2 mb-4">
-          <!-- Correct -->
-          <div class="bg-gray-50 dark:bg-gray-800 p-2 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
-            <div class="text-3xl font-black text-green-500">${summary.correctFrames}</div>
-            <div class="text-[9px] text-gray-500 uppercase tracking-wider">${t.correct}</div>
-          </div>
-          <!-- Error -->
-          <div class="bg-gray-50 dark:bg-gray-800 p-2 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
-            <div class="text-3xl font-black text-red-500">${summary.errorFrames}</div>
-            <div class="text-[9px] text-gray-500 uppercase tracking-wider">${t.fix}</div>
-          </div>
-          <!-- Duration -->
-          <div class="bg-gray-50 dark:bg-gray-800 p-2 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
-            <div class="text-3xl font-black text-blue-500">${duration}</div>
-            <div class="text-[9px] text-gray-500 uppercase tracking-wider">${t.time}</div>
-          </div>
-        </div>
-
-        <!-- Coach's Tip & Errors -->
-        <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl mb-4 border-l-4 border-blue-500">
-            <div class="text-left">
-              <p class="text-[10px] font-bold text-blue-600 dark:text-blue-300 mb-1 uppercase flex items-center gap-1">
-                <span class="text-base">💡</span> ${t.coach_tip}
-              </p>
-              <p class="text-sm text-gray-800 dark:text-gray-200 leading-snug font-medium">
-                "${tipText}"
-              </p>
-            </div>
-            <!-- Nested Error List -->
-            ${errorListHtml}
-        </div>
-        
-        <!-- Feedback Section (Matched with Feedback Popup) -->
-        <div class="mb-2 text-center mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
-          <!-- 1. Header -->
-          <h3 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 mb-2">
-            ${t.feedback_title}
-          </h3>
+        <!-- 2-Column Layout (responsive: stack on mobile) -->
+        <div class="flex flex-col sm:flex-row gap-6">
           
-          <!-- 2. Sub-Header -->
-          <p class="text-sm text-gray-600 dark:text-gray-300 font-medium mb-4">
-            ${t.feedback_sub}
-          </p>
+          <!-- LEFT COLUMN: Score Info -->
+          <div class="flex-1 min-w-0">
+            <!-- Grade + Ring (Side-by-Side) -->
+            <div class="flex flex-row items-center justify-center gap-6 mb-4">
+                <!-- Left: Grade -->
+                <div class="flex flex-col items-center">
+                  <h2 class="text-6xl font-black leading-none" 
+                      style="background-image: linear-gradient(135deg, ${
+                        gradeInfo.color
+                      }, ${
+      gradeInfo.color
+    }); -webkit-text-fill-color: transparent; -webkit-background-clip: text;">
+                    ${gradeInfo.grade}
+                  </h2>
+                  <p class="text-base font-medium text-gray-500 dark:text-gray-400 mt-1">${
+                    gradeInfo.label
+                  }</p>
+                </div>
 
-          <!-- 3. QR Code with Background -->
-          <div class="relative bg-white p-2 rounded-xl shadow-inner border border-gray-100 dark:border-gray-800 mx-auto w-fit mb-4">
-            <img src="images/qr_feedback.png" alt="QR" class="w-32 h-32 rounded-lg object-contain">
+                <!-- Right: Ring -->
+                <div class="flex-shrink-0">
+                    ${progressRingHtml}
+                </div>
+            </div>
+
+            <!-- 3-Column Stats Grid -->
+            <div class="grid grid-cols-3 gap-2 mb-4">
+              <!-- Correct -->
+              <div class="bg-gray-50 dark:bg-gray-800 p-2 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
+                <div class="text-2xl font-black text-green-500">${
+                  summary.correctFrames
+                }</div>
+                <div class="text-[9px] text-gray-500 uppercase tracking-wider">${
+                  t.correct
+                }</div>
+              </div>
+              <!-- Error -->
+              <div class="bg-gray-50 dark:bg-gray-800 p-2 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
+                <div class="text-2xl font-black text-red-500">${
+                  summary.errorFrames
+                }</div>
+                <div class="text-[9px] text-gray-500 uppercase tracking-wider">${
+                  t.fix
+                }</div>
+              </div>
+              <!-- Duration -->
+              <div class="bg-gray-50 dark:bg-gray-800 p-2 rounded-xl border border-gray-100 dark:border-gray-700 flex flex-col justify-center">
+                <div class="text-2xl font-black text-blue-500">${duration}</div>
+                <div class="text-[9px] text-gray-500 uppercase tracking-wider">${
+                  t.time
+                }</div>
+              </div>
+            </div>
+
+            <!-- Coach's Tip & Errors -->
+            <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-xl border-l-4 border-blue-500">
+                <div class="text-left">
+                  <p class="text-[10px] font-bold text-blue-600 dark:text-blue-300 mb-1 uppercase flex items-center gap-1">
+                    <span class="text-base">💡</span> ${t.coach_tip}
+                  </p>
+                  <p class="text-sm text-gray-800 dark:text-gray-200 leading-snug font-medium">
+                    "${tipText}"
+                  </p>
+                </div>
+                <!-- Nested Error List -->
+                ${errorListHtml}
+            </div>
           </div>
 
-          <!-- 4. Text Below QR -->
-          <p class="text-xs text-gray-400 mb-4">
-            ${t.qr_instruction}
-          </p>
-          
-          <!-- 5. Primary Action: Survey Button (Purple)-->
-          <a href="${this.formUrl}" target="_blank" 
-            class="block w-fit mx-auto px-8 py-3 bg-gradient-to-br from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-full font-semibold shadow-md shadow-purple-500/20 transform transition active:scale-95 mb-3 text-sm">
-            ${t.take_survey_btn}
-          </a>
+          <!-- RIGHT COLUMN: Feedback -->
+          <div class="flex-1 min-w-0 flex flex-col items-center justify-between sm:border-l sm:border-gray-100 dark:sm:border-gray-800 sm:pl-6">
+            <!-- Feedback Header -->
+            <div class="text-center">
+              <h4 class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 mb-1">
+                ${t.feedback_title}
+              </h4>
+              <p class="text-xs text-gray-600 dark:text-gray-300 font-medium mb-3">
+                ${t.feedback_sub}
+              </p>
+            </div>
+
+            <!-- QR Code -->
+            <div class="relative bg-white p-2 rounded-xl shadow-inner border border-gray-100 dark:border-gray-800 mx-auto w-fit mb-3">
+              <img src="images/qr_feedback.png" alt="QR" class="w-28 h-28 rounded-lg object-contain">
+            </div>
+
+            <!-- QR Instruction -->
+            <p class="text-xs text-gray-400 mb-3">
+              ${t.qr_instruction}
+            </p>
+            
+            <!-- Survey Button -->
+            <a href="${this.formUrl}" target="_blank" 
+              class="block w-fit mx-auto px-6 py-2 bg-gradient-to-br from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-full font-semibold shadow-md shadow-purple-500/20 transform transition active:scale-95 mb-3 text-sm">
+              ${t.take_survey_btn}
+            </a>
+
+            <!-- Thank You Message -->
+            <p class="text-sm text-gray-500 dark:text-gray-400 font-medium mb-3">
+              ${t.thank_you}
+            </p>
+
+            <!-- Close Button -->
+            <button id="close-score-popup" 
+              class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm font-medium transition-colors">
+              ${t.close_btn}
+            </button>
+          </div>
+
         </div>
 
-        <!-- 6. Secondary Action: Close Button (Text Only) -->
-        <button id="close-score-popup" 
-          class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm font-medium transition-colors">
-          ${t.close_btn}
-        </button>
+        <!-- Footer: Motivational Quote (spanning both columns) -->
+        ${
+          randomQuote
+            ? `
+        <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 text-center">
+          <p class="text-sm text-gray-600 dark:text-gray-400 italic">
+            "${randomQuote.zh}" — ${randomQuote.text}
+          </p>
+        </div>
+        `
+            : ""
+        }
 
       </div>
       <style>

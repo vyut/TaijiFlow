@@ -306,6 +306,17 @@ const TRANSLATIONS = {
       qr_instruction: "สแกน QR Code หรือคลิกปุ่มด้านล่าง",
       take_survey_btn: "📝 ตอบแบบสอบถาม",
       close_btn: "ปิดหน้าต่าง",
+      thank_you: "🙏 ขอบคุณสำหรับความคิดเห็นของคุณ",
+      motivational_quotes: [
+        { zh: "水滴石穿", text: "น้ำหยดทีละหยด เจาะทะลุหินได้" },
+        { zh: "千里之行，始於足下", text: "เส้นทางพันลี้ เริ่มต้นจากก้าวแรก" },
+        { zh: "以柔克剛", text: "ใช้ความอ่อนเอาชนะความแข็ง" },
+        { zh: "熟能生巧", text: "ฝึกบ่อยย่อมชำนาญ" },
+        {
+          zh: "功夫不負有心人",
+          text: "ความพยายามไม่เคยทำให้ผู้มุ่งมั่นผิดหวัง",
+        },
+      ],
     },
 
     // -------------------------------------------------------------------------
@@ -584,6 +595,20 @@ const TRANSLATIONS = {
       qr_instruction: "Scan QR below or click button",
       take_survey_btn: "📝 Take Survey",
       close_btn: "Close",
+      thank_you: "🙏 Thank you for your valuable feedback",
+      motivational_quotes: [
+        { zh: "水滴石穿", text: "Dripping water pierces stone" },
+        {
+          zh: "千里之行，始於足下",
+          text: "A journey of a thousand miles begins with a single step",
+        },
+        { zh: "以柔克剛", text: "Softness overcomes hardness" },
+        { zh: "熟能生巧", text: "Practice makes perfect" },
+        {
+          zh: "功夫不負有心人",
+          text: "Hard work never disappoints those who are dedicated",
+        },
+      ],
     },
 
     // -------------------------------------------------------------------------

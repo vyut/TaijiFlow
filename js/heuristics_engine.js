@@ -73,9 +73,10 @@ class HeuristicsEngine {
       MIN_HIP_VELOCITY_DEG_SEC: 1.0, // สะโพกต้องหมุนอย่างน้อย 1°/วินาที (ลดจาก 2.0)
       SHOULDER_HIP_RATIO: 2.0, // ถ้าไหล่หมุนเร็วกว่าสะโพก 2 เท่า = ผิด (ลดจาก 3.0)
 
-      // ----- Rule 5: Vertical Stability (ศีรษะนิ่ง) -----
+      // ----- Rule 5: Vertical Stability (ศีรษะนิ่ง) - TIME-BASED -----
       // หลัก "虚领顶劲" (ซวี่หลิงติ่งจิ้น) - โปรงกระหม่อมเบา ศีรษะตั้งตรง ไม่กระดก
-      STABILITY_HISTORY_LENGTH: 30, // เก็บประวัติ 30 เฟรม (~1 วินาที)
+      STABILITY_WINDOW_MS: 5000, // วิเคราะห์ใน 5 วินาทีล่าสุด (เพิ่มจาก 2000 เพราะ skip frame)
+      STABILITY_MIN_POINTS: 3, // ต้องมีอย่างน้อย 3 จุดใน window
       STABILITY_THRESHOLD_DEFAULT: 0.05, // ศีรษะขยับขึ้นลงไม่เกิน 5% ของหน้าจอ
       STABILITY_THRESHOLD_CALIBRATION_RATIO: 0.1, // 10% ของความสูงลำตัว
 
@@ -427,6 +428,7 @@ class HeuristicsEngine {
     }
 
     // Rule 5: Vertical Stability - ศีรษะนิ่ง (虚领顶劲)
+    console.log("[DEBUG] config.checkStability:", config.checkStability); // 🐛 DEBUG
     if (config.checkStability) {
       const err = this.checkVerticalStability(nose);
       if (err) allErrors.push({ msg: err, rule: "Vertical Stability" });
@@ -903,27 +905,36 @@ class HeuristicsEngine {
   }
 
   // ---------------------------------------------------------------------------
-  // Rule 5: Vertical Stability - ศีรษะนิ่ง (虚领顶劲)
+  // Rule 5: Vertical Stability - ศีรษะนิ่ง (虚领顶劲) - TIME-BASED
   // ---------------------------------------------------------------------------
   /**
    * ตรวจสอบว่าศีรษะนิ่ง ไม่กระดกขึ้นลงมากเกินไป
    * หลัก "虚领顶劲" (ซวี่หลิงติ่งจิ้น) - โปรงกระหม่อมเบา ศีรษะตั้งตรง
+   *
+   * 🆕 v0.9.11: เปลี่ยนเป็น Time-Based แทน Frame-Based
+   * เพื่อไม่ขึ้นกับ Skip Frame Logic
    */
   checkVerticalStability(nose) {
     if (!nose) return null;
 
-    // เก็บประวัติตำแหน่ง Y ของศีรษะ
-    this.headYHistory.push(nose.y);
-    if (this.headYHistory.length > this.CONFIG.STABILITY_HISTORY_LENGTH)
-      this.headYHistory.shift();
+    const now = Date.now();
+
+    // เก็บประวัติตำแหน่ง Y พร้อม timestamp
+    this.headYHistory.push({ y: nose.y, t: now });
+
+    // ลบ data points ที่เก่ากว่า window
+    const windowStart = now - this.CONFIG.STABILITY_WINDOW_MS;
+    this.headYHistory = this.headYHistory.filter((p) => p.t >= windowStart);
 
     // ต้องมีข้อมูลเพียงพอก่อนตัดสิน
-    if (this.headYHistory.length < this.CONFIG.STABILITY_HISTORY_LENGTH)
+    if (this.headYHistory.length < this.CONFIG.STABILITY_MIN_POINTS) {
       return null;
+    }
 
     // หาค่า displacement (ระยะห่างระหว่าง min-max)
-    const min = Math.min(...this.headYHistory);
-    const max = Math.max(...this.headYHistory);
+    const yValues = this.headYHistory.map((p) => p.y);
+    const min = Math.min(...yValues);
+    const max = Math.max(...yValues);
     const displacement = max - min;
 
     // Dynamic Threshold ตามความสูงลำตัว
@@ -933,6 +944,15 @@ class HeuristicsEngine {
         this.calibrationData.torsoHeight *
         this.CONFIG.STABILITY_THRESHOLD_CALIBRATION_RATIO;
     }
+
+    // Debug info
+    if (this.debugMode) {
+      this.debugInfo.headDisplacement = displacement.toFixed(4);
+      this.debugInfo.stabilityThreshold = threshold.toFixed(4);
+      this.debugInfo.headHistoryPoints = this.headYHistory.length;
+    }
+
+    if (displacement > threshold) return this.getMessage("headUnstable");
 
     if (displacement > threshold) return this.getMessage("headUnstable");
     return null;

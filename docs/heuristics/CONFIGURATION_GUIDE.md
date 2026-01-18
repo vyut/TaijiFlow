@@ -10,14 +10,12 @@
 
 ```javascript
 this.CONFIG = {
-  // === Path Accuracy ===
-  PATH_THRESHOLD_DEFAULT: 0.08,       // 8% of screen (normalized)
-  PATH_THRESHOLD_CALIBRATION_RATIO: 0.4, // 40% of shoulderWidth
-  PATH_THRESHOLD_MIN: 0.02,           // minimum allowed
-  PATH_THRESHOLD_MAX: 0.25,           // maximum allowed
+  // === Path Accuracy (v0.9.10 Slice-Based) ===
+  SHAPE_CONSISTENCY_THRESHOLD: 0.6,   // 60% = circular
+  SHAPE_ANALYSIS_POINTS: 10,          // 🆕 slice-based (was 30 frames)
 
   // === Arm Rotation ===
-  ARM_MOTION_THRESHOLD: 0.005,        // min deltaY to trigger check
+  ARM_MOTION_THRESHOLD: 0.015,        // 🆕 min deltaY to trigger check (was 0.005)
 
   // === Elbow Sinking ===
   ELBOW_TOLERANCE_DEFAULT: 0.01,      // normalized units
@@ -32,9 +30,9 @@ this.CONFIG = {
   STABILITY_THRESHOLD_DEFAULT: 0.05,  // normalized units
   STABILITY_THRESHOLD_CALIBRATION_RATIO: 0.1, // 10% of torsoHeight
 
-  // === Smoothness ===
-  SMOOTHNESS_THRESHOLD_DEFAULT: 0.02, // normalized units/sec²
-  SMOOTHNESS_CALIBRATION_RATIO: 0.05, // 5% of armLength
+  // === Smoothness (v0.9.10) ===
+  SMOOTHNESS_THRESHOLD_DEFAULT: 0.05, // 🆕 normalized units/sec² (was 0.02)
+  SMOOTHNESS_CALIBRATION_RATIO: 0.08, // 🆕 8% of armLength (was 0.05)
 
   // === Continuity (Time-Based v0.9.9) ===
   PAUSE_WINDOW_MS: 2000,              // 2 seconds window

@@ -10,14 +10,49 @@ skinparam defaultFontName "Sarabun"
 skinparam backgroundColor transparent
 skinparam sequenceMessageAlign center
 
-' === Participants (6 ตัวหลัก - ชื่อสั้นเพื่ออ่านง่าย) ===
+' === Participants (7 ตัวหลัก - ชื่อสั้นเพื่ออ่านง่าย) ===
 actor "ผู้ฝึก\n(User)" as User
 participant "    UI    " as UI #E8F5E9
+participant "  Camera  " as Camera #E1BEE7
 participant " Gesture " as Gesture #E8F5E9
 participant " Training " as Training #E3F2FD
 participant "Calibrator" as Calibration #FFF3E0
 participant "Heuristics" as Heuristics #FFF3E0
 participant "  Scorer  " as Scoring #FFF3E0
+
+' ============================================================================
+' PHASE 0: PRIVACY CONSENT & CAMERA INIT (NEW)
+' ============================================================================
+
+group #F3E5F5 เข้าสู่แอป (App Entry)
+    User -> UI : เปิด app.html
+    UI --> User : แสดง Privacy + Warning Modal
+    
+    User -> UI : กด "เข้าใจแล้ว"
+    
+    UI -> UI : isMobilePhone()?
+    alt เป็นมือถือ (Mobile Phone)
+        UI --> User : แสดง Mobile Warning Modal
+        alt กลับหน้าหลัก
+            User -> UI : กด "← กลับหน้าหลัก"
+            UI -> UI : redirect to index.html
+        else ดำเนินการต่อ
+            User -> UI : กด "ดำเนินการต่อ →"
+        end
+    end
+    
+    UI -> Camera : getUserMedia()
+    activate Camera
+    Camera --> UI : Stream Ready
+    UI --> User : แสดง Loading Overlay
+    
+    note right of UI
+        AI Models Preloading
+        (MediaPipe Pose)
+    end note
+    
+    UI --> User : พร้อมใช้งาน (Idle)
+end
 
 ' ============================================================================
 ' PHASE 1: START TRAINING

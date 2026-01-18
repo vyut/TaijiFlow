@@ -32,6 +32,9 @@ backup/
 # Documentation
 docs/
 
+# Heuristics
+heuristics/
+
 # Thesis
 thesis/
 
@@ -39,7 +42,7 @@ thesis/
 code/
 
 # Diagram
-docs/diagram/
+diagram/
 
 # Ebooks (copyrighted materials)
 docs/ebooks/

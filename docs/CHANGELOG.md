@@ -41,6 +41,16 @@
   - AI Models preload during Privacy Modal (parallel loading)
   - Loading Overlay shows only after consent
 
+- **2-Column Score Popup** (`score_popup_manager.js`) - Layout ใหม่สำหรับ iPad
+  - Left Column: Grade, Score Ring, Stats, Coach Tip, Error List
+  - Right Column: Feedback, QR Code, Survey Button, Thank You, Close
+  - Responsive: stack on mobile (<640px), side-by-side on tablet/desktop
+
+- **Motivational Quotes** (`translations.js`, `index.html`) - คำคมไท่จี๋ 15 ประโยค
+  - Random quote on Score Popup footer (Chinese + TH/EN)
+  - Random quote on Landing Page (before footer)
+  - 15 quotes from Taoist/Taiji philosophy (上善若水, 以柔克剛, etc.)
+
 #### Changed
 - **Tutorial How To Tab** (`tutorial_manager.js`) - เพิ่ม Tips & Warnings sections
   - 📌 Tips: Device, Space, Wear requirements
@@ -49,12 +59,13 @@
 
 #### Files Modified
 - `app.html` - Mobile Modal, Privacy+Warning Modal
-- `index.html` - Prefetch links, Hamburger Navbar, Remove "หน้าแรก"
+- `index.html` - Prefetch links, Hamburger Navbar, Quote Section
 - `js/script.js` - Privacy-gated camera, Loading overlay timing
 - `js/ui_manager.js` - Mobile detection, Modal text updates
-- `js/translations.js` - All new translation keys (TH/EN)
+- `js/translations.js` - All new translation keys (TH/EN), 15 motivational quotes
 - `js/tutorial_manager.js` - Tips & Warnings in How To tab
-- `css/landing.css` - Hamburger menu styles, Responsive nav
+- `js/score_popup_manager.js` - 2-Column responsive layout, Quote footer
+- `css/landing.css` - Hamburger menu styles, Quote section styles
 
 ---
 

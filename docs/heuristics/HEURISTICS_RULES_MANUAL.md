@@ -22,7 +22,7 @@
 ### 🎯 วัตถุประสงค์
 ตรวจสอบว่า**เส้นทางที่ผู้ใช้วาดเป็นวงโค้ง**และ**หมุนถูกทิศทาง**หรือไม่
 
-### 📝 Implementation Notes (v3.1)
+### 📝 Implementation Notes (v0.9.10)
 
 > **เปลี่ยนจาก Position-Based เป็น Shape-Based**
 > 
@@ -31,6 +31,12 @@
 > ใหม่: วิเคราะห์ว่าเส้นทางที่วาดเป็นวงกลมหรือไม่ + ตรวจทิศทางหมุน
 > 
 > **เหตุผล:** สอดคล้องกับหลักท่าม้วนไหมที่อนุญาตให้ขนาดวงกลมและความเร็วต่างกันได้
+
+> **🆕 v0.9.10: Slice-Based แทน Time-Based**
+> 
+> ใช้ 10 จุดล่าสุด (slice-based) แทน time window
+> เพิ่ม `isPaused()` check เพื่อให้ Rule 7 จัดการการหยุดนิ่ง
+> ตรวจทิศทางก่อน consistency เพราะสำคัญกว่า
 
 ### 🔄 Algorithm ทีละขั้นตอน
 
@@ -42,8 +48,9 @@
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ ขั้นที่ 1: ตรวจสอบข้อมูลเบื้องต้น                               │
-│ - ต้องมี wristHistory อย่างน้อย 30 frames (~1 วินาที)        │
+│ - ต้องมี wristHistory อย่างน้อย 10 points (🆕)              │
 │ → ถ้าไม่พอ: return null (รอเก็บข้อมูลเพิ่ม)                   │
+│ - ถ้า isPaused() = true → return null (ให้ Rule 7 จัดการ)   │
 └─────────────────────────────────────────────────────────────┘
                           │
                           ▼
@@ -61,21 +68,30 @@
                           │
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ ขั้นที่ 3: ตรวจว่าเป็นวงโค้งหรือไม่                             │
+│ ขั้นที่ 3: ตรวจเส้นตรง (🆕)                                   │
 │                                                             │
-│   ถ้า consistency < 0.6 (60%)                               │
-│     → "⚠️ เคลื่อนไหวมือให้เป็นวงโค้ง"                          │
+│   ถ้า total == 0 (ไม่มี CW/CCW) → "เคลื่อนเป็นวงโค้ง"            │
 └─────────────────────────────────────────────────────────────┘
                           │
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ ขั้นที่ 4: ตรวจทิศทางหมุน (CW vs CCW)                         │
+│ ขั้นที่ 4: ตรวจทิศทางหมุน **ก่อน** (🆕 สำคัญกว่า consistency)  │
 │                                                             │
 │   expectedCW = ท่าที่เลือกมี "cw" หรือไม่                      │
 │   actualCW = counterClockwiseTurns > clockwiseTurns         │
 │   (สลับเพราะวิดีโอ Mirror)                                    │
 │                                                             │
-│   ถ้า expectedCW ≠ actualCW → "⚠️ หมุนมือผิดทิศทาง"          │
+│   dominance = max(CW, CCW) / total                          │
+│   ถ้า dominance >= 0.6 AND expectedCW ≠ actualCW            │
+│     → "⚠️ หมุนมือผิดทิศทาง"                                  │
+└─────────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ ขั้นที่ 5: ตรวจ Consistency                                   │
+│                                                             │
+│   ถ้า consistency < 0.6 (60%)                               │
+│     → "⚠️ เคลื่อนไหวมือให้เป็นวงโค้ง"                          │
 │   ถ้าถูกต้อง → null                                         │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -99,12 +115,13 @@
 
 ```javascript
 checkPathShape(currentExercise = "rh_cw") {
-  const minFrames = this.CONFIG.SHAPE_ANALYSIS_FRAMES;  // 30
+  const analysisPoints = this.CONFIG.SHAPE_ANALYSIS_POINTS;  // 10 (🆕 slice-based)
   const threshold = this.CONFIG.SHAPE_CONSISTENCY_THRESHOLD;  // 0.6
 
-  if (this.wristHistory.length < minFrames) return null;
+  if (this.wristHistory.length < analysisPoints) return null;
+  if (this.isPaused()) return null;  // 🆕 ให้ Rule 7 จัดการ
 
-  const recentHistory = this.wristHistory.slice(-minFrames);
+  const recentHistory = this.wristHistory.slice(-analysisPoints);
   let clockwiseTurns = 0, counterClockwiseTurns = 0;
 
   for (let i = 2; i < recentHistory.length; i++) {
@@ -118,20 +135,23 @@ checkPathShape(currentExercise = "rh_cw") {
   }
 
   const total = clockwiseTurns + counterClockwiseTurns;
-  if (total === 0) return null;
+  
+  // 🆕 ตรวจเส้นตรง
+  if (total === 0) return this.getMessage("moveInCircle");
 
   const consistency = Math.max(clockwiseTurns, counterClockwiseTurns) / total;
 
-  // ตรวจว่าเป็นวงโค้ง
-  if (consistency < threshold) {
-    return "⚠️ เคลื่อนไหวมือให้เป็นวงโค้ง (Move your hand in a circle)";
-  }
-
-  // ตรวจทิศทาง (สลับเพราะ video mirror)
+  // 🆕 ตรวจทิศทางก่อน (สำคัญกว่า consistency)
   const expectedCW = currentExercise.includes("cw");
   const actualCW = counterClockwiseTurns > clockwiseTurns;
-  if (expectedCW !== actualCW) {
-    return "⚠️ หมุนมือผิดทิศทาง (Wrong direction)";
+  const dominance = Math.max(clockwiseTurns, counterClockwiseTurns) / total;
+  if (dominance >= 0.6 && expectedCW !== actualCW) {
+    return this.getMessage("wrongDirection");
+  }
+
+  // ตรวจ consistency
+  if (consistency < threshold) {
+    return this.getMessage("moveInCircle");
   }
 
   return null;
@@ -143,7 +163,7 @@ checkPathShape(currentExercise = "rh_cw") {
 | Parameter | ค่า | คำอธิบาย |
 |-----------|-----|----------|
 | `SHAPE_CONSISTENCY_THRESHOLD` | 0.6 | 60% ขึ้นไป = เป็นวงโค้ง |
-| `SHAPE_ANALYSIS_FRAMES` | 30 | วิเคราะห์ 30 frames (~1 วินาที) |
+| `SHAPE_ANALYSIS_POINTS` | 10 | 🆕 ใช้ 10 จุดล่าสุด (slice-based) |
 
 ### ✅ ข้อดีของ Shape-Based
 
@@ -181,7 +201,7 @@ checkPathShape(currentExercise = "rh_cw") {
 │                                                             │
 │   deltaY = ข้อมือปัจจุบัน.y - ข้อมือก่อนหน้า.y                  │
 │                                                             │
-│   ถ้า |deltaY| < 0.005 → ไม่ตรวจ (เคลื่อนที่น้อยเกินไป)         │
+│   ถ้า |deltaY| < 0.015 → ไม่ตรวจ (ARM_MOTION_THRESHOLD)        │
 │   ถ้า deltaY < 0 → กำลังเคลื่อนที่ขึ้น (Moving Up)             │
 │   ถ้า deltaY > 0 → กำลังเคลื่อนที่ลง (Moving Down)            │
 └─────────────────────────────────────────────────────────────┘
@@ -278,7 +298,7 @@ checkArmRotation(thumb, pinky, moveType) {
   const p_previous = this.wristHistory[this.wristHistory.length - 2];
   const deltaY = p_current.y - p_previous.y;
   
-  if (Math.abs(deltaY) < 0.005) return null; // เคลื่อนที่น้อยเกินไป
+  if (Math.abs(deltaY) < 0.015) return null; // เคลื่อนที่น้อยเกินไป (ARM_MOTION_THRESHOLD)
   
   const isMovingUp = deltaY < 0;
   const isMovingDown = deltaY > 0;
@@ -696,10 +716,10 @@ checkSmoothness(wrist, timestamp) {
   const v1 = this.calculateDistance(p1, p2) / dt1;
   const acceleration = Math.abs(v2 - v1);
 
-  // Threshold: 5% ของความยาวแขน
-  let threshold = 0.02;
+  // Threshold: 8% ของความยาวแขน (v0.9.10)
+  let threshold = 0.05;  // SMOOTHNESS_THRESHOLD_DEFAULT (เดิม 0.02)
   if (this.calibrationData) {
-    threshold = this.calibrationData.armLength * 0.05;
+    threshold = this.calibrationData.armLength * 0.08;  // (เดิม 0.05)
   }
 
   return acceleration > threshold

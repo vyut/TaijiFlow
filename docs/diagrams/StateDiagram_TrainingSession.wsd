@@ -28,12 +28,31 @@ skinparam state {
 ' STATES
 ' ============================================================================
 
-[*] --> Idle
+[*] --> PrivacyModal
+
+state "PrivacyModal\n(แสดง Privacy + Warning)" as PrivacyModal <<idle>> {
+    PrivacyModal : แสดงข้อมูลความเป็นส่วนตัว
+    PrivacyModal : แสดงคำเตือนการใช้งาน
+    PrivacyModal : รอผู้ใช้กด "เข้าใจแล้ว"
+}
+
+state "MobileCheck\n(ตรวจสอบอุปกรณ์)" as MobileCheck <<idle>> {
+    MobileCheck : ตรวจ User Agent
+    MobileCheck : ตรวจ Screen Width
+    MobileCheck : isMobilePhone()?
+}
+
+state "MobileWarning\n(เตือนผู้ใช้มือถือ)" as MobileWarning <<idle>> {
+    MobileWarning : แสดงคำเตือน
+    MobileWarning : "← กลับหน้าหลัก"
+    MobileWarning : "ดำเนินการต่อ →"
+}
 
 state "Idle\n(หน้าจอหลัก)" as Idle <<idle>> {
     Idle : isTrainingMode = false
     Idle : isRecording = false
     Idle : calibrator.isActive = false
+    Idle : Camera Active ✓
 }
 
 state "Calibrating\n(ปรับเทียบ T-Pose)" as Calibrating <<calibrating>> {
@@ -69,6 +88,25 @@ state "Ended\n(แสดงผลคะแนน)" as Ended <<ended>> {
 ' ============================================================================
 ' TRANSITIONS
 ' ============================================================================
+
+PrivacyModal --> MobileCheck : กด "เข้าใจแล้ว"
+note on link
+    initCamera()
+    getUserMedia()
+end note
+
+MobileCheck --> MobileWarning : [isMobilePhone = true]
+MobileCheck --> Idle : [isMobilePhone = false]\nCamera Ready
+
+MobileWarning --> Idle : "ดำเนินการต่อ →"
+note on link
+    ผู้ใช้ยอมรับความเสี่ยง
+end note
+
+MobileWarning --> [*] : "← กลับหน้าหลัก"
+note on link
+    window.location = "index.html"
+end note
 
 Idle --> Calibrating : กด Start /\nยกนิ้วโป้ง 👍
 note on link

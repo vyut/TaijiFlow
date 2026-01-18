@@ -28,6 +28,7 @@ class RulesConfigManager {
     this.defaults = {
       // Thresholds
       SHAPE_CONSISTENCY_THRESHOLD: 0.6, // Rule 1: Path Shape (0.0-1.0)
+      SHAPE_ANALYSIS_POINTS: 10, // Rule 1: จำนวน points ที่วิเคราะห์ (slice-based)
       ARM_MOTION_THRESHOLD: 0.015,
       ELBOW_TOLERANCE_DEFAULT: 0.01,
       MIN_HIP_VELOCITY_DEG_SEC: 2.0,
@@ -174,7 +175,10 @@ class RulesConfigManager {
   bindRuleCheckboxes() {
     this.rules.forEach((rule) => {
       const checkbox = document.getElementById(rule.checkboxId);
-      if (!checkbox) return;
+      if (!checkbox) {
+        console.warn(`[RulesConfig] Checkbox not found: ${rule.checkboxId}`);
+        return;
+      }
 
       checkbox.addEventListener("change", () => {
         this.setRuleEnabled(rule.configKey, checkbox.checked);
@@ -185,7 +189,10 @@ class RulesConfigManager {
   setRuleEnabled(configKey, enabled) {
     if (this.engine && this.engine.currentRulesConfig) {
       this.engine.currentRulesConfig[configKey] = enabled;
-      console.log(`[RulesConfig] ${configKey} = ${enabled}`);
+      // เก็บใน userOverrides ด้วย เพื่อคงค่าเมื่อ level เปลี่ยน
+      if (this.engine.userOverrides) {
+        this.engine.userOverrides[configKey] = enabled;
+      }
     }
   }
 

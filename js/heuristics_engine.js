@@ -213,6 +213,9 @@ class HeuristicsEngine {
       checkContinuity: false,
       checkWeight: false,
     };
+    // 🆕 เก็บค่าที่ user เปลี่ยนไว้แยกจาก level config
+    // จะ merge กับ currentRulesConfig เมื่อ level เปลี่ยน
+    this.userOverrides = {};
   }
 
   // ===========================================================================
@@ -318,12 +321,16 @@ class HeuristicsEngine {
     if (!landmarks) return [];
 
     // ดึง Config ปัจจุบัน (ใช้ currentRulesConfig ที่ RulesConfigManager สามารถแก้ไขได้)
-    // ถ้า level เปลี่ยน ให้อัพเดท currentRulesConfig
+    // ถ้า level เปลี่ยน ให้อัพเดท currentRulesConfig แต่คงค่าที่ user ตั้งไว้
     if (currentLevel && currentLevel !== this.currentLevel) {
+      // ใช้ค่าจาก RULES_CONFIG เป็น default แล้ว merge กับ userOverrides
+      const levelConfig =
+        this.RULES_CONFIG[currentLevel] || this.RULES_CONFIG["L3"];
+
+      // Merge: levelConfig เป็น base, userOverrides ทับค่าที่ user เปลี่ยน
+      this.currentRulesConfig = { ...levelConfig, ...this.userOverrides };
+
       this.currentLevel = currentLevel;
-      this.currentRulesConfig = { ...this.RULES_CONFIG[currentLevel] } || {
-        ...this.RULES_CONFIG["L3"],
-      };
     }
     const config = this.currentRulesConfig;
 
@@ -414,7 +421,7 @@ class HeuristicsEngine {
 
     // Rule 4: Waist Initiation - เอวนำ (腰为轴)
     if (config.checkWaist) {
-      const err = this.checkWaistInitiation(landmarks, timestamp);
+      const err = this.checkWaistInitiation(landmarks);
       if (err) allErrors.push({ msg: err, rule: "Waist Initiation" });
     }
 
@@ -598,31 +605,20 @@ class HeuristicsEngine {
    */
   checkPathShape(currentExercise = "rh_cw") {
     const threshold = this.CONFIG.SHAPE_CONSISTENCY_THRESHOLD;
-    const analysisPoints = this.CONFIG.SHAPE_ANALYSIS_POINTS; // 🆕 ใช้จำนวน points แทน time window
-
-    // 🐛 DEBUG
-    console.log(
-      "[Rule1] checkPathShape, wristHistory:",
-      this.wristHistory.length,
-      "analysisPoints:",
-      analysisPoints
-    );
+    const analysisPoints = this.CONFIG.SHAPE_ANALYSIS_POINTS;
 
     // ต้องมี points เพียงพอก่อนวิเคราะห์
     if (this.wristHistory.length < analysisPoints) {
-      console.log("[Rule1] EXIT: wristHistory < analysisPoints");
       return null;
     }
 
-    // 🆕 ถ้าหยุดนิ่ง ให้ข้าม Rule 1 และปล่อยให้ Rule 7 (Continuity) จัดการ
+    // ถ้าหยุดนิ่ง ให้ข้าม Rule 1 และปล่อยให้ Rule 7 (Continuity) จัดการ
     if (this.isPaused()) {
-      console.log("[Rule1] EXIT: isPaused() = true");
       return null;
     }
 
-    // 🆕 Slice-Based: ใช้ N จุดล่าสุด (ง่ายกว่า time-based และเชื่อถือได้)
+    // Slice-Based: ใช้ N จุดล่าสุด
     const recentHistory = this.wristHistory.slice(-analysisPoints);
-    console.log("[Rule1] recentHistory.length:", recentHistory.length);
 
     // นับทิศทางหมุน (clockwise vs counter-clockwise)
     let clockwiseTurns = 0;
@@ -638,39 +634,21 @@ class HeuristicsEngine {
         (p2.x - p1.x) * (p3.y - p2.y) - (p2.y - p1.y) * (p3.x - p2.x);
 
       if (cross > 0.0001) {
-        // threshold เล็กๆ ป้องกัน noise
         clockwiseTurns++;
       } else if (cross < -0.0001) {
         counterClockwiseTurns++;
       }
-      // ถ้าใกล้ 0 = เส้นตรง ไม่นับ
     }
 
     // คำนวณ totals และ consistency
     const total = clockwiseTurns + counterClockwiseTurns;
 
-    console.log(
-      "[Rule1] cwTurns:",
-      clockwiseTurns,
-      "ccwTurns:",
-      counterClockwiseTurns,
-      "total:",
-      total
-    );
-
-    // 🆕 Fix: ถ้า total = 0 แปลว่าเคลื่อนที่เป็นเส้นตรง → แจ้งเตือน
+    // ถ้า total = 0 แปลว่าเคลื่อนที่เป็นเส้นตรง → แจ้งเตือน
     if (total === 0) {
-      console.log("[Rule1] STRAIGHT LINE DETECTED (total=0)");
       return this.getMessage("moveInCircle");
     }
 
     const consistency = Math.max(clockwiseTurns, counterClockwiseTurns) / total;
-    console.log(
-      "[Rule1] consistency:",
-      consistency.toFixed(2),
-      "threshold:",
-      threshold
-    );
 
     // Debug Mode
     if (this.debugMode) {
@@ -681,30 +659,21 @@ class HeuristicsEngine {
       this.debugInfo.shapePoints = recentHistory.length;
     }
 
-    // 🆕 ตรวจทิศทางก่อน (สำคัญกว่า consistency)
-    // เพราะถ้าหมุนผิดทิศ ควรบอกทันที ไม่ต้องรอ consistency สูงขึ้น
+    // ตรวจทิศทางก่อน (สำคัญกว่า consistency)
     const expectedCW = currentExercise.includes("cw");
     const actualCW = counterClockwiseTurns > clockwiseTurns; // สลับเพราะ mirror
 
     // ตรวจทิศทางเมื่อมี turn ชัดเจน (dominance > 60%)
     const dominance = Math.max(clockwiseTurns, counterClockwiseTurns) / total;
     if (dominance >= 0.6 && expectedCW !== actualCW) {
-      console.log(
-        "[Rule1] WRONG DIRECTION: expected",
-        expectedCW ? "CW" : "CCW",
-        "got",
-        actualCW ? "CW" : "CCW"
-      );
       return this.getMessage("wrongDirection");
     }
 
-    // ตัดสิน: ถ้า consistency ต่ำกว่า threshold = ไม่เป็นวงโค้ง
+    // ถ้า consistency ต่ำกว่า threshold = ไม่เป็นวงโค้ง
     if (consistency < threshold) {
-      console.log("[Rule1] LOW CONSISTENCY:", consistency.toFixed(2));
       return this.getMessage("moveInCircle");
     }
 
-    console.log("[Rule1] ALL GOOD");
     return null;
   }
 
@@ -866,29 +835,33 @@ class HeuristicsEngine {
    * Algorithm:
    *   1. คำนวณความเร็วเชิงมุมของไหล่และสะโพก
    *   2. ถ้าไหล่หมุนเร็วกว่าสะโพก 3 เท่า = ผิด (ไหล่นำแทนเอว)
+   *
+   * 🆕 v0.9.11: ใช้ Date.now() แทน timestamp จาก MediaPipe ซึ่งเป็น undefined
    */
-  checkWaistInitiation(landmarks, timestamp) {
+  checkWaistInitiation(landmarks) {
+    const now = Date.now();
+
     // เฟรมแรก: เก็บข้อมูลไว้เปรียบเทียบ
-    if (this.lastTimestamp === -1) {
-      this.lastTimestamp = timestamp;
-      this.lastLandmarks = landmarks;
+    if (this.lastWaistTimestamp === undefined) {
+      this.lastWaistTimestamp = now;
+      this.lastWaistLandmarks = landmarks;
       return null;
     }
 
     // คำนวณ delta time (วินาที)
-    const dt = (timestamp - this.lastTimestamp) / 1000;
+    const dt = (now - this.lastWaistTimestamp) / 1000;
     if (dt < 0.01) return null; // ป้องกัน division by zero
 
     // คำนวณมุมของไหล่และสะโพก (เส้นเชื่อมซ้าย-ขวา)
     const curShoulderAngle = this.getLineAngle(landmarks[11], landmarks[12]);
     const lastShoulderAngle = this.getLineAngle(
-      this.lastLandmarks[11],
-      this.lastLandmarks[12]
+      this.lastWaistLandmarks[11],
+      this.lastWaistLandmarks[12]
     );
     const curHipAngle = this.getLineAngle(landmarks[23], landmarks[24]);
     const lastHipAngle = this.getLineAngle(
-      this.lastLandmarks[23],
-      this.lastLandmarks[24]
+      this.lastWaistLandmarks[23],
+      this.lastWaistLandmarks[24]
     );
 
     // คำนวณความเร็วเชิงมุม (degrees/second)
@@ -900,8 +873,14 @@ class HeuristicsEngine {
     const hipVel = this.getAngularVelocity(lastHipAngle, curHipAngle, dt);
 
     // อัปเดต state สำหรับเฟรมถัดไป
-    this.lastTimestamp = timestamp;
-    this.lastLandmarks = landmarks;
+    this.lastWaistTimestamp = now;
+    this.lastWaistLandmarks = landmarks;
+
+    // Debug Mode
+    if (this.debugMode) {
+      this.debugInfo.shoulderVel = shoulderVel?.toFixed(1);
+      this.debugInfo.hipVel = hipVel?.toFixed(1);
+    }
 
     // ตัดสิน: ถ้าสะโพกหมุนอยู่ แต่ไหล่เร็วกว่า 3 เท่า = ไหล่นำ ผิดหลัก
     const RATIO_THRESHOLD = this.CONFIG.SHOULDER_HIP_RATIO;

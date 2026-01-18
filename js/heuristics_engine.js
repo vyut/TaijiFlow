@@ -69,8 +69,8 @@ class HeuristicsEngine {
 
       // ----- Rule 4: Waist Initiation (เอวนำ) -----
       // หลัก "腰为轴" (เอาเหวยโจ่ว) - เอวเป็นเพลากลาง ทุกการเคลื่อนไหวเริ่มจากเอว
-      MIN_HIP_VELOCITY_DEG_SEC: 2.0, // สะโพกต้องหมุนอย่างน้อย 2°/วินาที
-      SHOULDER_HIP_RATIO: 3.0, // ถ้าไหล่หมุนเร็วกว่าสะโพก 3 เท่า = ผิด
+      MIN_HIP_VELOCITY_DEG_SEC: 1.0, // สะโพกต้องหมุนอย่างน้อย 1°/วินาที (ลดจาก 2.0)
+      SHOULDER_HIP_RATIO: 2.0, // ถ้าไหล่หมุนเร็วกว่าสะโพก 2 เท่า = ผิด (ลดจาก 3.0)
 
       // ----- Rule 5: Vertical Stability (ศีรษะนิ่ง) -----
       // หลัก "虚领顶劲" (ซวี่หลิงติ่งจิ้น) - โปรงกระหม่อมเบา ศีรษะตั้งตรง ไม่กระดก
@@ -404,7 +404,7 @@ class HeuristicsEngine {
       const err = this.checkArmRotation(
         activeThumb,
         activePinky,
-        currentExercise
+        currentExercise,
       );
       if (err) allErrors.push({ msg: err, rule: "Arm Rotation" });
     }
@@ -414,7 +414,7 @@ class HeuristicsEngine {
       const err = this.checkElbowSinking(
         activeShoulder,
         activeElbow,
-        activeWrist
+        activeWrist,
       );
       if (err) allErrors.push({ msg: err, rule: "Elbow Sinking" });
     }
@@ -449,7 +449,7 @@ class HeuristicsEngine {
         leftHip,
         rightHip,
         leftAnkle,
-        rightAnkle
+        rightAnkle,
       );
       if (err) allErrors.push({ msg: err, rule: "Weight Shift" });
     }
@@ -555,7 +555,7 @@ class HeuristicsEngine {
 
     // Filter points ภายใน time window
     const recentPoints = this.wristHistory.filter(
-      (p) => p.t >= windowStartTime
+      (p) => p.t >= windowStartTime,
     );
     if (recentPoints.length < 2) return false;
 
@@ -564,7 +564,7 @@ class HeuristicsEngine {
     for (let i = 1; i < recentPoints.length; i++) {
       totalDistance += this.calculateDistance(
         recentPoints[i - 1],
-        recentPoints[i]
+        recentPoints[i],
       );
     }
 
@@ -856,19 +856,19 @@ class HeuristicsEngine {
     const curShoulderAngle = this.getLineAngle(landmarks[11], landmarks[12]);
     const lastShoulderAngle = this.getLineAngle(
       this.lastWaistLandmarks[11],
-      this.lastWaistLandmarks[12]
+      this.lastWaistLandmarks[12],
     );
     const curHipAngle = this.getLineAngle(landmarks[23], landmarks[24]);
     const lastHipAngle = this.getLineAngle(
       this.lastWaistLandmarks[23],
-      this.lastWaistLandmarks[24]
+      this.lastWaistLandmarks[24],
     );
 
     // คำนวณความเร็วเชิงมุม (degrees/second)
     const shoulderVel = this.getAngularVelocity(
       lastShoulderAngle,
       curShoulderAngle,
-      dt
+      dt,
     );
     const hipVel = this.getAngularVelocity(lastHipAngle, curHipAngle, dt);
 

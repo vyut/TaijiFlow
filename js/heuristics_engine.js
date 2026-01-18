@@ -60,7 +60,8 @@ class HeuristicsEngine {
 
       // ----- Rule 2: Arm Rotation (การหมุนแขน) -----
       // ตรวจทิศทางการหงาย/คว่ำฝ่ามือ ขณะเคลื่อนที่ขึ้น/ลง
-      ARM_MOTION_THRESHOLD: 0.015, // ขยับขึ้นลงอย่างน้อย 1.5% จึงเช็คการหมุน (เดิม 0.005)
+      ARM_MOTION_THRESHOLD: 0.015, // ขยับขึ้นลงอย่างน้อย 1.5% จึงเช็คการหมุน
+      ARM_ROTATION_NEUTRAL_ZONE: 0.05, // 5% tolerance สำหรับช่วงเปลี่ยนผ่านการหมุน (เพิ่มจาก 0.03)
 
       // ----- Rule 3: Elbow Sinking (ศอกจม) -----
       // หลัก "沉肩坠肘" (ชิ่นเจียน จุ้ยโจ่ว) - ผ่อนไหล่ลง ศอกตก
@@ -80,8 +81,8 @@ class HeuristicsEngine {
 
       // ----- Rule 6: Smoothness (ความลื่นไหล) -----
       // หลัก "如抽丝" (ดังเช่นดึงเส้นไหม) - เคลื่อนไหวสม่ำเสมอ ไม่กระตุก
-      SMOOTHNESS_THRESHOLD_DEFAULT: 0.05, // Acceleration ไม่เกิน 0.05 units/sec² (เดิม 0.02)
-      SMOOTHNESS_CALIBRATION_RATIO: 0.08, // 8% ของความยาวแขน (เดิม 0.05)
+      SMOOTHNESS_THRESHOLD_DEFAULT: 0.1, // Acceleration ไม่เกิน 0.1 units/sec²
+      SMOOTHNESS_CALIBRATION_RATIO: 0.5, // 50% ของความยาวแขน (เพิ่มจาก 0.12, เพื่อ threshold ~0.09)
 
       // ----- Rule 7: Continuity (ความต่อเนื่อง) - TIME-BASED -----
       // หลัก "绵绵不断" (เหมียนเหมียนปู้ต้วน) - ต่อเนื่องไม่ขาดตอน
@@ -771,6 +772,15 @@ class HeuristicsEngine {
     const isMovingDown = deltaY > 0;
 
     // Step 2: ตรวจสอบการหงาย/คว่ำตัวจริง (Supination/Pronation)
+    // 🆕 เพิ่ม Neutral Zone: ถ้า thumb.x ใกล้ pinky.x (กำลังหมุน) ไม่ต้องตรวจ
+    const thumbPinkyDiff = Math.abs(thumb.x - pinky.x);
+    const neutralZone = this.CONFIG.ARM_ROTATION_NEUTRAL_ZONE || 0.03; // 3% tolerance
+
+    if (thumbPinkyDiff < neutralZone) {
+      // มือกำลังหมุนอยู่ในช่วงเปลี่ยนผ่าน - ไม่ตรวจ
+      return null;
+    }
+
     // มือขวา หงาย = นิ้วโป้งอยู่ทางขวาของนิ้วก้อย (thumb.x > pinky.x)
     // มือซ้าย หงาย = นิ้วโป้งอยู่ทางซ้ายของนิ้วก้อย (thumb.x < pinky.x)
     const isRightHand = moveType.startsWith("rh");
@@ -953,9 +963,11 @@ class HeuristicsEngine {
     const dt1 = (p2.t - p1.t) / 1000;
     if (dt1 <= 0 || dt2 <= 0) return null;
 
-    const v2 = this.calculateDistance(p2, p3) / dt2;
-    const v1 = this.calculateDistance(p1, p2) / dt1;
-    const acceleration = Math.abs(v2 - v1); // การเปลี่ยนแปลงความเร็ว
+    const dist2 = this.calculateDistance(p2, p3);
+    const dist1 = this.calculateDistance(p1, p2);
+    const v2 = dist2 / dt2;
+    const v1 = dist1 / dt1;
+    const acceleration = Math.abs(v2 - v1);
 
     // Dynamic Threshold ตามความยาวแขน
     let threshold = this.CONFIG.SMOOTHNESS_THRESHOLD_DEFAULT;
@@ -969,6 +981,7 @@ class HeuristicsEngine {
     if (this.debugMode) {
       this.debugInfo.wristVelocity = v2.toFixed(3);
       this.debugInfo.acceleration = acceleration.toFixed(3);
+      this.debugInfo.smoothThreshold = threshold.toFixed(3);
     }
 
     if (acceleration > threshold) return this.getMessage("notSmooth");

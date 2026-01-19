@@ -10,42 +10,44 @@
 
 ```javascript
 this.CONFIG = {
-  // === Path Accuracy (v0.9.10 Slice-Based) ===
+  // === Path Shape (v0.9.10 Slice-Based) ===
   SHAPE_CONSISTENCY_THRESHOLD: 0.6,   // 60% = circular
-  SHAPE_ANALYSIS_POINTS: 10,          // 🆕 slice-based (was 30 frames)
+  SHAPE_ANALYSIS_POINTS: 10,          // slice-based (was 30 frames)
 
   // === Arm Rotation ===
-  ARM_MOTION_THRESHOLD: 0.015,        // 🆕 min deltaY to trigger check (was 0.005)
+  ARM_MOTION_THRESHOLD: 0.015,        // min deltaY to trigger check
+  ARM_ROTATION_NEUTRAL_ZONE: 0.05,    // 🆕 5% tolerance for transitions
 
   // === Elbow Sinking ===
   ELBOW_TOLERANCE_DEFAULT: 0.01,      // normalized units
   ELBOW_TOLERANCE_CALIBRATION_RATIO: 0.05, // 5% of torsoHeight
 
-  // === Waist Initiation ===
-  MIN_HIP_VELOCITY_DEG_SEC: 2.0,      // degrees/second
-  SHOULDER_HIP_RATIO: 3.0,            // if shoulder > hip * 3 → error
+  // === Waist Initiation (v0.9.11 tuned) ===
+  MIN_HIP_VELOCITY_DEG_SEC: 1.0,      // 🔄 degrees/second (was 2.0)
+  SHOULDER_HIP_RATIO: 2.0,            // 🔄 if shoulder > hip * 2 → error (was 3.0)
 
-  // === Vertical Stability ===
-  STABILITY_HISTORY_LENGTH: 30,       // frames (~1 sec at 30fps)
+  // === Vertical Stability (v0.9.11 time-based) ===
+  STABILITY_WINDOW_MS: 5000,          // 🔄 5 seconds (was 2000, frames)
+  STABILITY_MIN_POINTS: 3,            // 🆕 min points in window
   STABILITY_THRESHOLD_DEFAULT: 0.05,  // normalized units
   STABILITY_THRESHOLD_CALIBRATION_RATIO: 0.1, // 10% of torsoHeight
 
-  // === Smoothness (v0.9.10) ===
-  SMOOTHNESS_THRESHOLD_DEFAULT: 0.05, // 🆕 normalized units/sec² (was 0.02)
-  SMOOTHNESS_CALIBRATION_RATIO: 0.08, // 🆕 8% of armLength (was 0.05)
+  // === Smoothness (v0.9.11 tuned) ===
+  SMOOTHNESS_THRESHOLD_DEFAULT: 0.1,  // 🔄 normalized units/sec² (was 0.05)
+  SMOOTHNESS_CALIBRATION_RATIO: 0.5,  // 🔄 50% of armLength → ~0.09 (was 0.08)
 
   // === Continuity (Time-Based v0.9.9) ===
   PAUSE_WINDOW_MS: 2000,              // 2 seconds window
   PAUSE_AVG_VELOCITY_THRESHOLD: 0.003, // avg velocity threshold
 
-  // === Weight Shift ===
-  WEIGHT_BUFFER_RATIO: 0.1,           // 10% of stanceWidth
+  // === Weight Shift (v0.9.11 tuned) ===
+  WEIGHT_BUFFER_RATIO: 0.3,           // 🔄 30% of stanceWidth (was 0.1)
 
   // === Feedback Display ===
-  FEEDBACK_HOLD_TIME_MS: 1500,        // 1.5 seconds
+  FEEDBACK_HOLD_TIME_MS: 1000,        // 🔄 1 second (was 1.5)
 
   // === History Lengths ===
-  WRIST_HISTORY_LENGTH: 10,           // frames
+  WRIST_HISTORY_LENGTH: 60,           // 🔄 60 frames (was 10)
 };
 ```
 

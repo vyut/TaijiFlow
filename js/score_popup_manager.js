@@ -83,7 +83,7 @@ class ScorePopupManager {
     // Data Preparation
     const progressRingHtml = this.createProgressRing(
       summary.score,
-      gradeInfo.color
+      gradeInfo.color,
     );
     const tipText = this.getSmartTip(summary.topErrors, lang);
     const duration = summary.durationFormatted || summary.durationSeconds + "s";
@@ -113,7 +113,7 @@ class ScorePopupManager {
                 <span>• ${e.type}</span>
                 <span class="font-mono bg-gray-100 dark:bg-gray-800 px-1 rounded text-[10px]">${e.count}x</span>
               </li>
-            `
+            `,
               )
               .join("")}
           </ul>
@@ -153,8 +153,8 @@ class ScorePopupManager {
                       style="background-image: linear-gradient(135deg, ${
                         gradeInfo.color
                       }, ${
-      gradeInfo.color
-    }); -webkit-text-fill-color: transparent; -webkit-background-clip: text;">
+                        gradeInfo.color
+                      }); -webkit-text-fill-color: transparent; -webkit-background-clip: text;">
                     ${gradeInfo.grade}
                   </h2>
                   <p class="text-base font-medium text-gray-500 dark:text-gray-400 mt-1">${
@@ -245,9 +245,9 @@ class ScorePopupManager {
               ${t.thank_you}
             </p>
 
-            <!-- Close Button -->
+            <!-- Close Button (Secondary Style) -->
             <button id="close-score-popup" 
-              class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm font-medium transition-colors">
+              class="block w-fit mx-auto px-6 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full font-semibold border border-gray-300 dark:border-gray-600 transition-colors text-sm">
               ${t.close_btn}
             </button>
           </div>

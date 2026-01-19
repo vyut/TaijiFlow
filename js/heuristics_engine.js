@@ -93,8 +93,8 @@ class HeuristicsEngine {
       PAUSE_AVG_VELOCITY_THRESHOLD: 0.003, // avg velocity ต่ำกว่านี้ = หยุดนิ่ง
 
       // ----- Rule 8: Weight Shift (ถ่ายน้ำหนัก) -----
-      // หลัก "分虚实" (เฟินซวี่ซวื่อ) - รู้จักแยกเต็ม/ว่าง แต่ไม่เอียงจนเสียสมดุล
-      WEIGHT_BUFFER_RATIO: 0.1, // Buffer 10% ของความกว้างการยืน
+      // หลัก "分虚实" (เฟินซวี่ซื่อ) - รู้จักแยกเต็ม/ว่าง แต่ไม่เอียงจนเสียสมดุล
+      WEIGHT_BUFFER_RATIO: 0.3, // Buffer 30% ของความกว้างการยืน (เพิ่มจาก 0.1 เพื่อให้ sensitive ขึ้น)
 
       // ----- Feedback Display -----
       FEEDBACK_HOLD_TIME_MS: 1000, // แสดงข้อความค้าง 1.0 วินาที
@@ -428,7 +428,6 @@ class HeuristicsEngine {
     }
 
     // Rule 5: Vertical Stability - ศีรษะนิ่ง (虚领顶劲)
-    console.log("[DEBUG] config.checkStability:", config.checkStability); // 🐛 DEBUG
     if (config.checkStability) {
       const err = this.checkVerticalStability(nose);
       if (err) allErrors.push({ msg: err, rule: "Vertical Stability" });
@@ -1049,8 +1048,14 @@ class HeuristicsEngine {
     const leftBoundary = Math.min(leftAnkle.x, rightAnkle.x);
     const rightBoundary = Math.max(leftAnkle.x, rightAnkle.x);
 
-    // Buffer 10% - ไม่ให้เอียงจนสุดขอบ
-    const buffer = stanceWidth * 0.1;
+    // Buffer ตาม CONFIG - ไม่ให้เอียงจนสุดขอบ
+    const buffer = stanceWidth * this.CONFIG.WEIGHT_BUFFER_RATIO;
+
+    // Debug info
+    if (this.debugMode) {
+      this.debugInfo.hipCenter = hipCenter.toFixed(3);
+      this.debugInfo.safeZone = `${(leftBoundary + buffer).toFixed(3)} - ${(rightBoundary - buffer).toFixed(3)}`;
+    }
 
     // ตรวจ: สะโพกออกนอก Safe Zone หรือไม่
     if (

@@ -81,13 +81,13 @@ if (elbow.y < shoulder.y - tolerance) {
 ### 4. Waist Initiation (เอวนำ)
 **Purpose:** การเคลื่อนไหวต้องเริ่มจากเอว ไม่ใช่ไหล่
 
-**Algorithm:**
+**Algorithm (v0.9.11):**
 ```javascript
 const hipVel = getAngularVelocity(hipAngle1, hipAngle2, dt);
 const shoulderVel = getAngularVelocity(shoulderAngle1, shoulderAngle2, dt);
 
-// ถ้าไหล่หมุนเร็วกว่าเอว 3 เท่า → ไหล่นำ (ผิด)
-if (hipVel > 2.0 && shoulderVel > hipVel * 3.0) {
+// ถ้าไหล่หมุนเร็วกว่าเอว 2 เท่า → ไหล่นำ (ผิด)
+if (hipVel > 1.0 && shoulderVel > hipVel * 2.0) {  // 🔄 was 2.0, 3.0
   return "⚠️ ใช้เอวนำ";
 }
 ```
@@ -99,11 +99,13 @@ if (hipVel > 2.0 && shoulderVel > hipVel * 3.0) {
 ### 5. Vertical Stability (ความนิ่งของศีรษะ)
 **Purpose:** ศีรษะต้องนิ่ง ไม่ขยับขึ้นลง
 
-**Algorithm:**
+**Algorithm (v0.9.11 Time-Based):**
 ```javascript
-// เก็บ nose.y 30 frames (~1 วินาที)
-headYHistory.push(nose.y);
-const displacement = Math.max(...headYHistory) - Math.min(...headYHistory);
+// เก็บ nose.y ใน 5000ms window (time-based)
+const now = Date.now();
+const recentPoints = headYHistory.filter(p => p.t >= now - 5000);
+const displacement = Math.max(...recentPoints.map(p => p.y)) 
+                   - Math.min(...recentPoints.map(p => p.y));
 
 // ถ้า displacement > 10% of torsoHeight → ศีรษะไม่นิ่ง
 if (displacement > threshold) return "⚠️ ศีรษะไม่นิ่ง";
@@ -156,11 +158,12 @@ if (avgVelocity < PAUSE_AVG_VELOCITY_THRESHOLD) {
 ### 8. Weight Shift (การถ่ายน้ำหนัก)
 **Purpose:** จุดศูนย์ถ่วงต้องอยู่ในฐานการยืน
 
-**Algorithm:**
+**Algorithm (v0.9.11):**
 ```javascript
 const hipCenter = (leftHip.x + rightHip.x) / 2;
-const leftEdge = leftAnkle.x - (stanceWidth * 0.1);
-const rightEdge = rightAnkle.x + (stanceWidth * 0.1);
+const buffer = stanceWidth * 0.3;  // 🔄 was 0.1 (30% more sensitive)
+const leftEdge = leftAnkle.x + buffer;
+const rightEdge = rightAnkle.x - buffer;
 
 if (hipCenter < leftEdge) return "⚠️ น้ำหนักเอียงซ้าย";
 if (hipCenter > rightEdge) return "⚠️ น้ำหนักเอียงขวา";

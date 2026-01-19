@@ -42,7 +42,7 @@ describe("HeuristicsEngine", () => {
     test("diagonal distance (3-4-5 triangle)", () => {
       expect(calculateDistance({ x: 0, y: 0 }, { x: 0.3, y: 0.4 })).toBeCloseTo(
         0.5,
-        5
+        5,
       );
     });
   });
@@ -180,9 +180,9 @@ describe("HeuristicsEngine", () => {
   // =========================================================================
 
   describe("Rule 4: Waist Initiation", () => {
-    // เอวควรนำ - shoulder velocity ไม่ควรเร็วกว่า hip velocity 3 เท่า
-    function checkWaistInitiation(shoulderVel, hipVel, ratio = 3.0) {
-      if (hipVel < 2.0) return null; // ต้องเคลื่อนที่ก่อน
+    // เอวควรนำ - shoulder velocity ไม่ควรเร็วกว่า hip velocity 2 เท่า (v0.9.11)
+    function checkWaistInitiation(shoulderVel, hipVel, ratio = 2.0) {
+      if (hipVel < 1.0) return null; // ต้องเคลื่อนที่ก่อน (was 2.0)
       if (shoulderVel > hipVel * ratio) {
         return "ใช้เอวนำการเคลื่อนไหว";
       }
@@ -190,11 +190,11 @@ describe("HeuristicsEngine", () => {
     }
 
     test("PASS: hip leads shoulder", () => {
-      expect(checkWaistInitiation(5.0, 5.0)).toBeNull(); // 1:1 ratio
+      expect(checkWaistInitiation(3.0, 2.0)).toBeNull(); // 1.5:1 ratio OK
     });
 
-    test("FAIL: shoulder leads hip (ratio > 3)", () => {
-      expect(checkWaistInitiation(15.0, 3.0)).toBe("ใช้เอวนำการเคลื่อนไหว"); // 5:1 ratio
+    test("FAIL: shoulder leads hip (ratio > 2)", () => {
+      expect(checkWaistInitiation(10.0, 2.0)).toBe("ใช้เอวนำการเคลื่อนไหว"); // 5:1 ratio
     });
   });
 
@@ -248,8 +248,8 @@ describe("HeuristicsEngine", () => {
   // =========================================================================
 
   describe("Rule 6: Smoothness", () => {
-    // ความลื่นไหล - acceleration ไม่ควรเกิน threshold
-    function checkSmoothness(acceleration, threshold = 0.05) {
+    // ความลื่นไหล - acceleration ไม่ควรเกิน threshold (v0.9.11: 0.1)
+    function checkSmoothness(acceleration, threshold = 0.1) {
       if (Math.abs(acceleration) > threshold) {
         return "เคลื่อนไหวให้ลื่นไหล อย่ากระตุก";
       }
@@ -257,11 +257,11 @@ describe("HeuristicsEngine", () => {
     }
 
     test("PASS: smooth motion (low acceleration)", () => {
-      expect(checkSmoothness(0.02)).toBeNull();
+      expect(checkSmoothness(0.05)).toBeNull();
     });
 
     test("FAIL: jerky motion (high acceleration)", () => {
-      expect(checkSmoothness(0.1)).toBe("เคลื่อนไหวให้ลื่นไหล อย่ากระตุก");
+      expect(checkSmoothness(0.15)).toBe("เคลื่อนไหวให้ลื่นไหล อย่ากระตุก");
     });
   });
 
@@ -292,10 +292,11 @@ describe("HeuristicsEngine", () => {
   // =========================================================================
 
   describe("Rule 8: Weight Shift", () => {
-    // น้ำหนักอยู่ในฐาน - center of mass อยู่ระหว่าง ankles
-    function checkWeightShift(leftAnkle, rightAnkle, centerX, buffer = 0.1) {
-      const minX = Math.min(leftAnkle.x, rightAnkle.x) - buffer;
-      const maxX = Math.max(leftAnkle.x, rightAnkle.x) + buffer;
+    // น้ำหนักอยู่ในฐาน - center of mass อยู่ระหว่าง ankles (v0.9.11: buffer 0.3)
+    function checkWeightShift(leftAnkle, rightAnkle, centerX, buffer = 0.3) {
+      const stanceWidth = Math.abs(rightAnkle.x - leftAnkle.x);
+      const minX = Math.min(leftAnkle.x, rightAnkle.x) + stanceWidth * buffer;
+      const maxX = Math.max(leftAnkle.x, rightAnkle.x) - stanceWidth * buffer;
 
       if (centerX < minX || centerX > maxX) {
         return "รักษาจุดศูนย์ถ่วงให้อยู่ในฐาน";
@@ -304,18 +305,18 @@ describe("HeuristicsEngine", () => {
     }
 
     test("PASS: weight centered in stance", () => {
-      const leftAnkle = { x: 0.4 };
-      const rightAnkle = { x: 0.6 };
+      const leftAnkle = { x: 0.3 };
+      const rightAnkle = { x: 0.7 };
       const centerX = 0.5; // ตรงกลาง
       expect(checkWeightShift(leftAnkle, rightAnkle, centerX)).toBeNull();
     });
 
-    test("FAIL: weight outside stance", () => {
-      const leftAnkle = { x: 0.4 };
-      const rightAnkle = { x: 0.6 };
-      const centerX = 0.2; // นอกฐานด้านซ้าย
+    test("FAIL: weight outside safe zone", () => {
+      const leftAnkle = { x: 0.3 };
+      const rightAnkle = { x: 0.7 };
+      const centerX = 0.35; // ใกล้ขอบด้านซ้ายเกินไป
       expect(checkWeightShift(leftAnkle, rightAnkle, centerX)).toBe(
-        "รักษาจุดศูนย์ถ่วงให้อยู่ในฐาน"
+        "รักษาจุดศูนย์ถ่วงให้อยู่ในฐาน",
       );
     });
   });

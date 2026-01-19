@@ -118,8 +118,9 @@ class FeedbackManager {
            ${t.take_survey_btn}
         </a>
 
-        <!-- Close Button -->
-        <button id="close-feedback-popup" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm font-medium transition-colors">
+        <!-- Close Button (Secondary Style) -->
+        <button id="close-feedback-popup" 
+          class="block w-fit mx-auto px-8 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full font-semibold border border-gray-300 dark:border-gray-600 transition-colors text-sm">
           ${t.close_btn}
         </button>
       </div>

@@ -30,14 +30,18 @@ class RulesConfigManager {
       SHAPE_CONSISTENCY_THRESHOLD: 0.6, // Rule 1: Path Shape (0.0-1.0)
       SHAPE_ANALYSIS_POINTS: 10, // Rule 1: จำนวน points ที่วิเคราะห์ (slice-based)
       ARM_MOTION_THRESHOLD: 0.015,
+      ARM_ROTATION_NEUTRAL_ZONE: 0.05, // 🆕 Rule 2: Neutral zone for rotation
       ELBOW_TOLERANCE_DEFAULT: 0.01,
-      MIN_HIP_VELOCITY_DEG_SEC: 2.0,
-      SHOULDER_HIP_RATIO: 3.0,
+      MIN_HIP_VELOCITY_DEG_SEC: 1.0, // 🆕 ลดจาก 2.0
+      SHOULDER_HIP_RATIO: 2.0, // 🆕 ลดจาก 3.0
+      STABILITY_WINDOW_MS: 5000, // 🆕 Rule 5: Time-based
+      STABILITY_MIN_POINTS: 3, // 🆕 Rule 5: Min points
       STABILITY_THRESHOLD_DEFAULT: 0.05,
       SMOOTHNESS_THRESHOLD_DEFAULT: 0.05,
+      SMOOTHNESS_CALIBRATION_RATIO: 0.5, // 🆕 เพิ่มจาก 0.12
       PAUSE_AVG_VELOCITY_THRESHOLD: 0.003, // Rule 7: Average velocity threshold
       PAUSE_WINDOW_MS: 2000, // Rule 7: Time window (ms)
-      WEIGHT_BUFFER_RATIO: 0.1,
+      WEIGHT_BUFFER_RATIO: 0.3, // 🆕 เพิ่มจาก 0.1
     };
 
     // =========================================================================
@@ -300,7 +304,7 @@ class RulesConfigManager {
           toggleDebugOverlay(debugToggle.checked);
         }
         console.log(
-          `[RulesConfig] Debug Mode: ${debugToggle.checked ? "ON" : "OFF"}`
+          `[RulesConfig] Debug Mode: ${debugToggle.checked ? "ON" : "OFF"}`,
         );
       }
     });
@@ -314,11 +318,30 @@ class RulesConfigManager {
       });
     }
 
+    // Clear user overrides so level config takes precedence
+    if (this.engine) {
+      this.engine.userOverrides = {};
+    }
+
+    // 🆕 Get level from UI dropdown (works even before analyze() is called)
+    const levelSelect = document.getElementById("level-select");
+    const currentLevel = levelSelect
+      ? levelSelect.value
+      : this.engine?.currentLevel || "L2";
+
     // Reset rule checkboxes based on current level
-    if (this.engine && this.engine.RULES_CONFIG && this.engine.currentLevel) {
-      const levelConfig = this.engine.RULES_CONFIG[this.engine.currentLevel];
+    if (this.engine && this.engine.RULES_CONFIG) {
+      const levelConfig = this.engine.RULES_CONFIG[currentLevel];
+      console.log(
+        "[DEBUG] resetToDefaults - level:",
+        currentLevel,
+        "levelConfig:",
+        levelConfig,
+      ); // 🐛 DEBUG
       if (levelConfig) {
         this.engine.currentRulesConfig = { ...levelConfig };
+        // Also update engine.currentLevel to match
+        this.engine.currentLevel = currentLevel;
       }
     }
 
@@ -331,12 +354,25 @@ class RulesConfigManager {
   // Sync UI with Engine
   // ===========================================================================
   syncUIWithEngine() {
+    console.log(
+      "[DEBUG] syncUIWithEngine - currentRulesConfig:",
+      this.engine?.currentRulesConfig,
+    ); // 🐛 DEBUG
     // Sync checkboxes
     this.rules.forEach((rule) => {
       const checkbox = document.getElementById(rule.checkboxId);
       if (checkbox && this.engine?.currentRulesConfig) {
-        checkbox.checked =
+        const shouldCheck =
           this.engine.currentRulesConfig[rule.configKey] || false;
+        console.log(
+          "[DEBUG] checkbox:",
+          rule.checkboxId,
+          "configKey:",
+          rule.configKey,
+          "shouldCheck:",
+          shouldCheck,
+        ); // 🐛 DEBUG
+        checkbox.checked = shouldCheck;
       }
     });
 

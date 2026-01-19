@@ -3,6 +3,43 @@
 รายการการเปลี่ยนแปลงทั้งหมดของโปรเจค
 
 ---
+
+## [v0.9.11] - 2026-01-19
+
+### 🔧 Heuristics Rules Debugging & Tuning
+
+#### Fixed
+- **Rule 4: Waist Initiation** - ปรับ threshold ให้ sensitive ขึ้น
+  - `MIN_HIP_VELOCITY_DEG_SEC`: 2.0 → **1.0** °/s
+  - `SHOULDER_HIP_RATIO`: 3.0 → **2.0**
+- **Rule 5: Vertical Stability** - เปลี่ยนเป็น Time-Based
+  - `STABILITY_WINDOW_MS`: 2000 (frames) → **5000** ms
+  - เพิ่ม `STABILITY_MIN_POINTS: 3` สำหรับ skip frame
+- **Rule 6: Smoothness** - ลด false positives
+  - `SMOOTHNESS_CALIBRATION_RATIO`: 0.08 → **0.5** (threshold ~0.09)
+- **Rule 8: Weight Shift** - ปรับ Safe Zone ให้แคบลง
+  - `WEIGHT_BUFFER_RATIO`: 0.1 → **0.3** (sensitive ขึ้น)
+
+#### Changed
+- **Rules Settings UI** - จัดกลุ่มกฎตาม Level
+  - เพิ่ม 3 subtitles สี: L1 (เขียว), L2 (น้ำเงิน), L3 (ม่วง)
+  - เรียงลำดับใหม่: 1,3,7 → 2,4,6 → 5,8
+  - ลบ L2+/L3 badges เดิม
+- **Reset to Defaults** - แก้ไขให้ reset checkboxes ถูกต้อง
+  - ใช้ level จาก UI dropdown แทน `engine.currentLevel`
+  - Clear `userOverrides` เมื่อ reset
+
+#### Added
+- **Rules Settings User Guide** (`docs/guides/RULES_SETTINGS_GUIDE.md`)
+  - คู่มือภาษาไทยอธิบาย 8 กฎ + วิธีปรับค่า
+- **Thesis Documentation**
+  - Chapter 4: Expanded RulesConfigManager section (4.2.5.8)
+  - Chapter 5: Added Rules Settings UI section (5.4.4)
+
+#### Updated Docs
+- `docs/heuristics/CONFIGURATION_GUIDE.md` - Updated CONFIG values
+- `docs/CHANGELOG.md` - v0.9.11 changelog
+
 ---
 
 ## [v0.9.9] - 2026-01-17

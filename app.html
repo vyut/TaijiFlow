@@ -44,7 +44,7 @@ Related Files:
 Version: 0.9.9 (2026-01-17)
 ================================================================================
 -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
   <head>
     <meta charset="utf-8" />
@@ -222,6 +222,15 @@ Version: 0.9.9 (2026-01-17)
       <div
         class="bg-gray-800 rounded-xl p-6 max-w-md w-full shadow-2xl border border-purple-500/30"
       >
+        <!-- Main Title -->
+        <h1
+          id="modal-main-title"
+          data-i18n="modal_main_title"
+          class="text-2xl font-bold text-white mb-5 text-center"
+        >
+          ก่อนเริ่มใช้งาน
+        </h1>
+
         <h2
           id="privacy-title"
           class="text-xl font-bold text-purple-400 mb-4 text-center"
@@ -276,12 +285,25 @@ Version: 0.9.9 (2026-01-17)
             >
           </li>
         </ul>
-        <button
-          id="privacy-accept-btn"
-          class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors"
-        >
-          เข้าใจแล้ว ✓
-        </button>
+
+        <!-- Buttons: Decline and Accept -->
+        <div class="flex gap-3">
+          <button
+            id="privacy-decline-btn"
+            data-i18n="privacy_decline"
+            class="flex-1 py-3 bg-gray-600 hover:bg-gray-700 text-gray-300 font-semibold rounded-lg transition-colors"
+            onclick="window.location.href = 'index.html'"
+          >
+            ปฏิเสธ
+          </button>
+          <button
+            id="privacy-accept-btn"
+            data-i18n="privacy_accept"
+            class="flex-1 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors"
+          >
+            เข้าใจแล้ว ✓
+          </button>
+        </div>
       </div>
     </div>
 
@@ -492,6 +514,13 @@ Version: 0.9.9 (2026-01-17)
                 Rules Settings
               </div>
 
+              <!-- ===== L1: นั่ง (3 กฎ) ===== -->
+              <div
+                class="text-xs text-center py-1 bg-green-900/50 text-green-300 border-b border-gray-600"
+              >
+                L1: นั่ง (3 กฎ)
+              </div>
+
               <!-- Rule 1: Path Shape -->
               <div class="rule-item p-2 border-b border-gray-700">
                 <label class="flex items-center cursor-pointer">
@@ -515,32 +544,6 @@ Version: 0.9.9 (2026-01-17)
                 </div>
               </div>
 
-              <!-- Rule 2: Arm Rotation -->
-              <div class="rule-item p-2 border-b border-gray-700">
-                <label class="flex items-center cursor-pointer">
-                  <input type="checkbox" id="rule-rotation" class="mr-2" />
-                  <span style="color: white">2. Arm Rotation</span>
-                  <span class="ml-auto text-xs px-1 bg-blue-600 rounded"
-                    >L2+</span
-                  >
-                </label>
-                <div class="ml-5 mt-1 text-xs text-gray-400">
-                  <div class="flex items-center gap-1">
-                    <span>Motion:</span>
-                    <input
-                      type="number"
-                      id="threshold-rotation"
-                      value="0.015"
-                      step="0.005"
-                      min="0.005"
-                      max="0.05"
-                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
-                    />
-                    <div class="text-gray-500">(0.005-0.05)</div>
-                  </div>
-                </div>
-              </div>
-
               <!-- Rule 3: Elbow Sinking -->
               <div class="rule-item p-2 border-b border-gray-700">
                 <label class="flex items-center cursor-pointer">
@@ -560,97 +563,6 @@ Version: 0.9.9 (2026-01-17)
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
                     <div class="text-gray-500">(0.005-0.05)</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Rule 4: Waist Initiation -->
-              <div class="rule-item p-2 border-b border-gray-700">
-                <label class="flex items-center cursor-pointer">
-                  <input type="checkbox" id="rule-waist" class="mr-2" />
-                  <span style="color: white">4. Waist Initiation</span>
-                  <span class="ml-auto text-xs px-1 bg-blue-600 rounded"
-                    >L2+</span
-                  >
-                </label>
-                <div class="ml-5 mt-1 text-xs text-gray-400">
-                  <div class="flex items-center gap-1 mb-1">
-                    <span>Hip Vel:</span>
-                    <input
-                      type="number"
-                      id="threshold-hip-vel"
-                      value="2.0"
-                      step="0.5"
-                      min="0.5"
-                      max="10"
-                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
-                    />
-                    <span class="text-gray-500">(0.5-10.0)</span>
-                  </div>
-                  <div class="flex items-center gap-1">
-                    <span>S/H Ratio:</span>
-                    <input
-                      type="number"
-                      id="threshold-sh-ratio"
-                      value="3.0"
-                      step="0.5"
-                      min="1"
-                      max="10"
-                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
-                    />
-                    <span class="text-gray-500">(1.0-10.0)</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Rule 5: Vertical Stability -->
-              <div class="rule-item p-2 border-b border-gray-700">
-                <label class="flex items-center cursor-pointer">
-                  <input type="checkbox" id="rule-stability" class="mr-2" />
-                  <span style="color: white">5. Vertical Stability</span>
-                  <span class="ml-auto text-xs px-1 bg-blue-600 rounded"
-                    >L2+</span
-                  >
-                </label>
-                <div class="ml-5 mt-1 text-xs text-gray-400">
-                  <div class="flex items-center gap-1">
-                    <span>Threshold:</span>
-                    <input
-                      type="number"
-                      id="threshold-stability"
-                      value="0.05"
-                      step="0.01"
-                      min="0.01"
-                      max="0.15"
-                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
-                    />
-                    <div class="text-gray-500">(0.01-0.15)</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Rule 6: Smoothness -->
-              <div class="rule-item p-2 border-b border-gray-700">
-                <label class="flex items-center cursor-pointer">
-                  <input type="checkbox" id="rule-smooth" class="mr-2" />
-                  <span style="color: white">6. Smoothness</span>
-                  <span class="ml-auto text-xs px-1 bg-purple-600 rounded"
-                    >L3</span
-                  >
-                </label>
-                <div class="ml-5 mt-1 text-xs text-gray-400">
-                  <div class="flex items-center gap-1">
-                    <span>Threshold:</span>
-                    <input
-                      type="number"
-                      id="threshold-smooth"
-                      value="0.05"
-                      step="0.01"
-                      min="0.01"
-                      max="0.15"
-                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
-                    />
-                    <div class="text-gray-500">(0.01-0.15)</div>
                   </div>
                 </div>
               </div>
@@ -691,14 +603,130 @@ Version: 0.9.9 (2026-01-17)
                 </div>
               </div>
 
+              <!-- ===== L2: ยืน (เพิ่มอีก 3 กฎ) ===== -->
+              <div
+                class="text-xs text-center py-1 bg-blue-900/50 text-blue-300 border-b border-gray-600"
+              >
+                L2: ยืน (เพิ่มอีก 3 กฎ)
+              </div>
+
+              <!-- Rule 2: Arm Rotation -->
+              <div class="rule-item p-2 border-b border-gray-700">
+                <label class="flex items-center cursor-pointer">
+                  <input type="checkbox" id="rule-rotation" class="mr-2" />
+                  <span style="color: white">2. Arm Rotation</span>
+                </label>
+                <div class="ml-5 mt-1 text-xs text-gray-400">
+                  <div class="flex items-center gap-1">
+                    <span>Motion:</span>
+                    <input
+                      type="number"
+                      id="threshold-rotation"
+                      value="0.015"
+                      step="0.005"
+                      min="0.005"
+                      max="0.05"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <div class="text-gray-500">(0.005-0.05)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rule 4: Waist Initiation -->
+              <div class="rule-item p-2 border-b border-gray-700">
+                <label class="flex items-center cursor-pointer">
+                  <input type="checkbox" id="rule-waist" class="mr-2" />
+                  <span style="color: white">4. Waist Initiation</span>
+                </label>
+                <div class="ml-5 mt-1 text-xs text-gray-400">
+                  <div class="flex items-center gap-1 mb-1">
+                    <span>Hip Vel:</span>
+                    <input
+                      type="number"
+                      id="threshold-hip-vel"
+                      value="1.0"
+                      step="0.5"
+                      min="0.5"
+                      max="10"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <span class="text-gray-500">(0.5-10.0)</span>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <span>S/H Ratio:</span>
+                    <input
+                      type="number"
+                      id="threshold-sh-ratio"
+                      value="2.0"
+                      step="0.5"
+                      min="1"
+                      max="10"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <span class="text-gray-500">(1.0-10.0)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rule 6: Smoothness -->
+              <div class="rule-item p-2 border-b border-gray-700">
+                <label class="flex items-center cursor-pointer">
+                  <input type="checkbox" id="rule-smooth" class="mr-2" />
+                  <span style="color: white">6. Smoothness</span>
+                </label>
+                <div class="ml-5 mt-1 text-xs text-gray-400">
+                  <div class="flex items-center gap-1">
+                    <span>Threshold:</span>
+                    <input
+                      type="number"
+                      id="threshold-smooth"
+                      value="0.05"
+                      step="0.01"
+                      min="0.01"
+                      max="0.15"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <div class="text-gray-500">(0.01-0.15)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ===== L3: ยืนย่อ (เพิ่มอีก 2 กฎ) ===== -->
+              <div
+                class="text-xs text-center py-1 bg-purple-900/50 text-purple-300 border-b border-gray-600"
+              >
+                L3: ยืนย่อ (เพิ่มอีก 2 กฎ)
+              </div>
+
+              <!-- Rule 5: Vertical Stability -->
+              <div class="rule-item p-2 border-b border-gray-700">
+                <label class="flex items-center cursor-pointer">
+                  <input type="checkbox" id="rule-stability" class="mr-2" />
+                  <span style="color: white">5. Vertical Stability</span>
+                </label>
+                <div class="ml-5 mt-1 text-xs text-gray-400">
+                  <div class="flex items-center gap-1">
+                    <span>Threshold:</span>
+                    <input
+                      type="number"
+                      id="threshold-stability"
+                      value="0.05"
+                      step="0.01"
+                      min="0.01"
+                      max="0.15"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <div class="text-gray-500">(0.01-0.15)</div>
+                  </div>
+                </div>
+              </div>
+
               <!-- Rule 8: Weight Shift -->
               <div class="rule-item p-2 border-b border-gray-700">
                 <label class="flex items-center cursor-pointer">
                   <input type="checkbox" id="rule-weight" class="mr-2" />
                   <span style="color: white">8. Weight Shift</span>
-                  <span class="ml-auto text-xs px-1 bg-purple-600 rounded"
-                    >L3</span
-                  >
                 </label>
                 <div class="ml-5 mt-1 text-xs text-gray-400">
                   <div class="flex items-center gap-1">
@@ -706,13 +734,13 @@ Version: 0.9.9 (2026-01-17)
                     <input
                       type="number"
                       id="threshold-weight"
-                      value="0.1"
+                      value="0.3"
                       step="0.05"
                       min="0.05"
-                      max="0.30"
+                      max="0.50"
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
-                    <div class="text-gray-500">(0.05-0.30)</div>
+                    <div class="text-gray-500">(0.05-0.50)</div>
                   </div>
                 </div>
               </div>
@@ -791,7 +819,7 @@ Version: 0.9.9 (2026-01-17)
             background: rgba(0, 0, 0, 0.75);
             border-radius: 10px;
             padding: 12px 16px;
-            font-family: 'Sarabun', sans-serif;
+            font-family: &quot;Sarabun&quot;, sans-serif;
             min-width: 280px;
             max-width: 450px;
           "
@@ -818,7 +846,7 @@ Version: 0.9.9 (2026-01-17)
             border: 2px solid #00ffff;
             border-radius: 10px;
             padding: 12px 16px;
-            font-family: 'Consolas', 'Monaco', monospace;
+            font-family: &quot;Consolas&quot;, &quot;Monaco&quot;, monospace;
             min-width: 280px;
           "
         >

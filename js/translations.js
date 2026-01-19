@@ -306,7 +306,7 @@ const TRANSLATIONS = {
       qr_instruction: "สแกน QR Code หรือคลิกปุ่มด้านล่าง",
       take_survey_btn: "📝 ตอบแบบสอบถาม",
       close_btn: "ปิดหน้าต่าง",
-      thank_you: "🙏 ขอบคุณสำหรับความคิดเห็นของคุณ",
+      thank_you: "🙏 ขอบคุณสำหรับความคิดเห็นที่มีค่า",
       motivational_quotes: [
         { zh: "水滴石穿", text: "น้ำหยดทีละหยด เจาะทะลุหินได้" },
         { zh: "千里之行，始於足下", text: "เส้นทางพันลี้ เริ่มต้นจากก้าวแรก" },
@@ -340,6 +340,7 @@ const TRANSLATIONS = {
       feedback_sub: "ช่วยพัฒนา TaijiFlow AI ให้ดียิ่งขึ้น",
       qr_instruction: "สแกน QR Code หรือคลิกปุ่มด้านล่าง",
       take_survey_btn: "📝 ตอบแบบสอบถาม",
+      thank_you: "🙏 ขอบคุณสำหรับความคิดเห็นที่มีค่า",
       close_btn: "ปิดหน้าต่าง",
     },
 
@@ -655,6 +656,7 @@ const TRANSLATIONS = {
       feedback_sub: "Help improve TaijiFlow AI",
       qr_instruction: "Scan QR below or click button",
       take_survey_btn: "📝 Take Survey",
+      thank_you: "🙏 Thank you for your valuable feedback",
       close_btn: "Close",
     },
 

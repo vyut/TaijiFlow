@@ -1,15 +1,87 @@
 /**
  * ============================================================================
- * TaijiFlow AI - Feedback Manager v2.0 (Theme Upgrade)
+ * TaijiFlow AI - Feedback Manager v2.1 (Shared Survey Component)
  * ============================================================================
  *
  * จัดการปุ่มและ Popup สำหรับแบบสอบถาม
- * @version 2.0 (2026-01-14)
- * - Upgraded to Purple Theme (Gradient)
- * - Replaced Emoji with SVG Icon
- * - Glassmorphism Popup (Matches Score Popup V3.2)
- * - Tailwind CSS based (No external CSS needed)
+ * @version 2.1 (2026-01-19)
+ * - Merged Survey Section shared component
+ * - Used by both FeedbackManager and ScorePopupManager
  */
+
+// =============================================================================
+// SHARED COMPONENT: Survey Section
+// =============================================================================
+// ใช้ร่วมกันระหว่าง FeedbackManager และ ScorePopupManager
+// เพื่อให้ UI ของส่วน Survey เหมือนกันทั้ง 2 popup
+
+/**
+ * สร้าง HTML template สำหรับ Survey Section
+ *
+ * @param {Object} options - Configuration options
+ * @param {Object} options.translations - Translation object containing survey text
+ * @param {string} options.formUrl - Google Form URL
+ * @param {string} options.closeButtonId - ID for close button (for event binding)
+ * @param {string} [options.variant='default'] - 'default' or 'compact' for different sizes
+ * @returns {string} HTML string
+ */
+function createSurveySectionHtml(options) {
+  const {
+    translations: t,
+    formUrl,
+    closeButtonId,
+    variant = "default",
+  } = options;
+
+  // Size variants
+  const isCompact = variant === "compact";
+  const qrSize = isCompact ? "w-28 h-28" : "w-32 h-32";
+  const titleSize = isCompact ? "text-lg" : "text-2xl";
+  const buttonPadding = isCompact ? "px-6 py-2" : "px-8 py-3";
+
+  return `
+    <!-- Survey Section Header -->
+    <div class="text-center">
+      <h4 class="${titleSize} font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 mb-1">
+        ${t.title}
+      </h4>
+      <p class="text-xs text-gray-600 dark:text-gray-300 font-medium mb-3">
+        ${t.feedback_sub}
+      </p>
+    </div>
+
+    <!-- QR Code -->
+    <div class="relative bg-white p-2 rounded-xl shadow-inner border border-gray-100 dark:border-gray-800 mx-auto w-fit mb-3">
+      <img src="images/qr_feedback.png" alt="QR" class="${qrSize} rounded-lg object-contain">
+    </div>
+
+    <!-- QR Instruction -->
+    <p class="text-xs text-gray-400 mb-3">
+      ${t.qr_instruction}
+    </p>
+
+    <!-- Survey Button -->
+    <a href="${formUrl}" target="_blank" 
+      class="block w-fit mx-auto ${buttonPadding} bg-gradient-to-br from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-purple-500/30 text-white hover:text-white rounded-lg font-semibold shadow-md shadow-purple-500/20 transition-all duration-200 active:scale-95 mb-3 text-sm no-underline">
+      ${t.take_survey_btn}
+    </a>
+
+    <!-- Thank You Message -->
+    <p class="text-sm text-gray-500 dark:text-gray-400 font-medium mb-3">
+      ${t.thank_you}
+    </p>
+
+    <!-- Close Button (Secondary Style - Gray for neutral action) -->
+    <button id="${closeButtonId}" 
+      class="block w-fit mx-auto ${buttonPadding} bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg font-semibold border border-gray-300 dark:border-gray-600 transition-colors text-sm">
+      ${t.close_btn}
+    </button>
+  `;
+}
+
+// =============================================================================
+// FEEDBACK MANAGER CLASS
+// =============================================================================
 
 class FeedbackManager {
   constructor() {
@@ -85,6 +157,14 @@ class FeedbackManager {
     popup.className =
       "fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-[100] transition-opacity duration-300 opacity-0 animate-[fadeIn_0.3s_ease-out_forwards]";
 
+    // Survey Section HTML (shared component)
+    const surveySectionHtml = createSurveySectionHtml({
+      translations: t,
+      formUrl: this.formUrl,
+      closeButtonId: "close-feedback-popup",
+      variant: "default",
+    });
+
     // Modal Content
     popup.innerHTML = `
       <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-6 max-w-sm w-full text-center relative transform scale-95 animate-[scaleIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards] border border-gray-100 dark:border-gray-700">
@@ -94,35 +174,7 @@ class FeedbackManager {
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
 
-        <!-- Header -->
-        <h3 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 mb-2">
-          ${t.title}
-        </h3>
-        
-        <p class="text-sm text-gray-600 dark:text-gray-300 font-medium mb-4">
-          ${t.feedback_sub}
-        </p>
-
-        <!-- QR Code -->
-        <div class="relative bg-white p-2 rounded-xl shadow-inner border border-gray-100 dark:border-gray-800 mx-auto w-fit mb-4">
-          <img src="images/qr_feedback.png" alt="QR" class="w-32 h-32 rounded-lg object-contain">
-        </div>
-
-        <p class="text-xs text-gray-400 mb-4">
-          ${t.qr_instruction}
-        </p>
-
-        <!-- Action Button -->
-        <a href="${this.formUrl}" target="_blank" 
-           class="block w-fit mx-auto px-8 py-3 bg-gradient-to-br from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-full font-semibold shadow-md shadow-purple-500/20 transform transition active:scale-95 mb-3 text-sm">
-           ${t.take_survey_btn}
-        </a>
-
-        <!-- Close Button (Secondary Style) -->
-        <button id="close-feedback-popup" 
-          class="block w-fit mx-auto px-8 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full font-semibold border border-gray-300 dark:border-gray-600 transition-colors text-sm">
-          ${t.close_btn}
-        </button>
+        ${surveySectionHtml}
       </div>
 
       <style>

@@ -103,6 +103,7 @@ nav {
 }
 
 .nav-btn-primary:hover {
+  background: linear-gradient(135deg, #9333ea, #4f46e5);
   transform: translateY(-2px);
   box-shadow: 0 5px 20px rgba(168, 85, 247, 0.4);
 }
@@ -206,7 +207,9 @@ nav {
     gap: 0;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
+    transition:
+      max-height 0.3s ease,
+      padding 0.3s ease;
   }
 
   .nav-links.active {
@@ -306,7 +309,7 @@ h1 {
   padding: 14px 32px;
   border-radius: 8px;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
   transition: all 0.3s ease;
   display: inline-flex;
@@ -322,6 +325,7 @@ h1 {
 }
 
 .btn-primary:hover {
+  background: linear-gradient(135deg, #9333ea, #4f46e5);
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
   color: #fff;
@@ -336,6 +340,7 @@ h1 {
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
 }
 
 /* Scroll Indicator */
@@ -395,7 +400,9 @@ h1 {
   border: 1px solid rgba(168, 85, 247, 0.3);
   border-radius: 16px;
   padding: 30px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .about-card:hover {

@@ -212,44 +212,16 @@ class ScorePopupManager {
             </div>
           </div>
 
-          <!-- RIGHT COLUMN: Feedback -->
+          <!-- RIGHT COLUMN: Feedback (Shared Component) -->
           <div class="flex-1 min-w-0 flex flex-col items-center justify-between sm:border-l sm:border-gray-100 dark:sm:border-gray-800 sm:pl-6">
-            <!-- Feedback Header -->
-            <div class="text-center">
-              <h4 class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 mb-1">
-                ${t.feedback_title}
-              </h4>
-              <p class="text-xs text-gray-600 dark:text-gray-300 font-medium mb-3">
-                ${t.feedback_sub}
-              </p>
-            </div>
-
-            <!-- QR Code -->
-            <div class="relative bg-white p-2 rounded-xl shadow-inner border border-gray-100 dark:border-gray-800 mx-auto w-fit mb-3">
-              <img src="images/qr_feedback.png" alt="QR" class="w-28 h-28 rounded-lg object-contain">
-            </div>
-
-            <!-- QR Instruction -->
-            <p class="text-xs text-gray-400 mb-3">
-              ${t.qr_instruction}
-            </p>
-            
-            <!-- Survey Button -->
-            <a href="${this.formUrl}" target="_blank" 
-              class="block w-fit mx-auto px-6 py-2 bg-gradient-to-br from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-full font-semibold shadow-md shadow-purple-500/20 transform transition active:scale-95 mb-3 text-sm">
-              ${t.take_survey_btn}
-            </a>
-
-            <!-- Thank You Message -->
-            <p class="text-sm text-gray-500 dark:text-gray-400 font-medium mb-3">
-              ${t.thank_you}
-            </p>
-
-            <!-- Close Button (Secondary Style) -->
-            <button id="close-score-popup" 
-              class="block w-fit mx-auto px-6 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full font-semibold border border-gray-300 dark:border-gray-600 transition-colors text-sm">
-              ${t.close_btn}
-            </button>
+            ${createSurveySectionHtml({
+              translations:
+                TRANSLATIONS[lang]?.feedback_popup ||
+                TRANSLATIONS["th"].feedback_popup,
+              formUrl: this.formUrl,
+              closeButtonId: "close-score-popup",
+              variant: "compact",
+            })}
           </div>
 
         </div>

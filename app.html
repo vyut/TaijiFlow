@@ -134,7 +134,7 @@ Version: 0.9.9 (2026-01-17)
     <script src="js/chatbot.js" defer></script>
     <!-- Gemini Chatbot -->
     <script src="js/feedback_manager.js" defer></script>
-    <!-- Feedback Popup -->
+    <!-- Feedback Popup (includes shared Survey Section) -->
 
     <!-- 3. Utility Modules (Refactored from script.js) -->
     <script src="js/session_manager.js" defer></script>
@@ -206,7 +206,7 @@ Version: 0.9.9 (2026-01-17)
           </a>
           <button
             id="mobile-continue-btn"
-            class="flex-1 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition-colors"
+            class="flex-1 py-3 bg-amber-600 hover:bg-amber-700 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber-500/30 text-white font-semibold rounded-lg transition-all duration-200"
           >
             ดำเนินการต่อ →
           </button>
@@ -299,7 +299,7 @@ Version: 0.9.9 (2026-01-17)
           <button
             id="privacy-accept-btn"
             data-i18n="privacy_accept"
-            class="flex-1 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors"
+            class="flex-1 py-3 bg-purple-600 hover:bg-purple-700 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-purple-500/30 text-white font-semibold rounded-lg transition-all duration-200"
           >
             เข้าใจแล้ว ✓
           </button>
@@ -1037,7 +1037,7 @@ Version: 0.9.9 (2026-01-17)
       <div class="flex justify-center gap-4 mb-6">
         <button
           id="start-training-btn"
-          class="bg-gradient-to-br from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-bold py-3 px-8 rounded-lg transition text-lg opacity-50 cursor-not-allowed shadow-lg"
+          class="bg-gradient-to-br from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-purple-500/30 text-white font-bold py-3 px-8 rounded-lg transition-all duration-200 text-lg opacity-50 cursor-not-allowed shadow-lg"
           disabled
         >
           ▶️ เริ่มการฝึก

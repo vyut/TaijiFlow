@@ -1736,6 +1736,7 @@ if (perfBtn && perfMenu) {
   // Toggle Menu
   perfBtn.addEventListener("click", (e) => {
     e.stopPropagation();
+    if (window.uiManager) window.uiManager.closeAllMenus("perf-menu");
     perfMenu.classList.toggle("hidden");
   });
 
@@ -1752,42 +1753,48 @@ if (perfBtn && perfMenu) {
 
 const camera = new Camera(videoElement, {
   onFrame: async () => {
-    // Throttling: ลดภาระเครื่องโดยการข้ามเฟรม
-    // SKIP_FRAMES: ประมวลผล 1 เฟรม ข้าม N เฟรม
-    // Lite Mode: Skip 4 (AI ~6 FPS) - เย็นสุด
-    // Balanced: Skip 3 (AI ~7.5 FPS) - สมดุล
-    // Quality: Skip 2 (AI ~10 FPS) - ลื่นไหล
-    throttleFrameCounter++;
-    camFrameCount++; // นับทุกเฟรมที่กล้องส่งมา
+    try {
+      // Throttling: ลดภาระเครื่องโดยการข้ามเฟรม
+      // SKIP_FRAMES: ประมวลผล 1 เฟรม ข้าม N เฟรม
+      // Lite Mode: Skip 4 (AI ~6 FPS) - เย็นสุด
+      // Balanced: Skip 3 (AI ~7.5 FPS) - สมดุล
+      // Quality: Skip 2 (AI ~10 FPS) - ลื่นไหล
+      throttleFrameCounter++;
+      camFrameCount++; // นับทุกเฟรมที่กล้องส่งมา
 
-    // คำนวณ FPS ทุก 1 วินาที
-    const now = performance.now();
-    if (now - lastFpsTime >= 1000) {
-      currentFps = fpsFrameCount; // AI FPS
-      currentCamFps = camFrameCount; // Camera FPS
-      fpsFrameCount = 0;
-      camFrameCount = 0;
-      lastFpsTime = now;
-    }
+      // คำนวณ FPS ทุก 1 วินาที
+      const now = performance.now();
+      if (now - lastFpsTime >= 1000) {
+        currentFps = fpsFrameCount; // AI FPS
+        currentCamFps = camFrameCount; // Camera FPS
+        fpsFrameCount = 0;
+        camFrameCount = 0;
+        lastFpsTime = now;
+      }
 
-    // Dynamic Throttling based on Performance Mode
-    const skipFrames =
-      currentPerformanceMode === "lite"
-        ? 4
-        : currentPerformanceMode === "quality"
-          ? 2
-          : 3;
+      // Dynamic Throttling based on Performance Mode
+      const skipFrames =
+        currentPerformanceMode === "lite"
+          ? 4
+          : currentPerformanceMode === "quality"
+            ? 2
+            : 3;
 
-    if (throttleFrameCounter % (skipFrames + 1) === 0) {
-      await pose.send({ image: videoElement });
-      // fpsFrameCount++; // Moved to onResults
-    }
+      if (throttleFrameCounter % (skipFrames + 1) === 0) {
+        await pose.send({ image: videoElement });
+        // fpsFrameCount++; // Moved to onResults
+      }
 
-    if (
-      !loadingOverlay.classList.contains("hidden") &&
-      throttleFrameCounter > 10
-    ) {
-      loadingOverlay.classList.add("hidden");
+      if (
+        !loadingOverlay.classList.contains("hidden") &&
+        throttleFrameCounter > 10
+      ) {
+        loadingOverlay.classList.add("hidden");
+      }
+    } catch (error) {
+      console.error("❌ Error in onFrame:", error);
+      // Optional: Show notification if it keeps failing?
+      // uiManager.showNotification("Frame Error: " + error.message, "error");
     }
   },
   width: currentPerformanceMode === "lite" ? 640 : 1280,

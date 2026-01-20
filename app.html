@@ -324,7 +324,7 @@ Version: 0.9.9 (2026-01-17)
       <!-- Top Bar: Selectors + Settings + Timer -->
       <div class="mb-4 flex flex-wrap justify-between items-center gap-4">
         <!-- Left: Dropdowns -->
-        <div class="flex gap-4 flex-wrap">
+        <div class="flex gap-2 flex-wrap">
           <!-- Category Dropdown (สำหรับขยายในอนาคต) -->
           <div>
             <select
@@ -367,6 +367,81 @@ Version: 0.9.9 (2026-01-17)
               <option value="L3">3. แบบยืนย่อ</option>
             </select>
           </div>
+          <!-- Performance Settings (Dev/Admin Only - English) -->
+          <div class="relative inline-block">
+            <button
+              id="perf-btn"
+              class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+              title="Performance Mode"
+            >
+              ⚡
+            </button>
+
+            <!-- Performance Menu (Hidden by default, Toggled via JS) -->
+            <div
+              id="perf-menu"
+              class="hidden absolute left-0 mt-2 w-56 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
+            >
+              <div
+                class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900"
+              >
+                ⚡ Performance Mode
+              </div>
+
+              <div class="flex flex-col">
+                <!-- Option: Lite -->
+                <button
+                  class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors border-b border-gray-700/50"
+                  data-value="lite"
+                  onclick="window.selectPerformanceMode('lite')"
+                >
+                  <span class="mr-3 text-lg">⚡</span>
+                  <div class="flex flex-col">
+                    <span class="text-sm font-bold text-white">Lite</span>
+                    <span class="text-xs text-gray-400">Fastest (Low Res)</span>
+                  </div>
+                  <span class="ml-auto text-green-400 opacity-0 check-icon"
+                    >✓</span
+                  >
+                </button>
+
+                <!-- Option: Balanced -->
+                <button
+                  class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors border-b border-gray-700/50"
+                  data-value="balanced"
+                  onclick="window.selectPerformanceMode('balanced')"
+                >
+                  <span class="mr-3 text-lg">⚖️</span>
+                  <div class="flex flex-col">
+                    <span class="text-sm font-bold text-white">Balanced</span>
+                    <span class="text-xs text-gray-400"
+                      >Default (Recommended)</span
+                    >
+                  </div>
+                  <span class="ml-auto text-green-400 opacity-0 check-icon"
+                    >✓</span
+                  >
+                </button>
+
+                <!-- Option: Quality -->
+                <button
+                  class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors"
+                  data-value="quality"
+                  onclick="window.selectPerformanceMode('quality')"
+                >
+                  <span class="mr-3 text-lg">💎</span>
+                  <div class="flex flex-col">
+                    <span class="text-sm font-bold text-white">Quality</span>
+                    <span class="text-xs text-gray-400">Best (High Res)</span>
+                  </div>
+                  <span class="ml-auto text-green-400 opacity-0 check-icon"
+                    >✓</span
+                  >
+                </button>
+              </div>
+            </div>
+          </div>
+
           <!-- Display Options Dropdown -->
           <div class="relative" id="display-dropdown-container">
             <button
@@ -379,7 +454,7 @@ Version: 0.9.9 (2026-01-17)
             <!-- Dropdown Menu -->
             <div
               id="display-menu"
-              class="hidden absolute left-0 mt-2 w-56 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-50 overflow-hidden"
+              class="hidden absolute left-0 mt-2 w-56 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
             >
               <div
                 class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900"
@@ -593,85 +668,9 @@ Version: 0.9.9 (2026-01-17)
               ⚙️
             </button>
 
-            <!-- Performance Settings (Dev/Admin Only - English) -->
-            <div class="relative inline-block ml-2">
-              <button
-                id="perf-btn"
-                class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
-                title="Performance Mode"
-              >
-                ⚡
-              </button>
-
-              <!-- Performance Menu (Hidden by default, Toggled via JS) -->
-              <div
-                id="perf-menu"
-                class="hidden absolute left-0 mt-2 w-56 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-50 overflow-hidden"
-              >
-                <div
-                  class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900"
-                >
-                  ⚡ Performance Mode
-                </div>
-
-                <div class="flex flex-col">
-                  <!-- Option: Lite -->
-                  <button
-                    class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors border-b border-gray-700/50"
-                    data-value="lite"
-                    onclick="window.selectPerformanceMode('lite')"
-                  >
-                    <span class="mr-3 text-lg">⚡</span>
-                    <div class="flex flex-col">
-                      <span class="text-sm font-bold text-white">Lite</span>
-                      <span class="text-xs text-gray-400"
-                        >Fastest (Low Res)</span
-                      >
-                    </div>
-                    <span class="ml-auto text-green-400 opacity-0 check-icon"
-                      >✓</span
-                    >
-                  </button>
-
-                  <!-- Option: Balanced -->
-                  <button
-                    class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors border-b border-gray-700/50"
-                    data-value="balanced"
-                    onclick="window.selectPerformanceMode('balanced')"
-                  >
-                    <span class="mr-3 text-lg">⚖️</span>
-                    <div class="flex flex-col">
-                      <span class="text-sm font-bold text-white">Balanced</span>
-                      <span class="text-xs text-gray-400"
-                        >Default (Recommended)</span
-                      >
-                    </div>
-                    <span class="ml-auto text-green-400 opacity-0 check-icon"
-                      >✓</span
-                    >
-                  </button>
-
-                  <!-- Option: Quality -->
-                  <button
-                    class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors"
-                    data-value="quality"
-                    onclick="window.selectPerformanceMode('quality')"
-                  >
-                    <span class="mr-3 text-lg">💎</span>
-                    <div class="flex flex-col">
-                      <span class="text-sm font-bold text-white">Quality</span>
-                      <span class="text-xs text-gray-400">Best (High Res)</span>
-                    </div>
-                    <span class="ml-auto text-green-400 opacity-0 check-icon"
-                      >✓</span
-                    >
-                  </button>
-                </div>
-              </div>
-            </div>
             <div
               id="rules-menu"
-              class="absolute left-0 mt-2 w-64 bg-gray-800 border border-gray-600 rounded-lg shadow-xl hidden z-50 overflow-hidden"
+              class="hidden absolute left-0 mt-2 w-64 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
               style="max-height: 70vh; overflow-y: auto"
             >
               <div
@@ -748,10 +747,16 @@ Version: 0.9.9 (2026-01-17)
               <!-- Rule 7: Continuity -->
               <div class="rule-item p-2 border-b border-gray-700">
                 <label class="flex items-center cursor-pointer">
-                  <input type="checkbox" id="rule-continuity" class="mr-2" />
-                  <span style="color: white">7. Continuity</span>
+                  <input
+                    type="checkbox"
+                    id="rule-continuity"
+                    class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                  />
+                  <span class="text-sm font-bold text-white ml-2"
+                    >7. Continuity</span
+                  >
                 </label>
-                <div class="ml-5 mt-1 text-xs text-gray-400">
+                <div class="ml-8 mt-1 text-xs text-gray-400">
                   <div class="flex items-center gap-1 mb-1">
                     <span>Threshold:</span>
                     <input
@@ -791,10 +796,16 @@ Version: 0.9.9 (2026-01-17)
               <!-- Rule 2: Arm Rotation -->
               <div class="rule-item p-2 border-b border-gray-700">
                 <label class="flex items-center cursor-pointer">
-                  <input type="checkbox" id="rule-rotation" class="mr-2" />
-                  <span style="color: white">2. Arm Rotation</span>
+                  <input
+                    type="checkbox"
+                    id="rule-rotation"
+                    class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                  />
+                  <span class="text-sm font-bold text-white ml-2"
+                    >2. Arm Rotation</span
+                  >
                 </label>
-                <div class="ml-5 mt-1 text-xs text-gray-400">
+                <div class="ml-8 mt-1 text-xs text-gray-400">
                   <div class="flex items-center gap-1">
                     <span>Motion:</span>
                     <input
@@ -814,10 +825,16 @@ Version: 0.9.9 (2026-01-17)
               <!-- Rule 4: Waist Initiation -->
               <div class="rule-item p-2 border-b border-gray-700">
                 <label class="flex items-center cursor-pointer">
-                  <input type="checkbox" id="rule-waist" class="mr-2" />
-                  <span style="color: white">4. Waist Initiation</span>
+                  <input
+                    type="checkbox"
+                    id="rule-waist"
+                    class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                  />
+                  <span class="text-sm font-bold text-white ml-2"
+                    >4. Waist Initiation</span
+                  >
                 </label>
-                <div class="ml-5 mt-1 text-xs text-gray-400">
+                <div class="ml-8 mt-1 text-xs text-gray-400">
                   <div class="flex items-center gap-1 mb-1">
                     <span>Hip Vel:</span>
                     <input
@@ -850,10 +867,16 @@ Version: 0.9.9 (2026-01-17)
               <!-- Rule 6: Smoothness -->
               <div class="rule-item p-2 border-b border-gray-700">
                 <label class="flex items-center cursor-pointer">
-                  <input type="checkbox" id="rule-smooth" class="mr-2" />
-                  <span style="color: white">6. Smoothness</span>
+                  <input
+                    type="checkbox"
+                    id="rule-smooth"
+                    class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                  />
+                  <span class="text-sm font-bold text-white ml-2"
+                    >6. Smoothness</span
+                  >
                 </label>
-                <div class="ml-5 mt-1 text-xs text-gray-400">
+                <div class="ml-8 mt-1 text-xs text-gray-400">
                   <div class="flex items-center gap-1">
                     <span>Threshold:</span>
                     <input
@@ -880,10 +903,16 @@ Version: 0.9.9 (2026-01-17)
               <!-- Rule 5: Vertical Stability -->
               <div class="rule-item p-2 border-b border-gray-700">
                 <label class="flex items-center cursor-pointer">
-                  <input type="checkbox" id="rule-stability" class="mr-2" />
-                  <span style="color: white">5. Vertical Stability</span>
+                  <input
+                    type="checkbox"
+                    id="rule-stability"
+                    class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                  />
+                  <span class="text-sm font-bold text-white ml-2"
+                    >5. Vertical Stability</span
+                  >
                 </label>
-                <div class="ml-5 mt-1 text-xs text-gray-400">
+                <div class="ml-8 mt-1 text-xs text-gray-400">
                   <div class="flex items-center gap-1">
                     <span>Threshold:</span>
                     <input
@@ -903,10 +932,16 @@ Version: 0.9.9 (2026-01-17)
               <!-- Rule 8: Weight Shift -->
               <div class="rule-item p-2 border-b border-gray-700">
                 <label class="flex items-center cursor-pointer">
-                  <input type="checkbox" id="rule-weight" class="mr-2" />
-                  <span style="color: white">8. Weight Shift</span>
+                  <input
+                    type="checkbox"
+                    id="rule-weight"
+                    class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                  />
+                  <span class="text-sm font-bold text-white ml-2"
+                    >8. Weight Shift</span
+                  >
                 </label>
-                <div class="ml-5 mt-1 text-xs text-gray-400">
+                <div class="ml-8 mt-1 text-xs text-gray-400">
                   <div class="flex items-center gap-1">
                     <span>Buffer:</span>
                     <input

@@ -4,6 +4,30 @@
 
 ---
 
+## [v0.9.12] - 2026-01-21
+
+### ⚡ Performance Mode & UI Standardization
+
+#### Added
+- **Performance Mode** (`script.js`) - ระบบปรับความละเอียดและ Frame Rate อัตโนมัติ
+  - **Lite:** 640x480, Skip 4 frames (Best for low-end)
+  - **Balanced:** 1280x720, Skip 3 frames (Default)
+  - **Quality:** 1280x720, Skip 2 frames (Best visuals)
+- **Menu Centralization** (`ui_manager.js`) - ระบบปิดเมนูอัตโนมัติเมื่อเปิดเมนูอื่น (`closeAllMenus`)
+
+#### Changed
+- **Performance UI** - เปลี่ยนจาก Dropdown เป็น **Vertical List** พร้อมคำอธิบายละเอียด
+- **Display & Rules UI** - ปรับดีไซน์เป็น Glassmorphism (`backdrop-blur-md`) และจัดระยะห่างให้เท่ากัน
+- **Video Sizing** - แก้ไขบั๊ก layout ที่ทำให้ Video ขยายเกินขอบเมื่อเปิดเมนู Rules
+
+#### Fixed
+- **Layout Regression** - ลบ `</div>` เกินใน `app.html` ที่ทำให้โครงสร้างหน้าเว็บพัง
+
+#### Updated Docs
+- **Thesis Docs** - Updated `THESIS_SUMMARY.md` and `progress_status_record.md`
+
+---
+
 ## [v0.9.11] - 2026-01-19
 
 ### 🔧 Heuristics Rules Debugging & Tuning

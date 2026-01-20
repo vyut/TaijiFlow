@@ -35,13 +35,14 @@ skinparam package {
 package "Controllers" <<Controller>> {
     class "script.js" as Script <<Main>> {
         - isTrainingMode: boolean
-        - currentExercise: string
-        - currentLevel: string
+        - currentPerformanceMode: string
         --
         + startTrainingFlow()
         + endTrainingSession()
         + onResults(results)
         + loadReferenceData()
+        + setPerformanceMode(mode)
+        + selectPerformanceMode(mode)
     }
     
     class KeyboardController {
@@ -65,7 +66,9 @@ package "Controllers" <<Controller>> {
         + resetToDefaults()
         + addTrailPoint(x, y)
         + clearTrail()
+        + clearTrail()
         + initBlurBackgroundCheckbox()
+        + autoDisableHighCostEffects()
     }
     
     note as NC
@@ -183,7 +186,10 @@ package "UI & Feedback" <<UI>> {
             --
             + toggleLanguage()
             + toggleTheme()
+            + toggleLanguage()
+            + toggleTheme()
             + showNotification(msg)
+            + closeAllMenus(exceptId)
         }
         
         class AudioManager {

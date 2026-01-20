@@ -162,6 +162,7 @@ class RulesConfigManager {
 
     this.rulesBtn.addEventListener("click", (e) => {
       e.stopPropagation();
+      if (window.uiManager) window.uiManager.closeAllMenus("rules-menu");
       this.rulesMenu.classList.toggle("hidden");
     });
 

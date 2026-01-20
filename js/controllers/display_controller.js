@@ -63,6 +63,7 @@ class DisplayController {
     if (displayBtn && displayMenu) {
       displayBtn.addEventListener("click", (e) => {
         e.stopPropagation();
+        if (window.uiManager) window.uiManager.closeAllMenus("display-menu");
         displayMenu.classList.toggle("hidden");
       });
 

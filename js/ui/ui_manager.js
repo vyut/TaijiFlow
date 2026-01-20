@@ -543,6 +543,22 @@ class UIManager {
     }
   }
 
+  /**
+   * Close All Menus - ปิดเมนูทั้งหมด (ยกเว้น ID ที่ระบุ)
+   * @param {string|null} exceptId - ID ของเมนูที่ *ไม่ต้อง* ปิด (ถ้ามี)
+   */
+  closeAllMenus(exceptId = null) {
+    const menus = ["display-menu", "rules-menu", "perf-menu"];
+    menus.forEach((id) => {
+      if (id !== exceptId) {
+        const el = document.getElementById(id);
+        if (el && !el.classList.contains("hidden")) {
+          el.classList.add("hidden");
+        }
+      }
+    });
+  }
+
   // ===========================================================================
   // METHOD: updateText
   // ===========================================================================

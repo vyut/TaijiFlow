@@ -29,7 +29,7 @@ loop Camera Loop: ทุก Frame (~30 fps)
     Training -> Training : throttleFrameCounter++
     
     ' === Throttling Check ===
-    opt Process Frame (Every 4th Frame ~7.5 fps)
+    opt Process Frame (Dynamic Skipping: Lite/Balanced/Quality)
         Training -> MediaPipe : pose.send(video)
         MediaPipe -> Training : onResults(results)
         

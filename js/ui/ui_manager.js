@@ -251,6 +251,12 @@ class UIManager {
     }
 
     // -------------------------------------------------------------------------
+    // โหลด Performance Mode (Updated for Vertical List)
+    // -------------------------------------------------------------------------
+    // Note: UI Update logic moved to script.js (updatePerformanceMenuUI)
+    // because it requires DOM access to the new list structure.
+
+    // -------------------------------------------------------------------------
     // อัปเดต UI ตามค่าที่โหลดมา
     // -------------------------------------------------------------------------
     this.updateText();

@@ -1663,12 +1663,100 @@ pose.onResults(onResults);
 // -----------------------------------------------------------------------------
 // สร้าง Camera Instance จาก MediaPipe Camera Utils
 // onFrame จะถูกเรียกทุก Frame (~30 FPS)
+
+// =============================================================================
+// PERFORMANCE MODE MANAGEMENT
+// =============================================================================
+let currentPerformanceMode = localStorage.getItem("perfMode") || "balanced"; // lite, balanced, quality
+
+/**
+ * ตั้งค่า Performance Mode และ Restart ระบบ AI
+ * @param {string} mode - "lite", "balanced", "quality"
+ */
+window.setPerformanceMode = async function (mode) {
+  if (mode === currentPerformanceMode) return;
+
+  console.log(
+    `⚡ Switching Performance Mode: ${currentPerformanceMode} -> ${mode}`,
+  );
+  currentPerformanceMode = mode;
+  localStorage.setItem("perfMode", mode);
+
+  // 1. Update Pose Options
+  const complexity = mode === "lite" ? 0 : mode === "quality" ? 2 : 1;
+  const enableSmooth = mode !== "lite";
+
+  pose.setOptions({
+    modelComplexity: complexity,
+    smoothLandmarks: enableSmooth,
+    enableSegmentation: false, // Reset segmentation (will be enabled if needed)
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5,
+  });
+
+  // 2. Restart Camera with new Resolution
+  await camera.stop();
+  uiManager.showNotification(
+    uiManager.getText("alert_perf_changed") || `Performance Mode: ${mode}`,
+    "success",
+  );
+  await camera.start();
+};
+
+/**
+ * 🆕 Wrapper สำหรับจัดการ UI ของ Performance Menu (Vertical List)
+ * @param {string} mode
+ */
+window.selectPerformanceMode = function (mode) {
+  // 1. Call logic
+  window.setPerformanceMode(mode);
+
+  // 2. Update UI (Checkmarks)
+  updatePerformanceMenuUI(mode);
+};
+
+function updatePerformanceMenuUI(mode) {
+  document.querySelectorAll(".perf-option").forEach((btn) => {
+    const check = btn.querySelector(".check-icon");
+    if (btn.dataset.value === mode) {
+      check.classList.remove("opacity-0");
+      btn.classList.add("bg-gray-700"); // Active state background
+    } else {
+      check.classList.add("opacity-0");
+      btn.classList.remove("bg-gray-700");
+    }
+  });
+}
+
+// Init Performance Menu UI
+const perfBtn = document.getElementById("perf-btn");
+const perfMenu = document.getElementById("perf-menu");
+
+if (perfBtn && perfMenu) {
+  // Toggle Menu
+  perfBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    perfMenu.classList.toggle("hidden");
+  });
+
+  // Close when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!perfMenu.contains(e.target) && e.target !== perfBtn) {
+      perfMenu.classList.add("hidden");
+    }
+  });
+
+  // Set initial UI state
+  updatePerformanceMenuUI(currentPerformanceMode);
+}
+
 const camera = new Camera(videoElement, {
   onFrame: async () => {
     // Throttling: ลดภาระเครื่องโดยการข้ามเฟรม
-    // SKIP_FRAMES = 3 หมายถึงประมวลผล 1 เฟรม ข้าม 3 เฟรม (Process every 4th frame)
-    // ผลลัพธ์: Input 30 FPS -> AI ~7.5 FPS
-    // วิธีนี้ช่วยลดความร้อนและ CPU Load ได้มหาศาลสำหรับ Tablet/Mobile
+    // SKIP_FRAMES: ประมวลผล 1 เฟรม ข้าม N เฟรม
+    // Lite Mode: Skip 4 (AI ~6 FPS) - เย็นสุด
+    // Balanced: Skip 3 (AI ~7.5 FPS) - สมดุล
+    // Quality: Skip 2 (AI ~10 FPS) - ลื่นไหล
     throttleFrameCounter++;
     camFrameCount++; // นับทุกเฟรมที่กล้องส่งมา
 
@@ -1682,13 +1770,19 @@ const camera = new Camera(videoElement, {
       lastFpsTime = now;
     }
 
-    if (throttleFrameCounter % 4 === 0) {
+    // Dynamic Throttling based on Performance Mode
+    const skipFrames =
+      currentPerformanceMode === "lite"
+        ? 4
+        : currentPerformanceMode === "quality"
+          ? 2
+          : 3;
+
+    if (throttleFrameCounter % (skipFrames + 1) === 0) {
       await pose.send({ image: videoElement });
-      // fpsFrameCount++; // Removed: Moved to onResults for accurate counting
+      // fpsFrameCount++; // Moved to onResults
     }
 
-    // ซ่อน Loading หลังจากได้ผลลัพธ์ Frame แรก (เช็คแค่ครั้งเดียวพอ)
-    // เปลี่ยนมาใช้ throttleFrameCounter เพื่อความถูกต้อง
     if (
       !loadingOverlay.classList.contains("hidden") &&
       throttleFrameCounter > 10
@@ -1696,8 +1790,8 @@ const camera = new Camera(videoElement, {
       loadingOverlay.classList.add("hidden");
     }
   },
-  width: 1280, // ความกว้าง (px)
-  height: 720, // ความสูง (px) - 720p HD
+  width: currentPerformanceMode === "lite" ? 640 : 1280,
+  height: currentPerformanceMode === "lite" ? 480 : 720,
 });
 
 // -----------------------------------------------------------------------------

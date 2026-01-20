@@ -379,115 +379,205 @@ Version: 0.9.9 (2026-01-17)
             <!-- Dropdown Menu -->
             <div
               id="display-menu"
-              class="hidden absolute left-0 mt-2 w-48 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-50"
+              class="hidden absolute left-0 mt-2 w-56 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-50 overflow-hidden"
             >
               <div
-                class="p-2 text-sm text-center border-b border-gray-600"
-                style="color: white"
+                class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900"
               >
                 Display Options
               </div>
 
               <!-- ===== 📚 Reference Section ===== -->
               <div
-                class="px-3 py-1 text-xs text-center text-gray-400 bg-gray-750"
+                class="px-4 py-1 text-xs text-blue-300 bg-blue-900/50 uppercase font-bold tracking-wider mt-1"
               >
-                📚 Expert/Instructor
+                Expert/Instructor
               </div>
-              <!-- Path - Default ON -->
+              <!-- Path -->
               <label
-                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
                 title="Show dynamic path guide"
               >
-                <input type="checkbox" id="check-path" class="mr-2" checked />
-                <span style="color: white">🟢 Path (P)</span>
+                <input
+                  type="checkbox"
+                  id="check-path"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                  checked
+                />
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white">Path Guide</span>
+                  <span class="text-xs text-gray-400"
+                    >Dynamic movement guide</span
+                  >
+                </div>
+                <span
+                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
+                  >P</span
+                >
               </label>
-              <!-- Instructor Thumbnail - Default ON -->
+              <!-- Instructor Thumbnail -->
               <label
-                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
                 title="Show instructor shadow in corner thumbnail"
               >
                 <input
                   type="checkbox"
                   id="check-instructor"
-                  class="mr-2"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
                   checked
                 />
-                <span style="color: white">🎬 Instructor (I)</span>
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white"
+                    >Instructor PiP</span
+                  >
+                  <span class="text-xs text-gray-400"
+                    >Corner video overlay</span
+                  >
+                </div>
+                <span
+                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
+                  >I</span
+                >
               </label>
-              <!-- Ghost - Default OFF -->
+              <!-- Ghost -->
               <label
-                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
                 title="Show instructor shadow on main video"
               >
-                <input type="checkbox" id="check-ghost" class="mr-2" />
-                <span style="color: white">👻 Ghost (G)</span>
+                <input
+                  type="checkbox"
+                  id="check-ghost"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                />
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white"
+                    >Ghost Overlay</span
+                  >
+                  <span class="text-xs text-gray-400">Full body reference</span>
+                </div>
+                <span
+                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
+                  >G</span
+                >
               </label>
 
               <!-- ===== 👤 You Section ===== -->
               <div
-                class="px-3 py-1 text-center text-xs text-gray-400 bg-gray-750 border-t border-gray-600"
+                class="px-4 py-1 text-xs text-purple-300 bg-purple-900/50 uppercase font-bold tracking-wider mt-2"
               >
-                👤 Trainee/You
+                Trainee/You
               </div>
-              <!-- Skeleton - Default ON -->
+              <!-- Skeleton -->
               <label
-                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
                 title="Show your skeleton overlay"
               >
                 <input
                   type="checkbox"
                   id="check-skeleton"
-                  class="mr-2"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
                   checked
                 />
-                <span style="color: white">🦴 Skeleton (K)</span>
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white">Skeleton</span>
+                  <span class="text-xs text-gray-400">Track your joints</span>
+                </div>
+                <span
+                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
+                  >K</span
+                >
               </label>
-              <!-- Trail - Default ON -->
+              <!-- Trail -->
               <label
-                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
                 title="Show wrist movement trail"
               >
-                <input type="checkbox" id="check-trail" class="mr-2" checked />
-                <span style="color: white">🔵 Trail (R)</span>
+                <input
+                  type="checkbox"
+                  id="check-trail"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                  checked
+                />
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white">Motion Trail</span>
+                  <span class="text-xs text-gray-400">Track hand history</span>
+                </div>
+                <span
+                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
+                  >R</span
+                >
               </label>
-              <!-- Silhouette - Default OFF -->
+              <!-- Silhouette -->
               <label
-                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
                 title="Show your silhouette overlay"
               >
-                <input type="checkbox" id="check-silhouette" class="mr-2" />
-                <span style="color: white">🎭 Silhouette (S)</span>
+                <input
+                  type="checkbox"
+                  id="check-silhouette"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                />
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white">Silhouette</span>
+                  <span class="text-xs text-gray-400">Body outline effect</span>
+                </div>
+                <span
+                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
+                  >S</span
+                >
               </label>
+
               <!-- ===== 🛠️ Developer Section ===== -->
               <div
-                class="px-3 py-1 text-center text-xs text-gray-400 bg-gray-750 border-t border-gray-600"
+                class="px-4 py-1 text-xs text-red-300 bg-red-900/50 uppercase font-bold tracking-wider mt-2"
               >
-                🛠️ Developer
+                Developer
               </div>
               <!-- Debug Mode -->
               <label
-                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
                 title="Show debug information (threshold values)"
               >
-                <input type="checkbox" id="check-debug" class="mr-2" />
-                <span style="color: white">🐞 Debug (D)</span>
+                <input
+                  type="checkbox"
+                  id="check-debug"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                />
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white">Debug Info</span>
+                  <span class="text-xs text-gray-400">System metrics</span>
+                </div>
+                <span
+                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
+                  >D</span
+                >
               </label>
 
               <!-- ===== 🎨 Visual Effects Section ===== -->
               <div
-                class="px-3 py-1 text-center text-xs text-gray-400 bg-gray-750 border-t border-gray-600"
+                class="px-4 py-1 text-xs text-yellow-300 bg-yellow-900/50 uppercase font-bold tracking-wider mt-2"
               >
-                🎨 Visual Effects
+                Visual Effects
               </div>
-              <!-- Background Blur - Default OFF -->
+              <!-- Background Blur -->
               <label
-                class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer transition-colors"
                 title="Blur background for privacy (may reduce performance)"
               >
-                <input type="checkbox" id="check-blur-bg" class="mr-2" />
-                <span style="color: white" id="label-blur-bg"
-                  >Blur Background (B)</span
+                <input
+                  type="checkbox"
+                  id="check-blur-bg"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                />
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white" id="label-blur-bg"
+                    >Blur Background</span
+                  >
+                  <span class="text-xs text-gray-400">Hide surroundings</span>
+                </div>
+                <span
+                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
+                  >B</span
                 >
               </label>
             </div>
@@ -502,14 +592,90 @@ Version: 0.9.9 (2026-01-17)
             >
               ⚙️
             </button>
+
+            <!-- Performance Settings (Dev/Admin Only - English) -->
+            <div class="relative inline-block ml-2">
+              <button
+                id="perf-btn"
+                class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+                title="Performance Mode"
+              >
+                ⚡
+              </button>
+
+              <!-- Performance Menu (Hidden by default, Toggled via JS) -->
+              <div
+                id="perf-menu"
+                class="hidden absolute left-0 mt-2 w-56 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-50 overflow-hidden"
+              >
+                <div
+                  class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900"
+                >
+                  ⚡ Performance Mode
+                </div>
+
+                <div class="flex flex-col">
+                  <!-- Option: Lite -->
+                  <button
+                    class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors border-b border-gray-700/50"
+                    data-value="lite"
+                    onclick="window.selectPerformanceMode('lite')"
+                  >
+                    <span class="mr-3 text-lg">⚡</span>
+                    <div class="flex flex-col">
+                      <span class="text-sm font-bold text-white">Lite</span>
+                      <span class="text-xs text-gray-400"
+                        >Fastest (Low Res)</span
+                      >
+                    </div>
+                    <span class="ml-auto text-green-400 opacity-0 check-icon"
+                      >✓</span
+                    >
+                  </button>
+
+                  <!-- Option: Balanced -->
+                  <button
+                    class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors border-b border-gray-700/50"
+                    data-value="balanced"
+                    onclick="window.selectPerformanceMode('balanced')"
+                  >
+                    <span class="mr-3 text-lg">⚖️</span>
+                    <div class="flex flex-col">
+                      <span class="text-sm font-bold text-white">Balanced</span>
+                      <span class="text-xs text-gray-400"
+                        >Default (Recommended)</span
+                      >
+                    </div>
+                    <span class="ml-auto text-green-400 opacity-0 check-icon"
+                      >✓</span
+                    >
+                  </button>
+
+                  <!-- Option: Quality -->
+                  <button
+                    class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors"
+                    data-value="quality"
+                    onclick="window.selectPerformanceMode('quality')"
+                  >
+                    <span class="mr-3 text-lg">💎</span>
+                    <div class="flex flex-col">
+                      <span class="text-sm font-bold text-white">Quality</span>
+                      <span class="text-xs text-gray-400">Best (High Res)</span>
+                    </div>
+                    <span class="ml-auto text-green-400 opacity-0 check-icon"
+                      >✓</span
+                    >
+                  </button>
+                </div>
+              </div>
+            </div>
             <div
               id="rules-menu"
-              class="absolute left-0 mt-2 w-60 bg-gray-800 rounded-lg shadow-lg hidden z-50"
+              class="absolute left-0 mt-2 w-64 bg-gray-800 border border-gray-600 rounded-lg shadow-xl hidden z-50 overflow-hidden"
               style="max-height: 70vh; overflow-y: auto"
             >
               <div
-                class="p-2 text-sm text-center border-b border-gray-600 sticky top-0 bg-gray-800"
-                style="color: white"
+                class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900 sticky top-0"
               >
                 Rules Settings
               </div>
@@ -524,10 +690,16 @@ Version: 0.9.9 (2026-01-17)
               <!-- Rule 1: Path Shape -->
               <div class="rule-item p-2 border-b border-gray-700">
                 <label class="flex items-center cursor-pointer">
-                  <input type="checkbox" id="rule-path" class="mr-2" />
-                  <span style="color: white">1. Path Shape</span>
+                  <input
+                    type="checkbox"
+                    id="rule-path"
+                    class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                  />
+                  <span class="text-sm font-bold text-white ml-2"
+                    >1. Path Shape</span
+                  >
                 </label>
-                <div class="ml-5 mt-1 text-xs text-gray-400">
+                <div class="ml-8 mt-1 text-xs text-gray-400">
                   <div class="flex items-center gap-1">
                     <span>Consistency:</span>
                     <input
@@ -547,10 +719,16 @@ Version: 0.9.9 (2026-01-17)
               <!-- Rule 3: Elbow Sinking -->
               <div class="rule-item p-2 border-b border-gray-700">
                 <label class="flex items-center cursor-pointer">
-                  <input type="checkbox" id="rule-elbow" class="mr-2" />
-                  <span style="color: white">3. Elbow Sinking</span>
+                  <input
+                    type="checkbox"
+                    id="rule-elbow"
+                    class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                  />
+                  <span class="text-sm font-bold text-white ml-2"
+                    >3. Elbow Sinking</span
+                  >
                 </label>
-                <div class="ml-5 mt-1 text-xs text-gray-400">
+                <div class="ml-8 mt-1 text-xs text-gray-400">
                   <div class="flex items-center gap-1">
                     <span>Tolerance:</span>
                     <input

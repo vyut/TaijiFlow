@@ -242,7 +242,7 @@ class DisplayController {
           // แสดง Warning และปิด checkbox
           const { uiManager, translations } = this.deps;
           if (uiManager && translations) {
-            const lang = uiManager.currentLanguage || "th";
+            const lang = uiManager.currentLang || "th";
             const message =
               translations[lang]?.blur_bg_safari_warning ||
               "Background Blur is not supported on Safari.";
@@ -255,8 +255,7 @@ class DisplayController {
           return;
         }
 
-        // Toggle Segmentation (จำเป็นสำหรับ Blur Background)
-        // Note: Silhouette ก็ใช้ Segmentation ดังนั้นถ้า Silhouette เปิดอยู่ ไม่ต้องปิด
+        // Toggle Segmentation
         const needSegmentation = this.showBlurBackground || this.showSilhouette;
         if (typeof pose !== "undefined") {
           pose.setOptions({
@@ -267,11 +266,68 @@ class DisplayController {
 
         if (this.showBlurBackground) {
           console.log("🌫️ Background Blur enabled");
+          // Start Low FPS Check
+          this.startLowFPSCheck();
         } else {
           console.log("✅ Background Blur disabled");
+          this.stopLowFPSCheck();
         }
       });
     }
+  }
+
+  /**
+   * Start checking for Low FPS (Auto-downgrade)
+   */
+  startLowFPSCheck() {
+    this.lowFpsCount = 0;
+    this.fpsCheckInterval = setInterval(() => {
+      // Use window.currentFps computed in script.js
+      if (window.currentFps > 0 && window.currentFps < 15) {
+        this.lowFpsCount++;
+        if (this.lowFpsCount >= 5) {
+          // < 15 FPS for 5 seconds
+          this.autoDisableHighCostEffects();
+        }
+      } else {
+        this.lowFpsCount = 0;
+      }
+    }, 1000);
+  }
+
+  stopLowFPSCheck() {
+    if (this.fpsCheckInterval) {
+      clearInterval(this.fpsCheckInterval);
+      this.fpsCheckInterval = null;
+    }
+  }
+
+  autoDisableHighCostEffects() {
+    this.stopLowFPSCheck();
+
+    // Disable Blur BG
+    this.showBlurBackground = false;
+    const checkBlurBg = document.getElementById("check-blur-bg");
+    if (checkBlurBg) checkBlurBg.checked = false;
+
+    // Toggle Segmentation off (if Silhouette is also off)
+    if (!this.showSilhouette && typeof pose !== "undefined") {
+      pose.setOptions({
+        enableSegmentation: false,
+        smoothSegmentation: false,
+      });
+    }
+
+    // Notify User
+    const { uiManager, translations } = this.deps;
+    if (uiManager && translations) {
+      const lang = uiManager.currentLang || "th";
+      const message =
+        translations[lang]?.blur_bg_warning ||
+        "Low FPS! Blur Background disabled.";
+      uiManager.showNotification(message, "warning");
+    }
+    console.warn("⚠️ High Cost Effects Auto-disabled due to Low FPS");
   }
 
   /**

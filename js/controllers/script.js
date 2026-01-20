@@ -260,7 +260,7 @@ function checkLowFpsPerformance() {
     uiManager.showNotification(
       uiManager.getText("blur_bg_warning"),
       "warning",
-      8000
+      8000,
     );
     console.log(`⚠️ Low FPS Warning: ${currentFps} FPS with Blur enabled`);
   }
@@ -578,7 +578,7 @@ function showCountdown() {
     // 2. พูดชื่อท่า (Speaking...)
     const exerciseText = audioManager.getExerciseSpokenText(
       currentExercise,
-      currentLevel
+      currentLevel,
     );
     audioManager.speak(exerciseText, true);
 
@@ -648,7 +648,7 @@ async function startTrainingFlow() {
     // Notify user of the choice (Small delay to let them see it before fullscreen)
     uiManager.showNotification(
       `🎲 Random Selected: ${uiManager.getText("ex_" + currentExercise)}`,
-      "info"
+      "info",
     );
     // await new Promise((r) => setTimeout(r, 800)); // Delay removed to fix "Double Click" issue
     await loadReferenceData();
@@ -774,7 +774,7 @@ function endTrainingSession() {
         DataExporter.exportFullSession(fullDataset);
       } else {
         console.log(
-          "[Export] Skipped on mobile device to prevent memory issues"
+          "[Export] Skipped on mobile device to prevent memory issues",
         );
       }
     }
@@ -785,7 +785,7 @@ function endTrainingSession() {
       `${uiManager.getText("alert_data_saved")} (${
         summary.totalFrames
       } frames)`,
-      "success"
+      "success",
     );
   } catch (error) {
     console.error("Error in endTrainingSession:", error);
@@ -841,7 +841,7 @@ function resetToHomeScreen() {
       0,
       0,
       instructorThumbnail.width,
-      instructorThumbnail.height
+      instructorThumbnail.height,
     );
   }
 
@@ -962,7 +962,7 @@ recordBtn.addEventListener("click", () => {
     const scoreSummary = scorer.stop();
     const gradeInfo = ScoringManager.getGrade(
       scoreSummary.score,
-      uiManager.currentLang
+      uiManager.currentLang,
     );
 
     // รวบรวมข้อมูลและส่งให้ Exporter จัดการ
@@ -988,7 +988,7 @@ recordBtn.addEventListener("click", () => {
           duration_seconds: scoreSummary.durationSeconds,
           total_frames: scoreSummary.totalFrames,
           fps_estimated: Math.round(
-            scoreSummary.totalFrames / scoreSummary.durationSeconds
+            scoreSummary.totalFrames / scoreSummary.durationSeconds,
           ),
           total_issues: sessionLog.length,
           issue_log: sessionLog,
@@ -1012,7 +1012,7 @@ recordBtn.addEventListener("click", () => {
         DataExporter.exportFullSession(fullDataset);
       } else {
         console.log(
-          "[Export] Skipped on mobile device to prevent memory issues"
+          "[Export] Skipped on mobile device to prevent memory issues",
         );
       }
 
@@ -1022,7 +1022,7 @@ recordBtn.addEventListener("click", () => {
         `${uiManager.getText("alert_data_saved")} (${
           scoreSummary.totalFrames
         } frames)`,
-        "success"
+        "success",
       );
     } else {
       uiManager.showNotification(uiManager.getText("alert_no_data"), "warning");
@@ -1211,7 +1211,7 @@ async function onResults(results) {
     gestureManager.detectGestures(
       videoElement,
       timestamp,
-      uiManager.currentLang
+      uiManager.currentLang,
     );
   }
 
@@ -1230,7 +1230,7 @@ async function onResults(results) {
     0,
     0,
     canvasElement.width,
-    canvasElement.height
+    canvasElement.height,
   );
 
   // DrawingManager: mirrorDisplay = false เพราะ landmarks ก็ตรงกับภาพ webcam อยู่แล้ว
@@ -1249,7 +1249,7 @@ async function onResults(results) {
       const keyIndices = [11, 12, 13, 14, 15, 16, 23, 24]; // ไหล่, ศอก, ข้อมือ, สะโพก
       const visibilitySum = keyIndices.reduce(
         (sum, i) => sum + (results.poseLandmarks[i]?.visibility || 0),
-        0
+        0,
       );
       const avgVisibility = visibilitySum / keyIndices.length;
       const now = Date.now();
@@ -1267,7 +1267,7 @@ async function onResults(results) {
         uiManager.showNotification(
           uiManager.getText("alert_low_light_calibration"),
           "warning",
-          6000
+          6000,
         );
         audioManager.speak(uiManager.getText("alert_low_light_short"));
       }
@@ -1276,7 +1276,7 @@ async function onResults(results) {
       calibrator.drawOverlay(
         canvasCtx,
         canvasElement.width,
-        canvasElement.height
+        canvasElement.height,
       );
 
       if (calibResult && calibResult.status === "complete") {
@@ -1289,7 +1289,7 @@ async function onResults(results) {
         // ใช้ข้อความจาก uiManager
         uiManager.showNotification(
           uiManager.getText("alert_calib_success"),
-          "success"
+          "success",
         );
 
         // Reset UI
@@ -1316,7 +1316,7 @@ async function onResults(results) {
           drawer.ctx,
           results.segmentationMask,
           drawer.canvasWidth,
-          drawer.canvasHeight
+          drawer.canvasHeight,
         );
       }
 
@@ -1325,7 +1325,7 @@ async function onResults(results) {
         drawer.drawBlurredBackground(
           canvasCtx,
           results.image,
-          results.segmentationMask
+          results.segmentationMask,
         );
       }
 
@@ -1393,7 +1393,7 @@ async function onResults(results) {
         calibrator.drawOverlay(
           canvasCtx,
           canvasElement.width,
-          canvasElement.height
+          canvasElement.height,
         );
       }
 
@@ -1406,7 +1406,7 @@ async function onResults(results) {
       ) {
         referencePath = generateDynamicPath(
           results.poseLandmarks,
-          currentExercise
+          currentExercise,
         );
       }
 
@@ -1486,7 +1486,7 @@ async function onResults(results) {
             results.image.timeStamp,
             referencePath,
             currentExercise, // ส่งชื่อท่า
-            currentLevel // ส่งเลเวล (L1, L2, L3)
+            currentLevel, // ส่งเลเวล (L1, L2, L3)
           );
 
           // 1.0 Feedback Display Cooldown - ให้ข้อความค้างไว้ให้อ่านได้
@@ -1562,7 +1562,7 @@ async function onResults(results) {
             uiManager.showNotification(
               uiManager.getText("alert_low_light"),
               "warning",
-              5000
+              5000,
             );
 
             // พูดเตือนด้วยเสียง (TTS) - ใช้ข้อความสั้นกว่าเพื่อไม่รบกวน
@@ -1612,7 +1612,7 @@ async function onResults(results) {
         uiManager.showNotification(
           uiManager.getText("alert_low_light_calibration"),
           "warning",
-          6000
+          6000,
         );
         audioManager.speak(uiManager.getText("alert_low_light_short"));
       }

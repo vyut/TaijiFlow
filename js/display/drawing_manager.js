@@ -121,13 +121,13 @@ class DrawingManager {
       // ย้ายไปยังจุดแรก (แปลง normalized → pixel)
       this.ctx.moveTo(
         path[0].x * this.canvasWidth,
-        path[0].y * this.canvasHeight
+        path[0].y * this.canvasHeight,
       );
       // ลากเส้นไปยังจุดถัดไป
       for (let i = 1; i < path.length; i++) {
         this.ctx.lineTo(
           path[i].x * this.canvasWidth,
-          path[i].y * this.canvasHeight
+          path[i].y * this.canvasHeight,
         );
       }
     }
@@ -350,7 +350,7 @@ class DrawingManager {
       y,
       radius,
       -0.5 * Math.PI, // เริ่ม -90° (ด้านบน)
-      (-0.5 + 2 * feedback.progress) * Math.PI // หมุนตาม progress
+      (-0.5 + 2 * feedback.progress) * Math.PI, // หมุนตาม progress
     );
     this.ctx.strokeStyle = "#00FF00"; // สีเขียว
     this.ctx.lineWidth = 8;
@@ -401,7 +401,7 @@ class DrawingManager {
       this.ctx.fillText(
         text,
         boxX + padding,
-        boxY + padding + index * lineHeight
+        boxY + padding + index * lineHeight,
       );
     });
 
@@ -468,7 +468,7 @@ class DrawingManager {
       this.ctx.fillText(
         `${displayKey}: ${value}`,
         boxX + padding,
-        boxY + padding + 30 + index * lineHeight
+        boxY + padding + 30 + index * lineHeight,
       );
     });
 
@@ -530,15 +530,15 @@ class DrawingManager {
     const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, 15);
     gradient.addColorStop(
       0,
-      `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, 0.9)`
+      `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, 0.9)`,
     );
     gradient.addColorStop(
       0.5,
-      `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, 0.3)`
+      `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, 0.3)`,
     );
     gradient.addColorStop(
       1,
-      `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, 0)`
+      `rgba(${baseColor.r}, ${baseColor.g}, ${baseColor.b}, 0)`,
     );
 
     this.ctx.beginPath();
@@ -598,7 +598,7 @@ class DrawingManager {
     this.ctx.fillText(
       `🔵 ${Math.round(score)}%`,
       boxX + boxWidth / 2,
-      boxY + 18
+      boxY + 18,
     );
 
     // บรรทัดที่ 2: Label
@@ -633,7 +633,7 @@ class DrawingManager {
 
     // ----- Step 2: หารัศมีเฉลี่ย -----
     const distances = trailHistory.map((p) =>
-      Math.sqrt(Math.pow(p.x - center.x, 2) + Math.pow(p.y - center.y, 2))
+      Math.sqrt(Math.pow(p.x - center.x, 2) + Math.pow(p.y - center.y, 2)),
     );
     const avgRadius =
       distances.reduce((sum, d) => sum + d, 0) / distances.length;
@@ -644,7 +644,7 @@ class DrawingManager {
     // ----- Step 3: หา Variance ของรัศมี -----
     const squaredDiffs = distances.map((d) => Math.pow(d - avgRadius, 2));
     const variance = Math.sqrt(
-      squaredDiffs.reduce((sum, d) => sum + d, 0) / squaredDiffs.length
+      squaredDiffs.reduce((sum, d) => sum + d, 0) / squaredDiffs.length,
     );
 
     // ----- Step 4: แปลงเป็น Score (0-100) -----

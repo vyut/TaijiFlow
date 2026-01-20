@@ -186,7 +186,7 @@ class UIManager {
     // -------------------------------------------------------------------------
     // Container สำหรับ Toast Notifications (มุมบนขวาของหน้าจอ)
     this.notificationContainer = document.getElementById(
-      "notification-container"
+      "notification-container",
     );
 
     // -------------------------------------------------------------------------
@@ -790,7 +790,7 @@ class UIManager {
           "bg-blue-600",
           "text-white",
           "active",
-          "shadow-sm"
+          "shadow-sm",
         );
         // เพิ่ม Class Inactive
         btn.classList.add("bg-gray-100", "text-gray-600");
@@ -987,7 +987,7 @@ class UIManager {
       // รอ Transition จบแล้วค่อยลบ Element
       // transitionend event จะ Fire เมื่อ CSS Transition เสร็จ
       notification.addEventListener("transitionend", () =>
-        notification.remove()
+        notification.remove(),
       );
     }, duration);
   }

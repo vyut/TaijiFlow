@@ -176,7 +176,7 @@ class DisplayController {
         } else {
           silhouetteManager.disable();
           console.log(
-            "✅ Silhouette disabled - enableSegmentation: false (+5-10 fps)"
+            "✅ Silhouette disabled - enableSegmentation: false (+5-10 fps)",
           );
         }
       });

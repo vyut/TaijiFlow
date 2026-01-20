@@ -542,7 +542,7 @@ class AudioManager {
       this.speak(message, true);
     } else {
       console.warn(
-        `[AudioManager] Missing translation for announcement: ${key}`
+        `[AudioManager] Missing translation for announcement: ${key}`,
       );
     }
   }

@@ -101,53 +101,53 @@ Version: 0.9.9 (2026-01-17)
         ========================================================================= -->
     <!-- 1. Core Managers - ไม่พึ่งพาไฟล์อื่น -->
     <!-- T-Pose Calibration -->
-    <script src="js/calibration_manager.js" defer></script>
+    <script src="js/core/calibration_manager.js" defer></script>
     <!-- 8 กฎวิเคราะห์ท่า -->
-    <script src="js/heuristics_engine.js" defer></script>
+    <script src="js/core/heuristics_engine.js" defer></script>
     <!-- Rules Settings UI -->
-    <script src="js/rules_config_manager.js" defer></script>
+    <script src="js/ui/rules_config_manager.js" defer></script>
     <!-- วาด Skeleton/Path -->
-    <script src="js/drawing_manager.js" defer></script>
+    <script src="js/display/drawing_manager.js" defer></script>
     <!-- Export JSON/CSV -->
-    <script src="js/data_exporter.js" defer></script>
+    <script src="js/utils/data_exporter.js" defer></script>
     <!-- เสียงพูด TTS -->
-    <script src="js/audio_manager.js" defer></script>
+    <script src="js/ui/audio_manager.js" defer></script>
     <!-- คำนวณคะแนน -->
-    <script src="js/scoring_manager.js" defer></script>
+    <script src="js/core/scoring_manager.js" defer></script>
     <!-- Ghost Overlay -->
-    <script src="js/ghost_manager.js" defer></script>
+    <script src="js/display/ghost_manager.js" defer></script>
     <!-- Silhouette Overlay -->
-    <script src="js/silhouette_manager.js" defer></script>
+    <script src="js/display/silhouette_manager.js" defer></script>
 
     <!-- 2. UI/Translation - พึ่งพา Core Managers -->
     <!-- i18n TH/EN -->
-    <script src="js/translations.js" defer></script>
+    <script src="js/utils/translations.js" defer></script>
     <!-- จัดการ UI State -->
-    <script src="js/ui_manager.js" defer></script>
+    <script src="js/ui/ui_manager.js" defer></script>
     <!-- Score Popup (แยกจาก ui_manager) -->
-    <script src="js/score_popup_manager.js" defer></script>
+    <script src="js/ui/score_popup_manager.js" defer></script>
     <!-- จัดการ UI State -->
-    <script src="js/gesture_manager.js" defer></script>
+    <script src="js/ui/gesture_manager.js" defer></script>
     <!-- จัดการ UI State -->
-    <script src="js/tutorial_manager.js" defer></script>
+    <script src="js/ui/tutorial_manager.js" defer></script>
     <!-- Popup Tutorial -->
-    <script src="js/chatbot.js" defer></script>
+    <script src="js/ui/chatbot.js" defer></script>
     <!-- Gemini Chatbot -->
-    <script src="js/feedback_manager.js" defer></script>
+    <script src="js/ui/feedback_manager.js" defer></script>
     <!-- Feedback Popup (includes shared Survey Section) -->
 
     <!-- 3. Utility Modules (Refactored from script.js) -->
-    <script src="js/session_manager.js" defer></script>
+    <script src="js/utils/session_manager.js" defer></script>
     <!-- Session/User ID management -->
-    <script src="js/path_generator.js" defer></script>
+    <script src="js/utils/path_generator.js" defer></script>
     <!-- Dynamic Path Generator -->
 
     <!-- 4. Main Controller - พึ่งพาทั้งหมดข้างบน -->
-    <script src="js/display_controller.js" defer></script>
+    <script src="js/controllers/display_controller.js" defer></script>
     <!-- Display Options Controller -->
-    <script src="js/keyboard_controller.js" defer></script>
+    <script src="js/controllers/keyboard_controller.js" defer></script>
     <!-- Keyboard Shortcuts Controller -->
-    <script src="js/script.js" defer></script>
+    <script src="js/controllers/script.js" defer></script>
     <!-- Entry Point หลัก -->
 
     <!-- MediaPipe Tasks Vision for Gesture Recognition (loaded as module) -->

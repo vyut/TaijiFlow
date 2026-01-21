@@ -60,6 +60,18 @@ class RulesConfigManager {
         ],
       },
       {
+        // Rule 9: Coordination
+        id: "coordination",
+        checkboxId: "rule-coordination",
+        configKey: "checkCoordination",
+        thresholds: [
+          {
+            inputId: "threshold-coordination",
+            configKey: "COORDINATION_VELOCITY_THRESHOLD",
+          },
+        ],
+      },
+      {
         id: "rotation",
         checkboxId: "rule-rotation",
         configKey: "checkRotation",

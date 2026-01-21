@@ -4,6 +4,23 @@
 
 ---
 
+## [v0.9.13] - 2026-01-21
+
+### ✨ New Heuristic Rule: Upper-Lower Coordination
+
+#### Added
+- **Rule 9: Upper-Lower Coordination** (`heuristics_engine.js`) - ตรวจสอบความสอดคล้องระหว่างมือและสะโพก (上下相随)
+  - หลักการ: ทิศทางการเคลื่อนไหวของมือ (Upper) ต้องสอดคล้องกับการถ่ายน้ำหนัก (Lower)
+  - Algorithm: Velocity-based direction check (Hand Velocity vs Hip Velocity)
+  - Config: `COORDINATION_VELOCITY_THRESHOLD` (Default: 0.05)
+- **UI Update** (`app.html`) - เพิ่ม Checkbox สำหรับเปิด/ปิด Rule 9 ในเมนู Settings > L3
+- **Translations** (`translations.js`) - เพิ่มข้อความแจ้งเตือน "⚠️ มือและเท้าไม่สัมพันธ์กัน" (TH/EN Support)
+
+#### Fixed
+- **Rules Config Manager** - แก้ไข bug `checkboxId` missing สำหรับ Rule 9 ทำให้ UI state ไม่ sync
+
+---
+
 ## [v0.9.12] - 2026-01-21
 
 ### ⚡ Performance Mode & UI Standardization

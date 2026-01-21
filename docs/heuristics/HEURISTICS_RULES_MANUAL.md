@@ -1,6 +1,6 @@
 # TaijiFlow AI - Heuristics Engine User Manual v3.0
 
-คู่มือฉบับสมบูรณ์: อธิบายกฎการตรวจสอบท่าทาง 8 ข้อ พร้อมโค้ดและแผนภาพ
+คู่มือฉบับสมบูรณ์: อธิบายกฎการตรวจสอบท่าทาง 9 ข้อ พร้อมโค้ดและแผนภาพ
 
 ---
 
@@ -14,6 +14,7 @@
 6. [Smoothness](#rule-6-smoothness)
 7. [Continuity](#rule-7-continuity)
 8. [Weight Shift](#rule-8-weight-shift)
+9. [Upper-Lower Coordination](#rule-9-upper-lower-coordination)
 
 ---
 
@@ -946,7 +947,94 @@ checkWeightShift(leftHip, rightHip, leftAnkle, rightAnkle) {
    └─────────┘  └─────────┘  └─────────┘  └─────────┘
 ```
 
+**หลักการ:** "รากฝังลึก" ฐานต้องมั่นคง
+
 ---
+
+## Rule 9: Upper-Lower Coordination
+
+### 🎯 วัตถุประสงค์
+ตรวจสอบว่า**มือและสะโพกเคลื่อนที่ไปในทิศทางเดียวกัน** ตามหลัก "บนล่างสัมพันธ์กัน" (上下相随)
+
+### 🔄 Algorithm ทีละขั้นตอน
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  checkCoordination(wrist, hipCenter)                        │
+└─────────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ ขั้นที่ 1: คำนวณความเร็ว (Velocity) ในแนวระนาบ (X-Axis)       │
+│                                                             │
+│   handVelX = (wrist.x - lastWrist.x) / dt                   │
+│   hipVelX = (hipCenter.x - lastHipCenter.x) / dt            │
+└─────────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ ขั้นที่ 2: ตรวจสอบ Deadzone (กรองการขยับเล็กน้อย)              │
+│                                                             │
+│   ถ้า |handVelX| < threshold OR |hipVelX| < threshold       │
+│     → return null (ไม่ตรวจ)                                 │
+└─────────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ ขั้นที่ 3: ตรวจสอบทิศทาง (Direction Check)                    │
+│                                                             │
+│   ถ้า sign(handVelX) ≠ sign(hipVelX)                        │
+│     → "⚠️ มือและเท้าไม่สัมพันธ์กัน (Coordination Mismatch)"      │
+│   ถ้าเครื่องหมายตรงกัน                                         │
+│     → null (ถูกต้อง)                                        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 📊 แผนภาพ
+
+```
+   ถูกต้อง ✅ (ไปทางเดียวกัน)      ผิด ❌ (สวนทางกัน)
+   
+       👋  → Hand Vel (+)          👋  → Hand Vel (+)
+       │                           │
+       │                           │
+       ▼                           ▼
+      ┌─┐                         ┌─┐
+      └─┘  → Hip Vel (+)          └─┘  ← Hip Vel (-)
+   
+   sign(+) * sign(+) > 0       sign(+) * sign(-) < 0
+```
+
+### 💻 โค้ด
+
+```javascript
+checkCoordination(wrist, hipCenter) {
+  // 1. คำนวณ Velocity (X-Axis)
+  const handVelX = (wrist.x - lastWrist.x) / dt;
+  const hipVelX = (hipCenter - lastHipCenter) / dt;
+
+  // 2. Deadzone Check (Threshold = 0.05)
+  const threshold = this.CONFIG.COORDINATION_VELOCITY_THRESHOLD || 0.05;
+  if (Math.abs(handVelX) < threshold || Math.abs(hipVelX) < threshold) {
+    return null;
+  }
+
+  // 3. Direction Check (Sign mismatch = Error)
+  if (Math.sign(handVelX) * Math.sign(hipVelX) < 0) {
+    return "⚠️ มือและเท้าไม่สัมพันธ์กัน";
+  }
+
+  return null;
+}
+```
+
+### 📐 หลักการ
+
+> **"บนล่างสัมพันธ์กัน"** (上下相随) - ความเคลื่อนไหวต้องสอดคล้องกันทั้งตัว
+> เมื่อขยับ เท้าไป เอวตาม มือขยับ เป็นทิศทางเดียวกัน
+
+---
+
 
 ## 🎮 Level Configuration
 
@@ -958,7 +1046,7 @@ checkWeightShift(leftHip, rightHip, leftAnkle, rightAnkle) {
 |-------|:-------:|--------------|-----|
 | **L1** | **3 กฎ** | ผู้เริ่มต้น/สูงอายุ | นั่ง |
 | **L2** | **6 กฎ** | ระดับกลาง | ยืน |
-| **L3** | **8 กฎ** | ระดับสูง | ยืนย่อ |
+| **L3** | **9 กฎ** | ระดับสูง | ยืนย่อ |
 
 ### ตารางละเอียด
 
@@ -975,11 +1063,12 @@ checkWeightShift(leftHip, rightHip, leftAnkle, rightAnkle) {
    │ Smoothness     │  ❌  │  ❌  │  ✅  │
    │ Continuity     │  ✅  │  ✅  │  ✅  │
    │ Weight Shift   │  ❌  │  ❌  │  ✅  │
+   │ Coordination   │  ❌  │  ❌  │  ✅  │
    └────────────────┴─────┴─────┴─────┘
    
    L1 (3 กฎ): Path, Elbow, Continuity
    L2 (6 กฎ): + Rotation, Waist, Stability
-   L3 (8 กฎ): + Smoothness, Weight (ครบทุกกฎ)
+   L3 (9 กฎ): + Smoothness, Weight, Coordination
 ```
 
 ---

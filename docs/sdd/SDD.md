@@ -62,7 +62,7 @@
 | **Silk Reeling** | ท่าม้วนไหม - ท่าพื้นฐานของมวยไท้เก๊กสกุลเฉิน |
 | **Landmark** | จุดพิกัดของข้อต่อที่ตรวจจับโดย MediaPipe (33 จุด) |
 | **Calibration** | การปรับเทียบสัดส่วนร่างกายด้วยท่า T-Pose |
-| **Heuristics** | กฎการวิเคราะห์ท่าทางตามหลักไท้เก๊ก 8 ข้อ |
+| **Heuristics** | กฎการวิเคราะห์ท่าทางตามหลักไท้เก๊ก 9 ข้อ |
 | **Ghost Overlay** | เงาครูผู้สอนที่แสดงซ้อนบนหน้าจอ |
 
 ---
@@ -167,7 +167,7 @@ TaijiFlow/
 │
 ├── 📁 js/                           # JavaScript Modules (22 files)
 │   ├── script.js                    # Main Controller (~72KB)
-│   ├── heuristics_engine.js         # 8 Rules Analysis (~51KB)
+│   ├── heuristics_engine.js         # 9 Rules Analysis (~51KB)
 │   ├── calibration_manager.js       # T-Pose Calibration (~15KB)
 │   ├── scoring_manager.js           # Score Calculation (~11KB)
 │   ├── drawing_manager.js           # Canvas Rendering (~25KB)
@@ -279,7 +279,7 @@ TaijiFlow/
 
 #### 3.2.1 HeuristicsEngine
 
-**หน้าที่:** วิเคราะห์ท่าทางตามหลักไท้เก๊ก 8 กฎ
+**หน้าที่:** วิเคราะห์ท่าทางตามหลักไท้เก๊ก 9 กฎ
 
 ```javascript
 class HeuristicsEngine {
@@ -293,7 +293,7 @@ class HeuristicsEngine {
     + setCalibration(data)               // ตั้งค่า calibration
     + updateRuleConfig(level)            // อัปเดตกฎตามระดับ
     
-    // 8 Rules (Private Methods)
+    // 9 Rules (Private Methods)
     - checkPathShape()        // Rule 1: รูปทรงเส้นทาง
     - checkArmRotation()      // Rule 2: การหมุนแขน
     - checkElbowSinking()     // Rule 3: ศอกจม
@@ -302,10 +302,11 @@ class HeuristicsEngine {
     - checkSmoothness()       // Rule 6: ความนุ่มนวล
     - checkContinuity()       // Rule 7: ความต่อเนื่อง
     - checkWeightShift()      // Rule 8: ถ่ายน้ำหนัก
+    - checkCoordination()     // Rule 9: บนล่างสอดคล้อง
 }
 ```
 
-**8 Heuristic Rules:**
+**9 Heuristic Rules:**
 
 | Rule ID | ชื่อกฎ | หลักการ | ระดับที่ใช้ |
 |:-------:|--------|--------|:----------:|
@@ -317,6 +318,7 @@ class HeuristicsEngine {
 | R-06 | Smoothness | ความเร็วสม่ำเสมอ ไม่กระตุก | L2, L3 |
 | R-07 | Continuity | เคลื่อนไหวต่อเนื่องไม่หยุดชะงัก | L2, L3 |
 | R-08 | Weight Shift | ถ่ายน้ำหนักซ้าย-ขวาตามจังหวะ | L3 |
+| R-09 | Coordination | การประสานงานของร่างกายส่วนบนและล่าง | L3 |
 
 #### 3.2.2 CalibrationManager
 
@@ -555,7 +557,7 @@ landmark = {
 
 ```javascript
 feedback = {
-    rule: string,       // "R-01" - "R-08"
+    rule: string,       // "R-01" - "R-09"
     type: string,       // "error", "warning", "info"
     message: string,    // ข้อความเตือน
     landmark: string,   // จุดที่ผิด (optional)
@@ -1062,7 +1064,7 @@ const response = await fetch('/api/chat', {
 |:----:|-------------|----------------|-------------------|
 | F-01 | Body Calibration | calibration_manager.js | script.js, ui_manager.js |
 | F-02 | Silk Reeling Training | script.js | heuristics_engine.js, drawing_manager.js |
-| F-03 | 8 Rules Analysis | heuristics_engine.js | scoring_manager.js |
+| F-03 | 9 Rules Analysis | heuristics_engine.js | scoring_manager.js |
 | F-04 | Real-time Feedback | audio_manager.js, ui_manager.js | heuristics_engine.js |
 | F-05 | Training Result | score_popup_manager.js, scoring_manager.js | - |
 | F-06 | Tutorial | tutorial_manager.js | translations.js |

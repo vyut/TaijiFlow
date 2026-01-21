@@ -35,7 +35,7 @@
 
 ---
 
-### F-02: 8 Rules Analysis (ตรวจสอบ 8 กฎไท่จี๋)
+### F-02: 9 Rules Analysis (ตรวจสอบ 9 กฎไท่จี๋)
 
 | Item | Description |
 |------|-------------|
@@ -219,7 +219,7 @@
 | F-ID | Feature | Priority | FR Count |
 |------|---------|:--------:|:--------:|
 | F-01 | Pose Detection | Core | 3 |
-| F-02 | 8 Rules Analysis | Core | 8 |
+| F-02 | 9 Rules Analysis | Core | 9 |
 | F-03 | Real-time Feedback | Core | 3 |
 | F-04 | Scoring System | Core | 3 |
 | F-05 | Body Calibration | Core | 3 |

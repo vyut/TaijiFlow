@@ -62,7 +62,7 @@
 |------|---------|---------|
 | F-01 | **Body Calibration** | ปรับเทียบสัดส่วนร่างกายด้วย T-Pose |
 | F-02 | **Silk Reeling Training** | ฝึกท่าม้วนไหมพร้อมตรวจจับท่าทางด้วย AI |
-| F-03 | **8 Rules Analysis** | ตรวจสอบความถูกต้องตามหลักไท่จี๋ 8 ข้อ |
+| F-03 | **9 Rules Analysis** | ตรวจสอบความถูกต้องตามหลักไท่จี๋ 9 ข้อ |
 | F-04 | **Real-time Feedback** | แจ้งเตือนแบบ Real-time (ข้อความ + เสียง TTS) |
 | F-05 | **Training Result** | คำนวณคะแนน ตัดเกรด แสดง Top Errors |
 | F-06 | **Tutorial** | คู่มือการใช้งานและหลักการฝึก |
@@ -80,7 +80,7 @@
 
 ---
 
-### 2.2 กฎการตรวจสอบท่าทาง 8 ข้อ (8 Tai Chi Rules)
+### 2.2 กฎการตรวจสอบท่าทาง 9 ข้อ (9 Tai Chi Rules)
 
 | Rule | ชื่อ (EN) | ชื่อ (TH) | หลักการจีน |
 |:----:|-----------|-----------|-----------|
@@ -92,6 +92,7 @@
 | R-06 | Smoothness | ลื่นไหล | 如抽丝 |
 | R-07 | Continuity | ต่อเนื่อง | 绵绵不断 |
 | R-08 | Weight Shift | น้ำหนักในฐาน | 分虚实 |
+| R-09 | Coordination | บนล่างสอดคล้อง | 上下相随 |
 
 ---
 
@@ -366,7 +367,7 @@ graph TB
 |---------|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
 | F-01 Calibration | ✓ | | | | | |
 | F-02 Training | | ✓ | | | | |
-| F-03 8 Rules | | ✓ | | | | |
+| F-03 9 Rules | | ✓ | | | | |
 | F-04 Feedback | | ✓ | | | | |
 | F-05 Result | | | ✓ | | | |
 | F-06 Tutorial | | | | ✓ | | |
@@ -407,7 +408,7 @@ graph TB
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2024-12 | - | Initial draft |
-| 2.0 | 2024-12-28 | - | เพิ่ม 8 Rules, Display Options, Traceability |
+| 2.0 | 2024-12-28 | - | เพิ่ม 9 Rules, Display Options, Traceability |
 | 3.0 | 2026-01-09 | - | เพิ่ม F-09~F-11 (Gesture, Chatbot, Feedback), Exception Flows, SRS-02-10~16, NFR-09~10, Glossary, Acceptance Criteria |
 
 ---
@@ -433,7 +434,7 @@ graph TB
 |--------|---------|
 | **Landmark** | จุดพิกัดบนร่างกาย จาก MediaPipe Pose มี 33 จุด (เช่น ไหล่, ข้อมือ, สะโพก) |
 | **Calibration** | กระบวนการปรับเทียบสัดส่วนร่างกายผู้ใช้ ด้วยท่า T-Pose |
-| **Heuristics** | กฎการตรวจสอบท่าทาง 8 ข้อ ตามหลักไท่จี๋ |
+| **Heuristics** | กฎการตรวจสอบท่าทาง 9 ข้อ ตามหลักไท่จี๋ |
 | **Reference Path** | เส้นทางท่าต้นแบบจากผู้เชี่ยวชาญ (เก็บเป็น JSON) |
 | **Ghost** | เงาครูผู้สอน - แสดงท่าต้นแบบซ้อนบนหน้าจอ |
 | **Silhouette** | เงาผู้ฝึก - แสดงเฉพาะโครงร่างของผู้ฝึก |
@@ -465,14 +466,14 @@ graph TB
 |---------|---------------------|-------------------|
 | **F-01 Calibration** | ระบบต้อง Calibrate สำเร็จเมื่อผู้ใช้ยืน T-Pose นิ่ง 3 วินาที | `REQUIRED_STABLE_FRAMES = 90` (90 frames ÷ 30fps = 3s) |
 | **F-02 Training** | ระบบต้องแสดง Feedback ภายใน 1 วินาทีหลังตรวจพบความผิดพลาด | `FEEDBACK_HOLD_TIME_MS = 1000` |
-| **F-03 8 Rules** | ระบบต้องตรวจสอบกฎ 8 ข้อครบถ้วนตาม Level ที่เลือก | Rules 1-8 ใน `heuristics_engine.js` |
+| **F-03 9 Rules** | ระบบต้องตรวจสอบกฎ 9 ข้อครบถ้วนตาม Level ที่เลือก | Rules 1-9 ใน `heuristics_engine.js` |
 | **F-04 Feedback** | ระบบต้องแสดง Feedback ทั้งภาพและเสียง TTS | `showFeedback()` + `speakThai()` |
 | **F-05 Result** | คะแนนต้องคำนวณจาก (ถูก/ทั้งหมด)×100 และตัดเกรดถูกต้อง | เกรด: A≥85, B≥70, C≥55, D≥40, F<40 |
 | **F-08 Display** | ต้องมี 7 Display Options ที่เปิด/ปิดได้ | Path, Instructor, Ghost, Skeleton, Trail, Silhouette, Debug |
 | **F-09 Gesture** | ระบบต้องตรวจจับ Thumbs Up และ Fist gesture ได้ | MediaPipe Gesture Recognizer |
 | **F-10 Chatbot** | ระบบต้องตอบคำถามเกี่ยวกับไท่จี๋ผ่าน Gemini API | `chatbot.js` → Gemini API |
 
-### 8.2 เกณฑ์ระดับกฎ (8 Heuristics Rules)
+### 8.2 เกณฑ์ระดับกฎ (9 Heuristics Rules)
 
 | Rule | ชื่อกฎ | เกณฑ์การตัดสิน | ค่า Threshold |
 |:----:|--------|---------------|--------------|
@@ -484,6 +485,7 @@ graph TB
 | R-06 | Smoothness | Acceleration ไม่เกิน 0.05 units/sec² | `SMOOTHNESS_THRESHOLD_DEFAULT = 0.05` |
 | R-07 | Continuity | หยุดนิ่งไม่เกิน 15 frames (~0.5 วินาที) | `PAUSE_FRAME_THRESHOLD = 15` |
 | R-08 | Weight Shift | น้ำหนักต้องอยู่ในฐาน (±10% buffer) | `WEIGHT_BUFFER_RATIO = 0.1` |
+| R-09 | Coordination | ความเร็วสะโพก/มือ ต้องไปทางเดียวกัน (±threshold) | `COORDINATION_VELOCITY_THRESHOLD = 0.05` |
 
 ### 8.3 เกณฑ์ระดับระบบ
 

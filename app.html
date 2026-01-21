@@ -380,13 +380,10 @@ Version: 0.9.9 (2026-01-17)
             <!-- Performance Menu (Hidden by default, Toggled via JS) -->
             <div
               id="perf-menu"
-              class="hidden absolute left-0 mt-2 w-56 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
+              class="hidden absolute right-0 mt-2 w-56 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
             >
               <div
-                class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900"
-              >
-                ⚡ Performance Mode
-              </div>
+                class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900">Performance Mode</div>
 
               <div class="flex flex-col">
                 <!-- Option: Lite -->
@@ -454,7 +451,7 @@ Version: 0.9.9 (2026-01-17)
             <!-- Dropdown Menu -->
             <div
               id="display-menu"
-              class="hidden absolute left-0 mt-2 w-56 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
+              class="hidden absolute right-0 mt-2 w-56 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
             >
               <div
                 class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900"
@@ -670,7 +667,7 @@ Version: 0.9.9 (2026-01-17)
 
             <div
               id="rules-menu"
-              class="hidden absolute left-0 mt-2 w-64 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
+              class="hidden absolute right-0 mt-2 w-64 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
               style="max-height: 70vh; overflow-y: auto"
             >
               <div
@@ -954,6 +951,35 @@ Version: 0.9.9 (2026-01-17)
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
                     <div class="text-gray-500">(0.05-0.50)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rule 9: Upper-Lower Coordination -->
+              <div class="rule-item p-2 border-b border-gray-700">
+                <label class="flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    id="rule-coordination"
+                    class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                  />
+                  <span class="text-sm font-bold text-white ml-2"
+                    >9. Upper-Lower Coordination</span
+                  >
+                </label>
+                <div class="ml-8 mt-1 text-xs text-gray-400">
+                  <div class="flex items-center gap-1">
+                    <span>Vel Thresh:</span>
+                    <input
+                      type="number"
+                      id="threshold-coordination"
+                      value="0.05"
+                      step="0.01"
+                      min="0.01"
+                      max="0.20"
+                      class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
+                    />
+                    <div class="text-gray-500">(0.01-0.20)</div>
                   </div>
                 </div>
               </div>

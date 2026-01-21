@@ -21,7 +21,7 @@ A web-based real-time pose analysis system that helps practitioners learn and im
 | **Real-time Pose Detection** | Using MediaPipe Pose for 33 body landmarks |
 | **Gesture Control** | 👍 Thumb Up to start, ✊ Closed Fist to stop (2-sec hold) |
 | **Auto Calibration** | Automatic T-Pose calibration before each session |
-| **8 Heuristic Rules** | Path accuracy, arm rotation, elbow sinking, waist initiation, stability, smoothness, continuity, weight shift |
+| **9 Heuristic Rules** | Path accuracy, arm rotation, elbow sinking, waist initiation, stability, smoothness, continuity, weight shift, coordination |
 | **3 Training Levels** | L1 (Seated), L2 (Standing), L3 (Bow Stance) |
 | **4 Exercise Modes** | Right/Left hand, Clockwise/Counter-clockwise |
 | **Session Timer** | 5-minute auto-stop with timer display |
@@ -73,7 +73,7 @@ TaijiFlow/
 ├── data_collector.html       # Reference data recorder (Developer tool)
 ├── js/                       # JavaScript modules
 │   ├── script.js             # Main controller
-│   ├── heuristics_engine.js  # Pose analysis & 8 feedback rules
+│   ├── heuristics_engine.js  # Pose analysis & 9 feedback rules
 │   ├── calibration_manager.js # Body proportion calibration
 │   ├── gesture_manager.js    # Hand gesture control (MediaPipe)
 │   ├── drawing_manager.js    # Canvas rendering
@@ -141,7 +141,7 @@ TaijiFlow/
 
 ## 🧠 Heuristic Rules
 
-The system checks 8 aspects of movement quality:
+The system checks 9 aspects of movement quality:
 
 | Rule | Description |
 |------|-------------|
@@ -153,6 +153,7 @@ The system checks 8 aspects of movement quality:
 | **Smoothness** | Consistent movement velocity |
 | **Continuity** | No pauses during movement |
 | **Weight Shift** | Proper balance (L3 only) |
+| **Coordination** | Upper and lower body move in sync (L3 only) |
 
 ---
 

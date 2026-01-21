@@ -249,6 +249,8 @@ const TRANSLATIONS = {
     heur_keep_moving: "⚠️ เคลื่อนไหวต่อเนื่อง อย่าหยุดนิ่ง",
     // Rule 8: Weight Shift - ถ่ายน้ำหนัก
     heur_off_balance: "⚠️ เสียสมดุล",
+    // Rule 9: Coordination - ความสัมพันธ์บนล่าง
+    heur_coordination_fail: "⚠️ มือและเท้าไม่สัมพันธ์กัน",
 
     // -------------------------------------------------------------------------
     // Circle Score Labels (สำหรับแสดงคะแนนวงกลม)

@@ -80,7 +80,7 @@ npm test
 
 ## 6. Critical Files to Know
 
-1.  `js/heuristics_engine.js`: The "brain" of the feedback system. Contains the logic for the 8 rules.
+1.  `js/heuristics_engine.js`: The "brain" of the feedback system. Contains the logic for the 9 rules.
 2.  `js/script.js`: The central hub connecting MediaPipe, UI, and Logic.
 3.  `docs/technical/ARCHITECTURE.md`: Detailed system design and dependency graph.
 4.  `package.json`: Dependencies and test scripts.

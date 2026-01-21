@@ -10,7 +10,7 @@
 ## 📋 สารบัญ
 
 1. [ภาพรวม](#1-ภาพรวม)
-2. [8 Rules Configuration](#2-8-กฎของ-heuristics-engine)
+2. [9 Rules Configuration](#2-9-กฎของ-heuristics-engine)
 3. [Level Presets](#3-level-presets)
 4. [Methods Reference](#4-methods-reference)
 5. [Code Examples](#5-code-examples)

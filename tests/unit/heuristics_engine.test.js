@@ -320,4 +320,33 @@ describe("HeuristicsEngine", () => {
       );
     });
   });
+  // =========================================================================
+  // Rule 9: Coordination (checkCoordination)
+  // =========================================================================
+
+  describe("Rule 9: Coord. (Upper-Lower Coordination)", () => {
+    // บนล่างสัมพันธ์ - มือและสะโพกต้องไปทางเดียวกัน
+    function checkCoordination(handVelX, hipVelX, threshold = 0.05) {
+      if (Math.abs(handVelX) < threshold || Math.abs(hipVelX) < threshold) {
+        return null; // Deadzone
+      }
+      if (Math.sign(handVelX) * Math.sign(hipVelX) < 0) {
+        return "มือและเท้าไม่สัมพันธ์กัน";
+      }
+      return null; // Pass
+    }
+
+    test("PASS: hand and hip move same direction", () => {
+      expect(checkCoordination(0.2, 0.1)).toBeNull(); // Both +
+      expect(checkCoordination(-0.2, -0.1)).toBeNull(); // Both -
+    });
+
+    test("PASS: below threshold (noise)", () => {
+      expect(checkCoordination(0.01, -0.1)).toBeNull(); // Hand too slow
+    });
+
+    test("FAIL: opposite direction", () => {
+      expect(checkCoordination(0.2, -0.1)).toBe("มือและเท้าไม่สัมพันธ์กัน");
+    });
+  });
 });

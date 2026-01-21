@@ -20,7 +20,7 @@
 | ไฟล์ | เอกสาร | คำอธิบาย |
 |------|--------|---------|
 | script.js | [SCRIPT_JS.md](SCRIPT_JS.md) | Main Controller |
-| heuristics_engine.js | [HEURISTICS_ENGINE.md](HEURISTICS_ENGINE.md) | Pose Analysis (8 Rules) |
+| heuristics_engine.js | [HEURISTICS_ENGINE.md](HEURISTICS_ENGINE.md) | Pose Analysis (9 Rules) |
 | calibration_manager.js | [CALIBRATION_MANAGER.md](CALIBRATION_MANAGER.md) | T-Pose Calibration |
 | scoring_manager.js | [SCORING_MANAGER.md](SCORING_MANAGER.md) | Scoring System |
 

@@ -159,8 +159,8 @@ class HeuristicsEngine {
         checkRotation: true, // ✔ เพิ่ม: การหมุนแขน
         checkElbow: true, // ✔ ศอกจม
         checkWaist: true, // ✔ เพิ่ม: เอวนำ
-        checkStability: true, // ✔ เพิ่ม: ศีรษะนิ่ง
-        checkSmooth: false, // ✘ ยังไม่เช็ค
+        checkStability: false, // ✘ ยังไม่เช็ค (ย้ายไป L3)
+        checkSmooth: true, // ✔ เพิ่ม: ความลื่นไหล (ย้ายมาจาก L3)
         checkContinuity: true, // ✔ ความต่อเนื่อง
         checkWeight: false, // ✘ ยังไม่เช็ค (ยืนตรง = ไม่ถ่ายน้ำหนัก)
       },

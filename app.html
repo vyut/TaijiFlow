@@ -324,14 +324,16 @@ Version: 0.9.9 (2026-01-17)
       style="border-color: rgba(255, 255, 255, 0.2)"
     >
       <!-- Top Bar: Selectors + Settings + Timer -->
-      <div class="mb-4 flex flex-wrap justify-between items-center gap-4">
+      <div
+        class="mb-4 flex flex-wrap justify-between items-center gap-2 md:gap-4"
+      >
         <!-- Left: Dropdowns -->
         <div class="flex gap-2 flex-wrap">
           <!-- Category Dropdown (สำหรับขยายในอนาคต) -->
           <div>
             <select
               id="category-select"
-              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+              class="px-3 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
               title="เลือกหมวดหมู่ของท่าฝึก - Select exercise category"
             >
               <option value="" disabled>-- เลือกหมวดหมู่ --</option>
@@ -345,7 +347,7 @@ Version: 0.9.9 (2026-01-17)
           <div>
             <select
               id="exercise-select"
-              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+              class="px-3 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
               title="เลือกท่าฝึก: มือซ้าย/ขวา, ตาม/ทวนเข็ม - Select exercise"
             >
               <option value="" disabled>-- เลือกท่าฝึก --</option>
@@ -360,7 +362,7 @@ Version: 0.9.9 (2026-01-17)
           <div>
             <select
               id="level-select"
-              class="px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+              class="px-3 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
               title="เลือกระดับ: นั่ง/ยืน/ยืนย่อ - Select difficulty level"
             >
               <option value="" disabled>-- เลือกระดับ --</option>
@@ -373,7 +375,7 @@ Version: 0.9.9 (2026-01-17)
           <div class="relative inline-block">
             <button
               id="perf-btn"
-              class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+              class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
               title="Performance Mode"
             >
               ⚡
@@ -448,7 +450,7 @@ Version: 0.9.9 (2026-01-17)
           <div class="relative" id="display-dropdown-container">
             <button
               id="display-btn"
-              class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+              class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
               title="Display Options - ตั้งค่าการแสดงผล"
             >
               👁️
@@ -664,7 +666,7 @@ Version: 0.9.9 (2026-01-17)
           <div class="relative">
             <button
               id="rules-btn"
-              class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+              class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
               title="Rules Settings - ปรับค่ากฎการตรวจสอบ"
             >
               ⚙️
@@ -1007,7 +1009,7 @@ Version: 0.9.9 (2026-01-17)
           <!-- Audio Button -->
           <button
             id="audio-btn"
-            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+            class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
             title="เปิด/ปิดเสียงพูด"
           >
             🔊
@@ -1016,7 +1018,7 @@ Version: 0.9.9 (2026-01-17)
           <!-- Language Button -->
           <button
             id="lang-btn"
-            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 font-bold transition-colors"
+            class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 font-bold transition-colors"
             title="เปลี่ยนภาษา TH/EN - Switch language"
           >
             🇹🇭
@@ -1024,7 +1026,7 @@ Version: 0.9.9 (2026-01-17)
           <!-- Theme Button -->
           <button
             id="theme-btn"
-            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+            class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
             title="เปลี่ยนธีม สว่าง/มืด - Toggle dark/light mode"
           >
             🌙
@@ -1032,7 +1034,7 @@ Version: 0.9.9 (2026-01-17)
           <!-- Tutorial/Help Button -->
           <button
             id="tutorial-btn"
-            class="px-3 py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+            class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
             title="คู่มือการฝึก (H)"
           >
             ❓

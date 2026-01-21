@@ -161,7 +161,9 @@ Version: 0.9.9 (2026-01-17)
       window.dispatchEvent(new Event("mediapipe-ready"));
     </script>
   </head>
-  <body class="flex flex-col items-center justify-center min-h-screen p-4">
+  <body
+    class="flex flex-col items-center justify-center min-h-screen p-2 md:p-4"
+  >
     <!-- Mobile Warning Modal (แสดงเมื่อใช้งานบนมือถือ) -->
     <div
       id="mobile-modal"
@@ -310,7 +312,7 @@ Version: 0.9.9 (2026-01-17)
     <!-- Header -->
     <h1
       id="app-title"
-      class="text-3xl font-bold mb-4 bg-gradient-to-br from-purple-500 to-indigo-500 bg-clip-text text-transparent py-1 leading-relaxed"
+      class="text-2xl md:text-3xl font-bold mb-2 md:mb-4 bg-gradient-to-br from-purple-500 to-indigo-500 bg-clip-text text-transparent py-1 leading-relaxed"
     >
       TaijiFlow AI: ผู้ช่วยฝึก Silk Reeling
     </h1>
@@ -383,7 +385,10 @@ Version: 0.9.9 (2026-01-17)
               class="hidden absolute right-0 mt-2 w-56 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
             >
               <div
-                class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900">Performance Mode</div>
+                class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900"
+              >
+                Performance Mode
+              </div>
 
               <div class="flex flex-col">
                 <!-- Option: Lite -->
@@ -890,11 +895,11 @@ Version: 0.9.9 (2026-01-17)
                 </div>
               </div>
 
-              <!-- ===== L3: ยืนย่อ (เพิ่มอีก 2 กฎ) ===== -->
+              <!-- ===== L3: ยืนย่อ (เพิ่มอีก 3 กฎ) ===== -->
               <div
                 class="text-xs text-center py-1 bg-purple-900/50 text-purple-300 border-b border-gray-600"
               >
-                L3: ยืนย่อ (เพิ่มอีก 2 กฎ)
+                L3: ยืนย่อ (เพิ่มอีก 3 กฎ)
               </div>
 
               <!-- Rule 5: Vertical Stability -->
@@ -1273,17 +1278,17 @@ Version: 0.9.9 (2026-01-17)
       </div>
 
       <!-- Control Buttons (Start/Stop - Separate) -->
-      <div class="flex justify-center gap-4 mb-6">
+      <div class="flex justify-center gap-4 mt-2 mb-2">
         <button
           id="start-training-btn"
-          class="bg-gradient-to-br from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-purple-500/30 text-white font-bold py-3 px-8 rounded-lg transition-all duration-200 text-lg opacity-50 cursor-not-allowed shadow-lg"
+          class="bg-gradient-to-br from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-purple-500/30 text-white font-bold py-2 md:py-3 px-6 md:px-8 rounded-lg transition-all duration-200 text-lg opacity-50 cursor-not-allowed shadow-lg"
           disabled
         >
           ▶️ เริ่มการฝึก
         </button>
         <button
           id="stop-training-btn"
-          class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition text-lg opacity-50 cursor-not-allowed"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 md:py-3 px-6 md:px-8 rounded-lg transition text-lg opacity-50 cursor-not-allowed"
           disabled
         >
           ⏹️ หยุดการฝึก

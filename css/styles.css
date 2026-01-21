@@ -54,7 +54,9 @@ body:not(.dark) #main-card {
 
 /* --- Notification System --- */
 .notification {
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transition:
+    opacity 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
   transform: translateX(100%);
   opacity: 0;
 }
@@ -378,4 +380,32 @@ body.light .instructions-box strong {
   #start-overlay .space-y-3 {
     max-width: 90%;
   }
+}
+
+/* --- Quick Fix: Rules Menu Visibility (iPad/Mobile) --- */
+#rules-menu {
+  /* Ensure scrollbar space */
+  scrollbar-gutter: stable;
+  /* Visual cue: Border highlight */
+  border: 1px solid rgba(107, 114, 128, 0.5);
+}
+
+/* Force visible scrollbar for Webkit (Chrome/Safari/iPad) */
+#rules-menu::-webkit-scrollbar {
+  width: 6px; /* Width of vertical scrollbar */
+  display: block; /* Force display */
+}
+
+#rules-menu::-webkit-scrollbar-track {
+  background: rgba(31, 41, 55, 0.5); /* Dark background */
+  border-radius: 0 4px 4px 0;
+}
+
+#rules-menu::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.6); /* Visible gray thumb */
+  border-radius: 4px;
+}
+
+#rules-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(209, 213, 219, 0.8); /* Lighter on hover */
 }

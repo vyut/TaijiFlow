@@ -21,11 +21,12 @@
  *   1. Path Accuracy      - เส้นทางตรงกับท่าต้นแบบ
  *   2. Waist Initiation   - เอวนำ เริ่มขยับจากเอว
  *   3. Weight Shift       - ถ่ายน้ำหนักอยู่ในฐาน
- *   4. Vertical Stability - ศีรษะนิ่ง ไม่ก้มหรือเงยศีรษะ
- *   5. Arm Rotation       - หมุนฝ่ามือถูกทิศ (หงาย/คว่ำ)
- *   6. Elbow Sinking      - ศอกจม ไม่ลอย
- *   7. Smoothness         - เคลื่อนไหวนุ่มนวล ต่อเนื่อง
- *   8. Continuity         - ไม่หยุดนิ่ง ไหลลื่น
+ *   4. Coordination       - ส่วนบนและส่วนล่างสัมพันธ์กัน
+ *   5. Vertical Stability - ศีรษะนิ่ง ไม่ก้มหรือเงยศีรษะ
+ *   6. Arm Rotation       - หมุนฝ่ามือถูกทิศ (หงาย/คว่ำ)
+ *   7. Elbow Sinking      - ศอกจม ไม่ลอย
+ *   8. Smoothness         - เคลื่อนไหวนุ่มนวล ต่อเนื่อง
+ *   9. Continuity         - ไม่หยุดนิ่ง ไหลลื่น
  *
  * 📊 การใช้งาน:
  *   const engine = new HeuristicsEngine();
@@ -98,7 +99,7 @@ class HeuristicsEngine {
 
       // ----- Rule 9: Coordination (ความสัมพันธ์บนล่าง) -----
       // หลัก "上下相随" (ซ่างเซี่ยเซียงสุย) - มือเท้าสัมพันธ์กัน
-      COORDINATION_VELOCITY_THRESHOLD: 0.05, // ต้องมีความเร็วอย่างน้อย 0.05 units/sec ถึงจะเช็ค (Deadzone)
+      COORDINATION_VELOCITY_THRESHOLD: 0.02, // ลดจาก 0.05 → 0.02 เพื่อให้จับการเคลื่อนไหวช้าๆ ได้
 
       // ----- Feedback Display -----
       FEEDBACK_HOLD_TIME_MS: 1000, // แสดงข้อความค้าง 1.0 วินาที
@@ -198,7 +199,7 @@ class HeuristicsEngine {
       "Weight Shift": 3, // 🥉 เสียสมดุล - ฐานไม่มั่นคง
 
       // Priority 4-6: หลักเสริม (ทำให้ดีขึ้น)
-      "Upper-Lower Coordination": 4, // 🆕 บนล่างไม่สัมพันธ์ (สำคัญกว่านิ่ง)
+      "Upper-Lower Coordination": 4, // บนล่างไม่สัมพันธ์
       "Vertical Stability": 5, // ศีรษะไม่นิ่ง
       "Arm Rotation": 6, // หมุนแขนไม่ถูก
       "Elbow Sinking": 7, // ศอกลอย
@@ -274,6 +275,8 @@ class HeuristicsEngine {
       keepMoving: "heur_keep_moving",
       // Rule 8: Weight
       offBalance: "heur_off_balance",
+      // Rule 9: Coordination
+      coordinationFail: "heur_coordination_fail",
     };
 
     const translationKey = keyMap[key];
@@ -379,7 +382,7 @@ class HeuristicsEngine {
       this.wristHistory.push({
         x: activeWrist.x,
         y: activeWrist.y,
-        // 🆕 ใช้ Date.now() แทน timestamp จาก MediaPipe ซึ่งอาจเป็น undefined
+        // ใช้ Date.now() แทน timestamp จาก MediaPipe ซึ่งอาจเป็น undefined
         t: Date.now(),
       });
       // จำกัดขนาด buffer
@@ -863,7 +866,7 @@ class HeuristicsEngine {
    *   1. คำนวณความเร็วเชิงมุมของไหล่และสะโพก
    *   2. ถ้าไหล่หมุนเร็วกว่าสะโพก 3 เท่า = ผิด (ไหล่นำแทนเอว)
    *
-   * 🆕 v0.9.11: ใช้ Date.now() แทน timestamp จาก MediaPipe ซึ่งเป็น undefined
+   * v0.9.11: ใช้ Date.now() แทน timestamp จาก MediaPipe ซึ่งเป็น undefined
    */
   checkWaistInitiation(landmarks) {
     const now = Date.now();
@@ -926,8 +929,7 @@ class HeuristicsEngine {
    * ตรวจสอบว่าศีรษะนิ่ง ไม่กระดกขึ้นลงมากเกินไป
    * หลัก "虚领顶劲" (ซวี่หลิงติ่งจิ้น) - โปรงกระหม่อมเบา ศีรษะตั้งตรง
    *
-   * 🆕 v0.9.11: เปลี่ยนเป็น Time-Based แทน Frame-Based
-   * เพื่อไม่ขึ้นกับ Skip Frame Logic
+   * v0.9.11: เปลี่ยนเป็น Time-Based แทน Frame-Based เพื่อไม่ขึ้นกับ Skip Frame Logic
    */
   checkVerticalStability(nose) {
     if (!nose) return null;
@@ -1099,42 +1101,62 @@ class HeuristicsEngine {
    * @param {Object} hipCenter - จุดกึ่งกลางสะโพก (คำนวณจาก leftHip, rightHip)
    */
   checkCoordination(wrist, hipCenterProp) {
-    if (!wrist || !hipCenterProp) return null;
+    if (!wrist || !hipCenterProp) {
+      return null;
+    }
 
     // ต้องมีประวัติ wristHistory อย่างน้อย 3 จุด เพื่อคำนวณ Velocity ได้แม่นยำ
-    if (this.wristHistory.length < 3) return null;
+    if (this.wristHistory.length < 3) {
+      return null;
+    }
 
-    // 1. คำนวณ Hand Velocity X (ใช้ 3 จุดล่าสุดเฉลี่ยเพื่อลด Noise)
-    const p3 = this.wristHistory[this.wristHistory.length - 1]; // ล่าสุด
-    const p1 = this.wristHistory[this.wristHistory.length - 3]; // อดีต
-    const dt = (p3.t - p1.t) / 1000;
-    if (dt <= 0) return null;
+    // 🔧 FIX: เก็บประวัติ Hip Center แทนการอาศัย lastWaistLandmarks
+    // เพราะ lastWaistLandmarks ไม่มี timestamp ที่ตรงกับ wristHistory
+    if (!this.hipHistory) {
+      this.hipHistory = [];
+    }
 
-    const handVelX = (p3.x - p1.x) / dt; // ความเร็วแกน X (Units/Sec)
+    // เพิ่ม Hip Center ปัจจุบันเข้า History
+    const now = Date.now();
+    this.hipHistory.push({ x: hipCenterProp, t: now });
+    if (this.hipHistory.length > 60) {
+      this.hipHistory.shift(); // จำกัดความยาว
+    }
 
-    // 2. คำนวณ Hip Velocity X (เราไม่มี History ของ Hip ต้องใช้ lastWaistLandmarks)
-    if (!this.lastWaistLandmarks) return null;
-    const curHipCenter = hipCenterProp;
-    const lastHipCenter =
-      (this.lastWaistLandmarks[23].x + this.lastWaistLandmarks[24].x) / 2;
-    // timestamp ของ waist ถูก update ใน checkWaistInitiation() ถ้า function นั้นถูกเรียกก่อน
-    // แต่เพื่อความชัวร์ เราใช้ dt เดียวกับ Hand หรือใกล้เคียง
-    // Note: checkWaistInitiation update lastWaistLandmarks ทุก frame
-    const hipVelX = (curHipCenter - lastHipCenter) / dt; // ค่าประมาณ
+    // ต้องมีประวัติ Hip อย่างน้อย 3 จุด
+    if (this.hipHistory.length < 3) return null;
+
+    // 1. คำนวณ Hand Velocity X (ใช้ 3 จุดล่าสุด)
+    const handP3 = this.wristHistory[this.wristHistory.length - 1]; // ล่าสุด
+    const handP1 = this.wristHistory[this.wristHistory.length - 3]; // อดีต
+    const handDt = (handP3.t - handP1.t) / 1000;
+    if (handDt <= 0) return null;
+
+    const handVelX = (handP3.x - handP1.x) / handDt;
+
+    // 2. คำนวณ Hip Velocity X (ใช้ช่วงเวลาเดียวกับ Hand)
+    const hipP3 = this.hipHistory[this.hipHistory.length - 1]; // ล่าสุด
+    const hipP1 = this.hipHistory[this.hipHistory.length - 3]; // อดีต
+    const hipDt = (hipP3.t - hipP1.t) / 1000;
+    if (hipDt <= 0) return null;
+
+    const hipVelX = (hipP3.x - hipP1.x) / hipDt;
 
     // 3. กรอง Noise (Deadzone)
-    // ถ้าขยับช้าๆ ไม่ต้องเช็ค (Threshold Default = 0.05)
-    // Note: ใช้ค่า Absolute เพื่อดูขนาดความเร็ว
-    const threshold = this.CONFIG.COORDINATION_VELOCITY_THRESHOLD || 0.05;
-    if (Math.abs(handVelX) < threshold || Math.abs(hipVelX) < threshold) {
+    // ใช้ AND logic: ต้องทั้งสองตัวต่ำกว่า threshold ถึงจะ skip
+    // (ไม่ใช่ OR เพราะเอวเคลื่อนที่ช้ากว่ามือ)
+    const threshold = this.CONFIG.COORDINATION_VELOCITY_THRESHOLD || 0.02;
+    if (Math.abs(handVelX) < threshold && Math.abs(hipVelX) < threshold) {
       return null;
     }
 
     // 4. เช็คทิศทาง (Direction Check)
     // ถ้าเครื่องหมายต่างกัน = สวนทาง (เช่น มือไปขวา(+) แต่เอวไปซ้าย(-))
-    // Math.sign() คืนค่า 1, -1, 0
-    // ถ้าคูณกันแล้วได้ค่าลบ แปลว่าเครื่องหมายต่างกัน
-    if (Math.sign(handVelX) * Math.sign(hipVelX) < 0) {
+    const handSign = Math.sign(handVelX);
+    const hipSign = Math.sign(hipVelX);
+    const product = handSign * hipSign;
+
+    if (product < 0) {
       // Debug Info
       if (this.debugMode) {
         this.debugInfo.coordination = "Mismatch";

@@ -926,6 +926,88 @@ checkWeightShift(leftHip, rightHip, leftAnkle, rightAnkle) {
 
 ---
 
+## Rule 9: Upper-Lower Coordination
+
+### 🎯 วัตถุประสงค์
+ตรวจสอบความสัมพันธ์ระหว่าง**ร่างกายส่วนบน (มือ)** และ**ร่างกายส่วนล่าง (สะโพก)** ว่าเคลื่อนที่ไปในทิศทางเดียวกัน
+
+### 🔄 Algorithm ทีละขั้นตอน
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  checkCoordination(wrist, hipCenter)                        │
+└─────────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ ขั้นที่ 1: คำนวณความเร็วแนวนอน (Velocity X)                   │
+│                                                             │
+│   handVelX = (hand.x - lastHand.x) / dt                     │
+│   hipVelX = (hip.x - lastHip.x) / dt                        │
+└─────────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ ขั้นที่ 2: กรอง Noise (Deadzone)                             │
+│                                                             │
+│   ถ้า |handVelX| < 0.02 AND |hipVelX| < 0.02                │
+│     → return null (ขยับน้อยเกินไป)                           │
+└─────────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ ขั้นที่ 3: ตรวจสอบทิศทาง (Direction Check)                   │
+│                                                             │
+│   product = sign(handVelX) * sign(hipVelX)                  │
+│                                                             │
+│   ถ้า product < 0 (เครื่องหมายต่างกัน = สวนทาง)               │
+│     → "⚠️ บนล่างไม่สัมพันธ์ (Coordination Fail)"               │
+│   ถ้า product >= 0 (ทิศเดียวกัน)                             │
+│     → null (ถูกต้อง)                                        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 📊 แผนภาพ
+
+```
+   ทิศทางแกน X (มองจากหน้าตรง)
+   
+   กรณีถูกต้อง ✅ (ไปทางเดียวกัน)
+      Hand ───> (+)
+      Hip  ───> (+)
+      (+) * (+) = (+) ✅
+   
+   กรณีผิดพลาด ❌ (สวนทาง)
+      Hand ───> (+)
+      Hip  <─── (-)
+      (+) * (-) = (-) ❌ "บนล่างไม่สัมพันธ์"
+```
+
+### 💻 โค้ด
+
+```javascript
+checkCoordination(wrist, hipCenterProp) {
+  // ... (คำนวณ velocities) ...
+  
+  // 4. เช็คทิศทาง (Direction Check)
+  const handSign = Math.sign(handVelX);
+  const hipSign = Math.sign(hipVelX);
+  const product = handSign * hipSign;
+
+  if (product < 0) {
+    return "⚠️ บนล่างไม่สัมพันธ์ (Coordination Fail)";
+  }
+  return null;
+}
+```
+
+### 📐 หลักการ
+
+> **"บนล่างสัมพันธ์กัน"** (上下相随) - รากอยู่ที่เท้า กำเนิดจากขา ควบคุมที่เอว แสดงออกที่นิ้วมือ
+> ทุกส่วนต้องเคลื่อนไหวสอดคล้องกันเป็นหนึ่งเดียว
+
+---
+
 ## 🎚️ Priority Ranking
 
 เมื่อตรวจพบหลายข้อผิดพลาด จะแสดง**เฉพาะข้อที่สำคัญที่สุด**:
@@ -1008,15 +1090,29 @@ checkWeightShift(leftHip, rightHip, leftAnkle, rightAnkle) {
 ### 💻 โค้ด
 
 ```javascript
-checkCoordination(wrist, hipCenter) {
-  // 1. คำนวณ Velocity (X-Axis)
-  const handVelX = (wrist.x - lastWrist.x) / dt;
-  const hipVelX = (hipCenter - lastHipCenter) / dt;
+checkCoordination(wrist, hipCenterProp) {
+  // 0. Track Hip History (เก็บประวัติ Hip Center พร้อม timestamp)
+  if (!this.hipHistory) this.hipHistory = [];
+  this.hipHistory.push({ x: hipCenterProp, t: Date.now() });
+  if (this.hipHistory.length > 60) this.hipHistory.shift();
+  
+  if (this.hipHistory.length < 3) return null;
 
-  // 2. Deadzone Check (Threshold = 0.05)
-  const threshold = this.CONFIG.COORDINATION_VELOCITY_THRESHOLD || 0.05;
-  if (Math.abs(handVelX) < threshold || Math.abs(hipVelX) < threshold) {
-    return null;
+  // 1. คำนวณ Velocity (ใช้ 3 จุดล่าสุดเพื่อลด noise)
+  const handP3 = this.wristHistory[this.wristHistory.length - 1];
+  const handP1 = this.wristHistory[this.wristHistory.length - 3];
+  const handDt = (handP3.t - handP1.t) / 1000;
+  const handVelX = (handP3.x - handP1.x) / handDt;
+
+  const hipP3 = this.hipHistory[this.hipHistory.length - 1];
+  const hipP1 = this.hipHistory[this.hipHistory.length - 3];
+  const hipDt = (hipP3.t - hipP1.t) / 1000;
+  const hipVelX = (hipP3.x - hipP1.x) / hipDt;
+
+  // 2. Deadzone Check (Threshold = 0.02, ใช้ AND logic)
+  const threshold = this.CONFIG.COORDINATION_VELOCITY_THRESHOLD || 0.02;
+  if (Math.abs(handVelX) < threshold && Math.abs(hipVelX) < threshold) {
+    return null;  // ทั้งสองช้าเกินไป
   }
 
   // 3. Direction Check (Sign mismatch = Error)

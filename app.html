@@ -606,6 +606,32 @@ Version: 0.9.9 (2026-01-17)
                 >
               </label>
 
+              <!-- ===== 🛠️ Effects Section ===== -->
+              <div
+                class="px-4 py-1 text-xs text-yellow-300 bg-yellow-900/50 uppercase font-bold tracking-wider mt-2"
+              >
+                Effects
+              </div>
+              <!-- Auto-Adjust Light -->
+              <label
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
+                title="Automatically adjust brightness in low light conditions"
+              >
+                <input
+                  type="checkbox"
+                  id="check-auto-adjust-light"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-yellow-600 focus:ring-yellow-500 focus:ring-offset-gray-800"
+                />
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white"
+                    >🔆 Auto-Adjust Light</span
+                  >
+                  <span class="text-xs text-gray-400"
+                    >Brighten in low light</span
+                  >
+                </div>
+              </label>
+
               <!-- ===== 🛠️ Developer Section ===== -->
               <div
                 class="px-4 py-1 text-xs text-red-300 bg-red-900/50 uppercase font-bold tracking-wider mt-2"
@@ -980,13 +1006,13 @@ Version: 0.9.9 (2026-01-17)
                     <input
                       type="number"
                       id="threshold-coordination"
-                      value="0.05"
+                      value="0.02"
                       step="0.01"
                       min="0.01"
-                      max="0.20"
+                      max="0.10"
                       class="w-16 px-1 py-0.5 bg-gray-700 text-white rounded text-center"
                     />
-                    <div class="text-gray-500">(0.01-0.20)</div>
+                    <div class="text-gray-500">(0.01-0.10)</div>
                   </div>
                 </div>
               </div>

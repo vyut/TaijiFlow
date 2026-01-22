@@ -45,9 +45,11 @@ note right
     ✓ ทุกกฎ (รวม R6 Smooth, R8 Weight)
 end note
 
-partition "ตรวจสอบ 8 กฎ (ตาม Level Config)" {
+partition "ตรวจสอบ 9 กฎ (ตาม Level Config)" {
+    
+split
     if (checkPath = true?) then (ใช่)
-        :R1: Path Shape (วิถีวงกลม);
+        :R1: Path Shape;
         note right
             ตรวจ Wrist History
             ใช้ Cross Product
@@ -56,7 +58,7 @@ partition "ตรวจสอบ 8 กฎ (ตาม Level Config)" {
     endif
     
     if (checkRotation = true?) then (ใช่)
-        :R2: Arm Rotation (หมุนฝ่ามือ);
+        :R2: Arm Rotation;
         note right
             ตรวจ Thumb vs Pinky
             ขึ้น/ลง = หงาย/คว่ำ
@@ -64,46 +66,59 @@ partition "ตรวจสอบ 8 กฎ (ตาม Level Config)" {
     endif
     
     if (checkElbow = true?) then (ใช่)
-        :R3: Elbow Sinking (ศอกจม 沉肩坠肘);
+        :R3: Elbow Sinking;
         note right
             ศอกต้องต่ำกว่าไหล่
         end note
     endif
     
     if (checkWaist = true?) then (ใช่)
-        :R4: Waist Initiation (เอวนำ 以腰为轴);
+        :R4: Waist Initiation;
         note right
             ความเร็วสะโพก > ไหล่
         end note
     endif
     
     if (checkStability = true?) then (ใช่)
-        :R5: Vertical Stability (หัวนิ่ง 虚领顶劲);
+        :R5: Vertical Stability;
         note right
             Head Y Variance < Threshold
         end note
     endif
     
+split again
+    ' ========== คอลัมน์ขวา: Rules 6-9 ==========
+    
     if (checkSmooth = true?) then (ใช่)
-        :R6: Smoothness (ลื่นไหล 如抽丝);
+        :R6: Smoothness;
         note right
             Acceleration < Threshold
         end note
     endif
     
     if (checkContinuity = true?) then (ใช่)
-        :R7: Continuity (ต่อเนื่อง 绵绵不断);
+        :R7: Continuity;
         note right
             ไม่หยุดนิ่ง > 15 frames
         end note
     endif
     
     if (checkWeight = true?) then (ใช่)
-        :R8: Weight Shift (ถ่ายน้ำหนัก 分虚实);
+        :R8: Weight Shift;
         note right
             Hip อยู่ในฐาน (Ankles)
         end note
     endif
+
+    if (checkCoordination = true?) then (ใช่)
+        :R9: Coordination;
+        note right
+            มือและสะโพกไปทางเดียวกัน
+        end note
+    endif
+
+end split
+
 }
 
 :รวบรวมข้อผิดพลาดทั้งหมด;

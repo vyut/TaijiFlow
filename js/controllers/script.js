@@ -100,6 +100,12 @@ let trainingTimerId = null; // ID ของ setInterval
 let trainingStartTime = 0; // เวลาเริ่มฝึก
 
 // -----------------------------------------------------------------------------
+// Auto-Adjust Light - ตัวแปรสำหรับปรับความสว่างอัตโนมัติ
+// -----------------------------------------------------------------------------
+let autoAdjustLightEnabled = false; // เปิด/ปิด Auto-Adjust
+let currentBrightnessLevel = 1.0; // ระดับความสว่าง (1.0 = ปกติ, 2.0 = สว่าง 2 เท่า)
+
+// -----------------------------------------------------------------------------
 // Performance Optimization - ลด CPU Load & Feedback Frequency
 // -----------------------------------------------------------------------------
 // Setting	Checks/sec	CPU Load	Feedback Delay
@@ -1175,6 +1181,52 @@ async function loadReferenceData() {
 //   5. ถ้ากำลัง Recording → เก็บข้อมูลลง recordedSessionData
 // =============================================================================
 
+// =============================================================================
+// Helper: Calculate Auto Brightness
+// =============================================================================
+/**
+ * คำนวณระดับความสว่างที่เหมาะสมตาม landmark visibility
+ * @param {Array} landmarks - Pose landmarks จาก MediaPipe
+ * @returns {number} - Brightness level (1.0 = normal, 2.0 = 2x brighter)
+ */
+function calculateAutoBrightness(landmarks) {
+  if (!landmarks || landmarks.length === 0) return 1.0;
+
+  // ใช้ keypoints สำคัญเหมือน low light detection
+  const keyIndices = [11, 12, 13, 14, 15, 16, 23, 24];
+  const visibilitySum = keyIndices.reduce(
+    (sum, i) => sum + (landmarks[i]?.visibility || 0),
+    0,
+  );
+  const avgVisibility = visibilitySum / keyIndices.length;
+
+  // คำนวณ brightness ตาม visibility
+  // visibility >= 0.5 → brightness = 1.0 (ปกติ)
+  // visibility = 0.3 → brightness = 1.4 (+40%)
+  // visibility = 0.1 → brightness = 1.8 (+80%)
+  // visibility < 0.1 → brightness = 2.0 (max)
+
+  if (avgVisibility >= 0.5) {
+    return 1.0; // แสงเพียงพอ
+  }
+
+  // แปลง visibility (0.5 → 0.0) เป็น brightness (1.0 → 2.0)
+  const brightnessLevel = 1.0 + (0.5 - avgVisibility) * 2.0;
+  return Math.min(brightnessLevel, 2.0); // จำกัดไม่เกิน 2.0
+}
+
+// =============================================================================
+// SECTION 4: MEDIAPIPE POSE PROCESSING
+// =============================================================================
+//
+// Flow ภายใน onResults:
+//   1. Gesture Detection (ควบคุมด้วยท่ามือ)
+//   2. วาด Video Frame ลง Canvas
+//   3. ถ้ากำลัง Calibrate → วาด Skeleton + Calibration Overlay
+//   4. ถ้า Normal Mode → วาด Path + Skeleton + วิเคราะห์ท่าทาง
+//   5. ถ้ากำลัง Recording → เก็บข้อมูลลง recordedSessionData
+// =============================================================================
+
 /**
  * MediaPipe onResults Callback
  *
@@ -1224,6 +1276,12 @@ async function onResults(results) {
   // ใน Fullscreen (canvas-container) CSS นี้ยังคงทำงาน
   // ดังนั้นไม่ต้อง mirror เพิ่มใน JS
 
+  // 🆕 Auto-Adjust Light - ปรับความสว่างอัตโนมัติถ้าเปิดใช้งาน
+  if (window.autoAdjustLightEnabled && results.poseLandmarks) {
+    const brightness = calculateAutoBrightness(results.poseLandmarks);
+    canvasCtx.filter = `brightness(${brightness}) contrast(1.1)`;
+  }
+
   // วาดภาพ
   canvasCtx.drawImage(
     results.image, // ภาพที่ได้จาก MediaPipe
@@ -1232,6 +1290,11 @@ async function onResults(results) {
     canvasElement.width,
     canvasElement.height,
   );
+
+  // Reset filter
+  if (window.autoAdjustLightEnabled) {
+    canvasCtx.filter = "none";
+  }
 
   // DrawingManager: mirrorDisplay = false เพราะ landmarks ก็ตรงกับภาพ webcam อยู่แล้ว
 
@@ -1552,23 +1615,36 @@ async function onResults(results) {
           //   3. แสดง notification (ภาพ) + พูดเตือน (เสียง)
           // -------------------------------------------------------------------------
           const now = Date.now();
+
+          // 🆕 Auto-Adjust Aware Logic
+          const isAutoAdjustOn = window.autoAdjustLightEnabled || false;
+          let shouldWarn = false;
+          let warningKey = "alert_low_light";
+
+          if (!isAutoAdjustOn) {
+            // Auto-Adjust OFF: เตือนถ้าแสงน้อย (< 0.5)
+            shouldWarn = avgVisibility < LOW_LIGHT_THRESHOLD;
+          } else {
+            // Auto-Adjust ON: เตือนเฉพาะถ้ามืดมากๆ (< 0.3)
+            shouldWarn = avgVisibility < 0.3;
+            warningKey = "alert_low_light_critical";
+          }
+
           if (
-            avgVisibility < LOW_LIGHT_THRESHOLD &&
+            shouldWarn &&
             now - lastLowLightWarningTime > LOW_LIGHT_WARNING_COOLDOWN
           ) {
             lastLowLightWarningTime = now;
 
             // แสดง notification บนหน้าจอ (สีเหลือง = warning)
             uiManager.showNotification(
-              uiManager.getText("alert_low_light"),
+              uiManager.getText(warningKey),
               "warning",
               5000,
             );
 
-            // พูดเตือนด้วยเสียง (TTS) - ใช้ข้อความสั้นกว่าเพื่อไม่รบกวน
-            // หมายเหตุ: ใช้ข้อความเดียวกับ notification แต่ AudioManager
-            //          จะพูดเฉพาะเมื่อเปิดเสียงอยู่ (audioEnabled = true)
-            audioManager.speak(uiManager.getText("alert_low_light_short"));
+            // พูดเตือนด้วยเสียง (TTS)
+            audioManager.speak(uiManager.getText(warningKey + "_short"));
           }
 
           // เก็บ Snapshot ของเฟรมนี้

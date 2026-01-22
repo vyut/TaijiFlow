@@ -52,6 +52,7 @@ class DisplayController {
     this.initSilhouetteCheckbox();
     this.initTrailCheckbox();
     this.initBlurBackgroundCheckbox();
+    this.initAutoAdjustLightCheckbox(); // 🆕 Auto-Adjust Light
   }
 
   /**
@@ -273,6 +274,33 @@ class DisplayController {
           console.log("✅ Background Blur disabled");
           this.stopLowFPSCheck();
         }
+      });
+    }
+  }
+
+  /**
+   * 🆕 Auto-Adjust Light checkbox (ปรับความสว่างอัตโนมัติเมื่อแสงน้อย)
+   */
+  initAutoAdjustLightCheckbox() {
+    const checkAutoAdjust = document.getElementById("check-auto-adjust-light");
+
+    if (checkAutoAdjust) {
+      // Load from localStorage
+      const saved = localStorage.getItem("autoAdjustLight");
+      if (saved !== null) {
+        window.autoAdjustLightEnabled = saved === "true";
+        checkAutoAdjust.checked = window.autoAdjustLightEnabled;
+      }
+
+      checkAutoAdjust.addEventListener("change", () => {
+        window.autoAdjustLightEnabled = checkAutoAdjust.checked;
+
+        // Save preference
+        localStorage.setItem("autoAdjustLight", checkAutoAdjust.checked);
+
+        console.log(
+          `🔆 Auto-Adjust Light: ${window.autoAdjustLightEnabled ? "enabled" : "disabled"}`,
+        );
       });
     }
   }

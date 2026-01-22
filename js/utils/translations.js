@@ -228,6 +228,9 @@ const TRANSLATIONS = {
     alert_low_light_calibration: "แสงไม่เพียงพอ กรุณาปรับแสงแล้วลองวัดใหม่",
     // แจ้งเมื่อแสงไม่เพียงพอ (เสียงพูดแบบสั้น)
     alert_low_light_short: "แสงสว่างไม่เพียงพอ",
+    // 🆕 แจ้งเมื่อแสงน้อยมาก (Auto-Adjust ปรับไม่ได้)
+    alert_low_light_critical: "แสงน้อยเกินไป แม้ปรับแล้ว กรุณาเพิ่มแสงในห้อง",
+    alert_low_light_critical_short: "แสงน้อยเกินไป",
 
     // -------------------------------------------------------------------------
     // Heuristics Feedback (ข้อความเตือนจากการวิเคราะห์กฎ 8 ข้อ)
@@ -538,6 +541,10 @@ const TRANSLATIONS = {
       "Low lighting detected. Please adjust lighting and try calibration again.",
     // Low light warning (Short speech)
     alert_low_light_short: "Not enough light",
+    // 🆕 Low light critical (Auto-Adjust can't fix)
+    alert_low_light_critical:
+      "Lighting too low, even after adjustment. Please add more light.",
+    alert_low_light_critical_short: "Light too low",
 
     // -------------------------------------------------------------------------
     // Heuristics Feedback (Rule Analysis Warning Messages)

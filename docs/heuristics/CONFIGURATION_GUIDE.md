@@ -43,6 +43,9 @@ this.CONFIG = {
   // === Weight Shift (v0.9.11 tuned) ===
   WEIGHT_BUFFER_RATIO: 0.3,           // 🔄 30% of stanceWidth (was 0.1)
 
+  // === Coordination (Rule 9) ===
+  COORDINATION_VELOCITY_THRESHOLD: 0.02, // Min velocity to check direction
+
   // === Feedback Display ===
   FEEDBACK_HOLD_TIME_MS: 1000,        // 🔄 1 second (was 1.5)
 

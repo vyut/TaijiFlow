@@ -1277,9 +1277,9 @@ async function onResults(results) {
   // ดังนั้นไม่ต้อง mirror เพิ่มใน JS
 
   // 🆕 Auto-Adjust Light - ปรับความสว่างอัตโนมัติถ้าเปิดใช้งาน
+  let brightnessLevel = 1.0;
   if (window.autoAdjustLightEnabled && results.poseLandmarks) {
-    const brightness = calculateAutoBrightness(results.poseLandmarks);
-    canvasCtx.filter = `brightness(${brightness}) contrast(1.1)`;
+    brightnessLevel = calculateAutoBrightness(results.poseLandmarks);
   }
 
   // วาดภาพ
@@ -1291,9 +1291,26 @@ async function onResults(results) {
     canvasElement.height,
   );
 
-  // Reset filter
-  if (window.autoAdjustLightEnabled) {
-    canvasCtx.filter = "none";
+  // Apply brightness adjustment (iOS Safari compatible - manual pixel manipulation)
+  if (window.autoAdjustLightEnabled && brightnessLevel > 1.0) {
+    const imageData = canvasCtx.getImageData(
+      0,
+      0,
+      canvasElement.width,
+      canvasElement.height,
+    );
+    const data = imageData.data;
+
+    // Adjust each pixel
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] = Math.min(255, data[i] * brightnessLevel); // R
+      data[i + 1] = Math.min(255, data[i + 1] * brightnessLevel); // G
+      data[i + 2] = Math.min(255, data[i + 2] * brightnessLevel); // B
+      // data[i + 3] is alpha, keep unchanged
+    }
+
+    // Put adjusted image back
+    canvasCtx.putImageData(imageData, 0, 0);
   }
 
   // DrawingManager: mirrorDisplay = false เพราะ landmarks ก็ตรงกับภาพ webcam อยู่แล้ว

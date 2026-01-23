@@ -33,19 +33,20 @@ class DisplayController {
     this.showTrail = true;
     this.showBlurBackground = false;
     this.showGrid = false; // 🆕 Grid Overlay
+    this.showGrid = false; // 🆕 Grid Overlay
     this.showErrorHighlights = true; // 🆕 Error Highlights (Red Dots)
+    this.isSideBySide = false; // 🆕 Side-by-Side Mode
 
     // Trail Visualization
     this.TRAIL_LENGTH = 60;
     this.trailHistory = [];
     this.circularityScore = null;
 
+    // Persist Ghost State
+    this.ghostWasEnabledBeforeSideBySide = false;
+
     this.init();
   }
-
-  /**
-   * Initialize all display options
-   */
   init() {
     this.initDropdown();
     this.initSettingsDropdown(); // Settings dropdown (Performance + Effects + Backgrounds)
@@ -59,6 +60,7 @@ class DisplayController {
     this.initAutoAdjustLightCheckbox(); // Auto-Adjust Light
     this.initAutoAdjustLightCheckbox(); // Auto-Adjust Light
     this.initVirtualBackgrounds(); // Virtual Backgrounds
+    this.initSideBySideCheckbox(); // 🆕 Side-by-Side Mode
     this.initErrorHighlightsCheckbox(); // 🆕 Error Highlights
   }
 
@@ -449,6 +451,107 @@ class DisplayController {
 
     const checkBlurBg = document.getElementById("check-blur-bg");
     if (checkBlurBg) checkBlurBg.checked = false; // 🆕
+
+    // Reset Side-by-Side
+    this.toggleSideBySide(false);
+    const checkSideBySide = document.getElementById("check-side-by-side");
+    if (checkSideBySide) checkSideBySide.checked = false;
+  }
+
+  /**
+   * 🆕 Side-by-Side Mode checkbox
+   */
+  initSideBySideCheckbox() {
+    const checkSideBySide = document.getElementById("check-side-by-side");
+
+    if (checkSideBySide) {
+      checkSideBySide.checked = this.isSideBySide;
+
+      checkSideBySide.addEventListener("change", (e) => {
+        this.toggleSideBySide(e.target.checked);
+      });
+    }
+  }
+
+  /**
+   * Toggle Side-by-Side Mode
+   * @param {boolean} enabled
+   */
+  toggleSideBySide(enabled) {
+    if (this.isSideBySide === enabled) return;
+
+    console.log(`🌗 Toggle Side-by-Side: ${enabled}`);
+    console.log(`   Current Ghost Checkbox: ${this.deps.checkGhost?.checked}`);
+    console.log(
+      `   Saved Previous Ghost State: ${this.ghostWasEnabledBeforeSideBySide}`,
+    );
+
+    this.isSideBySide = enabled;
+    const body = document.body;
+    const container = document.getElementById("instructor-video-container");
+    const { ghostManager, checkGhost } = this.deps;
+
+    if (enabled) {
+      // 1. Enable CSS Mode
+      body.classList.add("side-by-side-mode");
+
+      // 2. Ensure Ghost is Active (so video plays)
+      if (checkGhost) {
+        // Save previous state BEFORE we change it
+        this.ghostWasEnabledBeforeSideBySide = checkGhost.checked;
+        console.log(
+          `   💾 Saving Ghost State: ${this.ghostWasEnabledBeforeSideBySide}`,
+        );
+
+        if (!checkGhost.checked) {
+          console.log("   🟢 Force enabling Ghost for Side-by-Side");
+          checkGhost.checked = true;
+          checkGhost.dispatchEvent(new Event("change")); // Force start ghostManager
+
+          if (window.uiManager) {
+            window.uiManager.showNotification(
+              "Side-by-Side: เปิดวิดีโอครูฝึกอัตโนมัติ",
+              "info",
+            );
+          }
+        }
+      }
+
+      // 3. Move Instructor Video to Left Container
+      if (ghostManager && container) {
+        // Try to get video from manager (even if not playing yet, accessible via property)
+        // We know ghostManager stores it in this.silhouetteVideo
+        const video = ghostManager.silhouetteVideo;
+
+        if (video) {
+          container.appendChild(video);
+          video.style.display = "block";
+          if (video.paused) video.play().catch(() => {});
+        }
+      }
+    } else {
+      // 1. Disable CSS Mode
+      body.classList.remove("side-by-side-mode");
+
+      // 2. Clear Left Container (Video removed from DOM, but GhostManager keeps ref)
+      if (container) {
+        container.innerHTML = "";
+      }
+
+      // 3. Restore Ghost State
+      if (checkGhost) {
+        console.log(
+          `   🔄 Restoring Ghost. Previous: ${this.ghostWasEnabledBeforeSideBySide}, Current: ${checkGhost.checked}`,
+        );
+
+        // Only turn off if it was OFF before Side-by-Side started
+        if (!this.ghostWasEnabledBeforeSideBySide && checkGhost.checked) {
+          console.log("   🔴 Force disabling Ghost (Restore)");
+          checkGhost.checked = false;
+          checkGhost.dispatchEvent(new Event("change")); // Stop ghostManager
+        }
+      }
+    }
   }
 
   /**

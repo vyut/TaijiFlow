@@ -199,14 +199,14 @@ class KeyboardController {
         break;
 
       // -----------------------------------------------------------------------
-      // S = Silhouette Toggle
+      // S = Side-by-Side Toggle (New)
       // -----------------------------------------------------------------------
       case "KeyS":
         e.preventDefault();
-        if (checkSilhouette) {
-          checkSilhouette.checked = !checkSilhouette.checked;
-          checkSilhouette.dispatchEvent(new Event("change"));
-        }
+        displayController.toggleSideBySide(!displayController.isSideBySide);
+        // Sync checkbox UI
+        const checkSideBySide = document.getElementById("check-side-by-side");
+        if (checkSideBySide) checkSideBySide.checked = !checkSideBySide.checked;
         break;
 
       // -----------------------------------------------------------------------

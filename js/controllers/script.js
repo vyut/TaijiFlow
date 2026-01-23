@@ -1420,19 +1420,23 @@ async function onResults(results) {
       if (displayController.showGhostOverlay && ghostManager.isPlaying) {
         ghostManager.update(); // อัปเดต frame
 
-        // Priority: Silhouette Video > Ghost Skeleton
-        const silhouetteVideo = ghostManager.getSilhouetteVideo();
-        if (silhouetteVideo) {
-          // มี silhouette video - วาดเงา
-          drawer.drawSilhouetteVideo(silhouetteVideo, ghostManager.opacity);
-        } else {
-          // ไม่มี silhouette video - ใช้ skeleton แทน
-          const ghostLandmarks = ghostManager.getCurrentFrame();
-          if (ghostLandmarks) {
-            drawer.drawGhostSkeleton(ghostLandmarks, ghostManager.opacity);
+        // 🆕 Side-by-Side Mode: ถ้าเปิดโหมดนี้อยู่ *ไม่ต้อง* วาด Overlay ทับ (เพราะมีจอแยกแล้ว)
+        // แต่ยังต้อง update() เพื่อให้วิดีโอเล่นต่อเนื่อง
+        if (!displayController.isSideBySide) {
+          // Priority: Silhouette Video > Ghost Skeleton
+          const silhouetteVideo = ghostManager.getSilhouetteVideo();
+          if (silhouetteVideo) {
+            // มี silhouette video - วาดเงา
+            drawer.drawSilhouetteVideo(silhouetteVideo, ghostManager.opacity);
+          } else {
+            // ไม่มี silhouette video - ใช้ skeleton แทน
+            const ghostLandmarks = ghostManager.getCurrentFrame();
+            if (ghostLandmarks) {
+              drawer.drawGhostSkeleton(ghostLandmarks, ghostManager.opacity);
+            }
           }
-        }
-      }
+        } // End of Side-by-Side check
+      } // End of showGhostOverlay check
 
       // 1.5. วาด Instructor Thumbnail (มุมขวาบน) ถ้าเปิดใช้งาน
       if (displayController.showInstructor && instructorCtx && isTrainingMode) {
@@ -1502,13 +1506,16 @@ async function onResults(results) {
         drawer.drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4);
       }
 
-      // 3. วาด User Skeleton (ถ้าเปิด)
+      // 3. วาด User Skeleton (ถ้าเปิด) OR วาด Error Highlights (ถ้าเปิดแต่ปิด Skeleton)
       if (displayController.showSkeleton) {
-        // 🆕 ส่ง lastErrorJoints ไปวาด Highlight (ถ้าเปิด Error Highlights)
+        // กรณีเปิด Skeleton: วาดโครง + Highlight (ถ้ามี) ในฟังก์ชันเดียว
         const jointsToHighlight = displayController.showErrorHighlights
           ? lastErrorJoints
           : [];
         drawer.drawSkeleton(results.poseLandmarks, jointsToHighlight);
+      } else if (displayController.showErrorHighlights) {
+        // กรณีปิด Skeleton แต่เปิด Highlights: วาดเฉพาะจุดแดง
+        drawer.drawErrorHighlights(results.poseLandmarks, lastErrorJoints);
       }
 
       // 4. Trail Visualization (ถ้าเปิด)

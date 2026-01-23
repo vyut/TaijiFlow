@@ -164,6 +164,47 @@ class DrawingManager {
     this.ctx.shadowBlur = 0;
 
     this.ctx.restore();
+    this.ctx.restore();
+  }
+
+  /**
+   * วาดเฉพาะจุด Error Highlights (ไม่ต้องมีโครง)
+   * ใช้กรณีที่ปิด Skeleton แต่ต้องการเห็นจุดผิด
+   *
+   * @param {Object[]} landmarks - 33 จุดจาก MediaPipe Pose
+   * @param {number[]} errorJoints - Array of joint indices to highlight
+   */
+  drawErrorHighlights(landmarks, errorJoints) {
+    if (!errorJoints || errorJoints.length === 0) return;
+
+    this.ctx.save();
+
+    // ----- Mirror Logic -----
+    const shouldMirror = this.mirrorDisplay;
+    if (shouldMirror) {
+      this.ctx.scale(-1, 1);
+      this.ctx.translate(-this.canvasWidth, 0);
+    }
+
+    // ----- วาดเฉพาะจุด Error -----
+    this.ctx.shadowBlur = 20;
+    this.ctx.shadowColor = "rgba(255, 0, 0, 0.8)";
+    this.ctx.fillStyle = "#FF0000";
+
+    errorJoints.forEach((index) => {
+      const landmark = landmarks[index];
+      if (landmark) {
+        const x = landmark.x * this.canvasWidth;
+        const y = landmark.y * this.canvasHeight;
+
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, 8, 0, 2 * Math.PI); // Radius 8
+        this.ctx.fill();
+      }
+    });
+
+    this.ctx.shadowBlur = 0;
+    this.ctx.restore();
   }
 
   // ===========================================================================

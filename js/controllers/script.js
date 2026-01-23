@@ -126,6 +126,7 @@ let throttleFrameCounter = 0; // สำหรับ Throttling Check (increment 
 // -----------------------------------------------------------------------------
 const FEEDBACK_DISPLAY_COOLDOWN_MS = 3000; // 3 วินาที
 let lastDisplayedFeedbacks = []; // feedback ล่าสุดที่แสดง
+let lastErrorJoints = []; // 🆕 ข้อต่อที่ผิดพลาดล่าสุด (Highlight)
 let lastFeedbackDisplayTime = 0; // เวลาที่แสดง feedback ล่าสุด
 
 // -----------------------------------------------------------------------------
@@ -1394,47 +1395,28 @@ async function onResults(results) {
     } else {
       // Normal Mode
 
-      // 0. วาด Silhouette (ถ้าเปิดใช้งาน) - ใช้ segmentationMask จาก Pose
-      if (
-        displayController.showSilhouette &&
-        silhouetteManager.isEnabled &&
-        results.segmentationMask
-      ) {
-        silhouetteManager.drawSilhouetteFromMask(
-          drawer.ctx,
+      // 0.2 🆕 Virtual Background (Merged: Blur, Virtual, Silhouette)
+      // ใช้ BackgroundManager จัดการทั้งหมดทีเดียว (ไม่แยก if/else แล้ว)
+      if (results.segmentationMask) {
+        backgroundManager.drawBackground(
+          canvasCtx,
           results.segmentationMask,
+          results.image,
           drawer.canvasWidth,
           drawer.canvasHeight,
         );
       }
 
-      // 0.2 🆕 Virtual Background (เลือกรูปพื้นหลัง)
-      const bgMode = backgroundManager.getCurrentMode();
+      // 1. วาด Ghost (เงาคนสอน) ถ้าเปิดใช้งาน (วาดก่อน Grid หรือหลังก็ได้ แต่วาดหลัง Grid จะเห็นชัดกว่า)
 
-      // 0.2.1 Virtual Backgrounds → Blur
-      if (bgMode === "blur" && results.segmentationMask) {
-        drawer.drawBlurredBackground(
-          canvasCtx,
-          results.image,
-          results.segmentationMask,
-        );
+      // 🆕 0.5 วาด Grid Overlay (ถ้าเปิดใช้งาน)
+      if (displayController.showGrid) {
+        // console.log("📐 Drawing Grid..."); // Debug log (uncomment to check loop)
+        // ขนาด grid ปรับตามความละเอียดจอ (640=80, 1280=100)
+        const gridSize = drawer.canvasWidth > 1000 ? 120 : 80;
+        drawer.drawGrid("rgba(255, 255, 255, 0.3)", gridSize); // เพิ่ม opacity นิดนึง
       }
 
-      // 0.2.2 Virtual Backgrounds → รูปภาพ (ไม่ใช่ blur หรือ none)
-      if (bgMode !== "none" && bgMode !== "blur" && results.segmentationMask) {
-        // ดึงรูปภาพพื้นหลังจาก BackgroundManager
-        const bgImage = backgroundManager.currentBackgroundImage;
-        if (bgImage) {
-          drawer.drawVirtualBackground(
-            canvasCtx,
-            results.image,
-            results.segmentationMask,
-            bgImage,
-          );
-        }
-      }
-
-      // 1. วาด Ghost (เงาคนสอน) ถ้าเปิดใช้งาน
       if (displayController.showGhostOverlay && ghostManager.isPlaying) {
         ghostManager.update(); // อัปเดต frame
 
@@ -1522,7 +1504,11 @@ async function onResults(results) {
 
       // 3. วาด User Skeleton (ถ้าเปิด)
       if (displayController.showSkeleton) {
-        drawer.drawSkeleton(results.poseLandmarks);
+        // 🆕 ส่ง lastErrorJoints ไปวาด Highlight (ถ้าเปิด Error Highlights)
+        const jointsToHighlight = displayController.showErrorHighlights
+          ? lastErrorJoints
+          : [];
+        drawer.drawSkeleton(results.poseLandmarks, jointsToHighlight);
       }
 
       // 4. Trail Visualization (ถ้าเปิด)
@@ -1586,7 +1572,8 @@ async function onResults(results) {
 
         if (shouldCheckHeuristics) {
           // 1. วิเคราะห์ด้วย Engine
-          feedbacks = engine.analyze(
+          // 🆕 รับค่า Object { feedback, errorJoints }
+          const analysisResult = engine.analyze(
             results.poseLandmarks,
             results.image.timeStamp,
             referencePath,
@@ -1594,7 +1581,17 @@ async function onResults(results) {
             currentLevel, // ส่งเลเวล (L1, L2, L3)
           );
 
-          // 1.0 Feedback Display Cooldown - ให้ข้อความค้างไว้ให้อ่านได้
+          // Handle backward compatibility (if engine returns string array)
+          if (Array.isArray(analysisResult)) {
+            feedbacks = analysisResult;
+            // No joints info
+          } else {
+            feedbacks = analysisResult.feedback || [];
+            // Store current joints
+          }
+
+          const currentErrorJoints = analysisResult.errorJoints || [];
+
           // 1.0 Feedback Display Cooldown - ให้ข้อความค้างไว้ให้อ่านได้
           const now = Date.now();
           if (feedbacks.length > 0) {
@@ -1602,6 +1599,7 @@ async function onResults(results) {
             if (now - lastFeedbackDisplayTime >= FEEDBACK_DISPLAY_COOLDOWN_MS) {
               // ครบ cooldown แล้ว - อัพเดท feedback ใหม่
               lastDisplayedFeedbacks = feedbacks;
+              lastErrorJoints = currentErrorJoints; // 🆕 Sync Joints
               lastFeedbackDisplayTime = now;
             }
             // ถ้ายังไม่ครบ cooldown จะใช้ lastDisplayedFeedbacks ที่มีอยู่
@@ -1609,6 +1607,7 @@ async function onResults(results) {
             // [FIX] ไม่มี feedback (ถูกต้อง) - เคลียร์ทันทีไม่ต้องรอ Cooldown
             // ถ้า Engine ส่ง empty array มา แปลว่า Sticky Logic ของ Engine (1วินาที) หมดเวลาแล้ว
             lastDisplayedFeedbacks = [];
+            lastErrorJoints = []; // 🆕 Clear Joints
           }
 
           // แสดง feedback (ใช้ค่าล่าสุดที่ไม่เปลี่ยนถี่เกินไป) - ใช้ HTML overlay

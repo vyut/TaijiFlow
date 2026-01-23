@@ -422,6 +422,25 @@ Version: 0.9.9 (2026-01-17)
                   >M</span
                 >
               </label>
+              <!-- Grid Overlay -->
+              <label
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
+                title="Show grid lines for reference"
+              >
+                <input
+                  type="checkbox"
+                  id="check-grid"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                />
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white">Grid Overlay</span>
+                  <span class="text-xs text-gray-400">Position reference</span>
+                </div>
+                <span
+                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
+                  >G</span
+                >
+              </label>
 
               <!-- ===== 📚 Reference Section ===== -->
               <div
@@ -493,7 +512,7 @@ Version: 0.9.9 (2026-01-17)
                 </div>
                 <span
                   class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >G</span
+                  >O</span
                 >
               </label>
 
@@ -523,6 +542,30 @@ Version: 0.9.9 (2026-01-17)
                   >K</span
                 >
               </label>
+              <!-- Error Highlights -->
+              <label
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
+                title="Show red highlights on incorrect joints"
+              >
+                <input
+                  type="checkbox"
+                  id="check-error-highlights"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                  checked
+                />
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white"
+                    >Error Highlights</span
+                  >
+                  <span class="text-xs text-gray-400"
+                    >Show red dots on mistakes</span
+                  >
+                </div>
+                <span
+                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
+                  >E</span
+                >
+              </label>
               <!-- Trail -->
               <label
                 class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
@@ -541,25 +584,6 @@ Version: 0.9.9 (2026-01-17)
                 <span
                   class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
                   >R</span
-                >
-              </label>
-              <!-- Silhouette -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Show your silhouette overlay"
-              >
-                <input
-                  type="checkbox"
-                  id="check-silhouette"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white">Silhouette</span>
-                  <span class="text-xs text-gray-400">Body outline effect</span>
-                </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >S</span
                 >
               </label>
 
@@ -1071,6 +1095,36 @@ Version: 0.9.9 (2026-01-17)
                       Blur
                     </div>
                     <span class="text-[10px] text-gray-400 mt-1">Blur</span>
+                  </button>
+
+                  <!-- Silhouette -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="silhouette"
+                    data-vbg-key="silhouette"
+                    title="Silhouette effect"
+                  >
+                    <div
+                      class="w-full h-12 bg-black rounded flex items-center justify-center text-xs text-white"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                    </div>
+                    <span class="text-[10px] text-gray-400 mt-1"
+                      >Silhouette</span
+                    >
                   </button>
 
                   <!-- Mountain Mist -->

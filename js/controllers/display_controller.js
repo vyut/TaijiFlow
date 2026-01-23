@@ -10,9 +10,11 @@
  * - Skeleton (โครงผู้ฝึก)
  * - Silhouette (เงาผู้ฝึก)
  * - Trail (เส้นทางการเคลื่อนไหว)
+ * - Mirror Mode (New)
+ * - Grid Overlay (New)
  *
  * @author TaijiFlow AI Team
- * @version 1.0
+ * @version 1.1
  * ============================================================================
  */
 
@@ -28,9 +30,10 @@ class DisplayController {
     this.showInstructor = true;
     this.showPath = true;
     this.showSkeleton = true;
-    this.showSilhouette = false;
     this.showTrail = true;
     this.showBlurBackground = false;
+    this.showGrid = false; // 🆕 Grid Overlay
+    this.showErrorHighlights = true; // 🆕 Error Highlights (Red Dots)
 
     // Trail Visualization
     this.TRAIL_LENGTH = 60;
@@ -47,14 +50,16 @@ class DisplayController {
     this.initDropdown();
     this.initSettingsDropdown(); // Settings dropdown (Performance + Effects + Backgrounds)
     this.initMirrorCheckbox(); // 🆕 Mirror Mode
+    this.initGridCheckbox(); // 🆕 Grid Overlay
     this.initGhostCheckbox();
     this.initInstructorCheckbox();
     this.initPathCheckbox();
     this.initSkeletonCheckbox();
-    this.initSilhouetteCheckbox();
     this.initTrailCheckbox();
     this.initAutoAdjustLightCheckbox(); // Auto-Adjust Light
+    this.initAutoAdjustLightCheckbox(); // Auto-Adjust Light
     this.initVirtualBackgrounds(); // Virtual Backgrounds
+    this.initErrorHighlightsCheckbox(); // 🆕 Error Highlights
   }
 
   /**
@@ -105,11 +110,9 @@ class DisplayController {
    */
   initMirrorCheckbox() {
     const checkMirror = document.getElementById("check-mirror");
-    const container = document.querySelector(".canvas-container");
 
-    if (checkMirror && container) {
+    if (checkMirror) {
       // 1. Default state: Always Mirror (true) on load
-      // No localStorage loading
       const isMirror = true;
 
       checkMirror.checked = isMirror;
@@ -119,7 +122,6 @@ class DisplayController {
       checkMirror.addEventListener("change", (e) => {
         const enabled = e.target.checked;
         this.setMirrorMode(enabled);
-
         // No notification for consistency
       });
     }
@@ -138,11 +140,60 @@ class DisplayController {
     } else {
       container.classList.add("normal-view"); // Normal View
     }
+  }
 
-    // No localStorage saving
+  /**
+   * Initialize Error Highlights toggle
+   */
+  initErrorHighlightsCheckbox() {
+    const checkErrorHighlights = document.getElementById(
+      "check-error-highlights",
+    );
 
-    // Update global state if needed
-    // if (window.drawingManager) window.drawingManager.setMirror(enabled);
+    if (checkErrorHighlights) {
+      // 1. Defaut state: Checked (Enabled)
+      checkErrorHighlights.checked = this.showErrorHighlights;
+
+      // 2. Handle change
+      checkErrorHighlights.addEventListener("change", (e) => {
+        this.showErrorHighlights = e.target.checked;
+        if (this.showErrorHighlights) {
+          if (window.uiManager)
+            window.uiManager.showNotification(
+              "🔴 Enabled Error Highlights",
+              "info",
+            );
+        } else {
+          if (window.uiManager)
+            window.uiManager.showNotification(
+              "⚪ Disabled Error Highlights",
+              "info",
+            );
+        }
+      });
+    }
+  }
+
+  /**
+   * Initialize Grid Overlay toggle
+   */
+  initGridCheckbox() {
+    const checkGrid = document.getElementById("check-grid");
+
+    if (checkGrid) {
+      // 1. Default: OFF (not persistent)
+      checkGrid.checked = false;
+      this.showGrid = false;
+
+      // 2. Handle change
+      checkGrid.addEventListener("change", (e) => {
+        this.showGrid = e.target.checked;
+
+        // No notification as requested (Consistent with other options)
+      });
+    } else {
+      console.warn("⚠️ Grid Checkbox not found in initGridCheckbox");
+    }
   }
 
   /**
@@ -222,39 +273,6 @@ class DisplayController {
   }
 
   /**
-   * Silhouette checkbox (เงาผู้ฝึก)
-   */
-  initSilhouetteCheckbox() {
-    const { checkSilhouette, silhouetteManager } = this.deps;
-
-    if (checkSilhouette) {
-      checkSilhouette.checked = this.showSilhouette;
-      checkSilhouette.addEventListener("change", () => {
-        this.showSilhouette = checkSilhouette.checked;
-
-        // Dynamic Segmentation Toggle - เพิ่ม/ลด performance
-        // Note: ใช้ window.pose เพราะ pose ถูก define หลังจาก DisplayController สร้าง
-        if (typeof pose !== "undefined") {
-          pose.setOptions({
-            enableSegmentation: this.showSilhouette,
-            smoothSegmentation: this.showSilhouette,
-          });
-        }
-
-        if (this.showSilhouette) {
-          silhouetteManager.enable();
-          console.log("⚠️ Silhouette enabled - enableSegmentation: true");
-        } else {
-          silhouetteManager.disable();
-          console.log(
-            "✅ Silhouette disabled - enableSegmentation: false (+5-10 fps)",
-          );
-        }
-      });
-    }
-  }
-
-  /**
    * Trail checkbox (เส้นทางการเคลื่อนไหว)
    */
   initTrailCheckbox() {
@@ -275,86 +293,12 @@ class DisplayController {
   }
 
   /**
-   * 🆕 Background Blur checkbox (เบลอฉากหลัง สำหรับ Visual Effects)
-   */
-  initBlurBackgroundCheckbox() {
-    const checkBlurBg = document.getElementById("check-blur-bg");
-
-    if (checkBlurBg) {
-      checkBlurBg.checked = this.showBlurBackground;
-
-      // 🆕 Mobile/Tablet Detection - ซ่อนฟีเจอร์นี้บน Tablet/Mobile (Experimental Support)
-      if (typeof isMobileDevice === "function" && isMobileDevice()) {
-        // ซ่อน Option
-        const container = checkBlurBg.closest("label");
-        if (container) container.style.display = "none";
-
-        // ซ่อน Header "Visual Effects" ที่อยู่ก่อนหน้า
-        const header = container?.previousElementSibling;
-        if (header && header.textContent.includes("Visual Effects")) {
-          header.style.display = "none";
-        }
-
-        this.showBlurBackground = false;
-        console.log("📱 Mobile/Tablet detected - Visual Effects hidden");
-        return;
-      }
-
-      checkBlurBg.addEventListener("change", () => {
-        this.showBlurBackground = checkBlurBg.checked;
-
-        // 🆕 Safari Detection (Desktop) - Safari ไม่รองรับ MediaPipe Segmentation
-        const isSafari =
-          /^((?!chrome|android).)*safari/i.test(navigator.userAgent) ||
-          (navigator.userAgent.includes("AppleWebKit") &&
-            !navigator.userAgent.includes("Chrome"));
-
-        if (this.showBlurBackground && isSafari) {
-          // แสดง Warning และปิด checkbox
-          const { uiManager, translations } = this.deps;
-          if (uiManager && translations) {
-            const lang = uiManager.currentLang || "th";
-            const message =
-              translations[lang]?.blur_bg_safari_warning ||
-              "Background Blur is not supported on Safari.";
-            uiManager.showNotification(message, "warning");
-          }
-          // ปิด checkbox กลับเพราะไม่รองรับ
-          checkBlurBg.checked = false;
-          this.showBlurBackground = false;
-          console.warn("⚠️ Safari detected - Background Blur not supported");
-          return;
-        }
-
-        // Toggle Segmentation
-        const needSegmentation = this.showBlurBackground || this.showSilhouette;
-        if (typeof pose !== "undefined") {
-          pose.setOptions({
-            enableSegmentation: needSegmentation,
-            smoothSegmentation: needSegmentation,
-          });
-        }
-
-        if (this.showBlurBackground) {
-          console.log("🌫️ Background Blur enabled");
-          // Start Low FPS Check
-          this.startLowFPSCheck();
-        } else {
-          console.log("✅ Background Blur disabled");
-          this.stopLowFPSCheck();
-        }
-      });
-    }
-  }
-
-  /**
-   * 🆕 Auto-Adjust Light checkbox (ปรับความสว่างอัตโนมัติเมื่อแสงน้อย)
+   * 🆕 Auto-Adjust Light checkbox
    */
   initAutoAdjustLightCheckbox() {
     const checkAutoAdjust = document.getElementById("check-auto-adjust-light");
 
     if (checkAutoAdjust) {
-      // Load from localStorage
       const saved = localStorage.getItem("autoAdjustLight");
       if (saved !== null) {
         window.autoAdjustLightEnabled = saved === "true";
@@ -363,10 +307,7 @@ class DisplayController {
 
       checkAutoAdjust.addEventListener("change", () => {
         window.autoAdjustLightEnabled = checkAutoAdjust.checked;
-
-        // Save preference
         localStorage.setItem("autoAdjustLight", checkAutoAdjust.checked);
-
         console.log(
           `🔆 Auto-Adjust Light: ${window.autoAdjustLightEnabled ? "enabled" : "disabled"}`,
         );
@@ -375,22 +316,17 @@ class DisplayController {
   }
 
   /**
-   * 🆕 Virtual Backgrounds - จัดการ UI สำหรับเลือกพื้นหลัง
+   * 🆕 Virtual Backgrounds
    */
   initVirtualBackgrounds() {
     const bgButtons = document.querySelectorAll(".bg-option");
 
     if (bgButtons.length === 0) return;
 
-    // 🔧 Don't load saved preference - always start with "none"
-    // Default "None" button should already have active class in HTML
-
-    // Add click handlers
     bgButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
         const bgKey = btn.dataset.bg;
 
-        // Update active state visually
         bgButtons.forEach((b) => {
           b.classList.remove("active", "border-green-500");
           b.classList.add("border-transparent");
@@ -399,22 +335,18 @@ class DisplayController {
         btn.classList.remove("border-transparent");
         btn.classList.add("border-green-500");
 
-        // Set background in BackgroundManager
         if (window.backgroundManager) {
           window.backgroundManager.setBackground(bgKey);
           console.log(`🖼️ Background changed to: ${bgKey}`);
 
-          // Enable/Disable MediaPipe Segmentation
           if (window.pose) {
             if (bgKey !== "none") {
-              // Enable segmentation for blur or virtual backgrounds
               window.pose.setOptions({
                 enableSegmentation: true,
                 smoothSegmentation: true,
               });
               console.log("🎨 Segmentation enabled for background effect");
             } else {
-              // Disable segmentation when not needed (unless Silhouette is on)
               if (!this.showSilhouette) {
                 window.pose.setOptions({
                   enableSegmentation: false,
@@ -491,21 +423,15 @@ class DisplayController {
    * Reset display options to defaults
    */
   resetToDefaults() {
-    const {
-      checkGhost,
-      checkInstructor,
-      checkPath,
-      checkSkeleton,
-      checkSilhouette,
-    } = this.deps;
+    const { checkGhost, checkInstructor, checkPath, checkSkeleton } = this.deps;
 
     this.showGhostOverlay = false;
     this.showInstructor = true;
     this.showPath = true;
     this.showSkeleton = true;
-    this.showSilhouette = false;
     this.showTrail = true;
     this.showBlurBackground = false; // 🆕
+    this.showGrid = false; // 🆕
     this.trailHistory = [];
     this.circularityScore = null;
 
@@ -514,10 +440,12 @@ class DisplayController {
     if (checkInstructor) checkInstructor.checked = true;
     if (checkPath) checkPath.checked = true;
     if (checkSkeleton) checkSkeleton.checked = true;
-    if (checkSilhouette) checkSilhouette.checked = false;
 
     const checkTrail = document.getElementById("check-trail");
     if (checkTrail) checkTrail.checked = true;
+
+    const checkGrid = document.getElementById("check-grid");
+    if (checkGrid) checkGrid.checked = false;
 
     const checkBlurBg = document.getElementById("check-blur-bg");
     if (checkBlurBg) checkBlurBg.checked = false; // 🆕

@@ -54,6 +54,47 @@ class DrawingManager {
   // ===========================================================================
 
   /**
+   * วาดตาราง Grid Overlay เพื่อช่วยวัดตำแหน่ง
+   * @param {string} color - สีเส้นตาราง (default: 'rgba(255, 255, 255, 0.2)')
+   * @param {number} gridSize - ขนาดช่องตาราง (default: 80 - ปรับตามความกว้างจอ)
+   */
+  drawGrid(color = "rgba(255, 255, 255, 0.2)", gridSize = 100) {
+    const width = this.canvasWidth;
+    const height = this.canvasHeight;
+
+    // Save context
+    this.ctx.save();
+    this.ctx.lineWidth = 1;
+    this.ctx.strokeStyle = color;
+
+    // ----- เส้นแนวตั้ง -----
+    for (let x = 0; x <= width; x += gridSize) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(x, 0);
+      this.ctx.lineTo(x, height);
+      this.ctx.stroke();
+    }
+
+    // ----- เส้นแนวนอน -----
+    for (let y = 0; y <= height; y += gridSize) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, y);
+      this.ctx.lineTo(width, y);
+      this.ctx.stroke();
+    }
+
+    // ----- Center Line (แกนกลาง) - เน้นสีแดง -----
+    this.ctx.strokeStyle = "rgba(255, 50, 50, 0.4)";
+    this.ctx.lineWidth = 2;
+    this.ctx.beginPath();
+    this.ctx.moveTo(width / 2, 0);
+    this.ctx.lineTo(width / 2, height);
+    this.ctx.stroke();
+
+    this.ctx.restore();
+  }
+
+  /**
    * เปิด/ปิด Mirror Mode
    * ใช้เมื่อต้องการพลิกภาพเพิ่มเติม (เช่น Fullscreen)
    * @param {boolean} enabled - true = mirror, false = ไม่ mirror
@@ -71,8 +112,9 @@ class DrawingManager {
    * ใช้ฟังก์ชัน MediaPipe: drawConnectors, drawLandmarks
    *
    * @param {Object[]} landmarks - 33 จุดจาก MediaPipe Pose
+   * @param {number[]} errorJoints - Array of joint indices to highlight (default: [])
    */
-  drawSkeleton(landmarks) {
+  drawSkeleton(landmarks, errorJoints = []) {
     this.ctx.save();
 
     // ----- Mirror Logic -----
@@ -85,18 +127,41 @@ class DrawingManager {
       this.ctx.translate(-this.canvasWidth, 0); // ย้ายกลับมา
     }
 
-    // ----- วาดเส้นเชื่อมข้อต่อ -----
+    // ----- วาดเส้นเชื่อมข้อต่อ (White, slightly transparent) -----
     drawConnectors(this.ctx, landmarks, POSE_CONNECTIONS, {
-      color: "#FFFFFF", // สีขาว
-      lineWidth: 4, // เส้นหนา 4px
+      color: "rgba(255, 255, 255, 0.7)",
+      lineWidth: 4,
     });
 
-    // ----- วาดจุดข้อต่อ -----
-    drawLandmarks(this.ctx, landmarks, {
-      color: "#FF0000", // สีแดง
-      lineWidth: 2,
-      radius: 4, // วงกลมรัศมี 4px
-    });
+    // ----- วาดจุดข้อต่อ (Custom Loop for Highlighting) -----
+    for (let i = 0; i < landmarks.length; i++) {
+      const landmark = landmarks[i];
+      // MediaPipe landmarks are normalized (0-1)
+      const x = landmark.x * this.canvasWidth;
+      const y = landmark.y * this.canvasHeight;
+
+      const isError = errorJoints && errorJoints.includes(i);
+
+      this.ctx.beginPath();
+
+      if (isError) {
+        // 🔴 Error: Red, Bigger, Glow
+        this.ctx.shadowBlur = 20;
+        this.ctx.shadowColor = "rgba(255, 0, 0, 0.8)";
+        this.ctx.fillStyle = "#FF0000";
+        this.ctx.arc(x, y, 8, 0, 2 * Math.PI); // Radius 8
+      } else {
+        // ⚪ Normal: White
+        this.ctx.shadowBlur = 0;
+        this.ctx.fillStyle = "#FFFFFF";
+        this.ctx.arc(x, y, 4, 0, 2 * Math.PI); // Radius 4
+      }
+
+      this.ctx.fill();
+    }
+
+    // Reset shadow
+    this.ctx.shadowBlur = 0;
 
     this.ctx.restore();
   }
@@ -267,181 +332,6 @@ class DrawingManager {
     this.ctx.globalCompositeOperation = "source-over";
 
     this.ctx.restore();
-  }
-
-  // ===========================================================================
-  // 🎭 VIRTUAL BACKGROUND HELPERS: Mask Processing
-  // ===========================================================================
-
-  /**
-   * ประมวลผล Segmentation Mask ด้วย Feathering และ Temporal Smoothing
-   *
-   * วิธีการ:
-   * 1. Feather Edges: เบลอ mask เล็กน้อยเพื่อให้ขอบนุ่มนวล
-   * 2. Temporal Smoothing: เฉลี่ย mask กับ frame ก่อนหน้า เพื่อลดการกระตุก
-   *
-   * @param {CanvasImageSource} rawMask - Segmentation mask ดิบจาก MediaPipe
-   * @returns {HTMLCanvasElement} - Processed mask (feathered + smoothed)
-   */
-  _processSegmentationMask(rawMask) {
-    const width = this.canvasWidth;
-    const height = this.canvasHeight;
-
-    // ----- สร้าง/ใช้ temp canvas สำหรับ mask processing -----
-    if (!this.tempMaskCanvas) {
-      this.tempMaskCanvas = document.createElement("canvas");
-      this.tempMaskCanvas.width = width;
-      this.tempMaskCanvas.height = height;
-    }
-    const maskCtx = this.tempMaskCanvas.getContext("2d");
-
-    // ล้าง canvas
-    maskCtx.clearRect(0, 0, width, height);
-
-    // ----- Step 1: Feather Edges (เบลอขอบ mask) -----
-    maskCtx.filter = "blur(3px)"; // เบลอเล็กน้อยเพื่อให้ขอบนุ่ม
-    maskCtx.drawImage(rawMask, 0, 0, width, height);
-    maskCtx.filter = "none";
-
-    // ----- Step 2: Temporal Smoothing (เฉลี่ย mask กับ frame ก่อนหน้า) -----
-    if (this.previousMask) {
-      // สร้าง ImageData สำหรับ blend
-      const currentImageData = maskCtx.getImageData(0, 0, width, height);
-      const prevImageData = this.previousMask;
-      const currentData = currentImageData.data;
-      const prevData = prevImageData.data;
-
-      // เฉลี่ยทุก pixel: new = (prev * 0.7) + (current * 0.3)
-      for (let i = 0; i < currentData.length; i += 4) {
-        // Alpha channel (index 3) คือค่าที่เราสนใจ (0-255)
-        const prevAlpha = prevData[i + 3];
-        const currAlpha = currentData[i + 3];
-
-        // Blend alpha
-        const smoothedAlpha =
-          prevAlpha * this.temporalWeight +
-          currAlpha * (1 - this.temporalWeight);
-
-        currentData[i + 3] = smoothedAlpha;
-      }
-
-      // วาดกลับ
-      maskCtx.putImageData(currentImageData, 0, 0);
-    }
-
-    // ----- Step 3: บันทึก mask นี้สำหรับ frame ถัดไป -----
-    this.previousMask = maskCtx.getImageData(0, 0, width, height);
-
-    return this.tempMaskCanvas;
-  }
-
-  // ===========================================================================
-  // 🎭 VIRTUAL BACKGROUND: Draw Methods
-  // ===========================================================================
-
-  // ===========================================================================
-  // 🌫️ BLURRED BACKGROUND: เบลอฉากหลัง (Visual Effects)
-  // ===========================================================================
-
-  /**
-   * วาดภาพพร้อมเบลอฉากหลัง (Person foreground, blurred background)
-   *
-   * @param {CanvasRenderingContext2D} ctx - Canvas context (output)
-   * @param {HTMLVideoElement|ImageBitmap} image - ภาพ webcam ต้นฉบับ
-   * @param {CanvasImageSource} mask - Segmentation mask จาก MediaPipe
-   */
-  drawBlurredBackground(ctx, image, mask) {
-    if (!image || !mask) return;
-
-    const width = this.canvasWidth;
-    const height = this.canvasHeight;
-
-    // ----- Process mask: Feather + Temporal Smoothing -----
-    const processedMask = this._processSegmentationMask(mask);
-
-    // ----- Step 1: สร้าง/ใช้ temp canvas สำหรับ blurred background -----
-    if (!this.tempBlurCanvas) {
-      this.tempBlurCanvas = document.createElement("canvas");
-      this.tempBlurCanvas.width = width;
-      this.tempBlurCanvas.height = height;
-    }
-    const blurCtx = this.tempBlurCanvas.getContext("2d");
-
-    // ล้าง canvas
-    blurCtx.clearRect(0, 0, width, height);
-
-    // วาดภาพต้นฉบับลง temp พร้อม blur filter
-    blurCtx.filter = "blur(15px)";
-    blurCtx.drawImage(image, 0, 0, width, height);
-    blurCtx.filter = "none";
-
-    // ----- Step 2: สร้าง/ใช้ temp canvas สำหรับ person (sharp) -----
-    if (!this.tempPersonCanvas) {
-      this.tempPersonCanvas = document.createElement("canvas");
-      this.tempPersonCanvas.width = width;
-      this.tempPersonCanvas.height = height;
-    }
-    const personCtx = this.tempPersonCanvas.getContext("2d");
-
-    // ล้าง canvas
-    personCtx.clearRect(0, 0, width, height);
-
-    // วาดภาพต้นฉบับ (ไม่ blur)
-    personCtx.drawImage(image, 0, 0, width, height);
-
-    // ใช้ mask เพื่อตัดเฉพาะส่วนคน (destination-in)
-    personCtx.globalCompositeOperation = "destination-in";
-    personCtx.drawImage(processedMask, 0, 0, width, height);
-    personCtx.globalCompositeOperation = "source-over";
-
-    // ----- Step 3: รวมกัน: blurred background + sharp person -----
-    // วาดพื้นหลังเบลอก่อน
-    ctx.drawImage(this.tempBlurCanvas, 0, 0, width, height);
-    // วาดคนทับ
-    ctx.drawImage(this.tempPersonCanvas, 0, 0, width, height);
-  }
-
-  /**
-   * วาดภาพพร้อม Virtual Background (Person foreground, custom background image)
-   *
-   * @param {CanvasRenderingContext2D} ctx - Canvas context (output)
-   * @param {HTMLVideoElement|ImageBitmap} image - ภาพ webcam ต้นฉบับ
-   * @param {CanvasImageSource} mask - Segmentation mask จาก MediaPipe
-   * @param {HTMLImageElement} backgroundImage - รูปภาพพื้นหลังที่ต้องการใช้
-   */
-  drawVirtualBackground(ctx, image, mask, backgroundImage) {
-    if (!image || !mask || !backgroundImage) return;
-
-    const width = this.canvasWidth;
-    const height = this.canvasHeight;
-
-    // ----- Process mask: Feather + Temporal Smoothing -----
-    const processedMask = this._processSegmentationMask(mask);
-
-    // ----- Step 1: วาดรูปภาพพื้นหลังก่อน -----
-    ctx.drawImage(backgroundImage, 0, 0, width, height);
-
-    // ----- Step 2: สร้าง/ใช้ temp canvas สำหรับ person (sharp) -----
-    if (!this.tempPersonCanvas) {
-      this.tempPersonCanvas = document.createElement("canvas");
-      this.tempPersonCanvas.width = width;
-      this.tempPersonCanvas.height = height;
-    }
-    const personCtx = this.tempPersonCanvas.getContext("2d");
-
-    // ล้าง canvas
-    personCtx.clearRect(0, 0, width, height);
-
-    // วาดภาพต้นฉบับ (webcam)
-    personCtx.drawImage(image, 0, 0, width, height);
-
-    // ใช้ mask เพื่อตัดเฉพาะส่วนคน (destination-in)
-    personCtx.globalCompositeOperation = "destination-in";
-    personCtx.drawImage(processedMask, 0, 0, width, height);
-    personCtx.globalCompositeOperation = "source-over";
-
-    // ----- Step 3: วาดคนทับบนพื้นหลัง -----
-    ctx.drawImage(this.tempPersonCanvas, 0, 0, width, height);
   }
 
   // ===========================================================================

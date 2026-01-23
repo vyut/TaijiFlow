@@ -399,18 +399,16 @@ class HeuristicsEngine {
     // (เปลี่ยนจาก Position-Based เป็น Shape-Based)
     if (config.checkPath) {
       const err = this.checkPathShape(currentExercise);
-      if (err) allErrors.push({ msg: err, rule: "Path Accuracy" });
+      if (err)
+        allErrors.push({
+          msg: err.msg,
+          joints: err.joints,
+          rule: "Path Accuracy",
+        });
     }
 
     // (เก็บไว้เผื่อใช้ในอนาคต - Position-Based)
-    // if (config.checkPath && referencePath && referencePath.length > 0) {
-    //   const err = this.checkPathAccuracy(
-    //     activeWrist,
-    //     referencePath,
-    //     currentExercise
-    //   );
-    //   if (err) allErrors.push({ msg: err, rule: "Path Accuracy" });
-    // }
+    // if (config.checkPath && referencePath && referencePath.length > 0) { ... }
 
     // Rule 2: Arm Rotation - หมุนฝ่ามือถูกทิศ (หงาย/คว่ำ)
     if (config.checkRotation) {
@@ -419,7 +417,12 @@ class HeuristicsEngine {
         activePinky,
         currentExercise,
       );
-      if (err) allErrors.push({ msg: err, rule: "Arm Rotation" });
+      if (err)
+        allErrors.push({
+          msg: err.msg,
+          joints: err.joints,
+          rule: "Arm Rotation",
+        });
     }
 
     // Rule 3: Elbow Sinking - ศอกจม ไม่ลอย (沉肩坠肘)
@@ -428,32 +431,58 @@ class HeuristicsEngine {
         activeShoulder,
         activeElbow,
         activeWrist,
+        currentExercise,
       );
-      if (err) allErrors.push({ msg: err, rule: "Elbow Sinking" });
+      if (err)
+        allErrors.push({
+          msg: err.msg,
+          joints: err.joints,
+          rule: "Elbow Sinking",
+        });
     }
 
     // Rule 4: Waist Initiation - เอวนำ (腰为轴)
     if (config.checkWaist) {
       const err = this.checkWaistInitiation(landmarks);
-      if (err) allErrors.push({ msg: err, rule: "Waist Initiation" });
+      if (err)
+        allErrors.push({
+          msg: err.msg,
+          joints: err.joints,
+          rule: "Waist Initiation",
+        });
     }
 
     // Rule 5: Vertical Stability - ศีรษะนิ่ง (虚领顶劲)
     if (config.checkStability) {
       const err = this.checkVerticalStability(nose);
-      if (err) allErrors.push({ msg: err, rule: "Vertical Stability" });
+      if (err)
+        allErrors.push({
+          msg: err.msg,
+          joints: err.joints,
+          rule: "Vertical Stability",
+        });
     }
 
     // Rule 6: Smoothness - เคลื่อนไหวลื่น (如抽丝)
     if (config.checkSmooth) {
-      const err = this.checkSmoothness(activeWrist, timestamp);
-      if (err) allErrors.push({ msg: err, rule: "Smoothness" });
+      const err = this.checkSmoothness(activeWrist, timestamp, currentExercise);
+      if (err)
+        allErrors.push({
+          msg: err.msg,
+          joints: err.joints,
+          rule: "Smoothness",
+        });
     }
 
     // Rule 7: Continuity - ต่อเนื่องไม่ขาดตอน (绵绵不断)
     if (config.checkContinuity) {
-      const err = this.checkContinuity();
-      if (err) allErrors.push({ msg: err, rule: "Continuity" });
+      const err = this.checkContinuity(currentExercise);
+      if (err)
+        allErrors.push({
+          msg: err.msg,
+          joints: err.joints,
+          rule: "Continuity",
+        });
     }
 
     // Rule 8: Weight Shift - ถ่ายน้ำหนักสมดุล (分虚实)
@@ -464,15 +493,29 @@ class HeuristicsEngine {
         leftAnkle,
         rightAnkle,
       );
-      if (err) allErrors.push({ msg: err, rule: "Weight Shift" });
+      if (err)
+        allErrors.push({
+          msg: err.msg,
+          joints: err.joints,
+          rule: "Weight Shift",
+        });
     }
 
     // Rule 9: Upper-Lower Coordination - ความสัมพันธ์บนล่าง (上下相随)
     if (config.checkCoordination) {
       // คำนวณ Hip Center สำหรับ Rule 9
       const hipCenter = (leftHip.x + rightHip.x) / 2;
-      const err = this.checkCoordination(activeWrist, hipCenter);
-      if (err) allErrors.push({ msg: err, rule: "Upper-Lower Coordination" });
+      const err = this.checkCoordination(
+        activeWrist,
+        hipCenter,
+        currentExercise,
+      );
+      if (err)
+        allErrors.push({
+          msg: err.msg,
+          joints: err.joints,
+          rule: "Upper-Lower Coordination",
+        });
     }
 
     // =========================================================================
@@ -490,13 +533,26 @@ class HeuristicsEngine {
       });
 
       // เลือกแสดงเฉพาะข้อที่สำคัญที่สุด (อันดับ 1)
-      const topError = allErrors[0].msg;
+      const topError = allErrors[0];
 
-      // อัปเดต Sticky Logic - จำข้อความและเวลา
-      this.lastFeedbackMsg = topError;
+      // อัปเดต Sticky Logic - จำข้อความและเวลา และ Joints
+      this.lastFeedbackMsg = topError.msg;
+      this.lastFeedbackJoints = topError.joints || [];
       this.lastFeedbackTime = Date.now();
 
-      return [topError]; // Return เป็น Array (เพื่อความเข้ากันได้กับ code เดิม)
+      // Aggregate all error joints for visualization (Optional: show only top priority joints)
+      // Decision: Show ALL error joints to provide full non-verbal feedback
+      const allErrorJoints = allErrors.reduce((acc, curr) => {
+        return acc.concat(curr.joints || []);
+      }, []);
+
+      // Remove duplicates
+      const uniqueJoints = [...new Set(allErrorJoints)];
+
+      return {
+        feedback: [topError.msg],
+        errorJoints: uniqueJoints,
+      };
     }
 
     // Case 2: ไม่พบข้อผิดพลาดในเฟรมนี้ -> ใช้ Sticky Logic
@@ -507,11 +563,18 @@ class HeuristicsEngine {
         Date.now() - this.lastFeedbackTime <
         this.CONFIG.FEEDBACK_HOLD_TIME_MS
       ) {
-        return this.lastFeedbackMsg ? [this.lastFeedbackMsg] : [];
+        return {
+          feedback: this.lastFeedbackMsg ? [this.lastFeedbackMsg] : [],
+          errorJoints: this.lastFeedbackJoints || [],
+        };
       } else {
         // Hold Time หมดแล้ว -> เคลียร์ (แสดงว่าถูกต้องแล้ว! 😊)
         this.lastFeedbackMsg = null;
-        return []; // [] = สีเขียว/ไร้ข้อความ
+        this.lastFeedbackJoints = [];
+        return {
+          feedback: [],
+          errorJoints: [],
+        };
       }
     }
   }
@@ -666,7 +729,14 @@ class HeuristicsEngine {
 
     // ถ้า total = 0 แปลว่าเคลื่อนที่เป็นเส้นตรง → แจ้งเตือน
     if (total === 0) {
-      return this.getMessage("moveInCircle");
+      // Determine active wrist based on currentExercise
+      const isRightHand = currentExercise.includes("rh");
+      const activeWristIndex = isRightHand ? 16 : 15;
+
+      return {
+        msg: this.getMessage("moveInCircle"),
+        joints: [activeWristIndex], // Highlight Only Active Wrist
+      };
     }
 
     const consistency = Math.max(clockwiseTurns, counterClockwiseTurns) / total;
@@ -687,12 +757,26 @@ class HeuristicsEngine {
     // ตรวจทิศทางเมื่อมี turn ชัดเจน (dominance > 60%)
     const dominance = Math.max(clockwiseTurns, counterClockwiseTurns) / total;
     if (dominance >= 0.6 && expectedCW !== actualCW) {
-      return this.getMessage("wrongDirection");
+      // Determine active wrist based on currentExercise
+      const isRightHand = currentExercise.includes("rh");
+      const activeWristIndex = isRightHand ? 16 : 15;
+
+      return {
+        msg: this.getMessage("wrongDirection"),
+        joints: [activeWristIndex], // Highlight Only Active Wrist
+      };
     }
 
     // ถ้า consistency ต่ำกว่า threshold = ไม่เป็นวงโค้ง
     if (consistency < threshold) {
-      return this.getMessage("moveInCircle");
+      // Determine active wrist based on currentExercise
+      const isRightHand = currentExercise.includes("rh");
+      const activeWristIndex = isRightHand ? 16 : 15;
+
+      return {
+        msg: this.getMessage("moveInCircle"),
+        joints: [activeWristIndex], // Highlight Only Active Wrist
+      };
     }
 
     return null;
@@ -818,9 +902,14 @@ class HeuristicsEngine {
       isSupinationExpected = moveType === "rh_ccw" || moveType === "lh_cw";
     }
 
-    // Step 4: เปรียบเทียบและส่ง Feedback
+    // Step 3: เปรียบเทียบและส่ง Feedback
     if (isSupinationExpected !== isActuallySupinated) {
-      return this.getMessage("incorrectRotation");
+      // Determine side for joints
+      const joints = isRightHand ? [16, 18, 20, 22] : [15, 17, 19, 21];
+      return {
+        msg: this.getMessage("incorrectRotation"),
+        joints: joints,
+      };
     }
 
     return null;
@@ -839,9 +928,10 @@ class HeuristicsEngine {
    * @param {Object} shoulder - ตำแหน่งไหล่ {x, y}
    * @param {Object} elbow - ตำแหน่งศอก {x, y}
    * @param {Object} wrist - ตำแหน่งข้อมือ {x, y} (ไม่ได้ใช้ แต่เก็บไว้สำหรับอนาคต)
+   * @param {string} currentExercise - ท่าที่ฝึก ('rh_cw', 'rh_ccw', etc.)
    * @returns {string|null} ข้อความผิดพลาด หรือ null ถ้าถูกต้อง
    */
-  checkElbowSinking(shoulder, elbow, wrist) {
+  checkElbowSinking(shoulder, elbow, wrist, currentExercise = "") {
     // Tolerance: ป้องกันการแจ้งถี่เกินไปจากการขยับเล็กน้อย
     const tolerance = this.calibrationData
       ? this.calibrationData.torsoHeight * 0.05 // 5% ของความสูงลำตัว
@@ -850,7 +940,17 @@ class HeuristicsEngine {
     // ตรวจ: ศอกอยู่สูงกว่าไหล่มากไป (elbow.y < shoulder.y - tolerance)
     // หมายเหตุ: Y ใน screen coords = ค่าน้อย = อยู่สูง
     if (elbow.y < shoulder.y - tolerance) {
-      return this.getMessage("elbowTooHigh");
+      // Determine side to highlight based on currentExercise
+      let joints = [11, 12, 13, 14]; // Default both
+      if (currentExercise) {
+        const isRight = currentExercise.includes("rh");
+        joints = isRight ? [12, 14] : [11, 13]; // Highlight only active side
+      }
+
+      return {
+        msg: this.getMessage("elbowTooHigh"),
+        joints: joints,
+      };
     }
     return null;
   }
@@ -917,7 +1017,10 @@ class HeuristicsEngine {
     const MIN_HIP_VELOCITY = this.CONFIG.MIN_HIP_VELOCITY_DEG_SEC;
 
     if (hipVel > MIN_HIP_VELOCITY && shoulderVel > hipVel * RATIO_THRESHOLD) {
-      return this.getMessage("startWithWaist");
+      return {
+        msg: this.getMessage("startWithWaist"),
+        joints: [23, 24], // Hips
+      };
     }
     return null;
   }
@@ -969,9 +1072,12 @@ class HeuristicsEngine {
       this.debugInfo.headHistoryPoints = this.headYHistory.length;
     }
 
-    if (displacement > threshold) return this.getMessage("headUnstable");
-
-    if (displacement > threshold) return this.getMessage("headUnstable");
+    if (displacement > threshold) {
+      return {
+        msg: this.getMessage("headUnstable"),
+        joints: [0, 11, 12], // Nose and Shoulders
+      };
+    }
     return null;
   }
 
@@ -983,8 +1089,9 @@ class HeuristicsEngine {
    * หลัก "如抽丝" (รู๊โชวสือ) - เหมือนดึงเส้นไหม สม่ำเสมอ
    * @param {Object} wrist - ตำแหน่งข้อมือ {x, y}
    * @param {number} timestamp - เวลาปัจจุบัน (ms)
+   * @param {string} currentExercise - ท่าที่ฝึก
    */
-  checkSmoothness(wrist, timestamp) {
+  checkSmoothness(wrist, timestamp, currentExercise = "") {
     if (!wrist) return null;
 
     // wristHistory ถูก populate แล้วใน analyze()
@@ -1021,7 +1128,17 @@ class HeuristicsEngine {
       this.debugInfo.smoothThreshold = threshold.toFixed(3);
     }
 
-    if (acceleration > threshold) return this.getMessage("notSmooth");
+    if (acceleration > threshold) {
+      const isRight = currentExercise.includes("rh");
+      const activeWristIndex = isRight ? 16 : 15;
+      const activeElbowIndex = isRight ? 14 : 13;
+      const activeShoulderIndex = isRight ? 12 : 11;
+
+      return {
+        msg: this.getMessage("notSmooth"),
+        joints: [activeWristIndex, activeElbowIndex, activeShoulderIndex], // Active Arm
+      };
+    }
     return null;
   }
 
@@ -1033,8 +1150,9 @@ class HeuristicsEngine {
    * หลัก "绵绵不断" (เหมียนเหมียนปู้ต้วน) - ต่อเนื่องไม่ขาดตอน
    *
    * 🆕 ใช้ isPaused() helper ซึ่งคำนวณ Time-Based Average Velocity
+   * @param {string} currentExercise - ท่าที่ฝึก
    */
-  checkContinuity() {
+  checkContinuity(currentExercise = "") {
     // Debug info
     if (this.debugMode) {
       this.debugInfo.isPaused = this.isPaused();
@@ -1042,7 +1160,15 @@ class HeuristicsEngine {
 
     // ใช้ isPaused() ที่คำนวณ avg velocity แล้ว
     if (this.isPaused()) {
-      return this.getMessage("keepMoving");
+      const isRight = currentExercise.includes("rh");
+      const activeWristIndex = isRight ? 16 : 15;
+      const activeElbowIndex = isRight ? 14 : 13;
+      const activeShoulderIndex = isRight ? 12 : 11;
+
+      return {
+        msg: this.getMessage("keepMoving"),
+        joints: [activeWristIndex, activeElbowIndex, activeShoulderIndex], // Active Arm
+      };
     }
 
     return null;
@@ -1080,7 +1206,10 @@ class HeuristicsEngine {
       hipCenter < leftBoundary + buffer ||
       hipCenter > rightBoundary - buffer
     ) {
-      return this.getMessage("offBalance");
+      return {
+        msg: this.getMessage("offBalance"),
+        joints: [23, 24, 25, 26, 27, 28], // Hips, Knees, Ankles
+      };
     }
     return null;
   }
@@ -1100,7 +1229,7 @@ class HeuristicsEngine {
    * @param {Object} wrist - ตำแหน่งข้อมือ {x, y}
    * @param {Object} hipCenter - จุดกึ่งกลางสะโพก (คำนวณจาก leftHip, rightHip)
    */
-  checkCoordination(wrist, hipCenterProp) {
+  checkCoordination(wrist, hipCenterProp, currentExercise = "") {
     if (!wrist || !hipCenterProp) {
       return null;
     }
@@ -1163,7 +1292,25 @@ class HeuristicsEngine {
         this.debugInfo.handVelX = handVelX.toFixed(3);
         this.debugInfo.hipVelX = hipVelX.toFixed(3);
       }
-      return this.getMessage("coordinationFail");
+      const isRight = currentExercise.includes("rh");
+      const activeWristIndex = isRight ? 16 : 15;
+      const activeElbowIndex = isRight ? 14 : 13;
+      const activeShoulderIndex = isRight ? 12 : 11;
+      const activeKneeIndex = isRight ? 26 : 25;
+      const activeAnkleIndex = isRight ? 28 : 27;
+
+      return {
+        msg: this.getMessage("coordinationFail"),
+        joints: [
+          activeWristIndex,
+          activeElbowIndex,
+          activeShoulderIndex,
+          23,
+          24,
+          activeKneeIndex,
+          activeAnkleIndex,
+        ], // Active Arm + Hips + Active Leg
+      };
     }
 
     return null;

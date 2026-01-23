@@ -113,17 +113,6 @@ class KeyboardController {
       // =======================================================================
 
       // -----------------------------------------------------------------------
-      // G = Ghost Overlay Toggle
-      // -----------------------------------------------------------------------
-      case "KeyG":
-        e.preventDefault();
-        if (checkGhost) {
-          checkGhost.checked = !checkGhost.checked;
-          checkGhost.dispatchEvent(new Event("change"));
-        }
-        break;
-
-      // -----------------------------------------------------------------------
       // I = Instructor Thumbnail Toggle
       // -----------------------------------------------------------------------
       case "KeyI":
@@ -176,6 +165,29 @@ class KeyboardController {
         break;
 
       // -----------------------------------------------------------------------
+      // O = Ghost (O)verlay Toggle (Changed from G to avoid conflict with Grid)
+      // -----------------------------------------------------------------------
+      case "KeyO":
+        e.preventDefault();
+        const checkGhost = document.getElementById("check-ghost");
+        if (checkGhost) {
+          checkGhost.checked = !checkGhost.checked;
+          checkGhost.dispatchEvent(new Event("change"));
+        }
+        break;
+
+      // -----------------------------------------------------------------------
+      // G = Grid Overlay Toggle
+      // -----------------------------------------------------------------------
+      case "KeyG":
+        e.preventDefault();
+        const checkGrid = document.getElementById("check-grid");
+        if (checkGrid) {
+          checkGrid.click(); // Trigger change event
+        }
+        break;
+
+      // -----------------------------------------------------------------------
       // K = Skeleton (sKeleton) Toggle
       // -----------------------------------------------------------------------
       case "KeyK":
@@ -214,9 +226,9 @@ class KeyboardController {
       // =======================================================================
 
       // -----------------------------------------------------------------------
-      // M = Mute/Unmute Audio
+      // A = Audio Mute Toggle
       // -----------------------------------------------------------------------
-      case "KeyM":
+      case "KeyA":
         e.preventDefault();
         audioBtn.click();
         break;
@@ -292,17 +304,19 @@ class KeyboardController {
       "━━━━━━━━━━━━",
       "P = Path (เส้นทางต้นแบบ)",
       "I = Instructor (ผู้สอน)",
-      "G = Ghost (เงาต้นแบบ)",
+      "O = Ghost (เงาต้นแบบ)",
       "━━━━━━━━━━━━",
       "K = Skeleton (โครงผู้ฝึก)",
-      "R = Trail (เส้นสัมผัส)",
       "S = Silhouette (เงาผู้ฝึก)",
+      "R = Trail (เส้นสัมผัส)",
       "━━━━━━━━━━━━",
+      "G = Grid (เส้นตาราง)",
       "D = Debug Mode",
       "━━━━━━━━━━━━",
       "B = Blur Background",
       "━━━━━━━━━━━━",
-      "M = เปิด/ปิดเสียง",
+      "A = เปิด/ปิดเสียง",
+      "M = กระจก (Mirror)",
       "L = เปลี่ยนภาษา",
       "T = เปลี่ยน Theme",
       "? = วิธีใช้งาน",

@@ -307,6 +307,41 @@ class DrawingManager {
     ctx.drawImage(personCanvas, 0, 0, width, height);
   }
 
+  /**
+   * วาดภาพพร้อม Virtual Background (Person foreground, custom background image)
+   *
+   * @param {CanvasRenderingContext2D} ctx - Canvas context (output)
+   * @param {HTMLVideoElement|ImageBitmap} image - ภาพ webcam ต้นฉบับ
+   * @param {CanvasImageSource} mask - Segmentation mask จาก MediaPipe
+   * @param {HTMLImageElement} backgroundImage - รูปภาพพื้นหลังที่ต้องการใช้
+   */
+  drawVirtualBackground(ctx, image, mask, backgroundImage) {
+    if (!image || !mask || !backgroundImage) return;
+
+    const width = this.canvasWidth;
+    const height = this.canvasHeight;
+
+    // ----- Step 1: วาดรูปภาพพื้นหลังก่อน -----
+    ctx.drawImage(backgroundImage, 0, 0, width, height);
+
+    // ----- Step 2: สร้าง temp canvas สำหรับ person (sharp) -----
+    const personCanvas = document.createElement("canvas");
+    personCanvas.width = width;
+    personCanvas.height = height;
+    const personCtx = personCanvas.getContext("2d");
+
+    // วาดภาพต้นฉบับ (webcam)
+    personCtx.drawImage(image, 0, 0, width, height);
+
+    // ใช้ mask เพื่อตัดเฉพาะส่วนคน (destination-in)
+    personCtx.globalCompositeOperation = "destination-in";
+    personCtx.drawImage(mask, 0, 0, width, height);
+    personCtx.globalCompositeOperation = "source-over";
+
+    // ----- Step 3: วาดคนทับบนพื้นหลัง -----
+    ctx.drawImage(personCanvas, 0, 0, width, height);
+  }
+
   // ===========================================================================
   // ⭕ GESTURE FEEDBACK: วาดวงกลมความคืบหน้าท่าทาง
   // ===========================================================================

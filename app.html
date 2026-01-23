@@ -145,6 +145,8 @@ Version: 0.9.9 (2026-01-17)
     <!-- 4. Main Controller - พึ่งพาทั้งหมดข้างบน -->
     <script src="js/controllers/display_controller.js" defer></script>
     <!-- Display Options Controller -->
+    <script src="js/display/background_manager.js" defer></script>
+    <!-- Background Manager (Virtual Backgrounds) -->
     <script src="js/controllers/keyboard_controller.js" defer></script>
     <!-- Keyboard Shortcuts Controller -->
     <script src="js/controllers/script.js" defer></script>
@@ -631,6 +633,168 @@ Version: 0.9.9 (2026-01-17)
                   >
                 </div>
               </label>
+
+              <!-- Virtual Backgrounds -->
+              <div class="px-4 py-3 border-b border-gray-700/50">
+                <div class="text-sm font-bold text-white mb-2">
+                  🖼️ Virtual Backgrounds
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                  <!-- None -->
+                  <button
+                    class="bg-option active flex flex-col items-center p-2 rounded border-2 border-green-500 hover:border-blue-500 transition-colors"
+                    data-bg="none"
+                    title="No background effect"
+                  >
+                    <div
+                      class="w-full h-12 bg-gray-600 rounded flex items-center justify-center text-xs text-gray-400"
+                    >
+                      None
+                    </div>
+                    <span class="text-[10px] text-gray-400 mt-1">None</span>
+                  </button>
+
+                  <!-- Blur -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="blur"
+                    title="Blur background"
+                  >
+                    <div
+                      class="w-full h-12 bg-gradient-to-br from-gray-500 to-gray-700 rounded flex items-center justify-center text-xs text-white backdrop-blur"
+                    >
+                      Blur
+                    </div>
+                    <span class="text-[10px] text-gray-400 mt-1">Blur</span>
+                  </button>
+
+                  <!-- Mountain Mist -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="mountain"
+                    title="Mountain Mist"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/mountain_mist_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Mountain"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Mountain</span>
+                  </button>
+
+                  <!-- Bamboo Forest -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="bamboo"
+                    title="Bamboo Forest"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/bamboo_forest_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Bamboo"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Bamboo</span>
+                  </button>
+
+                  <!-- Zen Garden -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="zen_garden"
+                    title="Zen Garden"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/zen_garden_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Zen Garden"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Zen</span>
+                  </button>
+
+                  <!-- Sunrise Lake -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="lake"
+                    title="Sunrise Lake"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/sunrise_lake_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Lake"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Lake</span>
+                  </button>
+
+                  <!-- Temple -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="temple"
+                    title="Temple Courtyard"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/temple_courtyard_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Temple"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Temple</span>
+                  </button>
+
+                  <!-- Dojo -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="dojo"
+                    title="Wooden Dojo"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/wooden_dojo_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Dojo"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Dojo</span>
+                  </button>
+
+                  <!-- Minimalist -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="minimalist"
+                    title="Modern Minimalist"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/modern_minimalist_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Minimalist"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Minimal</span>
+                  </button>
+
+                  <!-- Gradient -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="gradient"
+                    title="Soft Gradient"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/soft_gradient_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Gradient"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Gradient</span>
+                  </button>
+
+                  <!-- Clouds -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="clouds"
+                    title="Yin Yang Clouds"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/yin_yang_clouds_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Clouds"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Clouds</span>
+                  </button>
+                </div>
+              </div>
 
               <!-- ===== 🛠️ Developer Section ===== -->
               <div

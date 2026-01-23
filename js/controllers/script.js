@@ -78,6 +78,7 @@ const drawer = new DrawingManager(canvasCtx, canvasElement); // วาดภา�
 const scorer = new ScoringManager(); // คำนวณคะแนน
 const audioManager = new AudioManager(); // เสียงพูดแจ้งเตือน
 const gestureManager = new GestureManager(); // ควบคุมด้วยท่ามือ
+const backgroundManager = new BackgroundManager(); // จัดการพื้นหลัง (Virtual Backgrounds)
 
 // -----------------------------------------------------------------------------
 // State Variables - ตัวแปรเก็บสถานะ
@@ -103,7 +104,8 @@ let trainingStartTime = 0; // เวลาเริ่มฝึก
 // Auto-Adjust Light - ตัวแปรสำหรับปรับความสว่างอัตโนมัติ
 // -----------------------------------------------------------------------------
 let autoAdjustLightEnabled = false; // เปิด/ปิด Auto-Adjust
-let currentBrightnessLevel = 1.0; // ระดับความสว่าง (1.0 = ปกติ, 2.0 = สว่าง 2 เท่า)
+let currentBrightnessLevel = 1.0; // ระดับความสว่างปัจจุบัน (1.0 = ปกติ)
+let segmentationEnabled = false; // 🆕 Track if segmentation has been enabled for virtual backgrounds
 
 // -----------------------------------------------------------------------------
 // Performance Optimization - ลด CPU Load & Feedback Frequency
@@ -1242,6 +1244,13 @@ function calculateAutoBrightness(landmarks) {
  *   @param {Array} results.poseLandmarks - พิกัด 33 จุดบนร่างกาย
  */
 async function onResults(results) {
+  // 🐛 DEBUG: Check if segmentation mask exists
+  if (!window._segmentationDebugLogged) {
+    console.log("🐛 DEBUG - Results object keys:", Object.keys(results));
+    console.log("🐛 DEBUG - Has segmentationMask?", !!results.segmentationMask);
+    console.log("🐛 DEBUG - Pose options should have enableSegmentation: true");
+    window._segmentationDebugLogged = true;
+  }
   const timestamp = performance.now();
 
   // -------------------------------------------------------------------------
@@ -1400,13 +1409,30 @@ async function onResults(results) {
         );
       }
 
-      // 0.1 🆕 วาด Background Blur (ถ้าเปิดใช้งาน Visual Effects)
+      // 0.1 🆕 Background Blur (ถ้าเปิดใช้งาน Visual Effects)
+      // ใช้วิธีเก่าที่ทำงานได้ - เรียก drawer.drawBlurredBackground()
       if (displayController.showBlurBackground && results.segmentationMask) {
         drawer.drawBlurredBackground(
           canvasCtx,
           results.image,
           results.segmentationMask,
         );
+      }
+
+      // 0.2 🆕 Virtual Background (เลือกรูปพื้นหลัง)
+      // ใช้วิธีเดียวกับ Blur แต่เปลี่ยนเป็นรูปภาพ
+      const bgMode = backgroundManager.getCurrentMode();
+      if (bgMode !== "none" && bgMode !== "blur" && results.segmentationMask) {
+        // ดึงรูปภาพพื้นหลังจาก BackgroundManager
+        const bgImage = backgroundManager.currentBackgroundImage;
+        if (bgImage) {
+          drawer.drawVirtualBackground(
+            canvasCtx,
+            results.image,
+            results.segmentationMask,
+            bgImage,
+          );
+        }
       }
 
       // 1. วาด Ghost (เงาคนสอน) ถ้าเปิดใช้งาน
@@ -1739,14 +1765,31 @@ const pose = new Pose({
 pose.setOptions({
   modelComplexity: 1, // Full Model (สมดุลระหว่างความแม่นยำและความเร็ว)
   smoothLandmarks: true, // เปิด Smoothing
-  enableSegmentation: false, // 🔧 ปิด default (เปิดเมื่อใช้ Silhouette) - เพิ่ม +5-10 fps
-  smoothSegmentation: false, // 🔧 ปิด default
+  enableSegmentation: true, // 🔧 เปิดไว้เพื่อรองรับ Virtual Backgrounds
+  smoothSegmentation: true, // 🔧 เปิด Smoothing สำหรับ Segmentation
   minDetectionConfidence: 0.5, // 50% ขึ้นไปถึงจะยอมรับ
   minTrackingConfidence: 0.5, // 50% ขึ้นไปถึงจะติดตามต่อ
 });
 
 // ผูก Callback Function
 pose.onResults(onResults);
+
+// -----------------------------------------------------------------------------
+// Background Manager Initialization
+// -----------------------------------------------------------------------------
+// Initialize and preload all background images
+backgroundManager
+  .init()
+  .then(() => {
+    console.log("✅ BackgroundManager ready");
+  })
+  .catch((err) => {
+    console.warn("⚠️ BackgroundManager init failed:", err);
+  });
+
+// Expose globally for DisplayController
+window.backgroundManager = backgroundManager;
+window.pose = pose; // 🆕 Expose pose for segmentation control
 
 // หมายเหตุ: Loading Overlay จะแสดงตอน initCamera() (หลังกด "เข้าใจแล้ว")
 // ไม่แสดงตั้งแต่ตอนนี้เพราะยังไม่ได้เปิดกล้อง

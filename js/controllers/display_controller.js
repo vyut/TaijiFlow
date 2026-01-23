@@ -53,6 +53,7 @@ class DisplayController {
     this.initTrailCheckbox();
     this.initBlurBackgroundCheckbox();
     this.initAutoAdjustLightCheckbox(); // 🆕 Auto-Adjust Light
+    this.initVirtualBackgrounds(); // 🆕 Virtual Backgrounds
   }
 
   /**
@@ -303,6 +304,65 @@ class DisplayController {
         );
       });
     }
+  }
+
+  /**
+   * 🆕 Virtual Backgrounds - จัดการ UI สำหรับเลือกพื้นหลัง
+   */
+  initVirtualBackgrounds() {
+    const bgButtons = document.querySelectorAll(".bg-option");
+
+    if (bgButtons.length === 0) return;
+
+    // 🔧 Don't load saved preference - always start with "none"
+    // Default "None" button should already have active class in HTML
+
+    // Add click handlers
+    bgButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const bgKey = btn.dataset.bg;
+
+        // Update active state visually
+        bgButtons.forEach((b) => {
+          b.classList.remove("active", "border-green-500");
+          b.classList.add("border-transparent");
+        });
+        btn.classList.add("active");
+        btn.classList.remove("border-transparent");
+        btn.classList.add("border-green-500");
+
+        // Set background in BackgroundManager
+        if (window.backgroundManager) {
+          window.backgroundManager.setBackground(bgKey);
+          console.log(`🖼️ Background changed to: ${bgKey}`);
+
+          // Enable/Disable MediaPipe Segmentation
+          if (window.pose) {
+            if (bgKey !== "none") {
+              // Enable segmentation for blur or virtual backgrounds
+              window.pose.setOptions({
+                enableSegmentation: true,
+                smoothSegmentation: true,
+              });
+              console.log("🎨 Segmentation enabled for background effect");
+            } else {
+              // Disable segmentation when not needed (unless Silhouette is on)
+              if (!this.showSilhouette) {
+                window.pose.setOptions({
+                  enableSegmentation: false,
+                  smoothSegmentation: false,
+                });
+                console.log("🎨 Segmentation disabled (no background effect)");
+              }
+            }
+          }
+        }
+      });
+    });
+
+    console.log(
+      `✅ Virtual Backgrounds UI initialized (${bgButtons.length} options)`,
+    );
   }
 
   /**

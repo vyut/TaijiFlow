@@ -360,6 +360,7 @@ Version: 0.9.9 (2026-01-17)
               <option value="random">🎲 สุ่มท่าฝึก (Surprise Me)</option>
             </select>
           </div>
+
           <!-- Level Dropdown (Moved after Exercise) -->
           <div>
             <select
@@ -373,82 +374,8 @@ Version: 0.9.9 (2026-01-17)
               <option value="L3">3. แบบยืนย่อ</option>
             </select>
           </div>
-          <!-- Performance Settings (Dev/Admin Only - English) -->
-          <div class="relative inline-block">
-            <button
-              id="perf-btn"
-              class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
-              title="Performance Mode"
-            >
-              ⚡
-            </button>
-
-            <!-- Performance Menu (Hidden by default, Toggled via JS) -->
-            <div
-              id="perf-menu"
-              class="hidden absolute right-0 mt-2 w-56 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
-            >
-              <div
-                class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900"
-              >
-                Performance Mode
-              </div>
-
-              <div class="flex flex-col">
-                <!-- Option: Lite -->
-                <button
-                  class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors border-b border-gray-700/50"
-                  data-value="lite"
-                  onclick="window.selectPerformanceMode('lite')"
-                >
-                  <span class="mr-3 text-lg">⚡</span>
-                  <div class="flex flex-col">
-                    <span class="text-sm font-bold text-white">Lite</span>
-                    <span class="text-xs text-gray-400">Fastest (Low Res)</span>
-                  </div>
-                  <span class="ml-auto text-green-400 opacity-0 check-icon"
-                    >✓</span
-                  >
-                </button>
-
-                <!-- Option: Balanced -->
-                <button
-                  class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors border-b border-gray-700/50"
-                  data-value="balanced"
-                  onclick="window.selectPerformanceMode('balanced')"
-                >
-                  <span class="mr-3 text-lg">⚖️</span>
-                  <div class="flex flex-col">
-                    <span class="text-sm font-bold text-white">Balanced</span>
-                    <span class="text-xs text-gray-400"
-                      >Default (Recommended)</span
-                    >
-                  </div>
-                  <span class="ml-auto text-green-400 opacity-0 check-icon"
-                    >✓</span
-                  >
-                </button>
-
-                <!-- Option: Quality -->
-                <button
-                  class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors"
-                  data-value="quality"
-                  onclick="window.selectPerformanceMode('quality')"
-                >
-                  <span class="mr-3 text-lg">💎</span>
-                  <div class="flex flex-col">
-                    <span class="text-sm font-bold text-white">Quality</span>
-                    <span class="text-xs text-gray-400">Best (High Res)</span>
-                  </div>
-                  <span class="ml-auto text-green-400 opacity-0 check-icon"
-                    >✓</span
-                  >
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Display Options Dropdown -->
+          
+                    <!-- Display Options Dropdown -->
           <div class="relative" id="display-dropdown-container">
             <button
               id="display-btn"
@@ -608,194 +535,6 @@ Version: 0.9.9 (2026-01-17)
                 >
               </label>
 
-              <!-- ===== 🛠️ Effects Section ===== -->
-              <div
-                class="px-4 py-1 text-xs text-yellow-300 bg-yellow-900/50 uppercase font-bold tracking-wider mt-2"
-              >
-                Effects
-              </div>
-              <!-- Auto-Adjust Light -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Automatically adjust brightness in low light conditions"
-              >
-                <input
-                  type="checkbox"
-                  id="check-auto-adjust-light"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-yellow-600 focus:ring-yellow-500 focus:ring-offset-gray-800"
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white"
-                    >🔆 Auto-Adjust Light</span
-                  >
-                  <span class="text-xs text-gray-400"
-                    >Brighten in low light</span
-                  >
-                </div>
-              </label>
-
-              <!-- Virtual Backgrounds -->
-              <div class="px-4 py-3 border-b border-gray-700/50">
-                <div class="text-sm font-bold text-white mb-2">
-                  🖼️ Virtual Backgrounds
-                </div>
-                <div class="grid grid-cols-3 gap-2">
-                  <!-- None -->
-                  <button
-                    class="bg-option active flex flex-col items-center p-2 rounded border-2 border-green-500 hover:border-blue-500 transition-colors"
-                    data-bg="none"
-                    title="No background effect"
-                  >
-                    <div
-                      class="w-full h-12 bg-gray-600 rounded flex items-center justify-center text-xs text-gray-400"
-                    >
-                      None
-                    </div>
-                    <span class="text-[10px] text-gray-400 mt-1">None</span>
-                  </button>
-
-                  <!-- Blur -->
-                  <button
-                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
-                    data-bg="blur"
-                    title="Blur background"
-                  >
-                    <div
-                      class="w-full h-12 bg-gradient-to-br from-gray-500 to-gray-700 rounded flex items-center justify-center text-xs text-white backdrop-blur"
-                    >
-                      Blur
-                    </div>
-                    <span class="text-[10px] text-gray-400 mt-1">Blur</span>
-                  </button>
-
-                  <!-- Mountain Mist -->
-                  <button
-                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
-                    data-bg="mountain"
-                    title="Mountain Mist"
-                  >
-                    <img
-                      src="assets/backgrounds/thumbnails/mountain_mist_thumb.jpg"
-                      class="w-full h-12 rounded object-cover"
-                      alt="Mountain"
-                    />
-                    <span class="text-[10px] text-gray-400 mt-1">Mountain</span>
-                  </button>
-
-                  <!-- Bamboo Forest -->
-                  <button
-                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
-                    data-bg="bamboo"
-                    title="Bamboo Forest"
-                  >
-                    <img
-                      src="assets/backgrounds/thumbnails/bamboo_forest_thumb.jpg"
-                      class="w-full h-12 rounded object-cover"
-                      alt="Bamboo"
-                    />
-                    <span class="text-[10px] text-gray-400 mt-1">Bamboo</span>
-                  </button>
-
-                  <!-- Zen Garden -->
-                  <button
-                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
-                    data-bg="zen_garden"
-                    title="Zen Garden"
-                  >
-                    <img
-                      src="assets/backgrounds/thumbnails/zen_garden_thumb.jpg"
-                      class="w-full h-12 rounded object-cover"
-                      alt="Zen Garden"
-                    />
-                    <span class="text-[10px] text-gray-400 mt-1">Zen</span>
-                  </button>
-
-                  <!-- Sunrise Lake -->
-                  <button
-                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
-                    data-bg="lake"
-                    title="Sunrise Lake"
-                  >
-                    <img
-                      src="assets/backgrounds/thumbnails/sunrise_lake_thumb.jpg"
-                      class="w-full h-12 rounded object-cover"
-                      alt="Lake"
-                    />
-                    <span class="text-[10px] text-gray-400 mt-1">Lake</span>
-                  </button>
-
-                  <!-- Temple -->
-                  <button
-                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
-                    data-bg="temple"
-                    title="Temple Courtyard"
-                  >
-                    <img
-                      src="assets/backgrounds/thumbnails/temple_courtyard_thumb.jpg"
-                      class="w-full h-12 rounded object-cover"
-                      alt="Temple"
-                    />
-                    <span class="text-[10px] text-gray-400 mt-1">Temple</span>
-                  </button>
-
-                  <!-- Dojo -->
-                  <button
-                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
-                    data-bg="dojo"
-                    title="Wooden Dojo"
-                  >
-                    <img
-                      src="assets/backgrounds/thumbnails/wooden_dojo_thumb.jpg"
-                      class="w-full h-12 rounded object-cover"
-                      alt="Dojo"
-                    />
-                    <span class="text-[10px] text-gray-400 mt-1">Dojo</span>
-                  </button>
-
-                  <!-- Minimalist -->
-                  <button
-                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
-                    data-bg="minimalist"
-                    title="Modern Minimalist"
-                  >
-                    <img
-                      src="assets/backgrounds/thumbnails/modern_minimalist_thumb.jpg"
-                      class="w-full h-12 rounded object-cover"
-                      alt="Minimalist"
-                    />
-                    <span class="text-[10px] text-gray-400 mt-1">Minimal</span>
-                  </button>
-
-                  <!-- Gradient -->
-                  <button
-                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
-                    data-bg="gradient"
-                    title="Soft Gradient"
-                  >
-                    <img
-                      src="assets/backgrounds/thumbnails/soft_gradient_thumb.jpg"
-                      class="w-full h-12 rounded object-cover"
-                      alt="Gradient"
-                    />
-                    <span class="text-[10px] text-gray-400 mt-1">Gradient</span>
-                  </button>
-
-                  <!-- Clouds -->
-                  <button
-                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
-                    data-bg="clouds"
-                    title="Yin Yang Clouds"
-                  >
-                    <img
-                      src="assets/backgrounds/thumbnails/yin_yang_clouds_thumb.jpg"
-                      class="w-full h-12 rounded object-cover"
-                      alt="Clouds"
-                    />
-                    <span class="text-[10px] text-gray-400 mt-1">Clouds</span>
-                  </button>
-                </div>
-              </div>
-
               <!-- ===== 🛠️ Developer Section ===== -->
               <div
                 class="px-4 py-1 text-xs text-red-300 bg-red-900/50 uppercase font-bold tracking-wider mt-2"
@@ -821,34 +560,6 @@ Version: 0.9.9 (2026-01-17)
                   >D</span
                 >
               </label>
-
-              <!-- ===== 🎨 Visual Effects Section ===== -->
-              <div
-                class="px-4 py-1 text-xs text-yellow-300 bg-yellow-900/50 uppercase font-bold tracking-wider mt-2"
-              >
-                Visual Effects
-              </div>
-              <!-- Background Blur -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer transition-colors"
-                title="Blur background for privacy (may reduce performance)"
-              >
-                <input
-                  type="checkbox"
-                  id="check-blur-bg"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white" id="label-blur-bg"
-                    >Blur Background</span
-                  >
-                  <span class="text-xs text-gray-400">Hide surroundings</span>
-                </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >B</span
-                >
-              </label>
             </div>
           </div>
 
@@ -857,9 +568,9 @@ Version: 0.9.9 (2026-01-17)
             <button
               id="rules-btn"
               class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
-              title="Rules Settings - ปรับค่ากฎการตรวจสอบ"
+              title="Rules Settings - ปรับค่ากฎการตรวจจับ"
             >
-              ⚙️
+              🔧
             </button>
 
             <div
@@ -1192,6 +903,288 @@ Version: 0.9.9 (2026-01-17)
               </div>
             </div>
           </div>
+          <!-- Settings Menu (Performance + Effects + Backgrounds) -->
+          <div class="relative inline-block">
+            <button
+              id="settings-btn"
+              class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+              title="Settings - Performance & Effects"
+            >
+              ⚙️
+            </button>
+
+            <!-- Settings Dropdown Menu -->
+            <div
+              id="settings-menu"
+              class="hidden absolute right-0 mt-2 w-56 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
+              style="max-height: 70vh; overflow-y: auto"
+            >
+              <div
+                class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900 sticky top-0"
+              >
+                Settings
+              </div>
+
+              <!-- ===== ⚡ Performance Section ===== -->
+              <div
+                class="px-4 py-1 text-xs text-blue-300 bg-blue-900/50 uppercase font-bold tracking-wider mt-1"
+              >
+                Performance
+              </div>
+
+              <!-- Option: Lite -->
+              <button
+                class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors border-b border-gray-700/50 w-full"
+                data-value="lite"
+                onclick="window.selectPerformanceMode('lite')"
+              >
+                <span class="mr-3 text-lg">⚡</span>
+                <div class="flex flex-col">
+                  <span class="text-sm font-bold text-white">Lite</span>
+                  <span class="text-xs text-gray-400">Fastest (Low Res)</span>
+                </div>
+                <span class="ml-auto text-green-400 opacity-0 check-icon"
+                  >✓</span
+                >
+              </button>
+
+              <!-- Option: Balanced -->
+              <button
+                class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors border-b border-gray-700/50 w-full"
+                data-value="balanced"
+                onclick="window.selectPerformanceMode('balanced')"
+              >
+                <span class="mr-3 text-lg">⚖️</span>
+                <div class="flex flex-col">
+                  <span class="text-sm font-bold text-white">Balanced</span>
+                  <span class="text-xs text-gray-400"
+                    >Default (Recommended)</span
+                  >
+                </div>
+                <span class="ml-auto text-green-400 opacity-0 check-icon"
+                  >✓</span
+                >
+              </button>
+
+              <!-- Option: Quality -->
+              <button
+                class="perf-option flex items-center px-4 py-3 hover:bg-gray-700 text-left transition-colors border-b border-gray-700/50 w-full"
+                data-value="quality"
+                onclick="window.selectPerformanceMode('quality')"
+              >
+                <span class="mr-3 text-lg">💎</span>
+                <div class="flex flex-col">
+                  <span class="text-sm font-bold text-white">Quality</span>
+                  <span class="text-xs text-gray-400">Best (High Res)</span>
+                </div>
+                <span class="ml-auto text-green-400 opacity-0 check-icon"
+                  >✓</span
+                >
+              </button>
+
+              <!-- ===== 🛠️ Effects Section ===== -->
+              <div
+                class="px-4 py-1 text-xs text-yellow-300 bg-yellow-900/50 uppercase font-bold tracking-wider mt-2"
+              >
+                Effects
+              </div>
+
+              <!-- Auto-Adjust Light -->
+              <label
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
+                title="Automatically adjust brightness in low light conditions"
+              >
+                <input
+                  type="checkbox"
+                  id="check-auto-adjust-light"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-yellow-600 focus:ring-yellow-500 focus:ring-offset-gray-800"
+                />
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white"
+                    >🔆 Auto-Adjust Light</span
+                  >
+                  <span class="text-xs text-gray-400"
+                    >Brighten in low light</span
+                  >
+                </div>
+              </label>
+
+              <!-- ===== 🖼️ Virtual Backgrounds Section ===== -->
+              <div class="px-4 py-3 border-b border-gray-700/50">
+                <div class="text-sm font-bold text-white mb-2">
+                  🖼️ Virtual Backgrounds
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                  <!-- None -->
+                  <button
+                    class="bg-option active flex flex-col items-center p-2 rounded border-2 border-green-500 hover:border-blue-500 transition-colors"
+                    data-bg="none"
+                    data-vbg-key="none"
+                    title="No background effect"
+                  >
+                    <div
+                      class="w-full h-12 bg-gray-600 rounded flex items-center justify-center text-xs text-gray-400"
+                    >
+                      None
+                    </div>
+                    <span class="text-[10px] text-gray-400 mt-1">None</span>
+                  </button>
+
+                  <!-- Blur -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="blur"
+                    data-vbg-key="blur"
+                    title="Blur background"
+                  >
+                    <div
+                      class="w-full h-12 bg-gradient-to-br from-gray-500 to-gray-700 rounded flex items-center justify-center text-xs text-white backdrop-blur"
+                    >
+                      Blur
+                    </div>
+                    <span class="text-[10px] text-gray-400 mt-1">Blur</span>
+                  </button>
+
+                  <!-- Mountain Mist -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="mountain"
+                    data-vbg-key="mountain"
+                    title="Mountain Mist"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/mountain_mist_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Mountain"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Mountain</span>
+                  </button>
+
+                  <!-- Bamboo Forest -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="bamboo"
+                    data-vbg-key="bamboo"
+                    title="Bamboo Forest"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/bamboo_forest_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Bamboo"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Bamboo</span>
+                  </button>
+
+                  <!-- Zen Garden -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="zen_garden"
+                    data-vbg-key="zen_garden"
+                    title="Zen Garden"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/zen_garden_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Zen Garden"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Zen</span>
+                  </button>
+
+                  <!-- Sunrise Lake -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="lake"
+                    data-vbg-key="lake"
+                    title="Sunrise Lake"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/sunrise_lake_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Lake"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Lake</span>
+                  </button>
+
+                  <!-- Temple -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="temple"
+                    data-vbg-key="temple"
+                    title="Temple Courtyard"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/temple_courtyard_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Temple"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Temple</span>
+                  </button>
+
+                  <!-- Dojo -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="dojo"
+                    data-vbg-key="dojo"
+                    title="Wooden Dojo"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/wooden_dojo_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Dojo"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Dojo</span>
+                  </button>
+
+                  <!-- Minimalist -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="minimalist"
+                    data-vbg-key="minimalist"
+                    title="Modern Minimalist"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/modern_minimalist_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Minimalist"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Minimal</span>
+                  </button>
+
+                  <!-- Gradient -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="gradient"
+                    data-vbg-key="gradient"
+                    title="Soft Gradient"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/soft_gradient_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Gradient"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Gradient</span>
+                  </button>
+
+                  <!-- Clouds -->
+                  <button
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                    data-bg="clouds"
+                    data-vbg-key="clouds"
+                    title="Yin Yang Clouds"
+                  >
+                    <img
+                      src="assets/backgrounds/thumbnails/yin_yang_clouds_thumb.jpg"
+                      class="w-full h-12 rounded object-cover"
+                      alt="Clouds"
+                    />
+                    <span class="text-[10px] text-gray-400 mt-1">Clouds</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
         </div>
 
         <!-- Right: Settings Buttons -->
@@ -1383,7 +1376,7 @@ Version: 0.9.9 (2026-01-17)
                 >1</span
               >
               <span id="overlay-step1" class="text-sm"
-                >เลือก <strong>"ท่าฝึก"</strong> จากเมนูด้านบน</span
+                >เลือก <strong>"ท่าฝึก"</strong> หรือ <strong>"🎲 สุ่มท่าฝึก"</strong></span
               >
             </p>
             <p class="flex items-center gap-3">

@@ -257,13 +257,11 @@ function checkLowFpsPerformance() {
   if (now - lastLowFpsCheckTime < LOW_FPS_CHECK_INTERVAL) return;
   lastLowFpsCheckTime = now;
 
-  // เช็คเฉพาะเมื่อเปิด Blur และยังไม่เคยเตือน
-  if (
-    displayController &&
-    displayController.showBlurBackground &&
-    currentFps < LOW_FPS_THRESHOLD &&
-    !lowFpsWarningShown
-  ) {
+  // เช็คเฉพาะเมื่อเปิด Virtual Background และยังไม่เคยเตือน
+  const bgMode = backgroundManager?.getCurrentMode();
+  const hasVirtualBg = bgMode && bgMode !== "none";
+
+  if (hasVirtualBg && currentFps < LOW_FPS_THRESHOLD && !lowFpsWarningShown) {
     lowFpsWarningShown = true;
     uiManager.showNotification(
       uiManager.getText("blur_bg_warning"),
@@ -1060,6 +1058,7 @@ const keyboardController = new KeyboardController({
   uiManager,
   tutorialManager,
   displayController, // เพิ่มสำหรับ toggleInstructor และ showInstructor
+  backgroundManager, // เพิ่มสำหรับ toggle blur background (Key B)
 
   // Functions
   toggleDebugOverlay,
@@ -1409,9 +1408,11 @@ async function onResults(results) {
         );
       }
 
-      // 0.1 🆕 Background Blur (ถ้าเปิดใช้งาน Visual Effects)
-      // ใช้วิธีเก่าที่ทำงานได้ - เรียก drawer.drawBlurredBackground()
-      if (displayController.showBlurBackground && results.segmentationMask) {
+      // 0.2 🆕 Virtual Background (เลือกรูปพื้นหลัง)
+      const bgMode = backgroundManager.getCurrentMode();
+
+      // 0.2.1 Virtual Backgrounds → Blur
+      if (bgMode === "blur" && results.segmentationMask) {
         drawer.drawBlurredBackground(
           canvasCtx,
           results.image,
@@ -1419,9 +1420,7 @@ async function onResults(results) {
         );
       }
 
-      // 0.2 🆕 Virtual Background (เลือกรูปพื้นหลัง)
-      // ใช้วิธีเดียวกับ Blur แต่เปลี่ยนเป็นรูปภาพ
-      const bgMode = backgroundManager.getCurrentMode();
+      // 0.2.2 Virtual Backgrounds → รูปภาพ (ไม่ใช่ blur หรือ none)
       if (bgMode !== "none" && bgMode !== "blur" && results.segmentationMask) {
         // ดึงรูปภาพพื้นหลังจาก BackgroundManager
         const bgImage = backgroundManager.currentBackgroundImage;

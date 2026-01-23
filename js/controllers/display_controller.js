@@ -45,15 +45,15 @@ class DisplayController {
    */
   init() {
     this.initDropdown();
+    this.initSettingsDropdown(); // Settings dropdown (Performance + Effects + Backgrounds)
     this.initGhostCheckbox();
     this.initInstructorCheckbox();
     this.initPathCheckbox();
     this.initSkeletonCheckbox();
     this.initSilhouetteCheckbox();
     this.initTrailCheckbox();
-    this.initBlurBackgroundCheckbox();
-    this.initAutoAdjustLightCheckbox(); // 🆕 Auto-Adjust Light
-    this.initVirtualBackgrounds(); // 🆕 Virtual Backgrounds
+    this.initAutoAdjustLightCheckbox(); // Auto-Adjust Light
+    this.initVirtualBackgrounds(); // Virtual Backgrounds
   }
 
   /**
@@ -72,6 +72,28 @@ class DisplayController {
       document.addEventListener("click", (e) => {
         if (!displayMenu.contains(e.target) && e.target !== displayBtn) {
           displayMenu.classList.add("hidden");
+        }
+      });
+    }
+  }
+
+  /**
+   * Initialize Settings dropdown toggle
+   */
+  initSettingsDropdown() {
+    const settingsBtn = document.getElementById("settings-btn");
+    const settingsMenu = document.getElementById("settings-menu");
+
+    if (settingsBtn && settingsMenu) {
+      settingsBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (window.uiManager) window.uiManager.closeAllMenus("settings-menu");
+        settingsMenu.classList.toggle("hidden");
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!settingsMenu.contains(e.target) && e.target !== settingsBtn) {
+          settingsMenu.classList.add("hidden");
         }
       });
     }

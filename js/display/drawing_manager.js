@@ -36,6 +36,17 @@ class DrawingManager {
     this.canvasWidth = canvasElement.width; // ความกว้าง (pixel)
     this.canvasHeight = canvasElement.height; // ความสูง (pixel)
     this.mirrorDisplay = false; // Mirror mode (ปกติ = false เพราะ webcam mirror มาแล้ว)
+
+    // =========================================================================
+    // 🎭 VIRTUAL BACKGROUND: Temporal Smoothing & Performance
+    // =========================================================================
+    this.previousMask = null; // เก็บ mask ของ frame ก่อนหน้า (สำหรับ temporal smoothing)
+    this.temporalWeight = 0.7; // น้ำหัก: previous mask (0.7) + new mask (0.3)
+
+    // Reusable canvases (หลีกเลี่ยงการสร้างใหม่ทุก frame)
+    this.tempBlurCanvas = null; // สำหรับเบลอพื้นหลัง
+    this.tempPersonCanvas = null; // สำหรับตัดส่วนคน
+    this.tempMaskCanvas = null; // สำหรับ process mask (feather + smooth)
   }
 
   // ===========================================================================
@@ -259,6 +270,76 @@ class DrawingManager {
   }
 
   // ===========================================================================
+  // 🎭 VIRTUAL BACKGROUND HELPERS: Mask Processing
+  // ===========================================================================
+
+  /**
+   * ประมวลผล Segmentation Mask ด้วย Feathering และ Temporal Smoothing
+   *
+   * วิธีการ:
+   * 1. Feather Edges: เบลอ mask เล็กน้อยเพื่อให้ขอบนุ่มนวล
+   * 2. Temporal Smoothing: เฉลี่ย mask กับ frame ก่อนหน้า เพื่อลดการกระตุก
+   *
+   * @param {CanvasImageSource} rawMask - Segmentation mask ดิบจาก MediaPipe
+   * @returns {HTMLCanvasElement} - Processed mask (feathered + smoothed)
+   */
+  _processSegmentationMask(rawMask) {
+    const width = this.canvasWidth;
+    const height = this.canvasHeight;
+
+    // ----- สร้าง/ใช้ temp canvas สำหรับ mask processing -----
+    if (!this.tempMaskCanvas) {
+      this.tempMaskCanvas = document.createElement("canvas");
+      this.tempMaskCanvas.width = width;
+      this.tempMaskCanvas.height = height;
+    }
+    const maskCtx = this.tempMaskCanvas.getContext("2d");
+
+    // ล้าง canvas
+    maskCtx.clearRect(0, 0, width, height);
+
+    // ----- Step 1: Feather Edges (เบลอขอบ mask) -----
+    maskCtx.filter = "blur(3px)"; // เบลอเล็กน้อยเพื่อให้ขอบนุ่ม
+    maskCtx.drawImage(rawMask, 0, 0, width, height);
+    maskCtx.filter = "none";
+
+    // ----- Step 2: Temporal Smoothing (เฉลี่ย mask กับ frame ก่อนหน้า) -----
+    if (this.previousMask) {
+      // สร้าง ImageData สำหรับ blend
+      const currentImageData = maskCtx.getImageData(0, 0, width, height);
+      const prevImageData = this.previousMask;
+      const currentData = currentImageData.data;
+      const prevData = prevImageData.data;
+
+      // เฉลี่ยทุก pixel: new = (prev * 0.7) + (current * 0.3)
+      for (let i = 0; i < currentData.length; i += 4) {
+        // Alpha channel (index 3) คือค่าที่เราสนใจ (0-255)
+        const prevAlpha = prevData[i + 3];
+        const currAlpha = currentData[i + 3];
+
+        // Blend alpha
+        const smoothedAlpha =
+          prevAlpha * this.temporalWeight +
+          currAlpha * (1 - this.temporalWeight);
+
+        currentData[i + 3] = smoothedAlpha;
+      }
+
+      // วาดกลับ
+      maskCtx.putImageData(currentImageData, 0, 0);
+    }
+
+    // ----- Step 3: บันทึก mask นี้สำหรับ frame ถัดไป -----
+    this.previousMask = maskCtx.getImageData(0, 0, width, height);
+
+    return this.tempMaskCanvas;
+  }
+
+  // ===========================================================================
+  // 🎭 VIRTUAL BACKGROUND: Draw Methods
+  // ===========================================================================
+
+  // ===========================================================================
   // 🌫️ BLURRED BACKGROUND: เบลอฉากหลัง (Visual Effects)
   // ===========================================================================
 
@@ -275,36 +356,49 @@ class DrawingManager {
     const width = this.canvasWidth;
     const height = this.canvasHeight;
 
-    // ----- Step 1: สร้าง temp canvas สำหรับ blurred background -----
-    const blurCanvas = document.createElement("canvas");
-    blurCanvas.width = width;
-    blurCanvas.height = height;
-    const blurCtx = blurCanvas.getContext("2d");
+    // ----- Process mask: Feather + Temporal Smoothing -----
+    const processedMask = this._processSegmentationMask(mask);
+
+    // ----- Step 1: สร้าง/ใช้ temp canvas สำหรับ blurred background -----
+    if (!this.tempBlurCanvas) {
+      this.tempBlurCanvas = document.createElement("canvas");
+      this.tempBlurCanvas.width = width;
+      this.tempBlurCanvas.height = height;
+    }
+    const blurCtx = this.tempBlurCanvas.getContext("2d");
+
+    // ล้าง canvas
+    blurCtx.clearRect(0, 0, width, height);
 
     // วาดภาพต้นฉบับลง temp พร้อม blur filter
     blurCtx.filter = "blur(15px)";
     blurCtx.drawImage(image, 0, 0, width, height);
     blurCtx.filter = "none";
 
-    // ----- Step 2: สร้าง temp canvas สำหรับ person (sharp) -----
-    const personCanvas = document.createElement("canvas");
-    personCanvas.width = width;
-    personCanvas.height = height;
-    const personCtx = personCanvas.getContext("2d");
+    // ----- Step 2: สร้าง/ใช้ temp canvas สำหรับ person (sharp) -----
+    if (!this.tempPersonCanvas) {
+      this.tempPersonCanvas = document.createElement("canvas");
+      this.tempPersonCanvas.width = width;
+      this.tempPersonCanvas.height = height;
+    }
+    const personCtx = this.tempPersonCanvas.getContext("2d");
+
+    // ล้าง canvas
+    personCtx.clearRect(0, 0, width, height);
 
     // วาดภาพต้นฉบับ (ไม่ blur)
     personCtx.drawImage(image, 0, 0, width, height);
 
     // ใช้ mask เพื่อตัดเฉพาะส่วนคน (destination-in)
     personCtx.globalCompositeOperation = "destination-in";
-    personCtx.drawImage(mask, 0, 0, width, height);
+    personCtx.drawImage(processedMask, 0, 0, width, height);
     personCtx.globalCompositeOperation = "source-over";
 
     // ----- Step 3: รวมกัน: blurred background + sharp person -----
     // วาดพื้นหลังเบลอก่อน
-    ctx.drawImage(blurCanvas, 0, 0, width, height);
+    ctx.drawImage(this.tempBlurCanvas, 0, 0, width, height);
     // วาดคนทับ
-    ctx.drawImage(personCanvas, 0, 0, width, height);
+    ctx.drawImage(this.tempPersonCanvas, 0, 0, width, height);
   }
 
   /**
@@ -321,25 +415,33 @@ class DrawingManager {
     const width = this.canvasWidth;
     const height = this.canvasHeight;
 
+    // ----- Process mask: Feather + Temporal Smoothing -----
+    const processedMask = this._processSegmentationMask(mask);
+
     // ----- Step 1: วาดรูปภาพพื้นหลังก่อน -----
     ctx.drawImage(backgroundImage, 0, 0, width, height);
 
-    // ----- Step 2: สร้าง temp canvas สำหรับ person (sharp) -----
-    const personCanvas = document.createElement("canvas");
-    personCanvas.width = width;
-    personCanvas.height = height;
-    const personCtx = personCanvas.getContext("2d");
+    // ----- Step 2: สร้าง/ใช้ temp canvas สำหรับ person (sharp) -----
+    if (!this.tempPersonCanvas) {
+      this.tempPersonCanvas = document.createElement("canvas");
+      this.tempPersonCanvas.width = width;
+      this.tempPersonCanvas.height = height;
+    }
+    const personCtx = this.tempPersonCanvas.getContext("2d");
+
+    // ล้าง canvas
+    personCtx.clearRect(0, 0, width, height);
 
     // วาดภาพต้นฉบับ (webcam)
     personCtx.drawImage(image, 0, 0, width, height);
 
     // ใช้ mask เพื่อตัดเฉพาะส่วนคน (destination-in)
     personCtx.globalCompositeOperation = "destination-in";
-    personCtx.drawImage(mask, 0, 0, width, height);
+    personCtx.drawImage(processedMask, 0, 0, width, height);
     personCtx.globalCompositeOperation = "source-over";
 
     // ----- Step 3: วาดคนทับบนพื้นหลัง -----
-    ctx.drawImage(personCanvas, 0, 0, width, height);
+    ctx.drawImage(this.tempPersonCanvas, 0, 0, width, height);
   }
 
   // ===========================================================================

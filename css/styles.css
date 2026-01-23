@@ -179,7 +179,7 @@ body.light .instructions-box strong {
   width: 100%;
   height: 100%;
   transform: scaleX(-1);
-  object-fit: cover;
+  object-fit: contain; /* เปลี่ยนจาก cover เป็น contain เพื่อรักษา aspect ratio */
 }
 
 /* --- Status Dot (Recording Indicator) --- */

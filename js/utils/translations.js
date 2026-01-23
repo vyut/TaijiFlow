@@ -203,7 +203,7 @@ const TRANSLATIONS = {
     // ขั้นตอนที่ 2
     overlay_step2: 'เลือก "รูปแบบ" ที่ต้องการฝึก',
     // ขั้นตอนที่ 3
-    overlay_step3: 'กดปุ่ม "▶️ เริ่มการฝึก" ด้านล่าง',
+    overlay_step3: 'กดปุ่ม "▶️ เริ่มการฝึก"',
     // Stop Section (New)
     stop_title: "Stop",
     stop_action: 'กดปุ่ม "⏹️ หยุดการฝึก" หรือ กำมือ ✊',

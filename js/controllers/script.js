@@ -1764,8 +1764,8 @@ const pose = new Pose({
 pose.setOptions({
   modelComplexity: 1, // Full Model (สมดุลระหว่างความแม่นยำและความเร็ว)
   smoothLandmarks: true, // เปิด Smoothing
-  enableSegmentation: true, // 🔧 เปิดไว้เพื่อรองรับ Virtual Backgrounds
-  smoothSegmentation: true, // 🔧 เปิด Smoothing สำหรับ Segmentation
+  enableSegmentation: false, // 🔧 ปิดเป็น default (จะเปิดเฉพาะตอนใช้ Virtual Backgrounds/Silhouette)
+  smoothSegmentation: false, // 🔧 ปิดเพื่อประหยัด performance
   minDetectionConfidence: 0.5, // 50% ขึ้นไปถึงจะยอมรับ
   minTrackingConfidence: 0.5, // 50% ขึ้นไปถึงจะติดตามต่อ
 });
@@ -1863,26 +1863,12 @@ function updatePerformanceMenuUI(mode) {
   });
 }
 
-// Init Performance Menu UI
-const perfBtn = document.getElementById("perf-btn");
-const perfMenu = document.getElementById("perf-menu");
+// Init Performance Menu UI (now inside Settings menu)
+const settingsBtn = document.getElementById("settings-btn");
+const settingsMenu = document.getElementById("settings-menu");
 
-if (perfBtn && perfMenu) {
-  // Toggle Menu
-  perfBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    if (window.uiManager) window.uiManager.closeAllMenus("perf-menu");
-    perfMenu.classList.toggle("hidden");
-  });
-
-  // Close when clicking outside
-  document.addEventListener("click", (e) => {
-    if (!perfMenu.contains(e.target) && e.target !== perfBtn) {
-      perfMenu.classList.add("hidden");
-    }
-  });
-
-  // Set initial UI state
+// Set initial Performance UI state
+if (settingsMenu) {
   updatePerformanceMenuUI(currentPerformanceMode);
 }
 

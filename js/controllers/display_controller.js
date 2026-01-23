@@ -46,6 +46,7 @@ class DisplayController {
   init() {
     this.initDropdown();
     this.initSettingsDropdown(); // Settings dropdown (Performance + Effects + Backgrounds)
+    this.initMirrorCheckbox(); // 🆕 Mirror Mode
     this.initGhostCheckbox();
     this.initInstructorCheckbox();
     this.initPathCheckbox();
@@ -97,6 +98,51 @@ class DisplayController {
         }
       });
     }
+  }
+
+  /**
+   * Initialize Mirror Mode toggle
+   */
+  initMirrorCheckbox() {
+    const checkMirror = document.getElementById("check-mirror");
+    const container = document.querySelector(".canvas-container");
+
+    if (checkMirror && container) {
+      // 1. Default state: Always Mirror (true) on load
+      // No localStorage loading
+      const isMirror = true;
+
+      checkMirror.checked = isMirror;
+      this.setMirrorMode(isMirror);
+
+      // 2. Handle change
+      checkMirror.addEventListener("change", (e) => {
+        const enabled = e.target.checked;
+        this.setMirrorMode(enabled);
+
+        // No notification for consistency
+      });
+    }
+  }
+
+  /**
+   * Helper to set mirror mode state
+   * @param {boolean} enabled
+   */
+  setMirrorMode(enabled) {
+    const container = document.querySelector(".canvas-container");
+    if (!container) return;
+
+    if (enabled) {
+      container.classList.remove("normal-view"); // Mirror (Default CSS)
+    } else {
+      container.classList.add("normal-view"); // Normal View
+    }
+
+    // No localStorage saving
+
+    // Update global state if needed
+    // if (window.drawingManager) window.drawingManager.setMirror(enabled);
   }
 
   /**

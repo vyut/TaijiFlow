@@ -182,6 +182,12 @@ body.light .instructions-box strong {
   object-fit: contain; /* เปลี่ยนจาก cover เป็น contain เพื่อรักษา aspect ratio */
 }
 
+/* Normal View (Undo Mirror) */
+.canvas-container.normal-view video,
+.canvas-container.normal-view canvas:not(#instructor-thumbnail) {
+  transform: scaleX(1);
+}
+
 /* --- Status Dot (Recording Indicator) --- */
 .status-dot {
   height: 12px;

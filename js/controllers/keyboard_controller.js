@@ -143,14 +143,35 @@ class KeyboardController {
         break;
 
       // -----------------------------------------------------------------------
-      // B = Blur Background Toggle (Visual Effects)
+      // B = Blur Background Toggle (Virtual Backgrounds)
       // -----------------------------------------------------------------------
       case "KeyB":
         e.preventDefault();
-        const checkBlurBg = document.getElementById("check-blur-bg");
-        if (checkBlurBg) {
-          checkBlurBg.checked = !checkBlurBg.checked;
-          checkBlurBg.dispatchEvent(new Event("change"));
+        // Toggle Virtual Background (Blur <-> None)
+        if (this.deps.backgroundManager) {
+          const currentBg = this.deps.backgroundManager.getCurrentMode();
+          // Toggle between 'none' and 'blur'
+          const newBg = currentBg === "none" ? "blur" : "none";
+          this.deps.backgroundManager.setBackground(newBg);
+
+          // Update UI (Visual Feedback)
+          if (window.uiManager) {
+            window.uiManager.showNotification(
+              newBg === "blur" ? "Blur Background: ON" : "Blur Background: OFF",
+              "info",
+            );
+          }
+        }
+        break;
+
+      // -----------------------------------------------------------------------
+      // M = Mirror Mode Toggle
+      // -----------------------------------------------------------------------
+      case "KeyM":
+        e.preventDefault();
+        const checkMirror = document.getElementById("check-mirror");
+        if (checkMirror) {
+          checkMirror.click(); // Trigger change event + notification
         }
         break;
 
@@ -228,7 +249,7 @@ class KeyboardController {
         uiManager.showNotification(
           `Debug Mode: ${this.deps.engine.debugMode ? "ON" : "OFF"}`,
           "info",
-          1500
+          1500,
         );
         break;
 

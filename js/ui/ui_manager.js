@@ -265,6 +265,11 @@ class UIManager {
     // ตรวจสอบ Mobile Device และแสดง Warning Modal
     // -------------------------------------------------------------------------
     this.checkMobileDevice();
+
+    // -------------------------------------------------------------------------
+    // เริ่มต้นระบบ Wisdom Popup (New)
+    // -------------------------------------------------------------------------
+    this.initWisdomPopup();
   }
 
   // ===========================================================================
@@ -1018,6 +1023,145 @@ class UIManager {
         notification.remove(),
       );
     }, duration);
+  }
+
+  // ===========================================================================
+  // SECTION: WISDOM POPUP (TAIJI WISDOM)
+  // ===========================================================================
+  // Merged from wisdom_popup.js
+  // ===========================================================================
+
+  /**
+   * Init Wisdom Popup - เริ่มต้นระบบ Wisdom Popup
+   */
+  initWisdomPopup() {
+    this.wisdomPopup = document.getElementById("wisdom-popup");
+    this.wisdomCloseBtn = document.getElementById("wisdom-close-btn");
+    this.wisdomQuoteText = document.getElementById("wisdom-quote");
+    this.wisdomQuoteSub = document.getElementById("wisdom-quote-sub");
+    this.wisdomCanvasId = "wisdom-canvas";
+    this.wisdomAnimation = null;
+    this.isWisdomAnimating = false;
+
+    if (!this.wisdomPopup) return;
+
+    // Close Event
+    if (this.wisdomCloseBtn) {
+      this.wisdomCloseBtn.addEventListener("click", () =>
+        this.hideWisdomPopup(),
+      );
+    }
+
+    // Close on click outside
+    this.wisdomPopup.addEventListener("click", (e) => {
+      if (e.target === this.wisdomPopup) {
+        this.hideWisdomPopup();
+      }
+    });
+
+    // ESC key to close
+    document.addEventListener("keydown", (e) => {
+      if (
+        e.key === "Escape" &&
+        !this.wisdomPopup.classList.contains("hidden")
+      ) {
+        this.hideWisdomPopup();
+      }
+    });
+
+    // Attach click to App Title to trigger Popup
+    const appTitle = document.getElementById("app-logo-container");
+    if (appTitle) {
+      appTitle.style.cursor = "pointer";
+      appTitle.addEventListener("click", () => {
+        this.showWisdomPopup();
+      });
+    }
+  }
+
+  /**
+   * Show Wisdom Popup - แสดงหน้าต่าง Taiji Wisdom
+   */
+  showWisdomPopup() {
+    if (!this.wisdomPopup) return;
+
+    // 1. Random Quote
+    this.setRandomWisdomQuote();
+
+    // 2. Show Modal
+    this.wisdomPopup.classList.remove("hidden");
+    this.wisdomPopup.classList.add("flex");
+
+    // 3. Start Animation
+    this.startWisdomAnimation();
+  }
+
+  /**
+   * Hide Wisdom Popup - ปิดหน้าต่าง Taiji Wisdom
+   */
+  hideWisdomPopup() {
+    if (!this.wisdomPopup) return;
+
+    this.wisdomPopup.classList.add("hidden");
+    this.wisdomPopup.classList.remove("flex");
+
+    // Stop Animation to save resources
+    this.stopWisdomAnimation();
+  }
+
+  /**
+   * Set Random Wisdom Quote - สุ่มคำคมมาแสดง
+   */
+  setRandomWisdomQuote() {
+    if (typeof TRANSLATIONS === "undefined") return;
+
+    // Use current language setting
+    const lang = this.currentLang || "th";
+
+    // Access centralized quotes via TRANSLATIONS
+    const quotes =
+      TRANSLATIONS[lang]?.score_popup?.motivational_quotes ||
+      TRANSLATIONS["th"].score_popup.motivational_quotes;
+
+    if (quotes && quotes.length > 0) {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      const quote = quotes[randomIndex];
+
+      // Display
+      if (this.wisdomQuoteText)
+        this.wisdomQuoteText.textContent = `"${quote.text}"`;
+      if (this.wisdomQuoteSub) this.wisdomQuoteSub.textContent = quote.zh;
+    }
+  }
+
+  /**
+   * Start Wisdom Animation - เริ่ม Animation วงกลม
+   */
+  startWisdomAnimation() {
+    if (this.isWisdomAnimating) return;
+
+    // Re-use SilkReelingAnimation global class if available
+    if (typeof SilkReelingAnimation !== "undefined") {
+      // Wait for DOM to be fully visible/rendered
+      setTimeout(() => {
+        if (!this.wisdomAnimation) {
+          this.wisdomAnimation = new SilkReelingAnimation(this.wisdomCanvasId);
+        } else {
+          this.wisdomAnimation.start();
+        }
+        this.isWisdomAnimating = true;
+      }, 100);
+    }
+  }
+
+  /**
+   * Stop Wisdom Animation - หยุด Animation
+   */
+  stopWisdomAnimation() {
+    if (this.wisdomAnimation) {
+      this.wisdomAnimation.stop();
+      this.isWisdomAnimating = false;
+    }
   }
 
   // ===========================================================================

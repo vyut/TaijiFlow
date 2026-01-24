@@ -4,6 +4,57 @@
 
 ---
 
+## [v0.9.15] - 2026-01-24
+
+### 🚀 Performance & Core Systems (Features 8 & 3)
+
+#### Added
+- **Dynamic Resolution System** (`script.js`) - Refactored camera initialization to support real-time resolution switching.
+  - **Lite Mode**: Uses **640x480 (4:3)** resolution for maximum FPS on low-end devices.
+  - **Balanced/Quality**: Uses **1280x720 (16:9)** for high-fidelity analysis.
+  - **Auto-Resize Canvas**: Canvas now automatically resizes to match camera input, fixing aspect ratio distortion (stretched video) in Lite Mode.
+- **Virtual Backgrounds 2.0** (`display_controller.js`, `background_manager.js`)
+  - **Unified System**: Centralized management for Blur, Image Backgrounds, and Segmentation.
+  - **Efficiency**: Auto-disables segmentation mask calculation when background is "None" to save CPU/GPU.
+- **Auto-Adjust Light** (`script.js`) - New algorithm to automatically adjust brightness/contrast in low-light conditions.
+
+### 👁️ Visual Feedback & Display (Features 4 & 5)
+
+#### Added
+- **Side-by-Side Mode** (`display_controller.js`, `app.html`)
+  - **Split Screen Layout**: New view mode showing Instructor (Left) and User (Right) side-by-side (50:50).
+  - **Responsive CSS**: Uses Flexbox to maintain aspect ratios on different screen sizes.
+  - **Smart Ghost Interaction**: Automatically hides the "Ghost Overlay" layer when entering Side-by-Side to prevent visual clutter, but keeps the underlying video synced.
+- **Independent Error Highlights** (`drawing_manager.js`)
+  - **Decoupled Rendering**: "Error Highlights" (Red Dots) can now be toggled independently of the main Skeleton.
+  - **Use Case**: Users can turn OFF the Skeleton (`K`) but keep Error Highlights (`E`) ON for a cleaner, feedback-focused view.
+
+### 🐞 Smart Debug & UI Improvements (Features 7, 6, 2, 1)
+
+#### Added
+- **Smart Debug Overlay** (`script.js`)
+  - **Adaptive Info**:
+    - **Idle Mode**: Shows minimal system stats (`FPS`, `AI Rate`, `AI Time`, `Res`, `Light`).
+    - **Training Mode**: Automatically expands to show `Score`, `Frame`, and detailed `Rule Metrics`.
+  - **Always-On Capable**: Debug info now updates every frame regardless of body detection status.
+  - **Performance Metrics**: Added `AI Time` (Latency in ms) and `Res` (Resolution) to help verify Performance Mode effectiveness.
+- **Enhanced Display Options UI** (`app.html`)
+  - **Icons**: Added intuitive icons to all display menu items (e.g., 🦴 Skeleton, 👻 Ghost, 🌓 Side-by-Side).
+  - **Standardized Shortcuts**:
+    - `E` = Error Highlights
+    - `S` = Side-by-Side (remapped from Silhouette)
+    - `B` = Blur Background
+  - **Notification Logic**: Normalized notifications to show "ON" and "OFF" states clearly for all shortcuts. Suppressed redundant popup notifications when clicking UI menu items.
+- **Utility Features**:
+  - **Mirror Mode**: Independent toggle for mirroring the camera feed.
+  - **Grid Overlay**: 3x3 Grid for checking alignment and balance.
+
+#### Fixed
+- **'B' Key Logic**: Fixed keyboard shortcut to correctly trigger the new `setVirtualBackground` method.
+- **Aspect Ratio Bug**: Fixed video stretching issue when switching between 4:3 and 16:9 resolutions.
+
+---
+
 ## [v0.9.13] - 2026-01-21
 
 ### ✨ New Heuristic Rule: Upper-Lower Coordination

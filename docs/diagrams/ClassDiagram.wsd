@@ -59,6 +59,8 @@ package "Controllers" <<Controller>> {
         - showSilhouette: boolean
         - showTrail: boolean
         - showBlurBackground: boolean
+        - showSideBySide: boolean
+        - showErrorHighlights: boolean
         - trailHistory: array
         --
         + init()
@@ -126,6 +128,16 @@ package "Core Managers" <<Core>> {
 ' ============================================================================
 
 package "Display Managers" <<Display>> {
+    class BackgroundManager {
+        - mode: string
+        - blurAmount: number
+        - backgroundImage: Image
+        --
+        + setMode(mode)
+        + setBlurAmount(amount)
+        + drawBackground(ctx, mask, video, width, height)
+    }
+
     class DrawingManager {
         - ctx: CanvasRenderingContext2D
         - isMirrored: boolean
@@ -140,7 +152,7 @@ package "Display Managers" <<Display>> {
         + drawSilhouette(mask, color)
         + drawGestureFeedback(feedback)
         + drawCircularityIndicator(score)
-        + drawBlurredBackground(ctx, image, mask)
+        + drawErrorHighlights(landmarks, errors)
     }
     
     class GhostManager {
@@ -153,25 +165,14 @@ package "Display Managers" <<Display>> {
         + start()
         + stop()
         + update()
-        + update()
         + getCurrentFrame()
         + setSpeed(speed)
         + setOpacity(opacity)
     }
     
-    class SilhouetteManager {
-        - isEnabled: boolean
-        - color: string
-        --
-        + enable()
-        + disable()
-        + toggle()
-        + drawSilhouetteFromMask(ctx, mask)
-    }
-    
     ' Force horizontal layout
     DrawingManager -[hidden]right- GhostManager
-    GhostManager -[hidden]right- SilhouetteManager
+    GhostManager -[hidden]right- BackgroundManager
 }
 
 ' ============================================================================
@@ -233,7 +234,13 @@ package "UI & Feedback" <<UI>> {
             --
             + createButton()
             + showPopup()
-            + getLang()
+        class Chatbot {
+            - apiKey: string
+            - isOpen: boolean
+            --
+            + init()
+            + toggleChat()
+            + sendMessage()
         }
     }
     
@@ -244,6 +251,7 @@ package "UI & Feedback" <<UI>> {
     ScorePopupManager -[hidden]right- RulesConfigManager
     RulesConfigManager -[hidden]right- GestureManager
     GestureManager -[hidden]right- FeedbackManager
+    FeedbackManager -[hidden]right- Chatbot
 }
 
 ' ============================================================================
@@ -282,14 +290,16 @@ Script --> DisplayController
 Script --> HeuristicsEngine
 Script --> CalibrationManager
 Script --> DrawingManager
+Script --> BackgroundManager
 Script --> UIManager
 Script --> AudioManager
 Script --> TutorialManager
 Script --> GestureManager
+Script --> Chatbot
 
 ' Display Controller
 DisplayController --> GhostManager
-DisplayController --> SilhouetteManager
+DisplayController --> BackgroundManager
 KeyboardController ..> DisplayController
 
 ' Core relationships
@@ -318,11 +328,11 @@ note as N1
     MVC-like Pattern (5 Packages):
     - **Controllers**: script.js + Keyboard + Display
     - **Core**: HeuristicsEngine, Calibration, Scoring
-    - **Display**: Drawing, Ghost, Silhouette
-    - **UI**: UIManager + 6 more
+    - **Display**: Drawing, Ghost, Background
+    - **UI**: UIManager + 7 more (Chatbot added)
     - **Utility**: Session, Path, Exporter
     
-    Total: 18 Classes, 21 Modules
+    Total: 19 Classes, 22 Modules (documented)
 end note
 
 @enduml

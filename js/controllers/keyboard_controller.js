@@ -357,7 +357,7 @@ class KeyboardController {
       "O = Ghost (เงาต้นแบบ)",
       "━━━━━━━━━━━━",
       "K = Skeleton (โครงผู้ฝึก)",
-      "S = Silhouette (เงาผู้ฝึก)",
+      "S = Side-by-Side (จอแยก)",
       "R = Trail (เส้นสัมผัส)",
       "━━━━━━━━━━━━",
       "G = Grid (เส้นตาราง)",

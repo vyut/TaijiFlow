@@ -52,7 +52,7 @@ package "Layer 2: Controllers" <<controller>> {
 package "Layer 3: Display Managers" <<display>> {
     [DrawingManager] as Drawing
     [GhostManager] as Ghost
-    [SilhouetteManager] as Silhouette
+    [BackgroundManager] as Background
 }
 
 package "Layer 3: Core Managers" <<core>> {
@@ -138,7 +138,7 @@ Script --> Gesture
 
 ' Layer 2 → Layer 3
 DisplayCtrl --> Ghost
-DisplayCtrl --> Silhouette
+DisplayCtrl --> Background
 KeyboardCtrl --> Tutorial
 
 ' Layer 3 Internal

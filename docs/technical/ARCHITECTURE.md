@@ -1,7 +1,7 @@
 # TaijiFlow AI - System Architecture
 
-**Version:** 0.7.0  
-**Last Updated:** 2026-01-10
+**Version:** 1.1.0
+**Last Updated:** 2026-01-24
 
 ---
 
@@ -31,12 +31,12 @@ TaijiFlow/
 │   ├── chatbot.css                  # Chatbot Popup Styles
 │   └── feedback.css                 # Feedback Modal Styles
 │
-├── 📁 js/                           # JavaScript Modules (22 files)
+├── 📁 js/                           # JavaScript Modules (23 files)
 │   │
 │   │   # ═══════════════════════════════════════════════════════
 │   │   # CORE MANAGERS (ไม่พึ่งพา Module อื่น)
 │   │   # ═══════════════════════════════════════════════════════
-│   ├── heuristics_engine.js         # วิเคราะห์ท่า 8 กฎ (~51KB)
+│   ├── heuristics_engine.js         # วิเคราะห์ท่า 9 กฎ (~55KB)
 │   ├── calibration_manager.js       # ปรับเทียบ T-Pose (~15KB)
 │   ├── scoring_manager.js           # คำนวณคะแนน (~11KB)
 │   │
@@ -45,12 +45,13 @@ TaijiFlow/
 │   │   # ═══════════════════════════════════════════════════════
 │   ├── drawing_manager.js           # วาด Skeleton, Path (~25KB)
 │   ├── ghost_manager.js             # เงาครูผู้สอน (~8KB)
-│   ├── silhouette_manager.js        # เงาผู้ฝึก (~3KB)
+│   ├── background_manager.js        # จัดการพื้นหลัง/Segmentation (Virtual/Blur) (~12KB)
+│   ├── silhouette_manager.js        # จัดการเงาผู้ฝึก (Deprecated - merged to Display)
 │   │
 │   │   # ═══════════════════════════════════════════════════════
 │   │   # UI MANAGERS
 │   │   # ═══════════════════════════════════════════════════════
-│   ├── ui_manager.js                # Theme, Notifications (~41KB)
+│   ├── ui_manager.js                # Theme, Notifications (~45KB)
 │   ├── audio_manager.js             # Text-to-Speech (~31KB)
 │   ├── score_popup_manager.js       # ผลคะแนน Popup (~7KB)
 │   ├── tutorial_manager.js          # Tutorial Popup (~30KB)
@@ -62,8 +63,8 @@ TaijiFlow/
 │   │   # ═══════════════════════════════════════════════════════
 │   │   # CONTROLLERS
 │   │   # ═══════════════════════════════════════════════════════
-│   ├── display_controller.js        # Display Options (~7KB)
-│   ├── keyboard_controller.js       # Keyboard Shortcuts (~9KB)
+│   ├── display_controller.js        # Display Options & Visual Effects (~16KB)
+│   ├── keyboard_controller.js       # Keyboard Shortcuts (~14KB)
 │   │
 │   │   # ═══════════════════════════════════════════════════════
 │   │   # UTILITIES (Stateless Helpers)
@@ -71,12 +72,12 @@ TaijiFlow/
 │   ├── data_exporter.js             # Export JSON/CSV (~8KB)
 │   ├── path_generator.js            # Dynamic Path (~5KB)
 │   ├── session_manager.js           # User/Session ID (~5KB)
-│   ├── translations.js              # i18n TH/EN (~23KB)
+│   ├── translations.js              # i18n TH/EN (~25KB)
 │   │
 │   │   # ═══════════════════════════════════════════════════════
 │   │   # MAIN CONTROLLER (Entry Point)
 │   │   # ═══════════════════════════════════════════════════════
-│   ├── script.js                    # Main Controller (~72KB)
+│   ├── script.js                    # Main Controller & Performance Mode (~90KB)
 │   │
 │   │   # ═══════════════════════════════════════════════════════
 │   │   # LANDING PAGE (Standalone)
@@ -103,13 +104,13 @@ TaijiFlow/
 
 | Category | Files | Total Size |
 | -------- | :---: | :--------: |
-| Core Managers | 3 | ~77 KB |
-| Display Managers | 3 | ~36 KB |
-| UI Managers | 8 | ~165 KB |
-| Controllers | 2 | ~16 KB |
-| Utilities | 4 | ~41 KB |
-| Main Controller | 1 | ~72 KB |
-| **Total JS** | **21** | **~407 KB** |
+| Core Managers | 3 | ~81 KB |
+| Display Managers | 3 | ~45 KB |
+| UI Managers | 8 | ~170 KB |
+| Controllers | 2 | ~30 KB |
+| Utilities | 4 | ~43 KB |
+| Main Controller | 1 | ~90 KB |
+| **Total JS** | **23** | **~460 KB** |
 
 ---
 
@@ -131,15 +132,16 @@ TaijiFlow/
 | ---------- | :-----: | ------- |
 | **MediaPipe Pose** | 0.5 | Pose Detection (33 landmarks) |
 | **MediaPipe Gesture** | 0.10.8 | Hand Gesture Recognition (👍✊) |
-| **Gemini API** | - | AI Chatbot (Optional) |
+| **MediaPipe Segmentation** | 0.1 | Selfie Segmentation (Background Blur) |
+| **Gemini API** | 1.5 | AI Chatbot (Free Tier) |
 
 ### Browser APIs
 
 | API | Purpose |
 | --- | ------- |
 | **Web Speech API** | Text-to-Speech เสียงเตือน |
-| **Canvas API** | วาด Skeleton, Path, Trail |
-| **LocalStorage API** | บันทึก Calibration, Settings |
+| **Canvas API** | วาด Skeleton, Path, Trail, Visual Effects |
+| **LocalStorage API** | บันทึก Calibration, Settings, Performance Mode |
 | **Fullscreen API** | โหมดเต็มจอ |
 | **Fetch API** | ส่ง Bug Report |
 
@@ -165,6 +167,7 @@ TaijiFlow/
 | **Factory** | `generateDynamicPath()` | Create Objects - สร้าง path ตามสัดส่วน |
 | **Strategy** | `HeuristicsEngine` rules | Swappable Algorithms - เปิด/ปิดกฎได้ |
 | **Controller** | `KeyboardController`, `DisplayController` | Separation of Concerns |
+| **State** | `Performance Mode` | จัดการ Configuration ตามโหมดเครื่อง |
 
 ### Pattern Examples
 
@@ -217,7 +220,7 @@ this.RULES_CONFIG = {
 ├─────────┼───────────────────────────────┼───────────────────┤
 │Heuristics│      DrawingManager          │    UIManager      │
 │Calibration│     GhostManager            │   AudioManager    │
-│ Scoring  │    SilhouetteManager         │  GestureManager   │
+│ Scoring  │    BackgroundManager         │  GestureManager   │
 │          │                              │  ScorePopup...    │
 │          │                              │  RulesConfig...   │
 └─────────┴───────────────────────────────┴───────────────────┘
@@ -239,7 +242,7 @@ this.RULES_CONFIG = {
 
 | Module | Dependencies | หน้าที่ |
 | ------ | ------------ | ------- |
-| `heuristics_engine.js` | MediaPipe Pose | วิเคราะห์ท่า 8 กฎ |
+| `heuristics_engine.js` | MediaPipe Pose | วิเคราะห์ท่า 9 กฎ |
 | `calibration_manager.js` | - | ปรับเทียบสัดส่วน T-Pose |
 | `scoring_manager.js` | - | คำนวณคะแนน % |
 
@@ -247,15 +250,15 @@ this.RULES_CONFIG = {
 
 | Module | Dependencies | หน้าที่ |
 | ------ | ------------ | ------- |
-| `drawing_manager.js` | Canvas API | วาด Skeleton, Path, Trail |
+| `drawing_manager.js` | Canvas API | วาด Skeleton, Path, Trail, Grid |
 | `ghost_manager.js` | - | เงาครูผู้สอน (วิดีโอ/Skeleton) |
-| `silhouette_manager.js` | MediaPipe Mask | เงาผู้ฝึก (สีม่วง) |
+| `background_manager.js` | MediaPipe Mask/Canvas | จัดการ Virtual Backgrounds & Blur |
 
 #### UI Managers
 
 | Module | Dependencies | หน้าที่ |
 | ------ | ------------ | ------- |
-| `ui_manager.js` | `translations.js` | Theme, Language, Notifications |
+| `ui_manager.js` | `translations.js` | Theme, Language, Notifications, Menus |
 | `audio_manager.js` | Web Speech API | Text-to-Speech เสียงเตือน |
 | `score_popup_manager.js` | - | แสดง Popup ผลคะแนน |
 | `tutorial_manager.js` | - | แสดง Tutorial Popup |
@@ -268,7 +271,7 @@ this.RULES_CONFIG = {
 
 | Module | Dependencies | หน้าที่ |
 | ------ | ------------ | ------- |
-| `display_controller.js` | `GhostManager`, `SilhouetteManager` | ควบคุม Display Options |
+| `display_controller.js` | `GhostManager`, `BackgroundManager` | ควบคุม Display Options, Visual Effects |
 | `keyboard_controller.js` | `DisplayController`, `TutorialManager` | Keyboard Shortcuts |
 
 #### Utilities (Stateless)
@@ -284,7 +287,7 @@ this.RULES_CONFIG = {
 
 | Module | Dependencies | หน้าที่ |
 | ------ | ------------ | ------- |
-| `script.js` | **ทุก Module ข้างบน** | Entry Point, MediaPipe Integration |
+| `script.js` | **ทุก Module ข้างบน** | Entry Point, MediaPipe Integration, Perf Mode |
 
 ---
 
@@ -350,4 +353,4 @@ this.RULES_CONFIG = {
 
 ---
 
-*Document updated: 2026-01-12*
+*Document updated: 2026-01-24 (v1.1.0)*

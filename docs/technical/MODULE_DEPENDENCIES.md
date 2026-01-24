@@ -27,8 +27,8 @@
 │  ┌──────────────────────────────────────────────────────────────────────┐   │
 │  │                       Display Managers                                │   │
 │  │  ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐        │   │
-│  │  │ DrawingManager  │ │  GhostManager   │ │SilhouetteManager│        │   │
-│  │  │ (Canvas)        │ │ (Instructor)    │ │ (User Mask)    │        │   │
+│  │  │ DrawingManager  │ │  GhostManager   │ │BackgroundManager│        │   │
+│  │  │ (Canvas)        │ │ (Instructor)    │ │ (Blur/Virtual)  │        │   │
 │  │  └─────────────────┘ └─────────────────┘ └─────────────────┘        │   │
 │  └──────────────────────────────────────────────────────────────────────┘   │
 │                                                                              │

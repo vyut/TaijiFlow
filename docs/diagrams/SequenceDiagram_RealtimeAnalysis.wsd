@@ -71,7 +71,7 @@ loop Camera Loop: ทุก Frame (~30 fps)
             Heuristics -> Heuristics : 8. checkContinuity()
             note right: ต่อเนื่อง ไม่หยุดนิ่ง
             
-            Heuristics --> Training : feedbacks[]
+            Heuristics --> Training : { feedback, errorJoints }
             deactivate Heuristics
         end
         
@@ -91,8 +91,9 @@ loop Camera Loop: ทุก Frame (~30 fps)
     
     ' === Step 3: Draw Visuals (Every Frame 30 FPS) ===
     group #E0F7FA วาดภาพ (Rendering @ 30 FPS)
-        Training -> Drawing : drawSkeleton / drawPath / drawTrail
-        note right: วาดทับบน Video
+        Training -> Drawing : drawSkeleton(..., errorJoints)
+        note right: วาดโครง + จุดแดง (Highlights)
+        Training -> Drawing : drawPath / drawTrail
     end
     
     deactivate Training

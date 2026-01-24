@@ -1040,8 +1040,10 @@ class UIManager {
     this.wisdomQuoteText = document.getElementById("wisdom-quote");
     this.wisdomQuoteSub = document.getElementById("wisdom-quote-sub");
     this.wisdomCanvasId = "wisdom-canvas";
+    this.wisdomCanvasId = "wisdom-canvas";
     this.wisdomAnimation = null;
     this.isWisdomAnimating = false;
+    this.isShowingAbout = false; // State to track view mode
 
     if (!this.wisdomPopup) return;
 
@@ -1077,6 +1079,18 @@ class UIManager {
         this.showWisdomPopup();
       });
     }
+
+    // Attach click to Logo Canvas to toggle About Info
+    const canvasContainer = document.getElementById(
+      this.wisdomCanvasId,
+    )?.parentElement;
+    if (canvasContainer) {
+      canvasContainer.style.cursor = "pointer";
+      canvasContainer.addEventListener("click", (e) => {
+        e.stopPropagation(); // Prevent closing popup
+        this.toggleAboutInfo();
+      });
+    }
   }
 
   /**
@@ -1085,7 +1099,8 @@ class UIManager {
   showWisdomPopup() {
     if (!this.wisdomPopup) return;
 
-    // 1. Random Quote
+    // 1. Reset state & Random Quote
+    this.isShowingAbout = false;
     this.setRandomWisdomQuote();
 
     // 2. Show Modal
@@ -1131,6 +1146,50 @@ class UIManager {
       if (this.wisdomQuoteText)
         this.wisdomQuoteText.textContent = `"${quote.text}"`;
       if (this.wisdomQuoteSub) this.wisdomQuoteSub.textContent = quote.zh;
+    }
+  }
+
+  /**
+   * Toggle About Info - สลับระหว่างคำคมและข้อมูลแอพ
+   */
+  toggleAboutInfo() {
+    this.isShowingAbout = !this.isShowingAbout;
+
+    if (!this.isShowingAbout) {
+      // Revert style from About mode
+      if (this.wisdomQuoteSub) {
+        this.wisdomQuoteSub.classList.add("font-serif", "tracking-widest");
+        this.wisdomQuoteSub.classList.remove("font-sans", "font-bold");
+      }
+      // Show Random Quote
+      this.setRandomWisdomQuote();
+    } else {
+      // Show About Info
+      if (typeof TRANSLATIONS === "undefined") return;
+      const lang = this.currentLang || "th";
+      const info =
+        TRANSLATIONS[lang]?.about_info || TRANSLATIONS["th"].about_info;
+
+      if (info) {
+        if (this.wisdomQuoteSub) {
+          this.wisdomQuoteSub.textContent = info.title;
+          this.wisdomQuoteSub.style.fontSize = "1.5rem";
+          // Switch to App Font (Sans) for Title
+          this.wisdomQuoteSub.classList.remove("font-serif", "tracking-widest");
+          this.wisdomQuoteSub.classList.add("font-sans", "font-bold");
+        }
+        if (this.wisdomQuoteText) {
+          this.wisdomQuoteText.innerHTML = `
+            <div style="font-size: 0.9em; line-height: 1.6;">
+              <p style="margin-bottom: 12px; font-style: italic;">${info.philosophy}</p>
+              <p style="font-size: 0.8em; opacity: 0.8;">
+                ${info.credit_prefix}
+                <a href="mailto:${info.email}" style="color: inherit; text-decoration: underline; font-weight: bold;" onclick="event.stopPropagation()">${info.developer_name}</a>
+              </p>
+            </div>
+          `;
+        }
+      }
     }
   }
 

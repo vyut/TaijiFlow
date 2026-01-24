@@ -341,6 +341,17 @@ window.TRANSLATIONS = {
     circle_poor: "วงกลมเบี้ยว",
 
     // -------------------------------------------------------------------------
+    // About Info (Wisdom Popup)
+    // -------------------------------------------------------------------------
+    about_info: {
+      title: "TaijiFlow AI v1.1.1",
+      philosophy: '"เพื่อถักทอภูมิปัญญาโบราณเข้ากับปัญญาประดิษฐ์สมัยใหม่"',
+      credit_prefix: "Developed with ❤️ for Taijiquan practitioners by",
+      developer_name: "Yut",
+      email: "vyut@msn.com",
+    },
+
+    // -------------------------------------------------------------------------
     // Camera Errors
     // -------------------------------------------------------------------------
     camera_error_not_allowed:
@@ -652,6 +663,17 @@ window.TRANSLATIONS = {
     announce_calib_success: "Calibration complete",
     announce_calib_start: "Please stand in T pose",
     announce_calib_cancel: "Calibration cancelled",
+
+    // -------------------------------------------------------------------------
+    // About Info (Wisdom Popup)
+    // -------------------------------------------------------------------------
+    about_info: {
+      title: "TaijiFlow AI v1.1.1 • Stable Release",
+      philosophy: '"To weave ancient wisdom with modern intelligence."',
+      credit_prefix: "Developed with ❤️ for Taijiquan practitioners by",
+      developer_name: "Yut",
+      email: "vyut@msn.com",
+    },
 
     // -------------------------------------------------------------------------
     // Smart Tips

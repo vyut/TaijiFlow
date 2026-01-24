@@ -118,6 +118,10 @@ class KeyboardController {
       case "KeyI":
         e.preventDefault();
         displayController.toggleInstructor(!displayController.showInstructor);
+        uiManager.showNotification(
+          `Instructor PiP: ${displayController.showInstructor ? "ON" : "OFF"}`,
+          "info",
+        );
         break;
 
       // -----------------------------------------------------------------------
@@ -128,6 +132,10 @@ class KeyboardController {
         if (checkPath) {
           checkPath.checked = !checkPath.checked;
           checkPath.dispatchEvent(new Event("change"));
+          uiManager.showNotification(
+            `Path Guide: ${checkPath.checked ? "ON" : "OFF"}`,
+            "info",
+          );
         }
         break;
 
@@ -137,19 +145,17 @@ class KeyboardController {
       case "KeyB":
         e.preventDefault();
         // Toggle Virtual Background (Blur <-> None)
-        if (this.deps.backgroundManager) {
-          const currentBg = this.deps.backgroundManager.getCurrentMode();
-          // Toggle between 'none' and 'blur'
+        if (window.backgroundManager) {
+          const currentBg = window.backgroundManager.getCurrentMode();
           const newBg = currentBg === "none" ? "blur" : "none";
-          this.deps.backgroundManager.setBackground(newBg);
 
-          // Update UI (Visual Feedback)
-          if (window.uiManager) {
-            window.uiManager.showNotification(
-              newBg === "blur" ? "Blur Background: ON" : "Blur Background: OFF",
-              "info",
-            );
-          }
+          // Use the central method in displayController to handle all side effects
+          displayController.setVirtualBackground(newBg);
+
+          uiManager.showNotification(
+            `Blur Background: ${newBg === "blur" ? "ON" : "OFF"}`,
+            "info",
+          );
         }
         break;
 
@@ -160,7 +166,12 @@ class KeyboardController {
         e.preventDefault();
         const checkMirror = document.getElementById("check-mirror");
         if (checkMirror) {
-          checkMirror.click(); // Trigger change event + notification
+          checkMirror.checked = !checkMirror.checked;
+          checkMirror.dispatchEvent(new Event("change")); // Manually Trigger change
+          uiManager.showNotification(
+            `Mirror Mode: ${checkMirror.checked ? "ON" : "OFF"}`,
+            "info",
+          );
         }
         break;
 
@@ -173,6 +184,10 @@ class KeyboardController {
         if (checkGhost) {
           checkGhost.checked = !checkGhost.checked;
           checkGhost.dispatchEvent(new Event("change"));
+          uiManager.showNotification(
+            `Ghost Overlay: ${checkGhost.checked ? "ON" : "OFF"}`,
+            "info",
+          );
         }
         break;
 
@@ -183,7 +198,12 @@ class KeyboardController {
         e.preventDefault();
         const checkGrid = document.getElementById("check-grid");
         if (checkGrid) {
-          checkGrid.click(); // Trigger change event
+          checkGrid.checked = !checkGrid.checked;
+          checkGrid.dispatchEvent(new Event("change"));
+          uiManager.showNotification(
+            `Grid Overlay: ${checkGrid.checked ? "ON" : "OFF"}`,
+            "info",
+          );
         }
         break;
 
@@ -195,6 +215,26 @@ class KeyboardController {
         if (checkSkeleton) {
           checkSkeleton.checked = !checkSkeleton.checked;
           checkSkeleton.dispatchEvent(new Event("change"));
+          uiManager.showNotification(
+            `Skeleton: ${checkSkeleton.checked ? "ON" : "OFF"}`,
+            "info",
+          );
+        }
+        break;
+
+      // -----------------------------------------------------------------------
+      // E = Error Highlights Toggle
+      // -----------------------------------------------------------------------
+      case "KeyE":
+        e.preventDefault();
+        const checkError = document.getElementById("check-error-highlights");
+        if (checkError) {
+          checkError.checked = !checkError.checked;
+          checkError.dispatchEvent(new Event("change"));
+          uiManager.showNotification(
+            `Error Highlights: ${checkError.checked ? "ON" : "OFF"}`,
+            "info",
+          );
         }
         break;
 
@@ -203,10 +243,16 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       case "KeyS":
         e.preventDefault();
-        displayController.toggleSideBySide(!displayController.isSideBySide);
+        const newSideBySideState = !displayController.isSideBySide;
+        displayController.toggleSideBySide(newSideBySideState);
         // Sync checkbox UI
         const checkSideBySide = document.getElementById("check-side-by-side");
-        if (checkSideBySide) checkSideBySide.checked = !checkSideBySide.checked;
+        if (checkSideBySide) checkSideBySide.checked = newSideBySideState;
+
+        uiManager.showNotification(
+          `Side-by-Side: ${newSideBySideState ? "ON" : "OFF"}`,
+          "info",
+        );
         break;
 
       // -----------------------------------------------------------------------
@@ -218,6 +264,10 @@ class KeyboardController {
         if (checkTrail) {
           checkTrail.checked = !checkTrail.checked;
           checkTrail.dispatchEvent(new Event("change"));
+          uiManager.showNotification(
+            `Motion Trail: ${checkTrail.checked ? "ON" : "OFF"}`,
+            "info",
+          );
         }
         break;
 

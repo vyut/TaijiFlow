@@ -345,6 +345,7 @@ Version: 0.9.9 (2026-01-17)
               <!-- <option value="silk_double" disabled>ท่าม้วนไหม - สองมือ</option> -->
             </select>
           </div>
+
           <!-- Exercise Dropdown -->
           <div>
             <select
@@ -388,6 +389,7 @@ Version: 0.9.9 (2026-01-17)
             <div
               id="display-menu"
               class="hidden absolute right-0 mt-2 w-56 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
+              style="max-height: 70vh; overflow-y: auto"
             >
               <div
                 class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900"
@@ -401,7 +403,6 @@ Version: 0.9.9 (2026-01-17)
               >
                 View
               </div>
-
               <!-- Mirror Mode -->
               <label
                 class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
@@ -414,7 +415,9 @@ Version: 0.9.9 (2026-01-17)
                   checked
                 />
                 <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white">Mirror Mode</span>
+                  <span class="text-sm font-bold text-white"
+                    >🪞 Mirror Mode</span
+                  >
                   <span class="text-xs text-gray-400">Flip horizontally</span>
                 </div>
                 <span
@@ -422,53 +425,6 @@ Version: 0.9.9 (2026-01-17)
                   >M</span
                 >
               </label>
-              <!-- Grid Overlay -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Show grid lines for reference"
-              >
-                <input
-                  type="checkbox"
-                  id="check-grid"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white">Grid Overlay</span>
-                  <span class="text-xs text-gray-400">Position reference</span>
-                </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                >
-                  G
-                </span>
-              </label>
-
-              <!-- Side-by-Side Mode -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Split screen: Instructor (Left) vs You (Right)"
-              >
-                <input
-                  type="checkbox"
-                  id="check-side-by-side"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white">Side-by-Side</span>
-                  <span class="text-xs text-gray-400">Split screen view</span>
-                </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >S</span
-                >
-              </label>
-
-              <!-- ===== 📚 Reference Section ===== -->
-              <div
-                class="px-4 py-1 text-xs text-purple-300 bg-purple-900/50 uppercase font-bold tracking-wider mt-2"
-              >
-                Expert/Instructor
-              </div>
               <!-- Path -->
               <label
                 class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
@@ -481,7 +437,9 @@ Version: 0.9.9 (2026-01-17)
                   checked
                 />
                 <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white">Path Guide</span>
+                  <span class="text-sm font-bold text-white"
+                    >🛣️ Path Guide</span
+                  >
                   <span class="text-xs text-gray-400"
                     >Dynamic movement guide</span
                   >
@@ -490,54 +448,31 @@ Version: 0.9.9 (2026-01-17)
                   class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
                   >P</span
                 >
-              </label>
-              <!-- Instructor Thumbnail -->
+              </label>             
+              <!-- Grid Overlay -->
               <label
                 class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Show instructor shadow in corner thumbnail"
+                title="Show grid lines for reference"
               >
                 <input
                   type="checkbox"
-                  id="check-instructor"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                  checked
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white"
-                    >Instructor PiP</span
-                  >
-                  <span class="text-xs text-gray-400"
-                    >Corner video overlay</span
-                  >
-                </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >I</span
-                >
-              </label>
-              <!-- Ghost -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Show instructor shadow on main video"
-              >
-                <input
-                  type="checkbox"
-                  id="check-ghost"
+                  id="check-grid"
                   class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
                 />
                 <div class="flex flex-col flex-1">
                   <span class="text-sm font-bold text-white"
-                    >Ghost Overlay</span
+                    >📐 Grid Overlay</span
                   >
-                  <span class="text-xs text-gray-400">Full body reference</span>
+                  <span class="text-xs text-gray-400">Position reference</span>
                 </div>
                 <span
                   class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >O</span
                 >
+                  G
+                </span>
               </label>
 
-              <!-- ===== 👤 You Section ===== -->
+              <!-- ===== 👤 Trainee/You Section ===== -->
               <div
                 class="px-4 py-1 text-xs text-purple-300 bg-purple-900/50 uppercase font-bold tracking-wider mt-2"
               >
@@ -555,7 +490,7 @@ Version: 0.9.9 (2026-01-17)
                   checked
                 />
                 <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white">Skeleton</span>
+                  <span class="text-sm font-bold text-white">🦴 Skeleton</span>
                   <span class="text-xs text-gray-400">Track your joints</span>
                 </div>
                 <span
@@ -576,7 +511,7 @@ Version: 0.9.9 (2026-01-17)
                 />
                 <div class="flex flex-col flex-1">
                   <span class="text-sm font-bold text-white"
-                    >Error Highlights</span
+                    >🎯 Error Highlights</span
                   >
                   <span class="text-xs text-gray-400"
                     >Show red dots on mistakes</span
@@ -599,12 +534,87 @@ Version: 0.9.9 (2026-01-17)
                   checked
                 />
                 <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white">Motion Trail</span>
+                  <span class="text-sm font-bold text-white"
+                    >☄️ Motion Trail</span
+                  >
                   <span class="text-xs text-gray-400">Track hand history</span>
                 </div>
                 <span
                   class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
                   >R</span
+                >
+              </label>
+
+              <!-- ===== 📚 Reference Section ===== -->
+              <div
+                class="px-4 py-1 text-xs text-purple-300 bg-purple-900/50 uppercase font-bold tracking-wider mt-2"
+              >
+                Expert/Instructor
+              </div>
+              <!-- Instructor PiP -->
+              <label
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
+                title="Show instructor shadow in corner thumbnail"
+              >
+                <input
+                  type="checkbox"
+                  id="check-instructor"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                  checked
+                />
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white"
+                    >🎓 Instructor PiP</span
+                  >
+                  <span class="text-xs text-gray-400"
+                    >Corner video overlay</span
+                  >
+                </div>
+                <span
+                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
+                  >I</span
+                >
+              </label>
+              <!-- Side-by-Side Mode -->
+              <label
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
+                title="Split screen: Instructor (Left) vs You (Right)"
+              >
+                <input
+                  type="checkbox"
+                  id="check-side-by-side"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                />
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white"
+                    >👯 Side-by-Side</span
+                  >
+                  <span class="text-xs text-gray-400">Split screen view</span>
+                </div>
+                <span
+                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
+                  >S</span
+                >
+              </label>
+              <!-- Ghost -->
+              <label
+                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
+                title="Show instructor shadow on main video"
+              >
+                <input
+                  type="checkbox"
+                  id="check-ghost"
+                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                />
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-bold text-white"
+                    >👻 Ghost Overlay</span
+                  >
+                  <span class="text-xs text-gray-400">Full body reference</span>
+                </div>
+                <span
+                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
+                  >O</span
                 >
               </label>
 
@@ -625,7 +635,9 @@ Version: 0.9.9 (2026-01-17)
                   class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
                 />
                 <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white">Debug Info</span>
+                  <span class="text-sm font-bold text-white"
+                    >🐞 Debug Info</span
+                  >
                   <span class="text-xs text-gray-400">System metrics</span>
                 </div>
                 <span
@@ -976,6 +988,7 @@ Version: 0.9.9 (2026-01-17)
               </div>
             </div>
           </div>
+
           <!-- Settings Menu (Performance + Effects + Backgrounds) -->
           <div class="relative inline-block">
             <button

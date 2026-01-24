@@ -160,17 +160,9 @@ class DisplayController {
       checkErrorHighlights.addEventListener("change", (e) => {
         this.showErrorHighlights = e.target.checked;
         if (this.showErrorHighlights) {
-          if (window.uiManager)
-            window.uiManager.showNotification(
-              "🔴 Enabled Error Highlights",
-              "info",
-            );
+          // Notification handled in KeyboardController
         } else {
-          if (window.uiManager)
-            window.uiManager.showNotification(
-              "⚪ Disabled Error Highlights",
-              "info",
-            );
+          // Notification handled in KeyboardController
         }
       });
     }
@@ -328,43 +320,58 @@ class DisplayController {
     bgButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
         const bgKey = btn.dataset.bg;
-
-        bgButtons.forEach((b) => {
-          b.classList.remove("active", "border-green-500");
-          b.classList.add("border-transparent");
-        });
-        btn.classList.add("active");
-        btn.classList.remove("border-transparent");
-        btn.classList.add("border-green-500");
-
-        if (window.backgroundManager) {
-          window.backgroundManager.setBackground(bgKey);
-          console.log(`🖼️ Background changed to: ${bgKey}`);
-
-          if (window.pose) {
-            if (bgKey !== "none") {
-              window.pose.setOptions({
-                enableSegmentation: true,
-                smoothSegmentation: true,
-              });
-              console.log("🎨 Segmentation enabled for background effect");
-            } else {
-              if (!this.showSilhouette) {
-                window.pose.setOptions({
-                  enableSegmentation: false,
-                  smoothSegmentation: false,
-                });
-                console.log("🎨 Segmentation disabled (no background effect)");
-              }
-            }
-          }
-        }
+        this.setVirtualBackground(bgKey);
       });
     });
 
     console.log(
       `✅ Virtual Backgrounds UI initialized (${bgButtons.length} options)`,
     );
+  }
+
+  /**
+   * Set Virtual Background and handle side effects (Pose Options & UI)
+   * @param {string} bgKey - 'none' | 'blur' | 'image'
+   */
+  setVirtualBackground(bgKey) {
+    // 1. Update Manager
+    if (window.backgroundManager) {
+      window.backgroundManager.setBackground(bgKey);
+      console.log(`🖼️ Background changed to: ${bgKey}`);
+    }
+
+    // 2. Update UI Buttons
+    const bgButtons = document.querySelectorAll(".bg-option");
+    bgButtons.forEach((b) => {
+      if (b.dataset.bg === bgKey) {
+        b.classList.remove("border-transparent");
+        b.classList.add("active", "border-green-500");
+      } else {
+        b.classList.remove("active", "border-green-500");
+        b.classList.add("border-transparent");
+      }
+    });
+
+    // 3. Update Pose Options (Segmentation)
+    if (window.pose) {
+      if (bgKey !== "none") {
+        window.pose.setOptions({
+          enableSegmentation: true,
+          smoothSegmentation: true,
+        });
+        console.log("🎨 Segmentation enabled for background effect");
+      } else {
+        // Only disable if Silhouette is also OFF
+        // (Silhouette also needs segmentation)
+        if (!this.showSilhouette) {
+          window.pose.setOptions({
+            enableSegmentation: false,
+            smoothSegmentation: false,
+          });
+          console.log("🎨 Segmentation disabled (no background effect)");
+        }
+      }
+    }
   }
 
   /**
@@ -509,10 +516,7 @@ class DisplayController {
           checkGhost.dispatchEvent(new Event("change")); // Force start ghostManager
 
           if (window.uiManager) {
-            window.uiManager.showNotification(
-              "Side-by-Side: เปิดวิดีโอครูฝึกอัตโนมัติ",
-              "info",
-            );
+            // Notification handled in KeyboardController (or suppressed for auto-actions)
           }
         }
       }

@@ -746,6 +746,11 @@ function endTrainingSession() {
     ghostManager.stop();
   }
 
+  // 3.3 รีเซ็ต Rules Config ให้กลับเป็นค่าเริ่มต้น
+  if (typeof rulesConfigManager !== "undefined") {
+    rulesConfigManager.resetToDefaults();
+  }
+
   // 4. ออกจาก Fullscreen
   if (document.fullscreenElement) {
     document.exitFullscreen();
@@ -1622,20 +1627,39 @@ async function onResults(results) {
 
           // 1.1 พูดแจ้งเตือนเมื่อมีข้อผิดพลาด (มี Cooldown ป้องกันพูดซ้ำเร็วเกินไป)
           audioManager.speakFeedback(feedbacks);
+        }
 
-          // 1.2 Debug Overlay (กด D เพื่อเปิด) - ใช้ HTML overlay แทน canvas
-          if (engine.debugMode) {
-            // รวม debugInfo จาก engine กับค่า performance อื่นๆ
-            const debugInfo = {
-              FPS: currentCamFps, // โชว์ FPS กล้อง (ควร ~30)
-              "AI Rate": currentFps, // โชว์ AI Process Rate (ควร ~7-8)
-              frameCount: frameCounter,
-              score: scorer.getCurrentScore().toFixed(1) + "%",
-              ...engine.getDebugInfo(),
-            };
-            fpsFrameCount++; // Increment AI FPS counter on processing completion
-            updateDebugOverlay(debugInfo);
+        // =====================================================================
+        // 1.2 Global Debug Overlay (Updates EVERY FRAME if D is pressed)
+        // =====================================================================
+        if (engine.debugMode) {
+          let debugInfo = {
+            FPS: currentCamFps, // Camera FPS
+            "AI Rate": currentFps, // AI Processing Rate
+          };
+
+          // 1.2.1 Add Light/Visibility Status (System Check)
+          const keyIndices = [11, 12, 13, 14, 15, 16, 23, 24];
+          let avgVisibility = 0;
+          if (results.poseLandmarks) {
+            const visibilitySum = keyIndices.reduce(
+              (sum, i) => sum + (results.poseLandmarks[i]?.visibility || 0),
+              0,
+            );
+            avgVisibility = visibilitySum / keyIndices.length;
           }
+          debugInfo["Light"] = (avgVisibility * 100).toFixed(0) + "%";
+
+          // 1.2.2 Add Training Specific Metrics (Only when training)
+          if (isRecording && shouldCheckHeuristics) {
+            debugInfo["Frame"] = frameCounter;
+            debugInfo["Score"] = scorer.getCurrentScore().toFixed(1) + "%";
+            // Merge detailed rule metrics
+            Object.assign(debugInfo, engine.getDebugInfo());
+          }
+
+          fpsFrameCount++; // Increment counter for AI Rate calculation
+          updateDebugOverlay(debugInfo);
         }
 
         // 2. *** เก็บข้อมูล (Data Logging) - เก็บทุก 3 frames เพื่อลดขนาดไฟล์ ***
@@ -1742,6 +1766,55 @@ async function onResults(results) {
       }
     }
   }
+  // =====================================================================
+  // 1.2 Global Debug Overlay (Updates EVERY FRAME if D is pressed)
+  // MOVED OUTSIDE if(results.poseLandmarks) to show even when idle/no body
+  // =====================================================================
+  if (engine.debugMode) {
+    // Determine Resolution string (e.g. "1280x720")
+    // Use canvasElement defaults if image not present (shouldn't happen in onResults but safe check)
+    const w = results.image ? results.image.width : canvasElement.width;
+    const h = results.image ? results.image.height : canvasElement.height;
+
+    // Calculate AI Latency (Time taken for this entire onResults execution so far)
+    // Approximate, as we are at the end of the function
+    const aiLatency = (performance.now() - timestamp).toFixed(1);
+
+    let debugInfo = {
+      FPS: currentCamFps, // Camera FPS
+      "AI Rate": currentFps, // AI Processing Rate
+      "AI Time": aiLatency + "ms", // 🆕 Latency
+      Res: `${w}x${h}`, // 🆕 Resolution
+    };
+
+    // 1.2.1 Add Light/Visibility Status (System Check)
+    const keyIndices = [11, 12, 13, 14, 15, 16, 23, 24];
+    let avgVisibility = 0;
+    if (results.poseLandmarks) {
+      const visibilitySum = keyIndices.reduce(
+        (sum, i) => sum + (results.poseLandmarks[i]?.visibility || 0),
+        0,
+      );
+      avgVisibility = visibilitySum / keyIndices.length;
+    }
+    debugInfo["Light"] = (avgVisibility * 100).toFixed(0) + "%";
+
+    // 1.2.2 Add Training Specific Metrics (Only when training)
+    // Note: isRecording is global, shouldCheckHeuristics is calculated above
+    // Re-calculate shouldCheckHeuristics locally if needed, or rely on variable scope if valid
+    // Ideally we assume shouldCheckHeuristics is available in scope or dependent on poseLandmarks.
+    // However, if poseLandmarks is null, shouldCheckHeuristics might be false or undefined.
+    // Safe check:
+    if (isRecording && results.poseLandmarks) {
+      debugInfo["Frame"] = frameCounter;
+      debugInfo["Score"] = scorer.getCurrentScore().toFixed(1) + "%";
+      Object.assign(debugInfo, engine.getDebugInfo());
+    }
+
+    fpsFrameCount++;
+    updateDebugOverlay(debugInfo);
+  }
+
   canvasCtx.restore();
 }
 
@@ -1836,11 +1909,12 @@ window.setPerformanceMode = async function (mode) {
   });
 
   // 2. Restart Camera with new Resolution
-  await camera.stop();
+  if (camera) await camera.stop();
   uiManager.showNotification(
     uiManager.getText("alert_perf_changed") || `Performance Mode: ${mode}`,
     "success",
   );
+  createCamera(); // Re-create camera with new dimensions
   await camera.start();
 };
 
@@ -1878,55 +1952,75 @@ if (settingsMenu) {
   updatePerformanceMenuUI(currentPerformanceMode);
 }
 
-const camera = new Camera(videoElement, {
-  onFrame: async () => {
-    try {
-      // Throttling: ลดภาระเครื่องโดยการข้ามเฟรม
-      // SKIP_FRAMES: ประมวลผล 1 เฟรม ข้าม N เฟรม
-      // Lite Mode: Skip 4 (AI ~6 FPS) - เย็นสุด
-      // Balanced: Skip 3 (AI ~7.5 FPS) - สมดุล
-      // Quality: Skip 2 (AI ~10 FPS) - ลื่นไหล
-      throttleFrameCounter++;
-      camFrameCount++; // นับทุกเฟรมที่กล้องส่งมา
+// -----------------------------------------------------------------------------
+// Camera Initialization (Dynamic)
+// -----------------------------------------------------------------------------
+let camera; // Change to let for re-assignment
 
-      // คำนวณ FPS ทุก 1 วินาที
-      const now = performance.now();
-      if (now - lastFpsTime >= 1000) {
-        currentFps = fpsFrameCount; // AI FPS
-        currentCamFps = camFrameCount; // Camera FPS
-        fpsFrameCount = 0;
-        camFrameCount = 0;
-        lastFpsTime = now;
+function createCamera() {
+  // 1. Determine target resolution
+  const targetWidth = currentPerformanceMode === "lite" ? 640 : 1280;
+  const targetHeight = currentPerformanceMode === "lite" ? 480 : 720;
+
+  // 2. Resize Canvas to match target resolution (Prevents Aspect Ratio Distortion)
+  if (canvasElement) {
+    canvasElement.width = targetWidth;
+    canvasElement.height = targetHeight;
+    console.log(`🖼️ Canvas Resized to: ${targetWidth}x${targetHeight}`);
+  }
+
+  camera = new Camera(videoElement, {
+    onFrame: async () => {
+      try {
+        // Throttling: ลดภาระเครื่องโดยการข้ามเฟรม
+        // SKIP_FRAMES: ประมวลผล 1 เฟรม ข้าม N เฟรม
+        // Lite Mode: Skip 4 (AI ~6 FPS) - เย็นสุด
+        // Balanced: Skip 3 (AI ~7.5 FPS) - สมดุล
+        // Quality: Skip 2 (AI ~10 FPS) - ลื่นไหล
+        throttleFrameCounter++;
+        camFrameCount++; // นับทุกเฟรมที่กล้องส่งมา
+
+        // คำนวณ FPS ทุก 1 วินาที
+        const now = performance.now();
+        if (now - lastFpsTime >= 1000) {
+          currentFps = fpsFrameCount; // AI FPS
+          currentCamFps = camFrameCount; // Camera FPS
+          fpsFrameCount = 0;
+          camFrameCount = 0;
+          lastFpsTime = now;
+        }
+
+        // Dynamic Throttling based on Performance Mode
+        const skipFrames =
+          currentPerformanceMode === "lite"
+            ? 4
+            : currentPerformanceMode === "quality"
+              ? 2
+              : 3;
+
+        if (throttleFrameCounter % (skipFrames + 1) === 0) {
+          await pose.send({ image: videoElement });
+          // fpsFrameCount++; // Moved to onResults
+        }
+
+        if (
+          !loadingOverlay.classList.contains("hidden") &&
+          throttleFrameCounter > 10
+        ) {
+          loadingOverlay.classList.add("hidden");
+        }
+      } catch (error) {
+        console.error("❌ Error in onFrame:", error);
+        // Optional: Show notification if it keeps failing?
+        // uiManager.showNotification("Frame Error: " + error.message, "error");
       }
-
-      // Dynamic Throttling based on Performance Mode
-      const skipFrames =
-        currentPerformanceMode === "lite"
-          ? 4
-          : currentPerformanceMode === "quality"
-            ? 2
-            : 3;
-
-      if (throttleFrameCounter % (skipFrames + 1) === 0) {
-        await pose.send({ image: videoElement });
-        // fpsFrameCount++; // Moved to onResults
-      }
-
-      if (
-        !loadingOverlay.classList.contains("hidden") &&
-        throttleFrameCounter > 10
-      ) {
-        loadingOverlay.classList.add("hidden");
-      }
-    } catch (error) {
-      console.error("❌ Error in onFrame:", error);
-      // Optional: Show notification if it keeps failing?
-      // uiManager.showNotification("Frame Error: " + error.message, "error");
-    }
-  },
-  width: currentPerformanceMode === "lite" ? 640 : 1280,
-  height: currentPerformanceMode === "lite" ? 480 : 720,
-});
+    },
+    width: targetWidth,
+    height: targetHeight,
+  });
+}
+// Initial Creation
+createCamera();
 
 // -----------------------------------------------------------------------------
 // Camera Error Handling

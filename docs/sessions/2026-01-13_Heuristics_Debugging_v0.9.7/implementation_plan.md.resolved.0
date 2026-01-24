@@ -1,0 +1,19 @@
+# Implementation Plan - Add Tips & Requirements to User Guide
+
+## Goal
+Add critical usage tips and system requirements to the User Guide section in [index.html](file:///Users/yut/TaijiFlow/index.html) to ensure users have the right setup for the AI to work correctly.
+
+## Proposed Changes
+### [MODIFY] [index.html](file:///Users/yut/TaijiFlow/index.html)
+- Add a new `<div>` block below `<div class="guide-steps">`.
+- Content:
+  **📌 ข้อแนะนำเพิ่มเติม (Tips & Requirements):**
+  - ✅ **Device:** รองรับ Desktop/Laptop ที่มี Webcam (แนะนำ Google Chrome)
+  - ✅ **Environment:** ควรมีแสงสว่างเพียงพอและยืนห่างจากกล้อง 1.5 - 2 เมตร
+  - ✅ **Clothing:** สวมเสื้อที่มีสีตัดกับพื้นหลังเพื่อการตรวจจับที่แม่นยำ
+
+## Verification Plan
+### Manual Verification
+1. Open [index.html](file:///Users/yut/TaijiFlow/index.html) in browser.
+2. Verify the new "Tips" section appears below the 3-step guide.
+3. Check that the design is consistent with the rest of the page (clean, readable).

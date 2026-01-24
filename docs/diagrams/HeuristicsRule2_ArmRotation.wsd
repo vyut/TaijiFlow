@@ -1,0 +1,87 @@
+@startuml HeuristicsRule2_ArmRotation
+title Rule 2: Arm Rotation Algorithm\n(checkArmRotation)
+
+start
+
+:Receive thumb, pinky, wristHistory, moveType;
+
+partition "Step 1: Validate Input" {
+    if (Missing thumb or pinky?) then (yes)
+        :return null;
+        stop
+    elseif (wristHistory.length < 2?) then (yes)
+        :return null;
+        stop
+    else (no)
+    endif
+}
+
+partition "Step 2: Determine Movement Direction (Up/Down)" {
+    :p_current = wristHistory[last];
+    :p_previous = wristHistory[last-1];
+    :deltaY = p_current.y - p_previous.y;
+    
+    if (abs(deltaY) < 0.015?) then (yes)
+        :return null;
+        'note right: Movement too small to detect
+        stop
+    elseif (deltaY < 0?) then (up)
+        :isMovingUp = true;
+        :isMovingDown = false;
+    else (down)
+        :isMovingUp = false;
+        :isMovingDown = true;
+    endif
+}
+
+partition "Step 3: Check Actual Palm State" {
+    :isRightHand = moveType.startsWith("rh");
+    
+    if (isRightHand?) then (yes)
+        if (thumb.x > pinky.x?) then (yes)
+            :isActuallySupinated = true;
+            note right: Right hand: thumb right\n = supinated
+        else (no)
+            :isActuallySupinated = false;
+            note right: Right hand: thumb left\n = pronated
+        endif
+    else (no)
+        if (thumb.x < pinky.x?) then (yes)
+            :isActuallySupinated = true;
+            note right: Left hand: thumb left\n = supinated
+        else (no)
+            :isActuallySupinated = false;
+            note right: Left hand: thumb right\n = pronated
+        endif
+    endif
+}
+
+partition "Step 4: Determine Expected State" {
+    if (isMovingUp?) then (yes)
+        if (moveType == "rh_cw" or "lh_ccw"?) then (yes)
+            :isSupinationExpected = true;
+        else (no)
+            :isSupinationExpected = false;
+        endif
+    else (down)
+        if (moveType == "rh_ccw" or "lh_cw"?) then (yes)
+            :isSupinationExpected = true;
+        else (no)
+            :isSupinationExpected = false;
+        endif
+    endif
+}
+
+partition "Step 5: Compare and Return" {
+    if (isSupinationExpected != isActuallySupinated?) then (yes)
+        :return "Wrong arm rotation";
+        stop
+    else (no)
+    endif
+}
+
+:return null;
+note right: Correct rotation
+stop
+
+@enduml

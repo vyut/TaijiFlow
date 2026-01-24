@@ -1,0 +1,62 @@
+@startuml HeuristicsRule8_WeightShift
+title Rule 8: Weight Shift Algorithm\n(checkWeightShift)
+
+start
+
+:Receive leftHip, rightHip,\nleftAnkle, rightAnkle;
+
+if (Missing any landmark?) then (yes)
+    :return null;
+    stop
+else (no)
+endif
+
+partition "Step 1: Calculate Center of Mass (Hip Center)" {
+    :hipCenter = (leftHip.x + rightHip.x) / 2;
+    note right: Approximate body center X position
+}
+
+partition "Step 2: Calculate Stance Boundaries" {
+    :stanceWidth = abs(leftAnkle.x - rightAnkle.x);
+    
+    :leftBoundary = min(leftAnkle.x, rightAnkle.x);
+    :rightBoundary = max(leftAnkle.x, rightAnkle.x);
+    
+    :buffer = stanceWidth * 0.3;
+    note right: 30% buffer zone (WEIGHT_BUFFER_RATIO)
+}
+
+partition "Step 3: Define Safe Zone" {
+    note right
+        Safe Zone = area between ankles
+        minus 30% buffer on each side
+        
+        leftBoundary + buffer ... rightBoundary - buffer
+    end note
+}
+
+partition "Step 4: Check if Hip is in Safe Zone" {
+    if (hipCenter < leftBoundary + buffer?) then (yes)
+        note right
+            Hip is LEFT of safe zone
+            = leaning too far left
+        end note
+        :return "Leaning too far left - off balance";
+        stop
+    elseif (hipCenter > rightBoundary - buffer?) then (yes)
+        note right
+            Hip is RIGHT of safe zone
+            = leaning too far right
+        end note
+        :return "Leaning too far right - off balance";
+        stop
+    else (no)
+        note right: Hip is within safe zone
+    endif
+}
+
+:return null;
+note right: Weight properly centered
+stop
+
+@enduml

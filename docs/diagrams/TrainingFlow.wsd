@@ -1,0 +1,67 @@
+@startuml TrainingFlow
+' ============================================================================
+' TaijiFlow AI - Training Flow Diagram
+' ============================================================================
+' Flow:
+' 1. Select
+' 2. Start
+' 3. Calibration (3s)
+' 4. Countdown (3s)
+' 5. Training (5m) -> Loop Logic
+' 6. Summary
+' 7. Reset
+' ============================================================================
+
+skinparam defaultFontName "Menlo"
+skinparam backgroundColor white
+skinparam linetype ortho
+skinparam handwritten false
+skinparam shadow false
+skinparam nodesep 0.5
+skinparam ranksep 0.5
+
+' Style customization
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor black
+    FontSize 14
+    FontStyle plain
+    Padding 10
+}
+
+skinparam note {
+    BackgroundColor white
+    BorderColor none
+    FontSize 13
+}
+
+' === Nodes ===
+
+rectangle "เลือกท่า+ระดับ" as Select
+rectangle "กด \"เริ่มฝึก\"" as Start
+
+rectangle "Calibration\n(ปรับเทียบ)" as Calib
+note right of Calib: ← T-Pose 3 วินาที
+
+rectangle "Countdown\n(นับถอยหลัง)" as Count
+note right of Count: ← 3-2-1
+
+rectangle "Training Mode\n(ฝึก+วิเคราะห์)\n\nทุก Frame:\n- Pose Detect\n- Analyze\n- Draw\n- Feedback\n- Score" as Training
+note right of Training: ← 5 นาที
+
+rectangle "Summary\n(สรุปผล)" as Summary
+note right of Summary: ← แสดงคะแนน
+
+rectangle "Reset" as Reset
+note right of Reset: ← กลับหน้าแรก
+
+' === Flow ===
+
+Select -down-> Start
+Start -down-> Calib
+Calib -down-> Count
+Count -down-> Training
+Training -down-> Summary
+Summary -down-> Reset
+
+@enduml

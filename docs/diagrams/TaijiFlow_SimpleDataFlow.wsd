@@ -1,0 +1,63 @@
+@startuml TaijiFlow_SimpleDataFlow
+' ============================================================================
+' TaijiFlow AI - Simple Data Flow Diagram
+' ============================================================================
+' Flow:
+' 1. Logic Pipeline: Camera -> MP -> Landmarks -> Heuristics -> Feedbacks
+' 2. Visualization: Landmarks -> Drawing
+' 3. Feedback: Feedbacks -> Audio
+' 4. Evaluation: -> Scoring
+' ============================================================================
+
+skinparam defaultFontName "Menlo"
+skinparam backgroundColor white
+skinparam linetype ortho
+skinparam handwritten false
+skinparam shadow false
+skinparam nodesep 0.6
+skinparam ranksep 0.6
+
+' Style customization
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor black
+    FontSize 14
+    FontStyle plain
+    Padding 10
+}
+
+' === Nodes ===
+rectangle "Camera" as Cam
+rectangle "MediaPipe" as MP
+rectangle "Landmarks" as LM
+rectangle "Heuristics Engine" as Engine
+rectangle "Feedbacks" as FB
+
+rectangle "Drawing Manager\n(วาด Skeleton)" as Draw
+rectangle "Audio Manager\n(พูด Feedback)" as Audio
+
+rectangle "Scoring Manager\n(คำนวณคะแนน)" as Score
+
+' === Relationships ===
+
+' Top Row Pipeline
+Cam -> MP
+MP -> LM
+LM -> Engine
+Engine -> FB
+
+' Branching Down
+LM -down-> Draw
+FB -down-> Audio
+
+' Convergence to Scoring
+Draw -down-> Score
+Audio -down-> Score
+
+' Force Alignment (Top Row)
+Cam -[hidden]right- MP
+MP -[hidden]right- LM
+LM -[hidden]right- Engine
+Engine -[hidden]right- FB
+
+@enduml

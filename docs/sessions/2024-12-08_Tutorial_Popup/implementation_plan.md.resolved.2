@@ -1,0 +1,193 @@
+# Heuristics Engine Refactoring Plan
+
+## 🎯 Objectives
+
+1. **Fix Double Transform** - ปัญหา canvas transform ซ้ำซ้อน
+2. **Add Timestamps** - เพิ่ม timestamp ใน wristHistory สำหรับ time-based calculations
+3. **Create Config** - ย้าย thresholds ไปเป็น config object
+4. *(Optional)* **Debug Overlay** - เปิด/ปิดด้วยปุ่ม D
+
+---
+
+## 📋 Proposed Changes
+
+### 1. Fix Double Transform ⚠️
+
+**Current Issue:**
+```javascript
+// script.js:607-619 - ทำ transform 2 ครั้ง
+canvasCtx.scale(-1, 1);              // Mirror 1
+canvasCtx.translate(-canvasElement.width, 0);
+canvasCtx.drawImage(...);
+canvasCtx.scale(-1, 1);              // Mirror 2 (ยกเลิก Mirror 1)
+canvasCtx.translate(-canvasElement.width, 0);
+
+// drawing_manager.js:24-25 - ทำอีกครั้งในแต่ละ method
+this.ctx.scale(-1, 1);               // Mirror 3!
+this.ctx.translate(-this.canvasWidth, 0);
+```
+
+**Solution:**
+- ใช้ `ctx.save()` / `ctx.restore()` รอบ video drawing
+- ให้ [DrawingManager](file:///Users/yut/TaijiFlow/js/drawing_manager.js#10-150) รับ `mirror` flag แทนการ hardcode
+- Landmarks จาก MediaPipe ไม่ถูก mirror ให้ส่งเข้า engine ตรงๆ
+
+---
+
+#### [MODIFY] [script.js](file:///Users/yut/TaijiFlow/js/script.js)
+
+```diff
+// onResults() function
+  canvasCtx.save();
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+  // Draw Video (Mirror) - ใช้ save/restore
++ canvasCtx.save();
+  canvasCtx.scale(-1, 1);
+  canvasCtx.translate(-canvasElement.width, 0);
+  canvasCtx.drawImage(...);
+- canvasCtx.scale(-1, 1);
+- canvasCtx.translate(-canvasElement.width, 0);
++ canvasCtx.restore();  // กลับเป็น identity transform
+```
+
+---
+
+#### [MODIFY] [drawing_manager.js](file:///Users/yut/TaijiFlow/js/drawing_manager.js)
+
+เพิ่ม `mirror` parameter และย้าย mirror logic ไปที่นี่ที่เดียว:
+
+```diff
+class DrawingManager {
+  constructor(canvasCtx, canvasElement) {
+    this.ctx = canvasCtx;
+    this.canvasWidth = canvasElement.width;
+    this.canvasHeight = canvasElement.height;
++   this.mirrorDisplay = true; // Default: mirror for user
+  }
+
++ setMirror(enabled) {
++   this.mirrorDisplay = enabled;
++ }
+
+  drawSkeleton(landmarks) {
+    this.ctx.save();
+-   this.ctx.scale(-1, 1);
+-   this.ctx.translate(-this.canvasWidth, 0);
++   if (this.mirrorDisplay) {
++     this.ctx.scale(-1, 1);
++     this.ctx.translate(-this.canvasWidth, 0);
++   }
+    // ... draw
+    this.ctx.restore();
+  }
+}
+```
+
+---
+
+### 2. Add Timestamps to wristHistory
+
+**Current Issue:**
+```javascript
+this.wristHistory.push(wrist);  // Only {x, y}
+```
+
+**Solution:**
+```javascript
+this.wristHistory.push({ x: wrist.x, y: wrist.y, t: timestamp });
+```
+
+#### [MODIFY] [heuristics_engine.js](file:///Users/yut/TaijiFlow/js/heuristics_engine.js)
+
+- เปลี่ยน `wristHistory` เก็บ `{x, y, t}`
+- Update [checkSmoothness()](file:///Users/yut/TaijiFlow/js/heuristics_engine.js#371-396) ใช้ `dt = (p2.t - p1.t) / 1000`
+- Update [checkContinuity()](file:///Users/yut/TaijiFlow/js/heuristics_engine.js#397-413) ใช้ time-based pause detection
+
+---
+
+### 3. Create Config Object
+
+#### [MODIFY] [heuristics_engine.js](file:///Users/yut/TaijiFlow/js/heuristics_engine.js)
+
+```javascript
+// ย้าย magic numbers ไปเป็น config
+this.CONFIG = {
+  // Path Accuracy
+  PATH_THRESHOLD_DEFAULT: 0.08,        // normalized units
+  PATH_THRESHOLD_MIN: 0.02,
+  PATH_THRESHOLD_MAX: 0.25,
+  
+  // Arm Rotation
+  ARM_MOTION_THRESHOLD: 0.005,          // min deltaY to check
+  
+  // Elbow
+  ELBOW_TOLERANCE_RATIO: 0.05,          // 5% of torsoHeight
+  
+  // Waist Initiation
+  MIN_HIP_VELOCITY_DEG_SEC: 2.0,        // degrees/second
+  SHOULDER_HIP_RATIO: 3.0,              // shoulder must be 3x faster
+  
+  // Stability
+  STABILITY_WINDOW_FRAMES: 30,          // ~1 second at 30fps
+  STABILITY_THRESHOLD_RATIO: 0.1,       // 10% of torsoHeight
+  
+  // Smoothness
+  SMOOTHNESS_THRESHOLD_DEFAULT: 0.02,   // normalized units/sec²
+  SMOOTHNESS_CALIBRATION_RATIO: 0.05,   // 5% of armLength
+  
+  // Continuity  
+  MOTION_THRESHOLD: 0.001,              // normalized units
+  PAUSE_COUNT_THRESHOLD: 15,            // frames (~0.5 sec)
+  
+  // Weight Shift
+  WEIGHT_BUFFER_RATIO: 0.1,             // 10% of stanceWidth
+  
+  // Feedback
+  FEEDBACK_HOLD_TIME_MS: 1500,          // 1.5 seconds
+};
+```
+
+---
+
+## 🔬 Debug Overlay Analysis
+
+| Aspect | Analysis |
+|--------|----------|
+| **ประโยชน์** | ✅ ช่วย tune thresholds, ดู realtime values, debug ปัญหา |
+| **ความซับซ้อน** | ปานกลาง - ต้องวาด text overlay หลายค่า |
+| **ควรทำหรือไม่** | ✅ **ควรทำ** - จะช่วย development และ user ขั้นสูง |
+
+**Proposed Debug Info:**
+- Wrist velocity (normalized/sec)
+- Hand roll angle (degrees)
+- Hip center position
+- Current thresholds
+- FPS
+
+**Toggle:** กด `D` เปิด/ปิด
+
+---
+
+## ✅ Verification Plan
+
+### Automated Tests
+- ทดสอบว่า skeleton/path วาดถูกตำแหน่ง (ไม่กลับด้าน)
+- ทดสอบ smoothness/continuity ด้วย mock wristHistory
+
+### Manual Verification
+- กดปุ่ม D ดู debug overlay
+- ทดสอบ feedback ว่าไม่กลับด้านอีกแล้ว
+
+---
+
+## 📄 Documentation Deliverables
+
+หลังแก้เสร็จจะสร้าง:
+1. **Heuristics Engine Manual** - คู่มืออธิบายแต่ละกฎ
+2. **Configuration Guide** - วิธีปรับ thresholds
+3. **Changelog** - สรุปการเปลี่ยนแปลง
+
+---
+
+> **Request:** กรุณา review plan นี้ก่อนดำเนินการ

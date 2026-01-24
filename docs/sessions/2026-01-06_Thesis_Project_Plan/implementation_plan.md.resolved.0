@@ -1,0 +1,154 @@
+# SRS Update Implementation Plan
+
+**Version:** 1.0  
+**Date:** 2026-01-09  
+**Target File:** [/Users/yut/TaijiFlow/docs/srs/SRS.md](file:///Users/yut/TaijiFlow/docs/srs/SRS.md)
+
+---
+
+## Summary
+
+อัปเดต SRS ให้ตรงกับ code และ SDD ที่อัปเดตแล้ว โดยเพิ่ม 3 ฟีเจอร์ใหม่ และปรับปรุง Requirements ให้ครบถ้วน
+
+---
+
+## Proposed Changes
+
+### 1. Metadata Update
+
+| Field | Old Value | New Value |
+|-------|-----------|-----------|
+| Version | 2.0 | 3.0 |
+| Date | 2024-12-28 | 2026-01-09 |
+| Status | Draft | Final |
+
+---
+
+### 2. Section 2.1 Features - เพิ่ม 3 ฟีเจอร์
+
+#### [ADD] ฟีเจอร์ใหม่
+
+| F-ID | ฟีเจอร์ | คำอธิบาย |
+|------|---------|----------|
+| F-10 | **Gesture Control** | ควบคุมด้วยท่าทางมือ (👍 เริ่ม, ✊ หยุด) |
+| F-11 | **AI Chatbot** | ถาม-ตอบเกี่ยวกับไท่จี๋ (Gemini API) - Optional |
+| F-12 | **Feedback Report** | ส่ง feedback/bug report |
+
+#### [UPDATE] F-08 Display Options
+
+```diff
+- | F-08 | Display Options | ปรับการแสดงผล (Path, Skeleton, Ghost) |
++ | F-08 | Display Options | ปรับการแสดงผล 7 รูปแบบ (Path, Instructor, Ghost, Skeleton, Trail, Silhouette, Debug) |
+```
+
+---
+
+### 3. Section 3 Use Cases - เพิ่ม Exception Flows
+
+#### [UPDATE] UC-02: Perform Training
+
+เพิ่ม Exception Flows:
+
+| Exception | Condition | Action |
+|-----------|-----------|--------|
+| E1 | Camera Error (not_allowed, not_found, not_readable) | แจ้ง Error + แสดงคำแนะนำแก้ไข |
+| E2 | Reference Data Not Found | แจ้ง Error + หยุดทำงาน |
+| E3 | Low Light Detected | แสดง Warning (Toast + TTS) |
+
+#### [ADD] Alternative Flow - Gesture Control
+
+```
+Alt Flow: Gesture Start/Stop
+1. ผู้ใช้ยกนิ้วโป้ง 👍 → เริ่มฝึก
+2. ผู้ใช้กำมือ ✊ → หยุดฝึก
+```
+
+---
+
+### 4. Section 4 Requirements - เพิ่ม SRS
+
+#### [ADD] UC-02 Requirements (5 items)
+
+| SRS-ID | Requirement |
+|--------|-------------|
+| SRS-02-10 | ระบบต้องแสดง Ghost Skeleton/Video overlay ได้ (ถ้าเปิด) |
+| SRS-02-11 | ระบบต้องแสดง Trail ของข้อมือ (wrist movement history) |
+| SRS-02-12 | ระบบต้องแสดง Silhouette ของผู้ฝึก (ถ้าเปิด) |
+| SRS-02-13 | ระบบต้องตรวจจับ Low Light (avgVisibility < 0.5) และแจ้งเตือน |
+| SRS-02-14 | ระบบต้องจัดการ Camera Error และแสดงข้อความตามประเภท (4 ประเภท) |
+
+#### [ADD] Gesture Control Requirements (2 items)
+
+| SRS-ID | Requirement |
+|--------|-------------|
+| SRS-02-15 | ระบบต้องตรวจจับ Thumbs Up gesture เพื่อเริ่มฝึก |
+| SRS-02-16 | ระบบต้องตรวจจับ Fist gesture เพื่อหยุดฝึก |
+
+#### [ADD] Chatbot Requirements (2 items) - Optional Feature
+
+| SRS-ID | Requirement |
+|--------|-------------|
+| SRS-07-01 | ระบบต้องแสดง Chatbot popup เมื่อกดปุ่ม |
+| SRS-07-02 | ระบบต้องส่งคำถามไป Gemini API และแสดงคำตอบ |
+
+---
+
+### 5. Section 5 NFR - เพิ่ม 2 items
+
+| NFR-ID | Category | Requirement |
+|--------|----------|-------------|
+| NFR-09 | Internationalization | ระบบต้องรองรับ 2 ภาษา (TH/EN) พร้อมเปลี่ยนได้ทันที |
+| NFR-10 | Accessibility | ระบบต้องรองรับ Dark/Light Theme |
+
+---
+
+### 6. Section 6 Traceability - ปรับให้ครบ
+
+#### [UPDATE] Feature → Use Case Matrix
+
+| Feature | UC-01 | UC-02 | UC-03 | UC-04 | UC-05 | UC-06 |
+|---------|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+| F-01 Calibration | ✓ | | | | | |
+| F-02 Training | | ✓ | | | | |
+| ... | | | | | | |
+| F-10 Gesture | | ✓ | | | | |
+| F-11 Chatbot | | ✓ | | | | |
+| F-12 Feedback | | | | | ✓ | |
+
+#### [UPDATE] URS → SRS Mapping (ให้ครบ)
+
+เพิ่ม mapping ที่เหลือจาก `...` ให้ครบ
+
+---
+
+## Verification Plan
+
+### Manual Review
+
+1. ตรวจสอบว่า Features ครบตามที่มีใน code
+2. ตรวจสอบว่า SRS ครอบคลุมทุก feature
+3. ตรวจสอบ Traceability Matrix ครบถ้วน
+
+### Cross-Reference
+
+| เอกสาร | ตรวจสอบกับ |
+|--------|-----------|
+| SRS Features | FEATURES_SUMMARY.md |
+| SRS Modules | ARCHITECTURE.md |
+| SRS Use Cases | Activity Diagrams |
+
+---
+
+## Summary of Changes
+
+| Section | Current | After Update |
+|---------|:-------:|:------------:|
+| Features | 9 | 12 |
+| Use Cases | 6 | 6 (+ exception flows) |
+| SRS Requirements | ~20 | ~29 |
+| NFR | 8 | 10 |
+| Traceability | Partial | Complete |
+
+---
+
+*Awaiting approval before implementation*

@@ -1,0 +1,96 @@
+@startuml TaijiFlow_Structure
+' ============================================================================
+' TaijiFlow AI - System Structure Diagram (clean)
+' ============================================================================
+' - Main Container: script.js (Main Controller)
+' - Content: Core, Display, UI, Controllers, Utilities (Vertical Stack)
+' - No internal lines
+' - Single arrow to External APIs
+' ============================================================================
+
+skinparam defaultFontName "Sarabun"
+skinparam backgroundColor white
+skinparam linetype ortho
+skinparam handwritten false
+skinparam shadow false
+skinparam nodesep 0.6
+skinparam ranksep 0.6
+
+' Style customization
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor black
+    FontSize 14
+    FontStyle bold
+    Padding 10
+}
+
+skinparam component {
+    BackgroundColor white
+    BorderColor black
+    ArrowColor black
+    FontSize 12
+    Padding 8
+}
+
+' === MAIN SYSTEM CONTAINER (script.js) ===
+rectangle "script.js\n(Main Controller)" as MainContainer {
+    
+    ' -- 1. Core Managers --
+    rectangle "Core Managers" as CorePkg {
+        component "HeuristicsEngine\n(8 Rules)" as Heuristics
+        component "CalibrationManager\n(T-Pose)" as Calibration
+        component "ScoringManager\n(Score)" as Scoring
+    }
+
+    ' -- 2. Display Managers --
+    rectangle "Display Managers" as DisplayPkg {
+        component "DrawingManager\n(Canvas)" as Drawing
+        component "GhostManager\n(Instructor)" as Ghost
+        component "SilhouetteManager\n(User Mask)" as Silhouette
+    }
+
+    ' -- 3. UI Managers --
+    rectangle "UI Managers" as UIPkg {
+        component "UIManager\n(Theme, i18n)" as UI
+        component "ScorePopupManager\n(Result UI)" as ScorePopup
+        component "TutorialManager\n(Help Popup)" as Tutorial
+        component "AudioManager\n(TTS)" as AudioManager
+        component "GestureManager\n(Hand Control)" as Gesture
+        component "FeedbackManager\n(Bug Report)" as Feedback
+        component "Chatbot\n(Gemini AI)" as ChatbotBean
+        component "RulesConfigManager\n(Settings UI)" as RulesConfig
+    }
+
+    ' -- 4. Controllers --
+    rectangle "Controllers" as CtrlPkg {
+        component "DisplayController\n(Display Options)" as DisplayCtrl
+        component "KeyboardController\n(Keyboard Shortcuts)" as KeyboardCtrl
+    }
+
+    ' -- 5. Utilities --
+    rectangle "Utilities" as UtilPkg {
+        component "DataExporter\n(JSON/CSV)" as Exporter
+        component "PathGenerator\n(Dynamic Path)" as PathGen
+        component "SessionManager\n(User ID)" as Session
+        component "translations\n(i18n Data)" as Translations
+    }
+}
+
+' === EXTERNAL APIs ===
+rectangle "External APIs (CDN)" as External {
+    component "MediaPipe Pose\n(33 Landmarks)" as MPPose
+    component "MediaPipe Gesture\n(Hand Control)" as MPGesture
+    component "Gemini API\n(AI Chatbot)" as GeminiAPI
+}
+
+' === LAYOUT ENFORCEMENT (Vertical Stack inside MainContainer) ===
+CorePkg -[hidden]down-> DisplayPkg
+DisplayPkg -[hidden]down-> UIPkg
+UIPkg -[hidden]down-> CtrlPkg
+CtrlPkg -[hidden]down-> UtilPkg
+
+' === SINGLE EXTERNAL CONNECTION ===
+MainContainer -down-> External
+
+@enduml

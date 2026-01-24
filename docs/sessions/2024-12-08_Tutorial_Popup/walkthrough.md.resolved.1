@@ -1,0 +1,89 @@
+# 🏁 TaijiFlow AI - Phase 1 Walkthrough
+
+## สรุปการปรับปรุงทั้งหมด
+
+---
+
+## 1. ✅ Scoring System
+
+### ไฟล์ใหม่: [scoring_manager.js](file:///Users/yut/TaijiFlow/scoring_manager.js)
+
+คำนวณคะแนน 0-100% จากสัดส่วนเฟรมที่ถูกต้อง พร้อมเกรด A-F และแสดง Popup สรุปหลังจบ Session
+
+---
+
+## 2. ✅ Audio Feedback
+
+### ไฟล์ใหม่: [audio_manager.js](file:///Users/yut/TaijiFlow/audio_manager.js)
+
+พูดเตือนด้วย Text-to-Speech เมื่อตรวจพบข้อผิดพลาด รองรับ 2 ภาษา (TH/EN)
+
+| Event | ไทย | English |
+|-------|-----|---------|
+| Calibrate | "กรุณายืนท่ากางเขน" | "Please stand in T pose" |
+| ศอกลอย | "ศอกลอย" | "Elbow too high" |
+| เริ่มบันทึก | "เริ่มบันทึก" | "Recording started" |
+
+---
+
+## 3. ✅ Data Export Fields
+
+เพิ่ม Fields สำหรับ ML:
+- `user_id`, `session_id`
+- `visibility_avg`, `frame_number`, `has_error`
+- `platform`, `timezone`, `fps_estimated`
+
+ดู [data_export_documentation.md](file:///Users/yut/.gemini/antigravity/brain/bababa3a-e680-4c6d-85bb-af1664fcf335/data_export_documentation.md)
+
+---
+
+## 4. ✅ Bug Fixes & README
+
+- แก้ไข `isRecording` declaration
+- เขียน README.md สมบูรณ์
+
+---
+
+## สถาปัตยกรรม (Architecture)
+
+```mermaid
+graph TD
+    A[Webcam] --> B[MediaPipe Pose]
+    B --> C[Landmarks]
+    C --> D[CalibrationManager]
+    C --> E[HeuristicsEngine]
+    D --> E
+    E --> F[Feedbacks]
+    F --> G[DrawingManager]
+    F --> H[AudioManager]
+    F --> I[ScoringManager]
+    G --> J[Canvas]
+    H --> K[Voice TTS]
+    I --> L[Score Popup]
+```
+
+---
+
+## Flow การใช้งาน
+
+1. เปิดแอป → กด 🔊 เปิดเสียง (ถ้าต้องการ)
+2. **Calibrate** → ได้ยิน "กรุณายืนท่ากางเขน"
+3. ยืน T-Pose 3 วินาที → ได้ยิน "ปรับเทียบสำเร็จ"
+4. เลือกท่าและ Level
+5. กด **Record** → ได้ยิน "เริ่มบันทึก"
+6. ฝึกท่า → ได้ยินเสียงเตือนเมื่อทำผิด
+7. กด **Stop** → ได้ยิน "หยุดบันทึก" + Popup คะแนน
+8. ไฟล์ JSON Download อัตโนมัติ
+
+---
+
+## ไฟล์ที่เปลี่ยนแปลง
+
+| ไฟล์ | การเปลี่ยนแปลง |
+|------|---------------|
+| [scoring_manager.js](file:///Users/yut/TaijiFlow/scoring_manager.js) | **[NEW]** |
+| [audio_manager.js](file:///Users/yut/TaijiFlow/audio_manager.js) | **[NEW]** |
+| [script.js](file:///Users/yut/TaijiFlow/script.js) | Integration ทั้งหมด |
+| [ui_manager.js](file:///Users/yut/TaijiFlow/ui_manager.js) | เพิ่ม [showScoreSummary()](file:///Users/yut/TaijiFlow/ui_manager.js#262-344) |
+| [index.html](file:///Users/yut/TaijiFlow/index.html) | ปุ่ม 🔊 + script tags |
+| [README.md](file:///Users/yut/TaijiFlow/README.md) | เขียนใหม่ + Audio Feedback |

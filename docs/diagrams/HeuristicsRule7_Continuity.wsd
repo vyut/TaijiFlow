@@ -1,0 +1,80 @@
+@startuml HeuristicsRule7_Continuity
+title Rule 7: Continuity Algorithm (Time-Based v0.9.9)\n(checkContinuity -> isPaused)
+
+start
+
+:checkContinuity() calls isPaused();
+
+partition "isPaused() - Time-Based Detection" {
+    
+    if (wristHistory.length < 3?) then (yes)
+        :return false;
+        note right: Not enough data
+        stop
+    else (no)
+    endif
+    
+    partition "Step 1: Define Time Window" {
+        :now = Date.now();
+        :PAUSE_WINDOW_MS = 2000;
+        note right: 2 seconds window
+        
+        :windowStart = now - PAUSE_WINDOW_MS;
+        
+        :recentPoints = wristHistory.filter(\n  p => p.t >= windowStart\n);
+        
+        note right
+            Only analyze points
+            from last 2 seconds
+        end note
+    }
+    
+    if (recentPoints.length < 2?) then (yes)
+        :return false;
+        note right: Not enough points in window
+        stop
+    else (no)
+    endif
+    
+    partition "Step 2: Calculate Total Distance" {
+        :totalDistance = 0;
+        
+        repeat :For each consecutive pair;
+            :totalDistance += distance(p[i-1], p[i]);
+        repeat while (more pairs?) is (yes)
+        ->no;
+    }
+    
+    partition "Step 3: Calculate Average Velocity" {
+        :firstPoint = recentPoints[0];
+        :lastPoint = recentPoints[last];
+        :timeSpanMs = lastPoint.t - firstPoint.t;
+        
+        :avgVelocity = totalDistance / (timeSpanMs / 1000);
+        note right: units per second
+    }
+    
+    partition "Step 4: Check Against Threshold" {
+        :PAUSE_AVG_VELOCITY_THRESHOLD = 0.003;
+        
+        if (avgVelocity < PAUSE_AVG_VELOCITY_THRESHOLD?) then (yes)
+            :return true;
+            note right: User is PAUSED
+        else (no)
+            :return false;
+            note right: User is moving
+        endif
+    }
+}
+
+if (isPaused() == true?) then (yes)
+    :return "Keep moving continuously";
+    stop
+else (no)
+endif
+
+:return null;
+note right: Continuous movement
+stop
+
+@enduml

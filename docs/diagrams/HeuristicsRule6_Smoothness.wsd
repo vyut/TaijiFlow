@@ -1,0 +1,86 @@
+@startuml HeuristicsRule6_Smoothness
+title Rule 6: Smoothness Algorithm\n(checkSmoothness)
+
+start
+
+:Receive wrist, timestamp;
+
+if (wrist is null?) then (yes)
+    :return null;
+    stop
+else (no)
+endif
+
+partition "Step 1: Update Wrist History with Timestamp" {
+    :currentTime = Date.now();
+    :wristHistory.push({ x, y, t: currentTime });
+    
+    if (wristHistory.length > 60?) then (yes)
+        :wristHistory.shift();
+        note right: WRIST_HISTORY_LENGTH = 60
+    else (no)
+    endif
+    
+    if (wristHistory.length < 3?) then (yes)
+        :return null;
+        note right: Need at least 3 points
+        stop
+    else (no)
+    endif
+}
+
+partition "Step 2: Get Recent Points" {
+    :p1 = wristHistory[n-3];
+    :p2 = wristHistory[n-2];
+    :p3 = wristHistory[n-1];
+}
+
+partition "Step 3: Calculate Time-Normalized Velocities" {
+    :dt1 = (p2.t - p1.t) / 1000;
+    note right: Convert ms to seconds
+    
+    :dt2 = (p3.t - p2.t) / 1000;
+    
+    if (dt1 <= 0 or dt2 <= 0?) then (yes)
+        :return null;
+        note right: Invalid time difference
+        stop
+    else (no)
+    endif
+    
+    :v1 = distance(p1, p2) / dt1;
+    note right: units/second
+    
+    :v2 = distance(p2, p3) / dt2;
+    note right: units/second
+}
+
+partition "Step 4: Calculate Acceleration" {
+    :acceleration = abs(v2 - v1);
+    note right
+        High acceleration = 
+        sudden speed change = jerky
+    end note
+}
+
+partition "Step 5: Compare with Dynamic Threshold" {
+    if (calibrationData exists?) then (yes)
+        :threshold = armLength * 0.5;
+        note right: 50% of arm length
+    else (no)
+        :threshold = 0.1;
+        note right: Default value
+    endif
+    
+    if (acceleration > threshold?) then (yes)
+        :return "Movement too jerky - be smoother";
+        stop
+    else (no)
+    endif
+}
+
+:return null;
+note right: Smooth movement
+stop
+
+@enduml

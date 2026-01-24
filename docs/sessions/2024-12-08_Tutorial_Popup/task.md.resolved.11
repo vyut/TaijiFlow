@@ -1,0 +1,48 @@
+# TaijiFlow AI - Phase 1 Tasks
+
+## ✅ Completed
+
+### Core Features
+- [x] Real-time pose detection with MediaPipe
+- [x] 8 Heuristic Rules Engine
+- [x] Body Calibration System
+- [x] Scoring System (0-100% with grades)
+- [x] Audio Feedback (TTS) - Thai/English
+- [x] Data Export for ML Training
+- [x] Camera Error Handling
+- [x] Reference Data Validation
+
+### UX Flow v3.0
+- [x] Auto Calibration (every session)
+- [x] Auto Recording (5 min max)
+- [x] Toggle Start/Stop Button
+- [x] Timer Overlay (bottom-left)
+- [x] Fullscreen Button Overlay (bottom-right)
+- [x] Disabled Button State (gray when no selection)
+- [x] Error Handling with try-catch
+- [x] Reset to Home Screen after stop
+
+### UI Improvements
+- [x] Bilingual Support (TH/EN)
+- [x] Dark/Light Theme
+- [x] Purple Instructions Box
+- [x] Step-by-step Overlay Guide
+- [x] Hidden Legacy Buttons (calibrate, record)
+- [x] Removed R Key Shortcut
+
+### Documentation
+- [x] README.md Updated
+- [x] Walkthrough.md Created
+- [x] Code Comments Added
+
+---
+
+## 📅 Phase 1 Complete: December 9, 2024
+
+---
+
+## 🔮 Phase 2 (Future)
+- [ ] Reference data for all 12 exercises
+- [ ] User authentication
+- [ ] Session history
+- [ ] ML data collection at scale

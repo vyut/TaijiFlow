@@ -1,0 +1,33 @@
+# Task: Update System Architecture Diagrams for TaijiFlow
+
+## Objective
+วิเคราะห์ codebase ทั้งหมดและอัปเดต/สร้าง diagrams ที่สำคัญสำหรับรายงาน SE ป.โท
+
+---
+
+## Phase 1: Analysis
+- [ ] Explore codebase structure
+- [ ] Analyze main modules (script.js, heuristics_engine.js, etc.)
+- [ ] Identify new features added since original documentation
+- [ ] Document current system flow
+
+## Phase 2: Diagram Planning
+- [ ] Compare current code with existing diagrams
+- [ ] Identify diagrams that need updating
+- [ ] Plan new diagrams if needed
+
+## Phase 3: Implementation
+- [ ] Update/Create diagrams
+- [ ] Review and validate
+
+---
+
+## Key Files to Analyze
+- [js/script.js](file:///Users/yut/TaijiFlow/js/script.js) - Main controller
+- [js/heuristics_engine.js](file:///Users/yut/TaijiFlow/js/heuristics_engine.js) - Pose analysis
+- [js/calibration_manager.js](file:///Users/yut/TaijiFlow/js/calibration_manager.js) - Calibration
+- [js/scoring_manager.js](file:///Users/yut/TaijiFlow/js/scoring_manager.js) - Scoring
+- [js/ui_manager.js](file:///Users/yut/TaijiFlow/js/ui_manager.js) - UI management
+- [js/drawing_manager.js](file:///Users/yut/TaijiFlow/js/drawing_manager.js) - Canvas drawing
+- [js/feedback_manager.js](file:///Users/yut/TaijiFlow/js/feedback_manager.js) - Feedback
+- [js/audio_manager.js](file:///Users/yut/TaijiFlow/js/audio_manager.js) - Audio/TTS

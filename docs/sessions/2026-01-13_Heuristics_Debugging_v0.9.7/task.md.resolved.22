@@ -1,0 +1,39 @@
+# UI Refinement Tasks
+
+- [x] 1. Change Quickstart box color from Green to White (Done)
+- [x] 2. Change "Starting Immediately" (TH) to "Quickstart" and change title color to Purple
+    - [x] Text update (User did this manually)
+    - [x] Change title color to Purple in [index.html](file:///Users/yut/TaijiFlow/index.html) (landing.css)
+    - [x] Change title color to Purple in [app.html](file:///Users/yut/TaijiFlow/app.html)
+- [-] 3. Align [app.html](file:///Users/yut/TaijiFlow/app.html) overlay steps horizontally (Reverted to vertical)
+- [x] 4. Unify buttons to Purple and "Start Training" text
+- [x] 5. Change Main Card border to White in [app.html](file:///Users/yut/TaijiFlow/app.html)
+- [x] 6. Change Landing Hero Button to Purple Gradient
+
+# Final Polish (v0.9.5)
+- [x] 1. Refactor Speaker Button (Green -> Gray Theme)
+- [x] 2. Refactor Stop Control UI (Separate Bottom Box with Red Header)
+- [x] 3. Fix Thai Vowel Clipping in Header
+- [x] 4. Responsive Layout Logic Check (Tablet/iPad)
+
+# Thesis Documentation Updates
+- [x] 1. Add "System Environment Requirements" to Chapter 3 (PC Recommended)
+- [x] 2. Add "Device Limitations" to Chapter 1 (Tablet Experimental)
+
+# Content Refinement Tasks (About Section)
+- [x] 1. Refine "Origin" (Accessibility, Real-time Feedback, SE Keywords)
+- [x] 2. Refine "Technology" (5 Core Tech Stack)
+- [x] 3. Replace "Acknowledgements" with "System Architecture" (4-Layer)
+- [x] 4. Refine "Key Features" (5 Core Features from SRS)
+    - [x] Pose Detection, Gesture Control (New)
+    - [x] Heuristics (8 Rules), Calibration, Scoring
+    - [x] Web Speech API, Generative AI
+
+# User Guide Refinement
+- [x] 1. Analyze Gaps between Appendix E and Landing Page
+- [x] 2. Update Guide to 3-Step Workflow (Prep -> Train -> Eval)
+- [x] 3. Remove "Quickstart" block to focus on System Overview
+- [x] 4. Add "Tips & Requirements" section (Device, Environment, Clothing)
+- [x] 5. Add "Usage Warnings" section (2-Column Grid, Responsive)
+- [x] 6. Refine "Learn More" Section (2x2 Grid: Definition, Principles, Benefits, Practice)
+- [x] 7. Add "Project Stats" Section (Research Validation: 4.2/5 Satisfaction, 87.5% Intent)

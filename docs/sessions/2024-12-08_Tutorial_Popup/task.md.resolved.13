@@ -1,0 +1,8 @@
+# Heuristics Engine Refactoring
+
+## Tasks
+- [x] Fix Double Transform (script.js + drawing_manager.js)
+- [x] Add Timestamps to wristHistory
+- [x] Create CONFIG object for thresholds
+- [x] Add Debug Overlay (toggle with D key)
+- [/] Create Documentation (Manual + Changelog)

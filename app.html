@@ -309,31 +309,34 @@ Version: 0.9.9 (2026-01-17)
       </div>
     </div>
 
-    <!-- Header -->
-    <h1
-      id="app-title"
-      class="text-2xl md:text-3xl font-bold mb-2 md:mb-4 bg-gradient-to-br from-purple-500 to-indigo-500 bg-clip-text text-transparent py-1 leading-relaxed"
-    >
-      TaijiFlow AI: ผู้ช่วยฝึก Silk Reeling
-    </h1>
+    <!-- Header Removed for Max View -->
+    <!-- <h1 id="app-title" ...> ... </h1> -->
 
     <!-- Main Container -->
     <div
       id="main-card"
-      class="glass-card px-2 md:px-6 pt-2 md:pt-6 pb-1 shadow-lg text-right w-full max-w-[95vw] lg:max-w-[150vh] mx-auto"
+      class="glass-card px-2 pt-2 pb-1 shadow-lg text-right w-full max-w-[95vw] mx-auto"
       style="border-color: rgba(255, 255, 255, 0.2)"
     >
-      <!-- Top Bar: Selectors + Settings + Timer -->
-      <div
-        class="mb-4 flex flex-wrap justify-between items-center gap-2 md:gap-4"
-      >
-        <!-- Left: Dropdowns -->
-        <div class="flex gap-2 flex-wrap">
+      <!-- Top Bar: Title + Selectors + Settings -->
+      <div class="mb-2 flex flex-wrap justify-between items-center gap-2">
+        <!-- Left: Title & Dropdowns -->
+        <div class="flex gap-2 flex-wrap items-center">
+          <!-- Mini Title -->
+          <div class="mr-2 flex items-center">
+            <span class="text-2xl mr-2">☯️</span>
+            <span
+              class="text-xl font-bold bg-gradient-to-br from-purple-400 to-indigo-400 bg-clip-text text-transparent"
+            >
+              TaijiFlow AI
+            </span>
+          </div>
+
           <!-- Category Dropdown (สำหรับขยายในอนาคต) -->
           <div>
             <select
               id="category-select"
-              class="px-3 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
+              class="px-2 py-1.5 text-sm rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
               title="เลือกหมวดหมู่ของท่าฝึก - Select exercise category"
             >
               <option value="" disabled>-- เลือกหมวดหมู่ --</option>

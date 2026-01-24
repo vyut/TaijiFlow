@@ -1,0 +1,13 @@
+# SRS Update Task
+
+## Checklist
+
+- [/] Update SRS document
+  - [/] Metadata (Version, Date, Status)
+  - [ ] Features Section (add F-10, F-11, F-12, update F-08)
+  - [ ] Use Cases (add Exception Flows to UC-02)
+  - [ ] Requirements (add SRS-02-10 to SRS-02-16, SRS-07-01, SRS-07-02)
+  - [ ] NFR (add NFR-09, NFR-10)
+  - [ ] Traceability Matrix (complete mapping)
+- [ ] Verify cross-references with SDD
+- [ ] Update CHANGELOG

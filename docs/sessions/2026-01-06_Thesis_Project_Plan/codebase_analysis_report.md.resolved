@@ -1,0 +1,322 @@
+# 📊 TaijiFlow Codebase vs Implementation Plans Analysis Report
+
+## 🎯 Summary
+
+ผลการวิเคราะห์เปรียบเทียบระหว่าง **Implementation Plans** กับ **JavaScript Codebase** อย่างละเอียด
+
+| Category | Status | Notes |
+|----------|--------|-------|
+| JS Modules | ✅ 19 files | ตรงตามเอกสาร |
+| New Features | ✅ 9 features | ยืนยันทั้งหมด |
+| Existing Diagrams | ✅ 8 files | ครบถ้วน |
+| Missing Diagrams | ⚠️ 2 files | Class + Sequence |
+
+---
+
+## 📦 JavaScript Modules Analysis (19 Files)
+
+### Verified Modules with Size
+
+| # | File | Size | Verified Class/Functions |
+|---|------|------|-------------------------|
+| 1 | [script.js](file:///Users/yut/TaijiFlow/js/script.js) | 82KB | Main Controller, 68 functions |
+| 2 | [heuristics_engine.js](file:///Users/yut/TaijiFlow/js/heuristics_engine.js) | 51KB | [HeuristicsEngine](file:///Users/yut/TaijiFlow/js/heuristics_engine.js#38-973) class, 16 methods |
+| 3 | [ui_manager.js](file:///Users/yut/TaijiFlow/js/ui_manager.js) | 41KB | [UIManager](file:///Users/yut/TaijiFlow/js/ui_manager.js#145-889) class, 13 methods |
+| 4 | [audio_manager.js](file:///Users/yut/TaijiFlow/js/audio_manager.js) | 31KB | [AudioManager](file:///Users/yut/TaijiFlow/js/audio_manager.js#98-580) class, 6 methods |
+| 5 | [tutorial_manager.js](file:///Users/yut/TaijiFlow/js/tutorial_manager.js) | 30KB | [TutorialManager](file:///Users/yut/TaijiFlow/js/tutorial_manager.js#75-706) class, 11 methods |
+| 6 | [chatbot.js](file:///Users/yut/TaijiFlow/js/chatbot.js) | 26KB | AI Chatbot integration |
+| 7 | [drawing_manager.js](file:///Users/yut/TaijiFlow/js/drawing_manager.js) | 25KB | [DrawingManager](file:///Users/yut/TaijiFlow/js/drawing_manager.js#26-612) class, 12 methods |
+| 8 | [translations.js](file:///Users/yut/TaijiFlow/js/translations.js) | 22KB | i18n strings (TH/EN) |
+| 9 | [calibration_manager.js](file:///Users/yut/TaijiFlow/js/calibration_manager.js) | 15KB | [CalibrationManager](file:///Users/yut/TaijiFlow/js/calibration_manager.js#35-362) class, 11 methods |
+| 10 | [gesture_manager.js](file:///Users/yut/TaijiFlow/js/gesture_manager.js) | 14KB | [GestureManager](file:///Users/yut/TaijiFlow/js/gesture_manager.js#73-389) class, 12 methods |
+| 11 | [rules_config_manager.js](file:///Users/yut/TaijiFlow/js/rules_config_manager.js) | 12KB | [RulesConfigManager](file:///Users/yut/TaijiFlow/js/rules_config_manager.js#21-364) class, 11 methods |
+| 12 | [scoring_manager.js](file:///Users/yut/TaijiFlow/js/scoring_manager.js) | 11KB | [ScoringManager](file:///Users/yut/TaijiFlow/js/scoring_manager.js#66-270) class, 7 methods |
+| 13 | [ghost_manager.js](file:///Users/yut/TaijiFlow/js/ghost_manager.js) | 8KB | [GhostManager](file:///Users/yut/TaijiFlow/js/ghost_manager.js#25-256) class, 12 methods |
+| 14 | [data_exporter.js](file:///Users/yut/TaijiFlow/js/data_exporter.js) | 8KB | Data export utilities |
+| 15 | [score_popup_manager.js](file:///Users/yut/TaijiFlow/js/score_popup_manager.js) | 7KB | [ScorePopupManager](file:///Users/yut/TaijiFlow/js/score_popup_manager.js#31-187) class, 4 methods |
+| 16 | [path_generator.js](file:///Users/yut/TaijiFlow/js/path_generator.js) | 5KB | Dynamic path generation |
+| 17 | [session_manager.js](file:///Users/yut/TaijiFlow/js/session_manager.js) | 5KB | 4 utility functions |
+| 18 | [feedback_manager.js](file:///Users/yut/TaijiFlow/js/feedback_manager.js) | 4KB | [FeedbackManager](file:///Users/yut/TaijiFlow/js/feedback_manager.js#32-110) class, 5 methods |
+| 19 | [silhouette_manager.js](file:///Users/yut/TaijiFlow/js/silhouette_manager.js) | 3KB | Silhouette rendering |
+
+---
+
+## 🆕 New Features Verification (9 Features)
+
+### 1. Low Light Warning ✅
+
+| Item | Value |
+|------|-------|
+| **Location** | [script.js:124-128](file:///Users/yut/TaijiFlow/js/script.js#L124-128) |
+| **Implementation** | [script.js:1690-1720](file:///Users/yut/TaijiFlow/js/script.js#L1690-1720) |
+| **Threshold** | `LOW_LIGHT_THRESHOLD = 0.5` |
+| **Cooldown** | `30000ms` (30 seconds) |
+| **Translation Keys** | `alert_low_light`, `alert_low_light_calib` |
+
+```javascript
+// ตรวจสอบ visibility ของ key landmarks
+const keyIndices = [11, 12, 13, 14, 15, 16, 23, 24]; // ไหล่, ศอก, ข้อมือ, สะโพก
+const avgVisibility = visibilitySum / keyIndices.length;
+
+if (avgVisibility < LOW_LIGHT_THRESHOLD && 
+    now - lastLowLightWarningTime > LOW_LIGHT_WARNING_COOLDOWN) {
+  // แสดง notification + พูดเตือน
+}
+```
+
+> [!IMPORTANT]
+> Feature นี้ **ไม่มีใน ActivityDiagram_UC02.wsd** → ต้องอัปเดต Diagram
+
+---
+
+### 2. Theme System (Dark/Light Mode) ✅
+
+| Item | Value |
+|------|-------|
+| **Class** | [UIManager](file:///Users/yut/TaijiFlow/js/ui_manager.js#145-889) |
+| **File** | [ui_manager.js](file:///Users/yut/TaijiFlow/js/ui_manager.js) |
+| **Methods** | [toggleTheme()](file:///Users/yut/TaijiFlow/js/ui_manager.js#307-338), [setTheme(theme)](file:///Users/yut/TaijiFlow/js/ui_manager.js#343-442) |
+| **Storage** | localStorage key: theme preference |
+
+---
+
+### 3. Ghost Manager + Silhouette Video ✅
+
+| Item | Value |
+|------|-------|
+| **Class** | [GhostManager](file:///Users/yut/TaijiFlow/js/ghost_manager.js#25-256) |
+| **File** | [ghost_manager.js](file:///Users/yut/TaijiFlow/js/ghost_manager.js) |
+| **Key Methods** | [load()](file:///Users/yut/TaijiFlow/js/ghost_manager.js#55-79), [loadSilhouetteVideo()](file:///Users/yut/TaijiFlow/js/ghost_manager.js#80-108), [update()](file:///Users/yut/TaijiFlow/js/ghost_manager.js#170-201), [getCurrentFrame()](file:///Users/yut/TaijiFlow/js/ghost_manager.js#202-210) |
+| **Features** | Skeleton overlay, Video silhouette, Speed/Opacity controls |
+
+---
+
+### 4. Score Popup Manager ✅
+
+| Item | Value |
+|------|-------|
+| **Class** | [ScorePopupManager](file:///Users/yut/TaijiFlow/js/score_popup_manager.js#31-187) |
+| **File** | [score_popup_manager.js](file:///Users/yut/TaijiFlow/js/score_popup_manager.js) |
+| **Methods** | [show(summary, gradeInfo, lang)](file:///Users/yut/TaijiFlow/js/score_popup_manager.js#38-162), [close()](file:///Users/yut/TaijiFlow/js/tutorial_manager.js#453-460), [bindEvents()](file:///Users/yut/TaijiFlow/js/feedback_manager.js#62-68) |
+| **Features** | Grade display (A-F), Stats grid, QR Code feedback link |
+
+---
+
+### 5. Rules Config Manager ✅
+
+| Item | Value |
+|------|-------|
+| **Class** | [RulesConfigManager](file:///Users/yut/TaijiFlow/js/rules_config_manager.js#21-364) |
+| **File** | [rules_config_manager.js](file:///Users/yut/TaijiFlow/js/rules_config_manager.js) |
+| **Key Methods** | [bindRuleCheckboxes()](file:///Users/yut/TaijiFlow/js/rules_config_manager.js#168-181), [setThreshold()](file:///Users/yut/TaijiFlow/js/rules_config_manager.js#208-214), [resetToDefaults()](file:///Users/yut/TaijiFlow/js/rules_config_manager.js#295-315) |
+| **Features** | Enable/disable rules, Adjust thresholds, Debug toggle |
+
+---
+
+### 6. Gesture Manager ✅
+
+| Item | Value |
+|------|-------|
+| **Class** | [GestureManager](file:///Users/yut/TaijiFlow/js/gesture_manager.js#73-389) |
+| **File** | [gesture_manager.js](file:///Users/yut/TaijiFlow/js/gesture_manager.js) |
+| **Key Methods** | [init()](file:///Users/yut/TaijiFlow/js/rules_config_manager.js#135-148), [detectGestures()](file:///Users/yut/TaijiFlow/js/gesture_manager.js#250-286), [processGesture()](file:///Users/yut/TaijiFlow/js/gesture_manager.js#287-325) |
+| **Gestures** | 👍 Thumbs_Up → Start, ✋ Open_Palm → Stop |
+| **Hold Time** | 1.5 seconds to trigger |
+
+---
+
+### 7. Tutorial Manager ✅
+
+| Item | Value |
+|------|-------|
+| **Class** | [TutorialManager](file:///Users/yut/TaijiFlow/js/tutorial_manager.js#75-706) |
+| **File** | [tutorial_manager.js](file:///Users/yut/TaijiFlow/js/tutorial_manager.js) |
+| **Tabs** | Principles, Exercises, How To Use |
+| **Features** | Multi-language, Exercise descriptions, Step images |
+
+---
+
+### 8. Feedback Manager (QR Code) ✅
+
+| Item | Value |
+|------|-------|
+| **Class** | [FeedbackManager](file:///Users/yut/TaijiFlow/js/feedback_manager.js#32-110) |
+| **File** | [feedback_manager.js](file:///Users/yut/TaijiFlow/js/feedback_manager.js) |
+| **Methods** | [createButton()](file:///Users/yut/TaijiFlow/js/feedback_manager.js#50-61), [showPopup()](file:///Users/yut/TaijiFlow/js/feedback_manager.js#69-109) |
+| **Features** | Floating 📝 button, QR Code popup, Google Form link |
+
+---
+
+### 9. Session Manager ✅
+
+| Item | Value |
+|------|-------|
+| **File** | [session_manager.js](file:///Users/yut/TaijiFlow/js/session_manager.js) |
+| **Functions** | [getOrCreateUserId()](file:///Users/yut/TaijiFlow/js/session_manager.js#27-49), [generateSessionId()](file:///Users/yut/TaijiFlow/js/session_manager.js#50-64), [getPlatformInfo()](file:///Users/yut/TaijiFlow/js/session_manager.js#65-85), [isMobileDevice()](file:///Users/yut/TaijiFlow/js/session_manager.js#86-109) |
+| **Storage** | localStorage key: `taijiflow_user_id` |
+
+---
+
+## 📋 Existing Diagrams Status
+
+| Diagram | Status | Notes |
+|---------|--------|-------|
+| [UseCaseDiagram.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/UseCaseDiagram.wsd) | ✅ ครบ 6 UCs | UC01-UC06 + Actors |
+| [ActivityDiagram_UC01.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/ActivityDiagram_UC01.wsd) | ✅ | Calibration Flow |
+| [ActivityDiagram_UC02.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/ActivityDiagram_UC02.wsd) | ⚠️ **ต้องอัปเดต** | ขาด Low Light Check, Ghost/Silhouette |
+| [ActivityDiagram_UC03.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/ActivityDiagram_UC03.wsd) | ✅ | View Result Flow |
+| [ActivityDiagram_UC04.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/ActivityDiagram_UC04.wsd) | ✅ | Tutorial Flow |
+| [ActivityDiagram_UC05.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/ActivityDiagram_UC05.wsd) | ✅ | Settings Flow |
+| [ActivityDiagram_UC06.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/ActivityDiagram_UC06.wsd) | ✅ | Manage Data Flow |
+| [ActivityDiagram_Heuristics.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/ActivityDiagram_Heuristics.wsd) | ✅ | 8 Rules Analysis |
+
+---
+
+## 🔍 Detailed Gap Analysis
+
+### ActivityDiagram_UC02.wsd Gaps
+
+ปัจจุบัน Diagram ขาด features เหล่านี้:
+
+| Missing Feature | Location in Code | Should Add |
+|-----------------|------------------|------------|
+| Low Light Check (Before) | `script.js:1442` | ✅ ก่อน Calibration |
+| Low Light Warning (During) | `script.js:1698-1720` | ✅ ใน Main Loop |
+| Ghost/Silhouette Overlay | [ghost_manager.js](file:///Users/yut/TaijiFlow/js/ghost_manager.js) | ✅ ใน Training Loop |
+| Gesture Control (Start/Stop) | [gesture_manager.js](file:///Users/yut/TaijiFlow/js/gesture_manager.js) | Optional |
+
+### Missing Diagrams
+
+| Diagram | Priority | Proposed Content |
+|---------|----------|------------------|
+| **ClassDiagram.wsd** | 🔴 High | 8 core classes + relationships |
+| **SequenceDiagram_UC02.wsd** | 🔴 High | Training flow interaction |
+
+---
+
+## 🏗️ Class Relationships (For Class Diagram)
+
+```mermaid
+classDiagram
+    class script_js {
+        +Main Controller
+        +onResults()
+        +startTrainingFlow()
+    }
+    
+    class HeuristicsEngine {
+        +analyze()
+        +checkPathShape()
+        +checkElbowSinking()
+    }
+    
+    class CalibrationManager {
+        +start()
+        +process()
+        +calculateMetrics()
+    }
+    
+    class ScoringManager {
+        +recordFrame()
+        +getSummary()
+        +getGrade()
+    }
+    
+    class UIManager {
+        +toggleLanguage()
+        +toggleTheme()
+        +showNotification()
+    }
+    
+    class AudioManager {
+        +speak()
+        +speakFeedback()
+        +announce()
+    }
+    
+    class DrawingManager {
+        +drawSkeleton()
+        +drawPath()
+        +drawGhostSkeleton()
+    }
+    
+    class GhostManager {
+        +load()
+        +update()
+        +getCurrentFrame()
+    }
+    
+    script_js --> HeuristicsEngine : uses
+    script_js --> CalibrationManager : uses
+    script_js --> ScoringManager : uses
+    script_js --> UIManager : uses
+    script_js --> AudioManager : uses
+    script_js --> DrawingManager : uses
+    script_js --> GhostManager : uses
+    HeuristicsEngine --> ScoringManager : feeds
+    HeuristicsEngine --> AudioManager : triggers
+```
+
+---
+
+## 📊 Sequence Flow (For Sequence Diagram)
+
+```
+Training Session Sequence:
+
+User → script.js: Click "Start Training"
+script.js → CalibrationManager: start()
+CalibrationManager → script.js: T-Pose detected, metrics ready
+script.js → HeuristicsEngine: setCalibration(data)
+script.js → User: Show Countdown 3-2-1
+script.js → ScoringManager: start()
+script.js → AudioManager: announce("record_start")
+
+loop Every Frame (Real-time)
+    script.js → HeuristicsEngine: analyze(landmarks, timestamp, path, exercise, level)
+    HeuristicsEngine → script.js: feedbacks[]
+    
+    alt feedbacks not empty
+        script.js → DrawingManager: drawFeedbackPanel(feedbacks)
+        script.js → AudioManager: speakFeedback(feedbacks)
+    end
+    
+    script.js → ScoringManager: recordFrame(feedbacks)
+end
+
+User → script.js: Click "Stop" or Timer ends
+script.js → ScoringManager: getSummary()
+ScoringManager → script.js: summary object
+script.js → ScorePopupManager: show(summary, grade, lang)
+script.js → User: Display Score Popup
+```
+
+---
+
+## ✅ Verification Complete
+
+| Item | Result |
+|------|--------|
+| Implementation Plans Accuracy | ✅ **Accurate** - ตรงกับ code |
+| Module Count Match | ✅ **19 modules** - ตรงตามเอกสาร |
+| New Features Found | ✅ **9 features** - ยืนยันทั้งหมดมีจริงใน code |
+| Diagram Updates Needed | ⚠️ **ActivityDiagram_UC02.wsd** - ต้องเพิ่ม Low Light Check |
+| Missing Diagrams | 🔴 **ClassDiagram.wsd** + **SequenceDiagram_UC02.wsd** |
+
+---
+
+## 📝 Recommendations
+
+1. **Update ActivityDiagram_UC02.wsd** - เพิ่ม:
+   - Low Light Check ก่อน Calibration
+   - Low Light Warning ใน Main Loop
+   - Ghost/Silhouette Overlay option
+
+2. **Create ClassDiagram.wsd** - แสดง 8 core classes + relationships
+
+3. **Create SequenceDiagram_UC02.wsd** - แสดง interaction flow
+
+4. **Consider adding**:
+   - GestureManager ใน Diagrams (optional feature)
+   - FeedbackManager (QR Code) ใน UC03 diagram
+

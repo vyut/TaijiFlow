@@ -1,0 +1,61 @@
+@startuml HeuristicsRule9_Coordination
+title Rule 9: Upper-Lower Coordination Algorithm\n(checkCoordination)
+
+start
+
+:Receive wrist, hipCenter;
+
+partition "Step 1: Check History Data" {
+    if (wristHistory < 3 OR hipHistory < 3?) then (yes) 
+        :return null;
+        note right: Not enough data points
+        stop
+    else (no)
+    endif
+}
+
+partition "Step 2: Calculate Velocities (X-Axis)" {
+    :handVelX = (hand.x - handPrev.x) / dt;
+    :hipVelX = (hip.x - hipPrev.x) / dt;
+    
+    note right
+        Calculate horizontal velocity
+        over last 3 frames
+    end note
+}
+
+partition "Step 3: Filter Noise (Deadzone)" {
+    :threshold = 0.02;
+    
+    if (abs(handVelX) < threshold AND abs(hipVelX) < threshold?) then (yes)
+        :return null;
+        note right: Movement too small
+        stop
+    else (no)
+    endif
+}
+
+partition "Step 4: Check Direction Conflict" {
+    :directionProduct = sign(handVelX) * sign(hipVelX);
+    
+    if (directionProduct < 0?) then (yes)
+        note right
+            Negative product means
+            Opposite directions
+            (e.g. Hand -> Right, Hip -> Left)
+        end note
+        :return "Upper & Lower body mismatch";
+        stop
+    else (no)
+        note right
+            Positive product means
+            Same direction (Correct)
+        end note
+    endif
+}
+
+:return null;
+note right: Coordinated movement
+stop
+
+@enduml

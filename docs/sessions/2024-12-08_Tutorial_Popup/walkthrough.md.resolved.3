@@ -1,0 +1,138 @@
+# TaijiFlow AI - Phase 1 Walkthrough
+
+## Overview
+
+This document summarizes all improvements made during Phase 1 development, culminating in the new **UX Flow v3.0**.
+
+---
+
+## 🎯 New UX Flow v3.0
+
+### User Journey
+
+```mermaid
+flowchart TD
+    A[เข้าแอป] --> B[เลือกท่าฝึก]
+    B --> C[เลือกระดับ]
+    C --> D[กดปุ่ม 'เริ่มการฝึก']
+    D --> E[Auto Calibrate - ยืน T-Pose 3 วิ]
+    E --> F[Countdown 3-2-1]
+    F --> G[เริ่มบันทึกอัตโนมัติ]
+    G --> H{5 นาทีหรือกดหยุด?}
+    H -->|หมดเวลา| I[แสดงคะแนน]
+    H -->|กดหยุด| I
+    I --> J[รอ 3 วินาที]
+    J --> K[กลับหน้าแรก]
+    K --> B
+```
+
+### Key Changes from Previous Flow
+
+| Before (v2.x) | After (v3.0) |
+|---------------|--------------|
+| Manual Calibrate button | Auto Calibrate when start training |
+| Separate Record button | Auto Record with 5 min limit |
+| Hidden buttons | Disabled buttons (gray) |
+| LocalStorage calibration | Fresh calibration every session |
+| R key for recording | Removed (auto-record) |
+
+---
+
+## 📁 Files Modified
+
+### Core Files
+
+| File | Changes |
+|------|---------|
+| [script.js](file:///Users/yut/TaijiFlow/script.js) | New training flow, button toggle, try-catch error handling |
+| [index.html](file:///Users/yut/TaijiFlow/index.html) | Overlay instructions, timer layout, hidden action buttons |
+| [ui_manager.js](file:///Users/yut/TaijiFlow/ui_manager.js) | Bilingual translations for new UI elements |
+| [audio_manager.js](file:///Users/yut/TaijiFlow/audio_manager.js) | Updated announcements to "เริ่มการฝึก/หยุดการฝึก" |
+
+---
+
+## ✨ New Features
+
+### 1. Toggle Start/Stop Button
+
+The same button toggles between:
+- **🏃 เริ่มการฝึก** (green, enabled when selection complete)
+- **⏹️ หยุดการฝึก** (red, during training)
+- **🏃 เริ่มการฝึก** (gray, disabled when no selection)
+
+### 2. Auto Calibration
+
+Calibration runs automatically every time user starts training:
+- No LocalStorage caching
+- Fresh measurements each session
+- More accurate for different positions/distances
+
+### 3. Training Timer Overlay
+
+During training, bottom corners show:
+- **Left**: ⏱️ Timer (counts down from 5:00)
+- **Right**: ⛶ Fullscreen button
+
+### 4. Error Handling
+
+[endTrainingSession()](file:///Users/yut/TaijiFlow/script.js#292-360) wrapped in try-catch:
+- Export errors don't crash the app
+- [resetToHomeScreen()](file:///Users/yut/TaijiFlow/script.js#361-392) always called
+- User gets warning notification on error
+
+---
+
+## 🔊 Audio Changes
+
+| Type | Thai | English |
+|------|------|---------|
+| Start | "เริ่มการฝึก" | "Start training" |
+| Stop | "หยุดการฝึก" | "Stop training" |
+| Calibrate | "กรุณายืนท่ากางเขน" | "Please stand in T pose" |
+
+---
+
+## 🎨 UI Updates
+
+### Instructions Box
+- Updated text to match new flow
+- Changed color from blue to **purple** (matching app branding)
+
+### Start Overlay
+Shows step-by-step guide:
+1. เลือก "ท่าฝึก" จากเมนูด้านขวา
+2. เลือก "ระดับ" ที่ต้องการฝึก
+3. กดปุ่ม "🏃 เริ่มการฝึก"
+
+### Hidden Elements
+- Old calibrate/fullscreen/record buttons (hidden, not removed)
+- R key shortcut (removed)
+
+---
+
+## 🧪 Testing Checklist
+
+- [x] Select exercise → button stays disabled
+- [x] Select exercise + level → button enabled (green)
+- [x] Click start → calibration starts
+- [x] After calibration → countdown → recording
+- [x] Timer counts down from 5:00
+- [x] Click stop button → score popup → reset
+- [x] After reset → button disabled (gray), overlay shown
+- [x] Language toggle updates all text
+- [x] Audio announcements in correct language
+
+---
+
+## 📅 Completion Date
+
+**December 9, 2024**
+
+---
+
+## 🚀 Next Steps (Phase 2)
+
+- [ ] Add more reference data for all 12 exercise combinations
+- [ ] Implement user authentication system
+- [ ] Add session history and progress tracking
+- [ ] Prepare for ML data collection at scale

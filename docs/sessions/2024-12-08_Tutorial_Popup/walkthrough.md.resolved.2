@@ -1,0 +1,120 @@
+# 🏁 TaijiFlow AI - Phase 1 Walkthrough
+
+## สรุปการปรับปรุงทั้งหมด
+
+| Feature | Module | สถานะ |
+|---------|--------|-------|
+| Scoring System | [scoring_manager.js](file:///Users/yut/TaijiFlow/scoring_manager.js) | ✅ |
+| Audio Feedback | [audio_manager.js](file:///Users/yut/TaijiFlow/audio_manager.js) | ✅ |
+| Data Export Fields | [script.js](file:///Users/yut/TaijiFlow/script.js) | ✅ |
+| Bug Fixes | [script.js](file:///Users/yut/TaijiFlow/script.js) | ✅ |
+| README | [README.md](file:///Users/yut/TaijiFlow/README.md) | ✅ |
+
+---
+
+## สถาปัตยกรรม (Architecture)
+
+```mermaid
+graph TD
+    A[Webcam] --> B[MediaPipe Pose]
+    B --> C[Landmarks]
+    C --> D[CalibrationManager]
+    C --> E[HeuristicsEngine]
+    D --> E
+    E --> F[Feedbacks]
+    F --> G["DrawingManager<br/>👁️ Visual"]
+    F --> H["AudioManager<br/>🔊 Audio"]
+    F --> I[ScoringManager]
+    G --> J[Canvas]
+    H --> K[Voice TTS]
+    I --> L[Score Popup]
+```
+
+---
+
+## Flow การใช้งาน
+
+```mermaid
+flowchart TD
+    A[🚀 เปิดแอป] --> B{เปิดเสียง?}
+    B -->|ใช่| C[🔊 กดปุ่มเสียง]
+    B -->|ไม่| D
+    C --> D[📏 กด Calibrate]
+    D --> E["👁️ แสดงคำแนะนำบนจอ<br/>🔊 ได้ยิน: กรุณายืนท่ากางเขน"]
+    E --> F[🧍 ยืน T-Pose 3 วินาที]
+    F --> G["✅ ปรับเทียบสำเร็จ<br/>👁️ Notification<br/>🔊 ได้ยิน: ปรับเทียบสำเร็จ"]
+    G --> H[🎯 เลือกท่าและ Level]
+    H --> I[⏺️ กด Record]
+    I --> J["🔊 ได้ยิน: เริ่มบันทึก"]
+    J --> K[🥋 ฝึกท่า]
+    K --> L{ทำผิด?}
+    L -->|ใช่| M["👁️ แสดงคำเตือนบนจอ<br/>🔊 ได้ยินเสียงเตือน"]
+    M --> K
+    L -->|ไม่| K
+    K --> N[⏹️ กด Stop]
+    N --> O["🔊 ได้ยิน: หยุดบันทึก"]
+    O --> P["📊 Popup แสดงคะแนน<br/>+ เกรด A-F"]
+    P --> Q[💾 JSON Download]
+```
+
+---
+
+## Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor User as ผู้ใช้
+    participant UI as TaijiFlow UI
+    participant Canvas as DrawingManager
+    participant Audio as AudioManager
+    participant AI as HeuristicsEngine
+    participant Score as ScoringManager
+    participant Export as DataExporter
+
+    User->>UI: เปิดแอป
+    User->>Audio: กด 🔊 เปิดเสียง
+    User->>UI: กด Calibrate
+    
+    rect rgb(200, 220, 255)
+        Note over Canvas,Audio: Calibration Process
+        Canvas->>User: 👁️ แสดงคำแนะนำ T-Pose
+        Audio->>User: 🔊 "กรุณายืนท่ากางเขน"
+        User->>UI: ยืน T-Pose 3 วินาที
+        UI->>User: 👁️ Notification สำเร็จ
+        Audio->>User: 🔊 "ปรับเทียบสำเร็จ"
+    end
+    
+    User->>UI: เลือกท่าและ Level
+    User->>UI: กด Record
+    Audio->>User: 🔊 "เริ่มบันทึก"
+    Score->>Score: start()
+    
+    rect rgb(255, 230, 200)
+        Note over AI,Audio: Training Loop (ทุกเฟรม)
+        loop ทุก ~33ms (30 FPS)
+            AI->>AI: วิเคราะห์ landmarks
+            AI->>Canvas: 👁️ drawFeedbackPanel()
+            AI->>Audio: 🔊 speakFeedback()
+            AI->>Score: recordFrame()
+        end
+    end
+    
+    User->>UI: กด Stop
+    Audio->>User: 🔊 "หยุดบันทึก"
+    Score->>UI: stop() → สรุปคะแนน
+    UI->>User: 📊 Popup แสดงคะแนน
+    Export->>User: 💾 Download JSON
+```
+
+---
+
+## ไฟล์ที่เปลี่ยนแปลง
+
+| ไฟล์ | การเปลี่ยนแปลง |
+|------|---------------|
+| [scoring_manager.js](file:///Users/yut/TaijiFlow/scoring_manager.js) | **[NEW]** |
+| [audio_manager.js](file:///Users/yut/TaijiFlow/audio_manager.js) | **[NEW]** |
+| [script.js](file:///Users/yut/TaijiFlow/script.js) | Integration + Bug fix |
+| [ui_manager.js](file:///Users/yut/TaijiFlow/ui_manager.js) | เพิ่ม Popup |
+| [index.html](file:///Users/yut/TaijiFlow/index.html) | ปุ่ม 🔊 |
+| [README.md](file:///Users/yut/TaijiFlow/README.md) | เขียนใหม่ |

@@ -1,0 +1,210 @@
+# 🎓 TaijiFlow AI - PhD Research Roadmap
+
+> **สาขา:** Artificial Intelligence  
+> **ระยะเวลา:** 3 ปี (6 semesters)  
+> **พื้นฐาน:** Independent Study (TaijiFlow AI Phase 1)
+
+---
+
+## 📍 โครงสร้างภาพรวม
+
+```
+Year 1: Foundation & Data Pipeline
+├── Semester 1: 8 ท่าสองมือ + User System
+└── Semester 2: Data Collection + Baseline ML
+
+Year 2: Core AI Research
+├── Semester 3: Multi-Movement Classification
+└── Semester 4: Sequential Analysis (LSTM/Transformer)
+
+Year 3: Innovation & Publication
+├── Semester 5: Real-time Continuous Recognition
+└── Semester 6: Thesis Writing + Defense
+```
+
+---
+
+## 📅 Semester-by-Semester Breakdown
+
+### Year 1: Foundation & Data Pipeline
+
+#### Semester 1 (เดือน 1-6)
+**หัวข้อ:** ระบบท่าสองมือ + User Management
+
+| Deliverable | รายละเอียด |
+|-------------|------------|
+| **8 ท่าสองมือ** | ขยาย Heuristics Engine รองรับ Two-Hand Coordination |
+| **Authentication** | Login/Register (Firebase Auth หรือ NextAuth.js) |
+| **Cloud Database** | เก็บข้อมูลผู้ใช้ + Session History (Firestore/PostgreSQL) |
+| **Dashboard v1** | แสดงประวัติการฝึก + กราฟพัฒนาการ |
+
+**Publication Opportunity:**  
+📄 *Workshop Paper* - "TaijiFlow: A Heuristics-based Taijiquan Training System with Body Proportion Calibration"
+
+---
+
+#### Semester 2 (เดือน 7-12)
+**หัวข้อ:** Data Collection + Baseline ML Model
+
+| Deliverable | รายละเอียด |
+|-------------|------------|
+| **Data Collection Campaign** | เก็บข้อมูล 50+ ผู้ใช้, 1,000+ sessions (ครั้งละ 2-5 นาที) |
+| **Data Labeling Tool** | เครื่องมือ Annotate ความถูกต้องของท่า |
+| **Baseline CNN Model** | ทดลอง Frame-by-frame Classification |
+| **Benchmark Dataset** | สร้าง Public Dataset (contribution ใหญ่สำหรับ PhD) |
+
+**Publication Opportunity:**  
+📄 *Conference Paper* - "TaijiFlow Dataset: A Multi-view Pose Dataset for Silk Reeling Motion Analysis"
+
+> [!IMPORTANT]
+> การสร้าง Public Dataset เป็น **Contribution สำคัญ** สำหรับ PhD เพราะ:
+> - ยังไม่มี Dataset เฉพาะสำหรับ Taijiquan
+> - ช่วยให้นักวิจัยคนอื่นใช้ต่อได้
+
+---
+
+### Year 2: Core AI Research
+
+#### Semester 3 (เดือน 13-18)
+**หัวข้อ:** Multi-Movement Classification
+
+| Deliverable | รายละเอียด |
+|-------------|------------|
+| **Movement Classification** | โมเดลจำแนก 12 ท่าม้วนไหม |
+| **Error Detection Model** | ML ตรวจจับ 8 ประเภทข้อผิดพลาด |
+| **Comparison Study** | Heuristics vs ML vs Hybrid Approach |
+| **Real-time Inference** | ปรับ Model ให้รันได้ 30 FPS |
+
+**Publication Opportunity:**  
+📄 *Journal Paper* - "Comparing Heuristic and Deep Learning Approaches for Taijiquan Movement Assessment"
+
+---
+
+#### Semester 4 (เดือน 19-24)
+**หัวข้อ:** Sequential Analysis with RNN/Transformer
+
+| Deliverable | รายละเอียด |
+|-------------|------------|
+| **Sequence Modeling** | LSTM หรือ Temporal Transformer |
+| **Transition Detection** | ตรวจจับการเปลี่ยนท่า |
+| **Quality Scoring** | คะแนนความต่อเนื่อง + ความนุ่มนวล |
+| **Movement Generation** | (Bonus) สร้าง Reference Animation จาก Model |
+
+**Research Direction:**
+```
+Input: [Frame 1, Frame 2, ... Frame N]
+Output: [(ท่า_X, คะแนน), (ท่า_Y, คะแนน), ...]
+```
+
+**Publication Opportunity:**  
+📄 *Top-tier Conference (CVPR/ICCV Workshop)* - "Temporal Modeling for Continuous Taijiquan Movement Recognition"
+
+---
+
+### Year 3: Innovation & Publication
+
+#### Semester 5 (เดือน 25-30)
+**หัวข้อ:** Real-time Continuous Recognition + Innovation
+
+| Deliverable | รายละเอียด |
+|-------------|------------|
+| **Sequence-Agnostic Recognition** | รำท่าไหนก่อนก็ได้ ระบบจำได้ |
+| **Spatial Awareness** | ตรวจจับการเคลื่อนที่ซ้าย-ขวา-หน้า-หลัง |
+| **Single-camera Optimization** | ปรับปรุงความแม่นยำจากกล้อง 1 ตัว |
+| **Edge Deployment** | รัน Model บน Mobile/Raspberry Pi |
+
+**Innovation Ideas for PhD Level:**
+
+> [!IMPORTANT]
+> **หลักการสำคัญ:** ระบบต้อง**เข้าถึงได้ง่าย** - ใช้แค่ Webcam 1 ตัว ไม่ต้องมีอุปกรณ์เสริม
+
+| นวัตกรรม | รายละเอียด | Impact |
+|----------|-------------|--------|
+| **Personalized Learning Path** | AI แนะนำลำดับท่าที่เหมาะกับผู้ใช้ | High |
+| **Style Transfer** | เรียนรู้สไตล์จากปรมาจารย์แต่ละท่าน | High |
+| **Audio Feedback (TTS)** | อ่านคำเตือนออกเสียงเมื่อทำผิด (Web Speech API) | High |
+| **Collaborative Learning** | เปรียบเทียบกับผู้ฝึกคนอื่นแบบ Real-time | Medium |
+| **Offline PWA** | ใช้งานได้แม้ไม่มี Internet | Medium |
+
+**Publication Opportunity:**  
+📄 *Journal (IEEE TPAMI / IJCV)* - "TaijiFlow: An End-to-end Deep Learning System for Real-time Taijiquan Assessment"
+
+---
+
+#### Semester 6 (เดือน 31-36)
+**หัวข้อ:** Thesis Completion + Defense
+
+| Task | รายละเอียด |
+|------|------------|
+| **System Integration** | รวมทุก Component เป็น Production System |
+| **User Study** | ทดสอบกับผู้ใช้จริง 100+ คน |
+| **Thesis Writing** | เขียน Dissertation |
+| **Defense Preparation** | เตรียม Presentation + Demo |
+
+---
+
+## 🔬 Research Questions สำหรับ PhD
+
+1. **RQ1:** Heuristics-based Rules มี Accuracy เทียบเท่า DL Models หรือไม่ในบริบท Taijiquan?
+2. **RQ2:** การใช้ Calibration Data ช่วยปรับปรุง Generalization ของ Model ได้อย่างไร?
+3. **RQ3:** Temporal Modeling สามารถจับ "ความต่อเนื่อง" ของการเคลื่อนไหวได้ดีแค่ไหน?
+4. **RQ4:** AI Feedback ช่วยเร่งการเรียนรู้ Taijiquan ได้มากกว่าวิธีดั้งเดิมหรือไม่?
+
+---
+
+## 📊 Expected Publications
+
+| Year | Publication Type | Target Venue |
+|------|------------------|--------------|
+| 1 | Workshop Paper | ACM CHI Workshop / IEEE ISMAR |
+| 1-2 | Dataset Paper | NeurIPS Datasets Track / CVPR Workshop |
+| 2 | Conference Paper | CVPR/ICCV/ECCV Workshop |
+| 2-3 | Journal Paper | IEEE TPAMI / Pattern Recognition |
+| 3 | Journal Paper (Main) | ACM Computing Surveys / IJCV |
+
+---
+
+## 🛠️ Technology Stack Roadmap
+
+```
+Phase 1 (IS):     MediaPipe + Vanilla JS + Heuristics
+    ↓
+Phase 2 (PhD Y1): + Firebase/NextAuth + Cloud DB + React/Vue
+    ↓
+Phase 3 (PhD Y2): + PyTorch/TensorFlow + LSTM/Transformer
+    ↓
+Phase 4 (PhD Y3): + TensorFlow.js (Edge) + PWA Offline
+```
+
+---
+
+## 💡 Unique Contribution ที่เหมาะกับ PhD
+
+| Contribution | เหตุผลว่าทำไมสำคัญ |
+|--------------|-------------------|
+| **First Taijiquan ML Dataset** | ยังไม่มีใครทำ Public Dataset |
+| **Hybrid Heuristics + ML** | ผสมความรู้ผู้เชี่ยวชาญ + Data-driven |
+| **Real-time Continuous Recognition** | ท้าทายกว่า Fixed Sequence |
+| **Cross-cultural HCI Research** | ศึกษาการเรียนรู้ศิลปะการต่อสู้ตะวันออก |
+
+---
+
+## ⚠️ Risk & Mitigation
+
+| Risk | Mitigation Strategy |
+|------|---------------------|
+| ข้อมูลน้อยเกินไป | เริ่มเก็บข้อมูลตั้งแต่ Semester 1 |
+| Model ไม่ Generalize | ใช้ Calibration + Domain Adaptation |
+| Latency สูงเกินไป | ใช้ Model Quantization + Edge Inference |
+| ขาด Domain Expert | ร่วมมือกับสถาบันมวยไท้เก๊ก |
+
+---
+
+## 📝 สรุป
+
+แผนนี้ออกแบบให้:
+1. ✅ มี Deliverable ทุก Semester (สำหรับนำเสนอ)
+2. ✅ มีโอกาส Publish 4-5 Papers
+3. ✅ มี Unique Contribution ชัดเจน
+4. ✅ เชื่อมต่อจาก IS ได้อย่างราบรื่น
+5. ✅ มี Innovation หลายทางให้เลือก

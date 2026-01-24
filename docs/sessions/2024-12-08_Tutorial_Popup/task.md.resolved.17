@@ -1,0 +1,9 @@
+# Tutorial Popup Implementation
+
+## Tasks
+
+- [ ] Create `js/tutorial_manager.js` with bilingual content
+- [ ] Create `css/tutorial.css` for popup styling
+- [ ] Modify [index.html](file:///Users/yut/TaijiFlow/index.html) to add tutorial button and container
+- [ ] Create `images/tutorial/` folder structure
+- [ ] Test tutorial popup functionality

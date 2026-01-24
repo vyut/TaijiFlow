@@ -1,0 +1,36 @@
+# TaijiFlow Code Documentation Updates
+
+## Summary
+Enhanced `heuristics_engine.js` with comprehensive comments following the style established in `scoring_manager.js`.
+
+## Changes Made
+
+### 1. File Renaming
+- `scoring_manager.js` → `scoring_manager_v1.js` (backup)
+- `scoring_manager2.js` → `scoring_manager.js` (now active)
+
+### 2. Comments Added to [heuristics_engine.js](file:///Users/yut/TaijiFlow/js/heuristics_engine.js)
+
+| Section | What Was Added |
+|---------|----------------|
+| **File Header** | Features list, 8 rules overview, usage example |
+| **CONFIG** | Each threshold explained with units + Tai Chi principle |
+| **STATE** | Variables documented (calibration, history buffers, sticky feedback) |
+| **RULES_CONFIG** | L1/L2/L3 differences explained with reasons |
+| **RULE_PRIORITY** | Why each rule has its priority |
+| **Helper Functions** | Full JSDoc (params, returns) |
+| **Rules 1-8** | Section headers + Chinese principles + algorithm steps |
+
+### 3. Chinese Tai Chi Principles Referenced
+| Rule | Principle | Meaning |
+|------|-----------|---------|
+| Elbow Sinking | 沉肩坠肘 | Sink shoulders, drop elbows |
+| Waist Initiation | 腰为轴 | Waist is the axis |
+| Vertical Stability | 虚领顶劲 | Empty/light crown energy |
+| Smoothness | 如抽丝 | Like drawing silk |
+| Continuity | 绵绵不断 | Continuous without break |
+| Weight Shift | 分虚实 | Distinguish empty/full |
+
+## File Statistics
+- Before: 543 lines
+- After: 787 lines (+45%)

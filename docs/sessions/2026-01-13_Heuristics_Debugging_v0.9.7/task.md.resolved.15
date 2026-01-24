@@ -1,0 +1,27 @@
+# UI Refinement Tasks
+
+- [x] 1. Change Quickstart box color from Green to White (Done)
+- [x] 2. Change "Starting Immediately" (TH) to "Quickstart" and change title color to Purple
+    - [x] Text update (User did this manually)
+    - [x] Change title color to Purple in [index.html](file:///Users/yut/TaijiFlow/index.html) (landing.css)
+    - [x] Change title color to Purple in [app.html](file:///Users/yut/TaijiFlow/app.html)
+- [-] 3. Align [app.html](file:///Users/yut/TaijiFlow/app.html) overlay steps horizontally (Reverted to vertical)
+- [x] 4. Unify buttons to Purple and "Start Training" text
+- [x] 5. Change Main Card border to White in [app.html](file:///Users/yut/TaijiFlow/app.html)
+- [x] 6. Change Landing Hero Button to Purple Gradient
+
+# Content Refinement Tasks (About Section)
+- [x] 1. Refine "Origin" (Accessibility, Real-time Feedback, SE Keywords)
+- [x] 2. Refine "Technology" (5 Core Tech Stack)
+- [x] 3. Replace "Acknowledgements" with "System Architecture" (4-Layer)
+- [x] 4. Refine "Key Features" (5 Core Features from SRS)
+    - [x] Pose Detection, Gesture Control (New)
+    - [x] Heuristics (8 Rules), Calibration, Scoring
+    - [x] Web Speech API, Generative AI
+
+# User Guide Refinement
+- [x] 1. Analyze Gaps between Appendix E and Landing Page
+- [x] 2. Update Guide to 3-Step Workflow (Prep -> Train -> Eval)
+- [x] 3. Remove "Quickstart" block to focus on System Overview
+- [x] 4. Add "Tips & Requirements" section (Device, Environment, Clothing)
+- [x] 5. Add "Usage Warnings" section (Limitations, Health, Disclaimer)

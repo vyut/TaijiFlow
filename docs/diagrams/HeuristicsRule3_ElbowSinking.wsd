@@ -1,0 +1,48 @@
+@startuml HeuristicsRule3_ElbowSinking
+title Rule 3: Elbow Sinking Algorithm\n(checkElbowSinking)
+
+start
+
+:Receive shoulder, elbow, wrist, calibrationData;
+
+partition "Step 1: Calculate Dynamic Tolerance" {
+    if (calibrationData exists?) then (yes)
+        :tolerance = torsoHeight * 0.05;
+        note right: 5% of torso height
+    else (no)
+        :tolerance = 0.01;
+        note right: Default value
+    endif
+}
+
+partition "Step 2: Compare Y Positions" {
+    note left
+        **Image Coordinates:**
+        Y = 0 at top
+        Y increases downward
+        
+        Lower Y value = Higher position
+        Higher Y value = Lower position
+    end note
+    
+    if (elbow.y < shoulder.y - tolerance?) then (yes)
+        note right
+            Elbow is ABOVE shoulder
+            (lower Y = higher position)
+            This means elbow is floating!
+        end note
+        :return "Elbow floating - press down";
+        stop
+    else (no)
+        note right
+            Elbow is below or at shoulder level
+            elbow.y >= shoulder.y - tolerance
+        end note
+    endif
+}
+
+:return null;
+note right: Elbow properly sunk
+stop
+
+@enduml

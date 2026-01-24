@@ -1,0 +1,24 @@
+# TaijiFlow AI - Phase 1 Improvements
+
+## Current Tasks
+- [x] Fix UX Issues Round 2
+  - [x] Hide unused action buttons (calibrate, fullscreen, record)
+  - [x] Fix null error on first load (loadReferenceData)
+  - [x] Add manual fullscreen overlay button
+  - [x] Update endTrainingSession to reset properly
+
+## Completed
+- [x] Camera Error Handling
+- [x] Reference Data Validation
+- [x] Implement Scoring System (0-100%)
+- [x] Fix `isRecording` bug
+- [x] Write comprehensive README.md
+- [x] Add missing fields for ML data export
+- [x] Audio Feedback (TTS)
+- [x] Grade Bilingual
+- [x] Calibration Text Bilingual
+- [x] File Headers and Comments
+- [x] Dynamic Thresholds (Smoothness)
+- [x] New UX Flow (v3.0)
+- [x] UX Issues Round 1 fixes
+- [x] UX Issues Round 2 fixes

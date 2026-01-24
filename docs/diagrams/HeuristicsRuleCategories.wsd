@@ -1,0 +1,38 @@
+@startuml HeuristicsRuleCategories
+title การจัดหมวดหมู่กฎ 9 ข้อ\n(Heuristics Rule Categories)
+
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam backgroundColor white
+skinparam defaultTextAlignment center
+
+package "📍 หมวดเส้นทาง (Path)\n<size:12><i>ตรวจสอบรูปร่างและเส้นทางของการเคลื่อนไหว</i></size>" #E8F5E9 {
+  component "Rule 1: Path Shape\nรูปทรงเส้นทาง\n圆转如意" as R1
+}
+
+package "🦴 หมวดท่าทาง (Posture)\n<size:12><i>ตรวจสอบท่าทาง องศา และ orientation ของข้อต่อ</i></size>" #E3F2FD {
+  component "Rule 2: Arm Rotation\nการหมุนแขน\n旋腕转臂" as R2
+  component "Rule 3: Elbow Sinking\nศอกจม\n沉肩坠肘" as R3
+  component "Rule 4: Waist Initiation\nเอวนำ\n腰为轴" as R4
+  component "Rule 5: Vertical Stability\nศีรษะนิ่ง\n虚领顶劲" as R5
+  
+  R2 -[hidden]down-> R3
+  R3 -[hidden]down-> R4
+  R4 -[hidden]down-> R5
+}
+
+package "🌊 หมวดสไตล์ (Movement Quality)\n<size:12><i>ตรวจสอบคุณภาพและลักษณะของการเคลื่อนไหว</i></size>" #FFF3E0 {
+  component "Rule 6: Smoothness\nความลื่นไหล\n如抽丝" as R6
+  component "Rule 7: Continuity\nความต่อเนื่อง\n绵绵不断" as R7
+  
+  R6 -[hidden]down-> R7
+}
+
+package "⚖️ หมวดน้ำหนัก (Weight Distribution)\n<size:12><i>ตรวจสอบการกระจายน้ำหนักและการประสานงาน</i></size>" #FCE4EC {
+  component "Rule 8: Weight Shift\nถ่ายน้ำหนัก\n分虚实" as R8
+  component "Rule 9: Coordination\nบนล่างสัมพันธ์\n上下相随" as R9
+  
+  R8 -[hidden]down-> R9
+}
+
+@enduml

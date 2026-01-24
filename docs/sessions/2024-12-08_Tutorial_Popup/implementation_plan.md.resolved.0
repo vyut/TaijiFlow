@@ -1,0 +1,113 @@
+# Implementation Plan: New UX Flow
+
+## Goal
+ปรับ UX/UI ให้เรียบง่ายขึ้น โดยบังคับเลือกท่า+ระดับ แล้วเริ่ม Auto Calibrate → Auto Record 5 นาที
+
+---
+
+## Flow ใหม่
+
+```
+เข้าหน้าแรก (ท่าว่าง, ระดับว่าง)
+    ↓
+เลือก "ท่าฝึก" → เลือก "ระดับ"
+    ↓
+แสดงปุ่ม "เริ่มฝึก" → กด
+    ↓
+ตรวจสอบ Calibration Data ใน LocalStorage
+    ↓ (ถ้าไม่มี)              ↓ (ถ้ามี)
+Auto Calibrate             ข้าม Calibration
+    ↓                           ↓
+นับถอยหลัง 3 วินาที
+    ↓
+เต็มจอ + เริ่มบันทึก (อัตโนมัติ)
+    ↓
+ฝึก 5 นาที (แสดงเวลาเหลือ + ปุ่ม "หยุดก่อน")
+    ↓
+หยุด → แสดง Score Popup → กดปิด → กลับหน้าแรก
+```
+
+---
+
+## Proposed Changes
+
+### [MODIFY] [index.html](file:///Users/yut/TaijiFlow/index.html)
+
+1. **เปลี่ยน Exercise Select** - เพิ่ม option ว่างเป็นค่าเริ่มต้น
+2. **เปลี่ยน Level Buttons** - ไม่มี active state เริ่มต้น
+3. **เพิ่มปุ่ม "เริ่มฝึก"** - แสดงเมื่อเลือกครบ
+4. **เพิ่ม Timer Display** - แสดงเวลาเหลือ
+5. **เพิ่มปุ่ม "หยุดก่อน"** - สำหรับหยุดก่อน 5 นาที
+6. **เพิ่ม Countdown Overlay** - นับ 3-2-1
+
+---
+
+### [MODIFY] [script.js](file:///Users/yut/TaijiFlow/script.js)
+
+1. **ลบ Default Exercise/Level** - `currentExercise = null`, `currentLevel = null`
+2. **เพิ่ม State: `isTrainingMode`** - ควบคุม Flow
+3. **เพิ่มฟังก์ชัน `startTrainingFlow()`** - รวม Calibrate + Record
+4. **เพิ่มฟังก์ชัน `showCountdown()`** - นับ 3-2-1
+5. **เพิ่ม Timer** - 5 นาที countdown
+6. **เพิ่มฟังก์ชัน `endTrainingSession()`** - หยุด + Score + กลับหน้าแรก
+7. **เก็บ Calibration ใน LocalStorage** - `localStorage.setItem('calibrationData', JSON.stringify(...))`
+
+---
+
+### [MODIFY] [calibration_manager.js](file:///Users/yut/TaijiFlow/calibration_manager.js)
+
+1. **เพิ่ม `saveToStorage()`** - บันทึก Calibration Data
+2. **เพิ่ม `loadFromStorage()`** - โหลด Calibration Data เดิม
+3. **เพิ่ม `hasStoredData()`** - เช็คว่ามีข้อมูลอยู่ไหม
+
+---
+
+### [MODIFY] [ui_manager.js](file:///Users/yut/TaijiFlow/ui_manager.js)
+
+1. **เพิ่ม `showStartButton()`** - แสดง/ซ่อนปุ่มเริ่มฝึก
+2. **เพิ่ม `showCountdownOverlay()`** - แสดงนับถอยหลัง
+3. **เพิ่ม `showTimer()`** - แสดงเวลาเหลือ
+4. **เพิ่ม `resetSelections()`** - เคลียร์การเลือก
+
+---
+
+## UI Changes Summary
+
+| Element | เดิม | ใหม่ |
+|---------|------|------|
+| Exercise Select | มี Default | ว่างเปล่า |
+| Level Buttons | L1 Active | ไม่มี Active |
+| ปุ่ม Calibrate | มี | ซ่อน (Auto) |
+| ปุ่ม Record | มี | ซ่อน (Auto) |
+| ปุ่ม Fullscreen | มี | ซ่อน (Auto) |
+| **ปุ่ม "เริ่มฝึก"** | ไม่มี | **เพิ่มใหม่** |
+| **ปุ่ม "หยุดก่อน"** | ไม่มี | **เพิ่มใหม่** |
+| **Timer Display** | ไม่มี | **เพิ่มใหม่** |
+| **Countdown Overlay** | ไม่มี | **เพิ่มใหม่** |
+
+---
+
+## Verification Plan
+
+### Manual Testing
+
+**ขั้นตอนการทดสอบ:**
+
+1. **เปิดหน้าเว็บ** → ตรวจสอบว่า Exercise ว่าง, Level ไม่มี Active
+2. **เลือกท่า+ระดับ** → ปุ่ม "เริ่มฝึก" ปรากฏ
+3. **กดเริ่มฝึก (ครั้งแรก)** → Calibrate อัตโนมัติ
+4. **ยืน T-Pose** → นับถอยหลัง 3-2-1
+5. **เริ่มบันทึก** → เต็มจอ + Timer แสดง
+6. **กดหยุดก่อน** → Score Popup → กลับหน้าแรก
+7. **เริ่มใหม่** → ไม่ต้อง Calibrate (ใช้ค่าเดิม)
+8. **รอ 5 นาที** → หยุดอัตโนมัติ
+
+---
+
+## Risk Assessment
+
+| ความเสี่ยง | ระดับ | วิธีจัดการ |
+|-----------|-------|-----------|
+| UI ค้างเพราะ Timer | ต่ำ | ใช้ requestAnimationFrame |
+| LocalStorage ไม่มีค่า | ต่ำ | เช็คก่อนใช้งาน |
+| การเปลี่ยน Flow กระทบโค้ดเดิม | ปานกลาง | ทำทีละส่วน |

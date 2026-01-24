@@ -1,0 +1,14 @@
+# Tutorial Popup Implementation
+
+## Tasks
+
+- [x] Create `js/tutorial_manager.js` with bilingual content
+- [x] Modify `index.html` to add tutorial script
+- [x] Create `images/tutorial/` folder structure
+- [x] Add actual images (12 .png files added by user)
+- [x] Update title to "คู่มือการใช้งาน TaijiFlow AI"
+- [x] Move icon position next to dark mode
+- [x] Update principles with 10 Essentials from chatbot.js
+- [x] Fix image extension to .png
+- [x] Hide tips section
+- [ ] Test tutorial popup functionality

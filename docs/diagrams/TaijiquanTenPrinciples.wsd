@@ -1,0 +1,34 @@
+@startuml TaijiquanTenPrinciples
+title 太极拳十要 (10 หลักการสำคัญของมวยไทเก๊ก)\nโดย Yang Chengfu (杨澄甫)
+
+'skinparam defaultFontName "Sarabun"
+skinparam shadowing false
+
+' สร้างตารางด้วย salt
+salt
+{
+  {#
+    . | **太极拳十要** | **การแปล** | **TaijiFlow Rule**
+    **1** | 虚领顶劲 | ศีรษะตั้งตรง ลอยเบา | ✓ Rule 5: Vertical Stability
+    **2** | 含胸拔背 | หุบอก ยืดหลัง | -
+    **3** | 松腰 | ผ่อนเอว | ✓ Rule 4: Waist Initiation
+    **4** | 分虚实 | แยกหนักเบา | ✓ Rule 8: Weight Shift
+    **5** | 沉肩坠肘 | จมไหล่ ตกศอก | ✓ Rule 3: Elbow Sinking
+    **6** | 用意不用力 | ใช้จิต ไม่ใช้แรง | -
+    **7** | 上下相随 | บนล่างสอดคล้อง | ✓ Rule 9: Coordination
+    **8** | 内外相合 | ในนอกประสาน | -
+    **9** | 相连不断 | ต่อเนื่องไม่ขาด | ✓ Rule 7: Continuity
+    **10** | 动中求静 | นิ่งในเคลื่อน | ✓ Rule 5: Vertical Stability
+  }
+}
+
+legend right
+  **สรุป:**
+  ✓ = ครอบคลุมโดย TaijiFlow AI
+  - = ไม่ได้ตรวจสอบในระบบ
+  
+  **6 จาก 10 หลักการ** ถูกนำมาใช้
+  ในระบบ Heuristics Engine
+endlegend
+
+@enduml

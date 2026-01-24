@@ -1,0 +1,108 @@
+# Chapter 6: Testing - Analysis Report
+
+## สรุปการตรวจสอบเอกสาร Testing
+
+### 1. ไฟล์ที่ตรวจสอบ
+
+| ไฟล์ | สถานะ | จำนวน Test Cases |
+|-----|:-----:|:----------------:|
+| [TESTING_CHECKLIST.md](file:///Users/yut/TaijiFlow/docs/TESTING_CHECKLIST.md) | ⚠️ ต้องอัปเดต | 52 cases |
+| `tests/unit/*.test.js` | ✅ OK | 3 files, 20+ tests |
+| [user_testing_questionnaire.md](file:///Users/yut/TaijiFlow/docs/user_testing_questionnaire.md) | ✅ OK | 8 คำถาม |
+
+---
+
+## 2. สิ่งที่ต้องอัปเดต
+
+### TESTING_CHECKLIST.md
+
+| ปัญหา | รายละเอียด |
+|-------|-----------|
+| **Last Updated** | 2024-12-26 → ต้องอัปเดตเป็น 2026-01-09 |
+| **Version** | 1.0 → ควรเป็น 2.0 (major feature additions) |
+| **Missing: Gesture Control** | ไม่มี test cases สำหรับ 👍/✊ gesture |
+| **Missing: AI Chatbot** | ไม่มี test cases สำหรับ Gemini chatbot |
+| **Missing: Landing Page** | ไม่มี test cases สำหรับ Landing Page |
+| **Missing: Silk Animation** | ไม่มี test cases สำหรับ Canvas animation |
+
+### Test Cases ที่ต้องเพิ่ม
+
+```markdown
+## 10. Gesture Control (v0.8) - NEW
+
+| # | Test | Steps | Expected | Result |
+|---|------|-------|----------|:------:|
+| 10.1 | Thumbs Up Start | ยกนิ้วโป้ง 👍 | เริ่มการฝึก | ☐ |
+| 10.2 | Closed Fist Stop | กำมือ ✊ | หยุดการฝึก | ☐ |
+| 10.3 | Gesture Disabled | ปิด Gesture จาก Settings | ไม่ตอบสนอง | ☐ |
+| 10.4 | Multiple Hands | แสดง 2 มือ | ใช้มือแรกที่เห็น | ☐ |
+
+## 11. AI Chatbot (v0.8) - NEW
+
+| # | Test | Steps | Expected | Result |
+|---|------|-------|----------|:------:|
+| 11.1 | Open Chatbot | กดปุ่ม Chatbot (💬) | เปิด popup | ☐ |
+| 11.2 | Send Message | พิมพ์ข้อความ + ส่ง | ได้รับคำตอบ | ☐ |
+| 11.3 | Thai Language | ถามภาษาไทย | ตอบภาษาไทย | ☐ |
+| 11.4 | No API Key | ไม่ใส่ API Key | แสดง error | ☐ |
+
+## 12. Landing Page (v0.8) - NEW
+
+| # | Test | Steps | Expected | Result |
+|---|------|-------|----------|:------:|
+| 12.1 | Load Landing | เปิด index.html | แสดง Landing Page | ☐ |
+| 12.2 | Silk Animation | ดู background | Animation ทำงาน | ☐ |
+| 12.3 | Start Button | กดปุ่มเริ่มฝึก | ไปที่ app.html | ☐ |
+| 12.4 | Language Toggle | กดปุ่มภาษา | เปลี่ยนภาษา | ☐ |
+```
+
+---
+
+## 3. Unit Tests
+
+| ไฟล์ | Tests | สถานะ |
+|-----|:-----:|:-----:|
+| [heuristics_engine.test.js](file:///Users/yut/TaijiFlow/tests/unit/heuristics_engine.test.js) | 16+ tests | ✅ ครบ 8 กฎ |
+| [scoring_manager.test.js](file:///Users/yut/TaijiFlow/tests/unit/scoring_manager.test.js) | ~5 tests | ✅ OK |
+| [session_manager.test.js](file:///Users/yut/TaijiFlow/tests/unit/session_manager.test.js) | ~5 tests | ✅ OK |
+
+**ไม่มี unit tests สำหรับ:**
+- [gesture_manager.js](file:///Users/yut/TaijiFlow/js/gesture_manager.js)
+- [chatbot.js](file:///Users/yut/TaijiFlow/js/chatbot.js)
+- [calibration_manager.js](file:///Users/yut/TaijiFlow/js/calibration_manager.js)
+
+---
+
+## 4. Summary Table Update
+
+| Category | v1.0 | v2.0 (Updated) |
+|----------|:----:|:--------------:|
+| Core Features | 10 | 10 |
+| Display Options | 5 | 5 |
+| Heuristics | 8 | 8 |
+| UI Features | 8 | 8 |
+| Audio | 4 | 4 |
+| Edge Cases | 5 | 5 |
+| Performance | 3 | 3 |
+| Low Light Warning | 4 | 4 |
+| UX Enhancements | 5 | 5 |
+| **Gesture Control** | - | **4** |
+| **AI Chatbot** | - | **4** |
+| **Landing Page** | - | **4** |
+| **Total** | **52** | **64** |
+
+---
+
+## Recommended Next Steps
+
+1. [ ] **อัปเดต TESTING_CHECKLIST.md** - เพิ่ม 12 test cases ใหม่
+2. [ ] **เขียน Chapter 6** - ตาม checklist ที่อัปเดตแล้ว
+3. [ ] (Optional) เพิ่ม unit tests สำหรับ modules ใหม่
+
+---
+
+## User Decision Needed
+
+ต้องการให้:
+- **A)** อัปเดต TESTING_CHECKLIST.md ก่อน แล้วค่อยเขียน Chapter 6
+- **B)** เขียน Chapter 6 เลย แล้วค่อยอัปเดต TESTING_CHECKLIST.md ทีหลัง

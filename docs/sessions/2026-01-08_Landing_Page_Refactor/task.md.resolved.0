@@ -1,0 +1,27 @@
+# Task: Landing Page Refactoring
+
+## Phase 1: File Renaming
+- [ ] Rename [index.html](file:///Users/yut/TaijiFlow/index.html) → `app.html`
+- [ ] Rename [landing.html](file:///Users/yut/TaijiFlow/landing.html) → [index.html](file:///Users/yut/TaijiFlow/index.html)
+- [ ] Update references in documentation (ARCHITECTURE.md)
+
+## Phase 2: Content Updates
+- [ ] Update `<title>` to "TaijiFlow AI - ผู้ช่วยฝึกมวยไท้เก๊ก"
+- [ ] Add favicon link
+- [ ] Update Logo: 🥋 Silk Reeling → ☯️ TaijiFlow AI
+- [ ] Update Navigation links
+- [ ] Update Badge: "ผู้ช่วยฝึกมวยไท้เก๊ก"
+- [ ] Update Headline: "TaijiFlow AI" + "ฝึกฝน Silk Reeling ด้วยระบบปัญญาประดิษฐ์"
+- [ ] Update Practice button → link to `app.html`
+- [ ] Update Learn More button → scroll to About
+
+## Phase 3: Add About Section
+- [ ] Add About Section with project description
+- [ ] Add project history
+- [ ] Add acknowledgements
+- [ ] Link "คู่มือ" to user guide (popup or link)
+
+## Phase 4: Verification
+- [ ] Test landing page in browser
+- [ ] Test Practice button links to app.html
+- [ ] Test mobile responsive

@@ -1,0 +1,21 @@
+# Implementation Plan - Fix Low Light Warning Logic
+
+## Goal
+Fix the "False Positive" Low Light warning issue where the system reports low light even in bright environments. This is caused by the current logic using "Pose Visibility" as a proxy for brightness.
+
+## Proposed Solution (Direct Brightness Measurement)
+Change the logic from checking **Landmark Visibility** to measuring **Pixel Brightness** directly from the camera feed.
+
+### 1. [MODIFY] [script.js](file:///Users/yut/TaijiFlow/js/script.js)
+- **Remove:** Old visibility-based check (`avgVisibility < LOW_LIGHT_THRESHOLD`).
+- **Implement:** `checkBrightness(videoElement)` function.
+    - Steps: Draw small video frame (e.g., 32x24) to an off-screen canvas.
+    - Get `ImageData` and calculate average Luminance (Y = 0.299R + 0.587G + 0.114B).
+    - **Add:** Startup Delay (3-5 seconds) before the first check to allow auto-exposure to settle.
+    - **Add:** Periodic Check (every 5 seconds) during training to ensure lighting remains sufficient.
+
+## Verification
+### Manual Test
+1. Test in normal lighting -> Should NOT trigger warning.
+2. Cover the camera (simulate dark) -> SHOULD trigger warning.
+3. Test with bad pose (standing sideways/far) -> Should NOT trigger warning (unlike before).

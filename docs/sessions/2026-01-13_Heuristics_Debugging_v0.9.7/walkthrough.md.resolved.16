@@ -1,0 +1,135 @@
+# Thesis Chapter 4 Update Walkthrough
+
+This document summarizes the comprehensive updates made to **Chapter 4: System Design** ([docs/thesis/chapter4.md](file:///Users/yut/TaijiFlow/docs/thesis/chapter4.md)) to ensure completeness, accuracy, and visual alignment with the current codebase.
+
+## 1. Module Design Expansion (Section 4.2)
+
+Section 4.2 was completely rewritten to provide a detailed technical breakdown of all **22 JavaScript modules**. The new documentation includes:
+
+- **Categorization:** Modules grouped into Main Controller, Core Managers, Display Managers, UI Managers, Controllers, and Utilities.
+- **Code Detail:** Class structures, key properties, and method signatures for every file.
+- **Coverage:** No file was omitted. [script.js](file:///Users/yut/TaijiFlow/js/script.js) (Main Controller) and support utilities (`session_manager.js`, `data_exporter.js`) are now fully documented.
+
+**Example: HeuristicsEngine Documentation**
+```javascript
+class HeuristicsEngine {
+    // Configuration
+    - CONFIG: object           // Thresholds
+    - calibrationData: object  // Body proportion data
+    
+    // Public Methods
+    + analyze(landmarks): Feedback[]     // Core analysis logic
+    + setCalibration(data)               // Update normalization factors
+}
+```
+
+## 2. UI Design Updates (Section 4.6)
+
+We generated and embedded **5 real screenshots** from the application to replace placeholders.
+
+````carousel
+![Landing Page](/Users/yut/TaijiFlow/docs/screenshots/landing_page.png)
+*Landing Page with Silk Animation*
+<!-- slide -->
+![Tutorial Popup](/Users/yut/TaijiFlow/docs/screenshots/tutorial.png)
+*Tutorial/User Guide Popup*
+<!-- slide -->
+![Chatbot](/Users/yut/TaijiFlow/docs/screenshots/chatbot.png)
+*AI Assistant (Gemini) Panel*
+<!-- slide -->
+![Feedback](/Users/yut/TaijiFlow/docs/screenshots/feedback.png)
+*Feedback & Bug Report Popup*
+<!-- slide -->
+![Score Summary](/Users/yut/TaijiFlow/docs/screenshots/score_summary.png)
+*Session Summary with Radar Chart*
+````
+
+## 3. Formatting & Linting
+
+- **Header Fixes:** Converted inconsistent bold text (e.g., `**Structure:**`) to proper Markdown headers (`#### Structure`).
+- **Table Formatting:** Improved table spacing and alignment throughout the chapter.
+- **Link Updates:** Verified and corrected all relative image links.
+
+## Verification
+
+The documentation now accurately reflects the codebase as of **Version 0.9.1**. All 22 modules correspond 1:1 with the files in [js/](file:///Users/yut/TaijiFlow/js/script.js), and visual elements match the actual application UI.
+
+## 4. Functional Verification: Training Flow & Audio
+
+We verified the **Training Flow** and **Audio Feedback** mechanisms to ensure a seamless "blind" user experience (where the user is away from the screen).
+
+### Verified Flow
+1. **Start:** User clicks "Start Training" → Audio: *"Please stand in T pose"* (via `calib_start`)
+2. **Calibration:** System calibrates → Audio: *"Calibration complete"* (via `calib_success`)
+3. **Countdown:** Visual Overlay 3-2-1 → **[FIXED]** Added Audio "3... 2... 1..."
+4. **Action:** Recording starts → Audio: *"Start training"* (via `record_start`)
+
+### Code Changes
+- **File:** [js/script.js](file:///Users/yut/TaijiFlow/js/script.js)
+- **Fix:** Added `audioManager.speak(count)` to the countdown loop. Previously, the countdown was visual-only. Now it provides auditory cues for each second, allowing users to prepare without looking at the screen.
+
+```javascript
+// js/script.js - showCountdown()
+let count = 3;
+countdownNumber.textContent = count;
+audioManager.speak(count.toString(), true); // Speak "3"
+
+const interval = setInterval(() => {
+  count--;
+  if (count > 0) {
+    countdownNumber.textContent = count;
+    audioManager.speak(count.toString(), true); // Speak "2", "1"
+  }
+  // ...
+// ... (existing code) ...
+}, 1000);
+```
+
+## 5. Documentation & Diagram Updates (Post-Bugfix)
+
+Following the resolution of the video freeze issue and low-light detection adjustments, we updated the official documentation to maintain consistency with the code:
+
+### Chapter 4: System Design
+- **CalibrationManager:** Added the [stop()](file:///Users/yut/TaijiFlow/js/calibration_manager.js#192-201) method to the class definition.
+- **Sequence Diagrams:** Updated [SequenceDiagram_TrainingFlow.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/SequenceDiagram_TrainingFlow.wsd) and [SequenceDiagram_Calibration.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/SequenceDiagram_Calibration.wsd) to include the [stop()](file:///Users/yut/TaijiFlow/js/calibration_manager.js#192-201) call after calibration completion, reflecting the fix for the infinite loop.
+- **Class Diagram:** Updated [ClassDiagram.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/ClassDiagram.wsd) to include [stop()](file:///Users/yut/TaijiFlow/js/calibration_manager.js#192-201) in [CalibrationManager](file:///Users/yut/TaijiFlow/js/calibration_manager.js#35-359).
+
+### Chapter 5: Implementation
+- **Low Light Detection:** Added a new section **"5.3.6 Environmental Checks & Low Light Detection"** to describe the current logic:
+    - **Visibility-based:** Uses MediaPipe visibility scores (not pixel brightness).
+    - **Startup Delay:** Explains the 3-second delay to prevent false positives during auto-exposure.
+    - **Periodic Check:** Mentions the 5-second interval for ongoing monitoring.
+
+## 6. Audio System Refinement & Localization (v0.91)
+
+### 6.1 Feature: Spoken Exercise Description
+- **Change:** Replaced numerical countdown ("3, 2, 1") with spoken exercise description ("Right Hand Clockwise Seated... Start Training").
+- **Benefit:** Gives user explicit confirmation of what they are about to practice.
+
+### 6.2 Smart Audio Queueing (Fixing Overlaps)
+- **Problem:** "Calibration Complete" audio was overlapping with Exercise Description, causing the start to be cut off.
+- **Solution:** Implemented `AudioManager.waitForIdle()` (Smart Wait).
+    - The system now polls `window.speechSynthesis.speaking` and waits until the channel is clear before starting the next sentence.
+    - Removed all random `setTimeout` delays.
+
+### 6.3 Clearer Stop Confirmation
+- **Change:** Changed audio from "หยุดการฝึก" (Stop training) to "สิ้นสุดการฝึก" (Training ended).
+- **Reason:** The short word "Yud" (Stop) was frequently swallowed by the TTS engine. "Sinsud" (Ended) is longer and more distinct.
+
+### 6.4 Localization Refactoring
+- **Refactor:** Moved all hardcoded strings (Camera Errors, Announcements, Low Light Warnings) from [script.js](file:///Users/yut/TaijiFlow/js/script.js) and [audio_manager.js](file:///Users/yut/TaijiFlow/js/audio_manager.js) to [translations.js](file:///Users/yut/TaijiFlow/js/translations.js).
+- **Result:** Centralized text management, supporting future languages cleanly.
+
+## 7. Random Exercise Mode (v0.9.2)
+
+### 7.1 "Surprise Me" Feature
+- **UI:** Added "🎲 Random (Surprise Me)" option to the Exercise Dropdown.
+- **Logic:**
+    - When selected, [currentExercise](file:///Users/yut/TaijiFlow/js/script.js#1022-1024) is set to "random".
+    - Upon clicking **Start**, the system randomly selects a valid exercise (e.g., `rh_cw`, `lh_ccw`) from the pool.
+    - The dropdown automatically updates to reflect the chosen exercise for user feedback.
+
+### 7.2 UI Flow Reordering (Safety First)
+- **Change:** Swapped positions of **Exercise** and **Level** dropdowns.
+- **New Order:** `[Select Level (Constraint)]` -> `[Select Exercise (Content)]`.
+- **Reason:** Prioritize safety (Physical constraints like Seated/Standing) before selecting workout content. Also clarifies that "Random" applies within the selected Level context.

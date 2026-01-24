@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Comprehensive documentation of HeuristicsEngine v3.0 refactoring: fixed double transform, added timestamps, created CONFIG object, implemented debug overlay. Includes detailed explanation of each rule with code examples and rationale.",
+  "updatedAt": "2025-12-11T09:05:46.931337Z",
+  "version": "4"
+}

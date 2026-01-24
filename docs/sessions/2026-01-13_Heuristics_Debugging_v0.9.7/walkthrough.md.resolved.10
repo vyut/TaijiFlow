@@ -1,0 +1,76 @@
+# Landing Page Refinement Walkthrough
+
+This document summarizes the updates made to [index.html](file:///Users/yut/TaijiFlow/index.html) and [css/landing.css](file:///Users/yut/TaijiFlow/css/landing.css) to enhance the clarity, responsiveness, and educational value of the TaijiFlow AI landing page.
+
+## Key Changes
+
+### 1. User Guide Section
+Refined the user guide to be more concise and visually organized.
+
+- **3-Step Workflow:** Updated to "Preparation -> Training -> Evaluation" flow.
+- **Tips & Warnings Grid:**
+    - Consolidate "Tips & Requirements" and "Usage Warnings" into a 2-column grid.
+    - **Responsive Design:** Stacks to single column on mobile (<768px).
+    - **Visual Styling:** Distinct colors for Tips (Neutral) and Warnings (Red tint).
+
+### 2. Learn More Section (Reference)
+Transformed from a simple link section into a comprehensive educational hub (2x2 Grid).
+
+| Section | Content |
+| :--- | :--- |
+| **🌀 Definition** | Explains Silk Reeling as continuous, soft, spiral movement. |
+| **⚖️ Principles** | Key concepts: Circular Motion, Waist as Axis, Whole Body Connection. |
+| **🎁 Benefits** | Highlights **Mental** (Meditation), **Balance** (Strength), and **Energy** (Qi). |
+| **🧘 Practice** | Practical advice: Relax (Song), Slow, Focus. |
+
+### 3. Project Stats Section (Prepared)
+Added a validation bar code above the footer with icons (⭐️, 🚀, 🎯) and a citation.
+*Note: Currently commented out in [index.html](file:///Users/yut/TaijiFlow/index.html) pending actual Usability Testing results.*
+- **User Satisfaction:** 4.2/5 (Placeholder)
+- **Intent to Use:** 87.5% (Placeholder)
+- **Training Success:** 100%
+
+### 4. Technical Implementation
+- **Clean Code:** Moved inline styles to [css/landing.css](file:///Users/yut/TaijiFlow/css/landing.css) using new classes:
+    - `.guide-extras-grid`
+    - `.guide-extra-card`
+    - `.reference-content` (2-column grid update)
+- **Responsiveness:** Added media queries to ensure all grids stack correctly on mobile devices.
+
+### 5. Final UI Polish (v0.9.5)
+- **Speaker Button**: Refactored to use standard Gray theme instead of Green.
+- **Stop Control**: Separated into a dedicated bottom box with Red header and Auto-finish subtitle.
+- **Typography**: Fixed Thai font clipping in the header.
+
+## Verification
+- **Visual Check:** Verified that content is readable and aesthetically balanced.
+- **Mobile Check:** Confirmed that columns stack and use 100% width on small screens.
+- **Tablet Compatibility**: Verified that 16:9 vertical constraints lock the video height to ~650px, ensuring it remains safe within standard tablet viewports.
+
+### 6. Performance Optimization (v0.9.6)
+- **Frame Throttling:** Implemented `Process 1, Skip 3` logic to throttle AI inference to ~7.5 FPS while keeping Camera Input at 30 FPS.
+- **Time-based Calibration:** Refactored T-Pose calibration to use `Date.now()` (3000ms) instead of frame counting, solving lag issues at lower AI frame rates.
+- **Documentation:** Updated Thesis Chapter 4 (Sequence Diagram) and Chapter 5 (Implementation) to reflect these architectural decisions.
+
+### 7. Final Polish & Diagram Verification (Session Wrap-up)
+**Updates:**
+- **Diagram Synchronization:**
+    - Verified [SequenceDiagram_Calibration.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/SequenceDiagram_Calibration.wsd) against [script.js](file:///Users/yut/TaijiFlow/js/script.js): Removed [saveToStorage](file:///Users/yut/TaijiFlow/js/calibration_manager.js#112-129) (Dead Code).
+    - Updated [ClassDiagram.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/ClassDiagram.wsd): Renamed methods ([generateDynamicPath](file:///Users/yut/TaijiFlow/js/path_generator.js#28-88)), added missing DrawingManager methods ([drawSilhouette](file:///Users/yut/TaijiFlow/js/drawing_manager.js#222-260), etc.).
+- **Code Clean-up:** Commented out unused `calibrator.saveToStorage()` logic in [script.js](file:///Users/yut/TaijiFlow/js/script.js).
+- **Environment Fix:** Fixed Graphviz path issue in [.vscode/settings.json](file:///Users/yut/TaijiFlow/.vscode/settings.json) (Pointed to [/opt/homebrew/bin/dot](file:///opt/homebrew/bin/dot)).
+
+**Validation:**
+- All diagrams now strictly match the v0.9.6 codebase.
+- Diagram generation (PlantUML) works correctly.
+
+> [!NOTE]
+> The system is now fully documented, optimized (Throttling), and verified. Diagrams accurately reflect the "Time-based Calibration" and "Frame Throttling" logic.
+
+## Conclusion
+The Landing Page ([index.html](file:///Users/yut/TaijiFlow/index.html)) has been successfully refined to meet academic standards ("Thesis-Ready"). It now features:
+1.  **Professional Aesthetics:** Dark theme, responsive grids, and clean typography.
+2.  **Bi-lingual Clarity:** Section headers includes English translations (e.g., "เกี่ยวกับโครงการ (About Project)").
+3.  **Comprehensive Content:** Clear "About", structured "User Guide" (3 Steps), and deep "Learn More" sections.
+4.  **Research Validation:** A prepared "Project Stats" section awaiting final data.
+5.  **Complete Documentation:** Updated Changelog (v0.9.6) and Task list.

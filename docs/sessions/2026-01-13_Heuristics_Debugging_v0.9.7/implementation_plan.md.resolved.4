@@ -1,0 +1,56 @@
+# Implementation Plan: Replace Countdown Audio with Exercise Description
+
+## Goal
+Replace the robotic "3... 2... 1..." audio countdown with a more natural, informative announcement of the selected exercise and level, while retaining the visual 3-2-1 countdown on screen.
+
+## User Flow
+1.  **Visual:** User sees the "3... 2... 1..." overlay countdown as usual.
+2.  **Audio:** Instead of hearing numbers, the user hears a single continuous sentence describing the exercise (e.g., "Right Hand, Clockwise, Seated").
+3.  **Completion:** Immediately after the description (and visual countdown), the system announces "Start training" (Begin).
+
+## Use Case Example
+- **Scenario:** User selects "Right Hand Clockwise" (Level 1).
+- **Audio (TH):** "มือขวา... ตามเข็ม... แบบนั่ง... เริ่มการฝึก"
+- **Audio (EN):** "Right Hand... Clockwise... Seated... Start training"
+
+## Technical Changes
+
+### 1. [js/audio_manager.js](file:///Users/yut/TaijiFlow/js/audio_manager.js)
+-   **New Method:** `getExerciseSpokenText(exerciseId, level)`
+    -   Responsible for converting technical IDs (e.g., `right_cw`) into short, spoken phrases.
+    -   Supports both TH and EN languages.
+    - **Mappings (TH):**
+        -   `right`: "มือขวา"
+        -   `left`: "มือซ้าย"
+        -   `cw`: "ตามเข็ม"
+        -   `ccw`: "ทวนเข็ม"
+        -   Level 1: "แบบนั่ง"
+        -   Level 2: "แบบยืน"
+        -   Level 3: "แบบยืนย่อ"
+    -   **Mappings (EN):**
+        -   `right`: "Right Hand"
+        -   `left`: "Left Hand"
+        -   `cw`: "Clockwise"
+        -   `ccw`: "Counter-Clockwise"
+        -   Level 1: "Seated"
+        -   Level 2: "Standing"
+        -   Level 3: "Stepping"
+
+### 2. [js/script.js](file:///Users/yut/TaijiFlow/js/script.js)
+-   **Modify:** [showCountdown()](file:///Users/yut/TaijiFlow/js/script.js#521-551)
+    -   **Remove:** `audioManager.speak(count)` inside the `setInterval` loop.
+    -   **Add:** `audioManager.speak(exerciseText)` called **ONCE** at the beginning of the function.
+    -   Use `getExerciseSpokenText` to generate the text based on [currentExercise](file:///Users/yut/TaijiFlow/js/script.js#995-997) and [currentLevel](file:///Users/yut/TaijiFlow/js/script.js#997-998).
+    -   Keep the visual `setInterval` for the UI Text update (3 -> 2 -> 1).
+
+## Verification Plan
+
+### Manual Verification
+1.  **Test all 4 moves:** Right CW, Right CCW, Left CW, Left CCW.
+2.  **Test all 3 levels:** Seated, Standing, Stepping.
+3.  **Language Check:** Toggle between TH/EN and verify the spoken text matches the language.
+4.  **Timing Check:** Ensure "Start Training" plays *after* the description and roughly aligns with the visual countdown end.
+
+## Potential Edge Cases
+-   **Long Text:** If the description is longer than 3 seconds (rare for short phrases), the visual countdown might finish before the audio.
+    -   *Mitigation:* The "Start Training" audio is queued in [startTrainingAfterCalibration](file:///Users/yut/TaijiFlow/js/script.js#609-644). Browser TTS queues are usually sequential, so it should naturally play *after* the description finishes, which is acceptable behavior.

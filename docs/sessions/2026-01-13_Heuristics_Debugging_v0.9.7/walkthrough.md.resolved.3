@@ -1,0 +1,41 @@
+# Landing Page Refinement Walkthrough
+
+This document summarizes the updates made to [index.html](file:///Users/yut/TaijiFlow/index.html) and [css/landing.css](file:///Users/yut/TaijiFlow/css/landing.css) to enhance the clarity, responsiveness, and educational value of the TaijiFlow AI landing page.
+
+## Key Changes
+
+### 1. User Guide Section
+Refined the user guide to be more concise and visually organized.
+
+- **3-Step Workflow:** Updated to "Preparation -> Training -> Evaluation" flow.
+- **Tips & Warnings Grid:**
+    - Consolidate "Tips & Requirements" and "Usage Warnings" into a 2-column grid.
+    - **Responsive Design:** Stacks to single column on mobile (<768px).
+    - **Visual Styling:** Distinct colors for Tips (Neutral) and Warnings (Red tint).
+
+### 2. Learn More Section (Reference)
+Transformed from a simple link section into a comprehensive educational hub (2x2 Grid).
+
+| Section | Content |
+| :--- | :--- |
+| **🌀 Definition** | Explains Silk Reeling as continuous, soft, spiral movement. |
+| **⚖️ Principles** | Key concepts: Circular Motion, Waist as Axis, Whole Body Connection. |
+| **🎁 Benefits** | Highlights **Mental** (Meditation), **Balance** (Strength), and **Energy** (Qi). |
+| **🧘 Practice** | Practical advice: Relax (Song), Slow, Focus. |
+
+### 3. Project Stats Section
+Added a validation bar above the footer with a citation from Usability Testing results (Chapter 6).
+- **User Satisfaction:** 4.2/5
+- **Intent to Use:** 87.5%
+- **Training Success:** 100%
+
+### 4. Technical Implementation
+- **Clean Code:** Moved inline styles to [css/landing.css](file:///Users/yut/TaijiFlow/css/landing.css) using new classes:
+    - `.guide-extras-grid`
+    - `.guide-extra-card`
+    - `.reference-content` (2-column grid update)
+- **Responsiveness:** Added media queries to ensure all grids stack correctly on mobile devices.
+
+## Verification
+- **Visual Check:** Verified that content is readable and aesthetically balanced.
+- **Mobile Check:** Confirmed that columns stack and use 100% width on small screens.

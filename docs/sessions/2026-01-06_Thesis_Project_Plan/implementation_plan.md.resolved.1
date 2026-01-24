@@ -1,0 +1,107 @@
+# บทที่ 5: การพัฒนาระบบ (Implementation)
+
+## Goal
+
+สร้างเอกสาร Chapter 5 สำหรับ Final Report ที่ครอบคลุมการพัฒนา TaijiFlow AI
+
+---
+
+## Proposed Outline
+
+### 5.1 เครื่องมือและเทคโนโลยี (Tools & Technologies)
+
+| หัวข้อย่อย | เนื้อหา | แหล่งข้อมูล |
+|-----------|--------|------------|
+| 5.1.1 ภาษาและ Frameworks | HTML5, CSS3, JavaScript ES6+ | [ARCHITECTURE.md](file:///Users/yut/TaijiFlow/docs/ARCHITECTURE.md) |
+| 5.1.2 AI/ML Libraries | MediaPipe Pose/Gesture, Gemini API | [SRS.md](file:///Users/yut/TaijiFlow/docs/srs/SRS.md) Section 10 |
+| 5.1.3 Development Tools | VS Code, Chrome DevTools | ใหม่ |
+| 5.1.4 Version Control | Git, GitHub | ใหม่ |
+
+---
+
+### 5.2 สถาปัตยกรรมระบบ (System Architecture)
+
+| หัวข้อย่อย | เนื้อหา | แหล่งข้อมูล |
+|-----------|--------|------------|
+| 5.2.1 4-Layer Architecture | Presentation, Business Logic, Data, External | [SDD.md](file:///Users/yut/TaijiFlow/docs/sdd/SDD.md) Section 2 |
+| 5.2.2 Module Overview | 22 Modules, Dependencies | [ModuleDependencies.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/ModuleDependencies.wsd) |
+| 5.2.3 File Structure | ตาราง Files/Folders | [ARCHITECTURE.md](file:///Users/yut/TaijiFlow/docs/ARCHITECTURE.md) |
+
+---
+
+### 5.3 การพัฒนาฟังก์ชันหลัก (Core Features Development)
+
+| หัวข้อย่อย | เนื้อหา | แหล่งข้อมูล |
+|-----------|--------|------------|
+| 5.3.1 Pose Detection | MediaPipe Integration | [HEURISTICS_RULES_MANUAL.md](file:///Users/yut/TaijiFlow/docs/HEURISTICS_RULES_MANUAL.md) |
+| 5.3.2 Heuristics Engine | 8 กฎวิเคราะห์ท่า | [heuristics_engine.js](file:///Users/yut/TaijiFlow/js/heuristics_engine.js) |
+| 5.3.3 Scoring System | คำนวณคะแนน A-F | [scoring_manager.js](file:///Users/yut/TaijiFlow/js/scoring_manager.js) |
+| 5.3.4 Feedback System | Audio + Visual | [feedback_manager.js](file:///Users/yut/TaijiFlow/js/feedback_manager.js) |
+| 5.3.5 AI Chatbot | Gemini Integration | [chatbot.js](file:///Users/yut/TaijiFlow/js/chatbot.js) |
+
+---
+
+### 5.4 หน้าจอระบบ (User Interface)
+
+| หัวข้อย่อย | เนื้อหา | แหล่งข้อมูล |
+|-----------|--------|------------|
+| 5.4.1 Landing Page | หน้าแรก + Animation | Screenshot [landing_page.png](file:///Users/yut/TaijiFlow/docs/screenshots/landing_page.png) |
+| 5.4.2 Training Application | Main App | Screenshot [training_app.png](file:///Users/yut/TaijiFlow/docs/screenshots/training_app.png) |
+| 5.4.3 Score Summary | ผลคะแนน | สร้างใหม่/ASCII |
+| 5.4.4 Settings & Controls | ปุ่มควบคุม | Screenshot |
+
+---
+
+### 5.5 การติดตั้งและใช้งาน (Deployment)
+
+| หัวข้อย่อย | เนื้อหา | แหล่งข้อมูล |
+|-----------|--------|------------|
+| 5.5.1 System Requirements | Browser, Webcam | [SDD.md](file:///Users/yut/TaijiFlow/docs/sdd/SDD.md) Section 6 |
+| 5.5.2 Installation | Static Files, No Server | [ARCHITECTURE.md](file:///Users/yut/TaijiFlow/docs/ARCHITECTURE.md) |
+| 5.5.3 คู่มือการใช้งาน | Step-by-step | ใหม่ |
+
+---
+
+## เอกสารที่ต้องสร้าง
+
+| ไฟล์ | ประเภท | สถานะ |
+|-----|--------|:-----:|
+| `docs/thesis/chapter5.md` | เนื้อหาหลัก | ⬜ ยังไม่สร้าง |
+| Screenshots เพิ่มเติม | รูปภาพ | ⬜ ยังไม่ครบ |
+| Code Snippets | ตัวอย่างโค้ด | ⬜ ยังไม่เลือก |
+
+---
+
+## Estimated Sections
+
+| Section | ความยาวโดยประมาณ | ความสำคัญ |
+|---------|:---------------:|:---------:|
+| 5.1 Tools | 2-3 หน้า | ⭐⭐ |
+| 5.2 Architecture | 3-4 หน้า | ⭐⭐⭐ |
+| 5.3 Core Features | 5-8 หน้า | ⭐⭐⭐ |
+| 5.4 UI | 4-6 หน้า | ⭐⭐⭐ |
+| 5.5 Deployment | 2-3 หน้า | ⭐⭐ |
+
+**รวมประมาณ: 16-24 หน้า**
+
+---
+
+## Next Steps
+
+1. [ ] สร้างไฟล์ `docs/thesis/chapter5.md`
+2. [ ] เขียน Section 5.1 (Tools & Technologies)
+3. [ ] เขียน Section 5.2 (Architecture) - ดึงจาก SDD
+4. [ ] เขียน Section 5.3 (Core Features) - เลือก Code Snippets
+5. [ ] Capture Screenshots เพิ่มเติม
+6. [ ] เขียน Section 5.4 (UI) - อธิบาย Screenshots
+7. [ ] เขียน Section 5.5 (Deployment)
+8. [ ] Review และ Finalize
+
+---
+
+## Questions for User
+
+1. ต้องการเขียนเป็นภาษาไทยหรืออังกฤษ?
+2. มี Template หรือ Format เฉพาะจากมหาวิทยาลัยหรือไม่?
+3. ต้องการ Code Snippets ยาวแค่ไหน (สั้น/ปานกลาง/เต็ม)?
+4. Screenshots ที่มี ([landing_page.png](file:///Users/yut/TaijiFlow/docs/screenshots/landing_page.png), [training_app.png](file:///Users/yut/TaijiFlow/docs/screenshots/training_app.png)) เพียงพอหรือต้องการเพิ่ม?

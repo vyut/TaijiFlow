@@ -1,0 +1,7 @@
+# Taiji Chatbot Implementation
+
+## Tasks
+- [x] Create chatbot.js with Gemini API
+- [x] Create chatbot.css styles
+- [x] Add chat popup to index.html
+- [ ] Test chat functionality (user testing)

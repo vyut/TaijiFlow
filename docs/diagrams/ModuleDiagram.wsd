@@ -1,0 +1,96 @@
+@startuml ModuleDiagram
+' ============================================================================
+' TaijiFlow AI - Module Diagram (Refined Layout)
+' ============================================================================
+' - Index.html (Top Center)
+' - Script.js (Middle Center)
+' - Modules (Bottom Row - Aligned horizontally)
+' ============================================================================
+
+skinparam defaultFontName "Menlo"
+skinparam backgroundColor white
+skinparam linetype ortho
+skinparam handwritten false
+skinparam shadow false
+skinparam nodesep 0.8
+skinparam ranksep 0.8
+
+' Style customization
+skinparam rectangle {
+    BackgroundColor white
+    BorderColor black
+    FontSize 14
+    FontStyle plain
+    Padding 10
+}
+
+skinparam card {
+    BackgroundColor #F5F5F5
+    BorderColor black
+    FontSize 13
+    Padding 5
+    Margin 5
+}
+
+' === 1. TOP: Entry Point ===
+rectangle "index.html\n(Entry Point, DOM Structure)" as IndexHTML
+
+' === 2. MIDDLE: Main Controller ===
+rectangle "script.js\n(Main Controller / Glue Code)" as ScriptJS {
+    ' Internal blocks horizontal
+    card "DOM Events" as DOM
+    card "Training Flow" as Flow
+    card "MediaPipe" as MP
+    card "State Mgmt" as State
+}
+
+' === 3. BOTTOM: Functional Modules (3 Groups) ===
+' Use 'together' to force them on the same rank
+together {
+    rectangle "Core Logic" as Core {
+        card "heuristics_\nengine.js"
+        card "scoring_\nmanager.js"
+        card "calibration_\nmanager.js"
+    }
+
+    rectangle "UI & Display" as UI {
+        card "ui_manager.js"
+        card "drawing_manager"
+        card "ghost_manager"
+        card "tutorial_manager"
+        card "feedback_manager"
+        card "audio_manager"
+    }
+
+    rectangle "Utilities" as Utils {
+        card "session_manager"
+        card "path_generator"
+        card "translations.js"
+        card "data_exporter"
+    }
+}
+
+' === Relationships & Ordering ===
+
+' 1. Vertical Flow
+IndexHTML -down-> ScriptJS
+
+' 2. Fork to Modules (Connect to the specific boxes)
+ScriptJS -down-> Core
+ScriptJS -down-> UI
+ScriptJS -down-> Utils
+
+' 3. Layout Enforcement
+' Enforce Script internals order
+DOM -[hidden]right- Flow
+Flow -[hidden]right- MP
+MP -[hidden]right- State
+
+' Enforce Module horizontal alignment
+Core -[hidden]right- UI
+UI -[hidden]right- Utils
+
+' Centering trick: Connect Script primarily to the middle element (UI) invisible
+ScriptJS -[hidden]down-> UI
+
+@enduml

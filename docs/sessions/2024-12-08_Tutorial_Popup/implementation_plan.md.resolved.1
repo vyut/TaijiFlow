@@ -1,0 +1,105 @@
+# Implementation Plan: Redesign index.html UI
+
+## Goal
+Redesign [index.html](file:///Users/yut/TaijiFlow/index.html) to match [data_collector.html](file:///Users/yut/TaijiFlow/data_collector.html) style for consistent design.
+
+---
+
+## Proposed Changes
+
+### Layout Changes
+
+| Component | Before | After |
+|-----------|--------|-------|
+| **Video** | ~50% width (panel right) | **~100% width** (full) |
+| **Level Select** | 3 Buttons | **Dropdown** |
+| **Control Buttons** | 1 Toggle | **1 Toggle** (keep) |
+| **Right Panel** | Exists | **Remove** |
+| **Instructions** | Right panel | **Bottom** (like data_collector) |
+
+---
+
+### Files to Modify
+
+#### [MODIFY] [index.html](file:///Users/yut/TaijiFlow/index.html)
+
+**Changes:**
+1. Remove right panel layout
+2. Add full-width video container
+3. Add 2 dropdowns (Exercise + Level) at top
+4. Move control buttons below video
+5. Move instructions to bottom with purple theme
+6. Keep overlay 1-2-3 (show on load, hide during training)
+7. Keep Score Popup functionality
+8. Keep Audio/Theme/Lang buttons (top-right corner)
+
+#### [MODIFY] [css/styles.css](file:///Users/yut/TaijiFlow/css/styles.css)
+
+**Changes:**
+1. Add `.canvas-container` style (like data_collector)
+2. Update `.instructions-box` to purple theme (like data_collector)
+
+#### [MODIFY] [js/script.js](file:///Users/yut/TaijiFlow/js/script.js)
+
+**Changes:**
+1. Update level selection from buttons to dropdown
+2. Update DOM references for new elements
+
+#### [MODIFY] [js/ui_manager.js](file:///Users/yut/TaijiFlow/js/ui_manager.js)
+
+**Changes:**
+1. Add translations for new level dropdown options
+2. Update [updateText()](file:///Users/yut/TaijiFlow/js/ui_manager.js#157-200) for new elements
+
+---
+
+## New UI Layout
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  ☯️ TaijiFlow AI (v0.1)          [🔊] [🌙] [🇹🇭/🇺🇸]        │
+├─────────────────────────────────────────────────────────────┤
+│  [เลือกท่าฝึก: ▼]    [เลือกระดับ: ▼]    Timer: 00:00/05:00 │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│                    ┌─────────────────┐                      │
+│                    │                 │                      │
+│                    │   VIDEO FEED    │   (Full Width)       │
+│                    │   (16:9 HD)     │                      │
+│                    │                 │                      │
+│                    └─────────────────┘                      │
+│                                                             │
+├─────────────────────────────────────────────────────────────┤
+│          [🏃 เริ่มการฝึก]  or  [⏹️ หยุดการฝึก]              │
+├─────────────────────────────────────────────────────────────┤
+│  💡 คำแนะนำ:                                               │
+│  • เลือกท่าฝึกและระดับ แล้วกด 'เริ่มการฝึก'                 │
+│  • ยืนให้เห็นเต็มตัว ห่างจากกล้อง 2-3 เมตร                  │
+│  • ปรับเทียบสัดส่วนอัตโนมัติทุกครั้งก่อนเริ่มฝึก            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Color Theme (Purple - like data_collector)
+
+| Element | Light Mode | Dark Mode |
+|---------|------------|-----------|
+| **Title** | Red gradient | Red gradient (lighter) |
+| **Instructions BG** | `rgba(147, 51, 234, 0.1)` | `rgba(147, 51, 234, 0.3)` |
+| **Instructions Border** | `rgba(147, 51, 234, 0.3)` | `rgba(147, 51, 234, 0.5)` |
+| **Instructions Text** | `#6b21a8` | `#e9d5ff` |
+
+---
+
+## Verification
+
+- [ ] Video displays full width
+- [ ] Both dropdowns work correctly
+- [ ] Start/Stop toggle button works
+- [ ] Overlay shows on load and after session
+- [ ] Score popup displays after training
+- [ ] Timer displays during training
+- [ ] Audio/Theme/Lang buttons work
+- [ ] Light/Dark mode works correctly
+- [ ] Instructions show at bottom with purple theme

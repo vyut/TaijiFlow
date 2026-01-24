@@ -1,0 +1,6 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary":  "สรุปการทำงานวันที่ 8 มกราคม 2026:\n- แก้ไข Markdown linting (MD060) ใน ARCHITECTURE.md\n- สร้าง LayerArchitecture.wsd diagram\n- Refactor Landing Page ใหม่ (index.html)\n- อัปเดต .gitignore\n- เปลี่ยนโครงสร้างไฟล์ (index.html → app.html, landing.html → index.html)",
+  "updatedAt":  "2026-01-08T15:04:12.115701Z",
+  "version":  "1"
+}

@@ -1,0 +1,78 @@
+@startuml HeuristicsRule1_PathShape
+title Rule 1: Path Shape Algorithm (Slice-Based v0.9.10)\n(checkPathShape)
+
+start
+
+:Receive wristHistory, currentExercise;
+
+if (wristHistory.length < SHAPE_ANALYSIS_POINTS (10)?) then (yes)
+    :return null;
+    note right: Wait for 10 points of data
+    stop
+else (no)
+endif
+
+if (isPaused()?) then (yes)
+    :return null;
+    note right: Skip, let Rule 7 handle pause
+    stop
+else (no)
+endif
+
+:Get last 10 points (Slice-Based)\nrecentHistory = wristHistory.slice(-10);
+
+partition "Calculate Direction Consistency" {
+    :Initialize counters\nclockwiseTurns = 0\ncounterClockwiseTurns = 0;
+    
+    repeat :For each 3 consecutive points (p1, p2, p3);
+        :Calculate Cross Product\ncross = (p2.x - p1.x) * (p3.y - p2.y)\n - (p2.y - p1.y) * (p3.x - p2.x);
+        
+        if (cross > 0.0001?) then (yes)
+            :clockwiseTurns++;
+        elseif (cross < -0.0001?) then (yes)
+            :counterClockwiseTurns++;
+        endif
+    repeat while (more triplets?) is (yes)
+    ->no;
+    
+    :total = CW + CCW;
+    
+    if (total == 0?) then (yes)
+        :return "Move hand in circle";
+        note right: Straight line detected
+        stop
+    else (no)
+    endif
+    
+    :consistency = max(CW, CCW) / total;
+}
+
+partition "Check Direction FIRST\n (Wrong direction > Low consistency)" {
+    'note right: Priority: Wrong direction > Low consistency
+    :expectedCW = exercise.includes("cw");
+    :actualCW = counterClockwiseTurns > clockwiseTurns;
+    note right: Inverted due to video mirror
+    
+    :dominance = max(CW, CCW) / total;
+    
+    if (dominance >= 0.6 AND expectedCW != actualCW?) then (yes)
+        :return "Wrong direction";
+        stop
+    else (no)
+    endif
+}
+
+partition "Check if Circular Path" {
+    if (consistency < 0.6?) then (yes)
+        :return "Move hand in circle";
+        note right: Not 60% consistent = not circular
+        stop
+    else (no)
+    endif
+}
+
+:return null;
+note right: Correct circular movement
+stop
+
+@enduml

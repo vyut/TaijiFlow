@@ -1,0 +1,5 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary":  "แผนงานปรับปรุง landing.html ให้เหมาะสมกับโปรเจกต์ TaijiFlow AI ประกอบด้วย:\n- Options สำหรับการเปลี่ยนชื่อไฟล์ (landing.html → index.html)\n- รายการแก้ไข Content: Title, Logo, Navigation, Hero Section\n- ข้อเสนอ Headline และ Navigation ใหม่\n- คำถามสำหรับ User เพื่อยืนยันก่อนเริ่มงาน",
+  "updatedAt":  "2026-01-08T11:38:24.094491Z"
+}

@@ -1,0 +1,55 @@
+# Thesis Chapter 4 Update Walkthrough
+
+This document summarizes the comprehensive updates made to **Chapter 4: System Design** ([docs/thesis/chapter4.md](file:///Users/yut/TaijiFlow/docs/thesis/chapter4.md)) to ensure completeness, accuracy, and visual alignment with the current codebase.
+
+## 1. Module Design Expansion (Section 4.2)
+
+Section 4.2 was completely rewritten to provide a detailed technical breakdown of all **22 JavaScript modules**. The new documentation includes:
+
+- **Categorization:** Modules grouped into Main Controller, Core Managers, Display Managers, UI Managers, Controllers, and Utilities.
+- **Code Detail:** Class structures, key properties, and method signatures for every file.
+- **Coverage:** No file was omitted. [script.js](file:///Users/yut/TaijiFlow/js/script.js) (Main Controller) and support utilities ([session_manager.js](file:///Users/yut/TaijiFlow/js/session_manager.js), [data_exporter.js](file:///Users/yut/TaijiFlow/js/data_exporter.js)) are now fully documented.
+
+**Example: HeuristicsEngine Documentation**
+```javascript
+class HeuristicsEngine {
+    // Configuration
+    - CONFIG: object           // Thresholds
+    - calibrationData: object  // Body proportion data
+    
+    // Public Methods
+    + analyze(landmarks): Feedback[]     // Core analysis logic
+    + setCalibration(data)               // Update normalization factors
+}
+```
+
+## 2. UI Design Updates (Section 4.6)
+
+We generated and embedded **5 real screenshots** from the application to replace placeholders.
+
+````carousel
+![Landing Page](/Users/yut/TaijiFlow/docs/screenshots/landing_page.png)
+*Landing Page with Silk Animation*
+<!-- slide -->
+![Tutorial Popup](/Users/yut/TaijiFlow/docs/screenshots/tutorial.png)
+*Tutorial/User Guide Popup*
+<!-- slide -->
+![Chatbot](/Users/yut/TaijiFlow/docs/screenshots/chatbot.png)
+*AI Assistant (Gemini) Panel*
+<!-- slide -->
+![Feedback](/Users/yut/TaijiFlow/docs/screenshots/feedback.png)
+*Feedback & Bug Report Popup*
+<!-- slide -->
+![Score Summary](/Users/yut/TaijiFlow/docs/screenshots/score_summary.png)
+*Session Summary with Radar Chart*
+````
+
+## 3. Formatting & Linting
+
+- **Header Fixes:** Converted inconsistent bold text (e.g., `**Structure:**`) to proper Markdown headers (`#### Structure`).
+- **Table Formatting:** Improved table spacing and alignment throughout the chapter.
+- **Link Updates:** Verified and corrected all relative image links.
+
+## Verification
+
+The documentation now accurately reflects the codebase as of **Version 0.9.1**. All 22 modules correspond 1:1 with the files in [js/](file:///Users/yut/TaijiFlow/js/script.js), and visual elements match the actual application UI.

@@ -1,0 +1,50 @@
+@startuml HeuristicsRule4_WaistInitiation
+title Rule 4: Waist Initiation Algorithm\n(checkWaistInitiation)
+
+start
+
+:Receive leftHip, rightHip,\nleftShoulder, rightShoulder, deltaTime;
+
+partition "Step 1: Calculate Hip and Shoulder Angles" {
+    :hipAngle = atan2(\n  rightHip.y - leftHip.y,\n  rightHip.x - leftHip.x\n);
+    
+    :shoulderAngle = atan2(\n  rightShoulder.y - leftShoulder.y,\n  rightShoulder.x - leftShoulder.x\n);
+}
+
+partition "Step 2: Calculate Angular Velocities (degrees/sec)" {
+    :hipVelocity = abs(hipAngle - lastHipAngle) / deltaTime;
+    note right: Convert to degrees/second
+    
+    :shoulderVelocity = abs(shoulderAngle - lastShoulderAngle) / deltaTime;
+    
+    :Update lastHipAngle = hipAngle;
+    :Update lastShoulderAngle = shoulderAngle;
+}
+
+partition "Step 3: Check if Shoulder Leading (Wrong)" {
+    :MIN_HIP_VELOCITY = 2.0 deg/s;
+    :RATIO_THRESHOLD = 3.0;
+    
+    if (hipVelocity > MIN_HIP_VELOCITY?) then (yes)
+        'note left: Waist is moving
+        
+        if (shoulderVelocity > hipVelocity * RATIO_THRESHOLD?) then (yes)
+            ' note right
+            '     Shoulder moving 3x faster
+            '     than waist = ARM ONLY movement
+            ' end note
+            :return "Use waist to lead, not arm only";
+            stop
+        else (no)
+            note right: Waist leading properly
+        endif
+    else (no)
+        note right: Waist not moving enough
+    endif
+}
+
+:return null;
+note right: Waist leading properly
+stop
+
+@enduml

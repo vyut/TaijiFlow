@@ -1,0 +1,75 @@
+# TaijiFlow AI - Session Summary (8 มกราคม 2026)
+
+## 📋 สรุปสิ่งที่ทำในวันนี้
+
+### 1. แก้ไข Markdown Linting (MD060)
+- แก้ไขปัญหา `table-column-style` ใน [ARCHITECTURE.md](file:///Users/yut/TaijiFlow/docs/ARCHITECTURE.md)
+- ปรับ table separator ให้ใช้ spaced style สม่ำเสมอ
+
+---
+
+### 2. สร้าง Layer Architecture Diagram
+- สร้างไฟล์ใหม่: [LayerArchitecture.wsd](file:///Users/yut/TaijiFlow/docs/diagrams/LayerArchitecture.wsd)
+- แสดง 4 layers: Presentation → Business Logic → Data → External APIs
+- ใช้สีและ notes อธิบายแต่ละ layer
+
+---
+
+### 3. Refactor Landing Page (สำคัญที่สุด)
+
+#### 3.1 เปลี่ยนโครงสร้างไฟล์
+| ก่อน | หลัง | หน้าที่ |
+| --- | --- | --- |
+| [index.html](file:///Users/yut/TaijiFlow/index.html) | [app.html](file:///Users/yut/TaijiFlow/app.html) | Training Application |
+| [landing.html](file:///Users/yut/TaijiFlow/landing.html) | [index.html](file:///Users/yut/TaijiFlow/index.html) | Landing Page (Entry Point) |
+
+#### 3.2 อัปเดต Branding
+- Title: "TaijiFlow AI - ผู้ช่วยฝึกมวยไท้เก๊ก"
+- Logo: ☯️ TaijiFlow AI
+- Badge: "🤖 ผู้ช่วยฝึกท่าม้วนไหม มวยไท้เก๊ก สกุลเฉิน"
+
+#### 3.3 เพิ่ม Sections ใหม่
+- **About Section**: ที่มาโครงการ, เทคโนโลยี, จุดเด่น, กิตติกรรมประกาศ
+- **Guide Section**: 3 ขั้นตอน (เลือกท่าฝึก → เลือกระดับ → กดเริ่มฝึก)
+- **Reference Section** (รอลบออก)
+- **Footer**: Copyright + Credits
+
+#### 3.4 อัปเดต Navigation
+```
+หน้าแรก | เกี่ยวกับ | คู่มือ | [▶️ เริ่มฝึก]
+```
+
+---
+
+### 4. อัปเดต .gitignore
+เพิ่ม:
+- `out/` - PlantUML generated files
+- `docs/ebooks/` - Copyrighted PDF files
+- `*.json.gz` - Session exports
+
+---
+
+### 5. อัปเดต Documentation
+- [ARCHITECTURE.md](file:///Users/yut/TaijiFlow/docs/ARCHITECTURE.md) - อัปเดต File Structure
+
+---
+
+## 🚧 งานที่ยังค้าง (ทำพรุ่งนี้)
+
+1. ~~ลบ "อ้างอิง" และ Reference Section~~
+2. ~~เปลี่ยนปุ่มเป็นม่วงทั้งหมด~~
+3. ~~สลับ "เกี่ยวกับ" ↔ "คู่มือ"~~
+4. ทำปุ่ม ❓ เปิด Tutorial Popup
+5. ตรวจสอบและทดสอบ Landing Page
+
+---
+
+## 📁 ไฟล์ที่แก้ไข/สร้างวันนี้
+
+| ไฟล์ | การเปลี่ยนแปลง |
+| --- | --- |
+| `index.html` | Landing Page ใหม่ (เดิมคือ landing.html) |
+| `app.html` | Training App (เดิมคือ index.html) |
+| `docs/ARCHITECTURE.md` | แก้ MD060 + อัปเดต File Structure |
+| `docs/diagrams/LayerArchitecture.wsd` | สร้างใหม่ |
+| `.gitignore` | เพิ่ม out/, docs/ebooks/, *.json.gz |

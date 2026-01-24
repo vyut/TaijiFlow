@@ -1,0 +1,62 @@
+@startuml HeuristicsRule5_VerticalStability
+title Rule 5: Vertical Stability Algorithm\n(checkVerticalStability)
+
+start
+
+:Receive nose landmark;
+
+if (nose is null?) then (yes)
+    :return null;
+    stop
+else (no)
+endif
+
+partition "Step 1: Update Head Y History (Time-Based)" {
+    :headYHistory.push({ y: nose.y, t: now });
+    
+    :Remove points older than 5000ms;
+    note right: STABILITY_WINDOW_MS = 5000
+    
+    if (headYHistory.length < 3?) then (yes)
+        :return null;
+        note right: STABILITY_MIN_POINTS = 3
+        stop
+    else (no)
+    endif
+}
+
+partition "Step 2: Calculate Min/Max Displacement" {
+    :min = Math.min(...yValues);
+    :max = Math.max(...yValues);
+    :displacement = max - min;
+    
+    note right
+        displacement = vertical movement
+        over 5 seconds window
+    end note
+}
+
+partition "Step 3: Calculate Dynamic Threshold" {
+    if (calibrationData exists?) then (yes)
+        :threshold = torsoHeight * 0.1;
+        note right: 10% of torso height
+    else (no)
+        :threshold = 0.05;
+        note right: Default value
+    endif
+}
+
+partition "Step 4: Check Stability" {
+    if (displacement > threshold?) then (yes)
+        :return "Head unstable - keep steady";
+        note right: Too much vertical movement
+        stop
+    else (no)
+    endif
+}
+
+:return null;
+note right: Head is stable
+stop
+
+@enduml

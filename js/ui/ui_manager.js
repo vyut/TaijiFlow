@@ -498,6 +498,10 @@ class UIManager {
     // -------------------------------------------------------------------------
     // DOM References
     // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // DOM References
+    // -------------------------------------------------------------------------
+    const html = document.documentElement;
     const body = document.body;
     const mainCard = document.getElementById("main-card");
 
@@ -508,8 +512,9 @@ class UIManager {
       // -----------------------------------------------------------------------
       // Dark Mode
       // -----------------------------------------------------------------------
-      // เพิ่ม dark class สำหรับ CSS selectors (body.dark)
-      body.classList.add("dark");
+      // Tailwind requires 'dark' class on HTML element
+      html.classList.add("dark");
+      body.classList.add("dark"); // Keep on body for legacy CSS support
 
       // เปลี่ยน Body Background
       body.classList.remove("bg-f3f4f6");
@@ -531,6 +536,7 @@ class UIManager {
       // Light Mode
       // -----------------------------------------------------------------------
       // ลบ dark class
+      html.classList.remove("dark");
       body.classList.remove("dark");
 
       // เปลี่ยน Body Background

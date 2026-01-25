@@ -49,10 +49,10 @@ class WisdomManager {
     // 2. Generate HTML
     // ใช้ Design เดิมจาก app.html แต่แปลงเป็น JS Template
     const html = `
-      <div class="relative w-full max-w-lg bg-gray-900 rounded-2xl border border-purple-500/30 shadow-2xl overflow-hidden flex flex-col items-center p-8 transform scale-95 animate-[scaleIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards]">
+      <div class="relative w-full max-w-lg bg-white dark:bg-gray-900 rounded-2xl border border-purple-500/30 shadow-2xl overflow-hidden flex flex-col items-center p-8 transform scale-95 animate-[scaleIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards]">
         
         <!-- Close Button -->
-        <button id="wisdom-close-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10">
+        <button id="wisdom-close-btn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10">
           ✕
         </button>
 
@@ -61,23 +61,23 @@ class WisdomManager {
           <canvas id="${this.canvasId}" width="300" height="300" class="w-full h-full rounded-full opacity-80 transition-opacity duration-300 group-hover:opacity-100"></canvas>
           <!-- Center Yin Yang (Static Overlay) -->
           <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span class="text-6xl opacity-50">☯️</span>
+            <span class="text-6xl opacity-50 grayscale dark:grayscale-0">☯️</span>
           </div>
         </div>
 
         <!-- Content Area -->
         <div id="wisdom-content" class="text-center space-y-4 relative z-10 min-h-[120px] flex flex-col justify-center">
-           <h3 id="wisdom-main-text" class="text-2xl md:text-3xl text-purple-300 font-serif tracking-widest transition-all duration-300">
+           <h3 id="wisdom-main-text" class="text-2xl md:text-3xl text-purple-600 dark:text-purple-300 font-serif tracking-widest transition-all duration-300">
              ${sub}
            </h3>
-           <p id="wisdom-sub-text" class="text-lg md:text-xl text-white font-light italic transition-all duration-300">
+           <p id="wisdom-sub-text" class="text-lg md:text-xl text-gray-800 dark:text-white font-light italic transition-all duration-300">
              "${quote}"
            </p>
            <div class="w-12 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mt-4"></div>
         </div>
 
         <!-- Footer Hint -->
-        <p class="mt-8 text-xs text-gray-500 opacity-60">*คลิกวงกลมเพื่อดูเกี่ยวกับแอพ</p>
+        <p class="mt-8 text-xs text-gray-400 dark:text-gray-500 opacity-80 dark:opacity-60">*คลิกวงกลมเพื่อดูเกี่ยวกับแอพ</p>
         
          <style>
             @keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -185,26 +185,27 @@ class WisdomManager {
             "text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-br from-purple-400 to-indigo-400 font-sans mb-2";
 
           subText.innerHTML = `
-            <div class="text-sm leading-relaxed text-gray-300">
+            <div class="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
               <p class="italic mb-3">"${info.philosophy}"</p>
               <div class="text-xs opacity-75">
                 ${info.credit_prefix} 
-                <a href="mailto:${info.email}" class="text-purple-400 hover:text-purple-300 underline font-semibold">${info.developer_name}</a>
+                <a href="mailto:${info.email}" class="text-purple-600 dark:text-purple-400 hover:text-purple-500 dark:hover:text-purple-300 underline font-semibold">${info.developer_name}</a>
               </div>
             </div>
           `;
-          subText.className = "text-base text-gray-300 font-sans";
+          subText.className =
+            "text-base text-gray-700 dark:text-gray-300 font-sans";
         }
       } else {
         // Show Quote
         const { quote, sub } = this.getRandomQuote();
         mainText.textContent = sub;
         mainText.className =
-          "text-2xl md:text-3xl text-purple-300 font-serif tracking-widest transition-all duration-300";
+          "text-2xl md:text-3xl text-purple-600 dark:text-purple-300 font-serif tracking-widest transition-all duration-300";
 
         subText.textContent = `"${quote}"`;
         subText.className =
-          "text-lg md:text-xl text-white font-light italic transition-all duration-300";
+          "text-lg md:text-xl text-gray-800 dark:text-white font-light italic transition-all duration-300";
       }
 
       // Fade In receive

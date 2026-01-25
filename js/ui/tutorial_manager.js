@@ -454,42 +454,42 @@ class TutorialManager {
 
     // Generate Full HTML Structure
     const html = `
-      <div class="w-11/12 max-w-4xl h-[85vh] bg-gray-900 rounded-2xl shadow-2xl 
+      <div class="w-11/12 max-w-4xl h-[85vh] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl 
                   border border-purple-500/50 overflow-hidden flex flex-col 
                   transform scale-95 animate-[scaleIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards]">
         
         <!-- Header -->
-        <div class="flex items-center justify-between p-4 border-b border-gray-700 bg-gray-800/50">
-          <h2 id="tutorial-title" class="text-xl font-bold text-white flex items-center gap-2">
+        <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+          <h2 id="tutorial-title" class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
             ${t_Title}
           </h2>
           <!-- Close X Button managed by shell, but we can add one here too -->
-          <button id="tutorial-x-btn" class="text-gray-400 hover:text-white text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors">&times;</button>
+          <button id="tutorial-x-btn" class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">&times;</button>
         </div>
         
         <!-- Tabs -->
-        <div class="flex border-b border-gray-700 bg-gray-800/30">
+        <div class="flex border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800/30">
           <button id="tab-principles" onclick="tutorialManager.switchTab('principles')" 
-                  class="tutorial-tab flex-1 py-3 text-center text-gray-400 hover:text-white transition-colors font-medium border-b-2 border-transparent">
+                  class="tutorial-tab flex-1 py-3 text-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium border-b-2 border-transparent">
             ${t_Tab1}
           </button>
           <button id="tab-exercises" onclick="tutorialManager.switchTab('exercises')" 
-                  class="tutorial-tab flex-1 py-3 text-center text-gray-400 hover:text-white transition-colors font-medium border-b-2 border-transparent">
+                  class="tutorial-tab flex-1 py-3 text-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium border-b-2 border-transparent">
             ${t_Tab2}
           </button>
           <button id="tab-howto" onclick="tutorialManager.switchTab('howto')" 
-                  class="tutorial-tab flex-1 py-3 text-center text-gray-400 hover:text-white transition-colors font-medium border-b-2 border-transparent">
+                  class="tutorial-tab flex-1 py-3 text-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium border-b-2 border-transparent">
             ${t_Tab3}
           </button>
         </div>
         
         <!-- Content Area -->
-        <div id="tutorial-content" class="flex-1 overflow-y-auto p-6 custom-scrollbar bg-gray-900">
+        <div id="tutorial-content" class="flex-1 overflow-y-auto p-6 custom-scrollbar bg-white dark:bg-gray-900">
           <!-- Dynamic content will be injected here -->
         </div>
         
         <!-- Footer -->
-        <div class="p-4 border-t border-gray-700 text-center bg-gray-800/50">
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700 text-center bg-gray-50 dark:bg-gray-800/50">
           <button id="tutorial-close-btn" 
                   class="px-8 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-purple-500/30">
             ${t_Close}
@@ -498,9 +498,12 @@ class TutorialManager {
 
         <style>
            .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-           .custom-scrollbar::-webkit-scrollbar-track { background: #1f2937; }
-           .custom-scrollbar::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
-           .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+           .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+           .dark .custom-scrollbar::-webkit-scrollbar-track { background: #1f2937; }
+           .custom-scrollbar::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+           .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #4b5563; }
+           .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+           .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #6b7280; }
            @keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         </style>
       </div>
@@ -565,18 +568,30 @@ class TutorialManager {
         if (t === tab) {
           // Active
           btn.classList.add(
-            "text-purple-400",
+            "text-purple-600",
+            "dark:text-purple-400",
             "border-purple-500",
-            "bg-white/5",
+            "bg-purple-50",
+            "dark:bg-white/5",
           );
-          btn.classList.remove("text-gray-400", "border-transparent");
+          btn.classList.remove(
+            "text-gray-500",
+            "dark:text-gray-400",
+            "border-transparent",
+          );
         } else {
           // Inactive
-          btn.classList.add("text-gray-400", "border-transparent");
+          btn.classList.add(
+            "text-gray-500",
+            "dark:text-gray-400",
+            "border-transparent",
+          );
           btn.classList.remove(
-            "text-purple-400",
+            "text-purple-600",
+            "dark:text-purple-400",
             "border-purple-500",
-            "bg-white/5",
+            "bg-purple-50",
+            "dark:bg-white/5",
           );
         }
       }
@@ -613,35 +628,35 @@ class TutorialManager {
     this.contentEl.innerHTML = `
       <div class="space-y-6">
         <div>
-          <h3 class="text-2xl font-bold text-purple-400 mb-3">${p.heading}</h3>
-          <p class="text-gray-300 leading-relaxed">${p.description}</p>
+          <h3 class="text-2xl font-bold text-purple-600 dark:text-purple-400 mb-3">${p.heading}</h3>
+          <p class="text-gray-700 dark:text-gray-300 leading-relaxed">${p.description}</p>
         </div>
         
         <!-- Benefits -->
-        <div class="bg-green-900/20 border border-green-600/30 rounded-xl p-4">
-          <h4 class="text-lg font-semibold text-green-400 mb-3">${
+        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-600/30 rounded-xl p-4">
+          <h4 class="text-lg font-semibold text-green-700 dark:text-green-400 mb-3">${
             p.benefits.heading
           }</h4>
           <div class="grid grid-cols-2 gap-2">
             ${p.benefits.items
               .map(
                 (item) =>
-                  `<div class="text-gray-300 flex items-start"><span class="text-green-400 mr-2">✓</span>${item}</div>`,
+                  `<div class="text-gray-700 dark:text-gray-300 flex items-start"><span class="text-green-600 dark:text-green-400 mr-2">✓</span>${item}</div>`,
               )
               .join("")}
           </div>
         </div>
         
         <!-- 10 Essentials -->
-        <div class="bg-gray-800/50 rounded-xl p-4">
-          <h4 class="text-lg font-semibold text-blue-400 mb-3">${
+        <div class="bg-gray-100 dark:bg-gray-800/50 rounded-xl p-4">
+          <h4 class="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-3">${
             p.essentials.heading
           }</h4>
           <div class="grid md:grid-cols-2 gap-2 text-sm">
             ${p.essentials.items
               .map(
                 (item, i) =>
-                  `<div class="text-gray-300 flex items-start"><span class="text-blue-400 mr-2 font-bold">${
+                  `<div class="text-gray-700 dark:text-gray-300 flex items-start"><span class="text-blue-600 dark:text-blue-400 mr-2 font-bold">${
                     i + 1
                   }.</span>${item}</div>`,
               )
@@ -650,15 +665,15 @@ class TutorialManager {
         </div>
         
         <!-- Key Points -->
-        <div class="bg-yellow-900/20 border border-yellow-600/30 rounded-xl p-4">
-          <h4 class="text-lg font-semibold text-yellow-400 mb-3">${
+        <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-600/30 rounded-xl p-4">
+          <h4 class="text-lg font-semibold text-yellow-700 dark:text-yellow-400 mb-3">${
             p.keyPoints.heading
           }</h4>
           <div class="grid md:grid-cols-2 gap-2">
             ${p.keyPoints.items
               .map(
                 (item) =>
-                  `<div class="text-gray-300 flex items-start"><span class="text-yellow-400 mr-2">•</span>${item}</div>`,
+                  `<div class="text-gray-700 dark:text-gray-300 flex items-start"><span class="text-yellow-600 dark:text-yellow-400 mr-2">•</span>${item}</div>`,
               )
               .join("")}
           </div>
@@ -679,7 +694,7 @@ class TutorialManager {
 
     this.contentEl.innerHTML = `
       <div class="space-y-4">
-        <h3 class="text-xl font-bold text-purple-400">${e.heading}</h3>
+        <h3 class="text-xl font-bold text-purple-600 dark:text-purple-400">${e.heading}</h3>
         
         <!-- Exercise Type Buttons -->
         <div class="flex flex-wrap gap-2">
@@ -691,7 +706,7 @@ class TutorialManager {
                 ${
                   this.currentExercise === type
                     ? "bg-purple-600 text-white"
-                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                 }">
               ${e.types[type].short}
             </button>
@@ -710,7 +725,7 @@ class TutorialManager {
                 ${
                   this.currentLevel === level
                     ? "bg-green-600 text-white"
-                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                 }">
               ${level}
             </button>
@@ -720,7 +735,7 @@ class TutorialManager {
         </div>
         
         <!-- Exercise Detail -->
-        <div class="bg-gray-800/50 rounded-xl p-4">
+        <div class="bg-gray-100 dark:bg-gray-800/50 rounded-xl p-4">
           <div class="flex flex-col gap-4">
             <!-- Image (full width for wide images) -->
             <div>
@@ -729,31 +744,31 @@ class TutorialManager {
                   this.currentLevel
                 }.png" 
                 alt="${e.types[this.currentExercise].name}"
-                class="w-full rounded-lg bg-gray-700"
+                class="w-full rounded-lg bg-gray-200 dark:bg-gray-700"
                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 200%22><rect fill=%22%23374151%22 width=%22800%22 height=%22200%22/><text x=%22400%22 y=%22100%22 text-anchor=%22middle%22 fill=%22%239CA3AF%22 font-size=%2216%22>Image: ${
                   this.currentExercise
                 }_${this.currentLevel}</text></svg>'">
             </div>
             <!-- Description -->
             <div>
-              <h4 class="text-xl font-bold text-white mb-2">${
+              <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-2">${
                 e.types[this.currentExercise].name
               }</h4>
-              <p class="text-purple-400 mb-3">${
+              <p class="text-purple-600 dark:text-purple-400 mb-3">${
                 e.levels[this.currentLevel].name
               } - ${e.levels[this.currentLevel].desc}</p>
-              <p class="text-gray-300 mb-4">${exerciseDesc.summary}</p>
+              <p class="text-gray-700 dark:text-gray-300 mb-4">${exerciseDesc.summary}</p>
               
               <!-- 4 Steps -->
               <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                 ${exerciseDesc.steps
                   .map(
                     (step, i) => `
-                  <div class="bg-gray-700/50 rounded-lg p-3 text-center">
-                    <div class="text-purple-400 font-bold mb-1">ขั้นที่ ${
+                  <div class="bg-white dark:bg-gray-700/50 rounded-lg p-3 text-center shadow-sm dark:shadow-none">
+                    <div class="text-purple-600 dark:text-purple-400 font-bold mb-1">ขั้นที่ ${
                       i + 1
                     }</div>
-                    <div class="text-gray-300 text-sm">${step}</div>
+                    <div class="text-gray-600 dark:text-gray-300 text-sm">${step}</div>
                   </div>
                 `,
                   )
@@ -790,16 +805,16 @@ class TutorialManager {
 
     this.contentEl.innerHTML = `
       <div class="space-y-6">
-        <h3 class="text-2xl font-bold text-purple-400">${h.heading}</h3>
+        <h3 class="text-2xl font-bold text-purple-600 dark:text-purple-400">${h.heading}</h3>
         
         <!-- Steps -->
         <div class="space-y-3">
           ${h.steps
             .map(
               (step) => `
-            <div class="flex items-center gap-4 bg-gray-800/50 rounded-xl p-4">
+            <div class="flex items-center gap-4 bg-gray-100 dark:bg-gray-800/50 rounded-xl p-4">
               <span class="text-2xl">${step.icon}</span>
-              <span class="text-gray-300">${step.text}</span>
+              <span class="text-gray-700 dark:text-gray-300">${step.text}</span>
             </div>
           `,
             )
@@ -807,16 +822,16 @@ class TutorialManager {
         </div>
         
         <!-- Tips Section -->
-        <div class="bg-blue-900/20 border border-blue-600/30 rounded-xl p-4">
-          <h4 class="text-lg font-semibold text-blue-400 mb-3">${
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-600/30 rounded-xl p-4">
+          <h4 class="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-3">${
             h.tips.heading
           }</h4>
           <div class="space-y-2">
             ${h.tips.items
               .map(
                 (item) => `
-              <div class="flex items-start gap-2 text-gray-300">
-                <span class="text-green-400">${item.icon}</span>
+              <div class="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <span class="text-green-600 dark:text-green-400">${item.icon}</span>
                 <span><strong>${item.label}</strong> ${item.text}</span>
               </div>
             `,
@@ -826,16 +841,16 @@ class TutorialManager {
         </div>
         
         <!-- Warnings Section -->
-        <div class="bg-amber-900/20 border border-amber-600/30 rounded-xl p-4">
-          <h4 class="text-lg font-semibold text-amber-400 mb-3">${
+        <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-600/30 rounded-xl p-4">
+          <h4 class="text-lg font-semibold text-amber-600 dark:text-amber-400 mb-3">${
             h.warnings.heading
           }</h4>
           <div class="space-y-2">
             ${h.warnings.items
               .map(
                 (item) => `
-              <div class="flex items-start gap-2 text-gray-300">
-                <span class="text-red-400">${item.icon}</span>
+              <div class="flex items-start gap-2 text-gray-700 dark:text-gray-300">
+                <span class="text-red-500 dark:text-red-400">${item.icon}</span>
                 <span><strong>${item.label}</strong> ${item.text}</span>
               </div>
             `,

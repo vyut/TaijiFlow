@@ -143,6 +143,9 @@ Version: 0.9.9 (2026-01-17)
     <script src="js/display/silk-animation.js" defer></script>
     <script src="js/ui/wisdom_manager.js" defer></script>
 
+    <!-- Shortcuts Popup (New) -->
+    <script src="js/ui/shortcuts_manager.js" defer></script>
+
     <!-- 3. Utility Modules (Refactored from script.js) -->
     <script src="js/utils/session_manager.js" defer></script>
     <!-- Session/User ID management -->
@@ -1314,6 +1317,17 @@ Version: 0.9.9 (2026-01-17)
               </div>
             </div>
           </div>
+
+          <!-- Shortcuts Button (New) -->
+          <button
+            id="shortcuts-btn"
+            class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+            title="คีย์ลัด (Shortcuts)"
+            onclick="window.shortcutsManager.toggle()"
+          >
+            🎹
+          </button>
+
         </div>
 
         <!-- Right: Settings Buttons -->
@@ -1356,7 +1370,7 @@ Version: 0.9.9 (2026-01-17)
 
       <!-- Canvas Container (Full Width) -->
       <div
-        class="canvas-container bg-black rounded overflow-hidden shadow-xl mb-6"
+        class="canvas-container relative bg-black rounded overflow-hidden shadow-xl mb-6"
       >
         <!-- Instructor Video Container (Left side in Split Screen) -->
         <div id="instructor-video-container" class="hidden"></div>
@@ -1593,6 +1607,11 @@ Version: 0.9.9 (2026-01-17)
             </button>
           </div>
         </div>
+          </div>
+        </div>
+        
+        </div>
+
       </div>
 
       <!-- Control Buttons (Start/Stop - Separate) -->

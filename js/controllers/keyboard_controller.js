@@ -336,45 +336,12 @@ class KeyboardController {
         if (e.shiftKey) {
           tutorialManager.open(uiManager.currentLang);
         } else {
-          this.showShortcutsHelp();
+          // New: Toggle Shortcuts Popup
+          if (window.shortcutsManager) {
+            window.shortcutsManager.toggle();
+          }
         }
         break;
     }
-  }
-
-  /**
-   * Show keyboard shortcuts help notification
-   */
-  showShortcutsHelp() {
-    const shortcuts = [
-      "⌨️ คีย์ลัด",
-      "━━━━━━━━━━━━",
-      "Space = เริ่ม/หยุด",
-      "F = เต็มจอ",
-      "━━━━━━━━━━━━",
-      "P = Path (เส้นทางต้นแบบ)",
-      "I = Instructor (ผู้สอน)",
-      "O = Ghost (เงาต้นแบบ)",
-      "━━━━━━━━━━━━",
-      "K = Skeleton (โครงผู้ฝึก)",
-      "S = Side-by-Side (จอแยก)",
-      "R = Trail (เส้นสัมผัส)",
-      "━━━━━━━━━━━━",
-      "G = Grid (เส้นตาราง)",
-      "D = Debug Mode",
-      "━━━━━━━━━━━━",
-      "B = Blur Background",
-      "━━━━━━━━━━━━",
-      "A = เปิด/ปิดเสียง",
-      "M = กระจก (Mirror)",
-      "L = เปลี่ยนภาษา",
-      "T = เปลี่ยน Theme",
-      "? = วิธีใช้งาน",
-      "━━━━━━━━━━━━",
-      "/ = แสดงคีย์ลัด",
-      "Esc = ยกเลิก",
-    ].join("\n");
-
-    this.deps.uiManager.showNotification(shortcuts, "info", 5000);
   }
 }

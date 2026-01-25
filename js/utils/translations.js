@@ -493,6 +493,12 @@ window.TRANSLATIONS = {
     mobile_issue3: "ประสิทธิภาพอาจช้ากว่า",
     mobile_back_btn: "← กลับหน้าแรก",
     mobile_continue_btn: "ดำเนินการต่อ →",
+
+    // -------------------------------------------------------------------------
+    // Shortcuts Hint
+    // -------------------------------------------------------------------------
+    shortcuts_hint_prefix: "กด",
+    shortcuts_hint_suffix: "เพื่อดูคีย์ลัด",
   },
 
   // ===========================================================================
@@ -774,6 +780,12 @@ window.TRANSLATIONS = {
     mobile_issue3: "Performance may be slower",
     mobile_back_btn: "← Back to Home",
     mobile_continue_btn: "Continue Anyway →",
+
+    // -------------------------------------------------------------------------
+    // Shortcuts Hint
+    // -------------------------------------------------------------------------
+    shortcuts_hint_prefix: "Press",
+    shortcuts_hint_suffix: "for shortcuts",
   },
 
   // ===========================================================================

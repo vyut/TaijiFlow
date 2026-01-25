@@ -79,6 +79,8 @@ const scorer = new ScoringManager(); // คำนวณคะแนน
 const audioManager = new AudioManager(); // เสียงพูดแจ้งเตือน
 const gestureManager = new GestureManager(); // ควบคุมด้วยท่ามือ
 const backgroundManager = new BackgroundManager(); // จัดการพื้นหลัง (Virtual Backgrounds)
+const shortcutsManager = new ShortcutsManager(); // Popup คีย์ลัด (New)
+window.shortcutsManager = shortcutsManager; // Expose globally
 
 // -----------------------------------------------------------------------------
 // State Variables - ตัวแปรเก็บสถานะ

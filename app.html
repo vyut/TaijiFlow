@@ -61,6 +61,17 @@ Version: 0.9.9 (2026-01-17)
         darkMode: "class",
       };
     </script>
+    <style>
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .no-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+    </style>
     <link
       href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap"
       rel="stylesheet"
@@ -407,7 +418,7 @@ Version: 0.9.9 (2026-01-17)
             <div
               id="display-menu"
               class="hidden absolute right-0 mt-2 w-56 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
-              style="max-height: 70vh; overflow-y: auto"
+              style="max-height: 80vh; overflow-y: auto"
             >
               <div
                 class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900"
@@ -679,7 +690,6 @@ Version: 0.9.9 (2026-01-17)
             <div
               id="rules-menu"
               class="hidden absolute right-0 mt-2 w-64 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
-              style="max-height: 70vh; overflow-y: auto"
             >
               <div
                 class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900 sticky top-0"
@@ -1021,7 +1031,6 @@ Version: 0.9.9 (2026-01-17)
             <div
               id="settings-menu"
               class="hidden absolute right-0 mt-2 w-56 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
-              style="max-height: 70vh; overflow-y: auto"
             >
               <div
                 class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900 sticky top-0"

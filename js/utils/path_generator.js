@@ -53,7 +53,7 @@ function generateDynamicPath(landmarks, exercise) {
   const shoulderWidth = Math.abs(landmarks[12].x - landmarks[11].x);
   // X: ไหล่ + offset ออกไปข้างนอก (เพิ่มเป็น 70% ให้ห่างจากลำตัวมากขึ้น)
   // หมายเหตุ: สลับทิศเพราะ Canvas ถูก Mirror (-1, 1) ใน script.js
-  const sideOffset = shoulderWidth * 0.7; // 70% ของความกว้างไหล่
+  const sideOffset = shoulderWidth * 0.3; // 30% ของความกว้างไหล่ (ลดจาก 50% เพื่อให้เข้าใกล้ลำตัวมากขึ้น)
   const centerX = isRightHand
     ? shoulder.x - sideOffset // มือขวา: landmark อยู่ซ้าย (เพราะ mirror) → ลบเพื่อไปซ้ายบนจอ
     : shoulder.x + sideOffset; // มือซ้าย: landmark อยู่ขวา (เพราะ mirror) → บวกเพื่อไปขวาบนจอ
@@ -80,7 +80,7 @@ function generateDynamicPath(landmarks, exercise) {
   console.log(
     `[DynamicPath] Generated ${points.length} points, ` +
       `center=(${centerX.toFixed(2)}, ${centerY.toFixed(2)}), ` +
-      `radius=${radius.toFixed(2)}`
+      `radius=${radius.toFixed(2)}`,
   );
 
   return points;

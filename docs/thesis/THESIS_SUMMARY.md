@@ -1,7 +1,7 @@
 # TaijiFlow AI - Thesis Summary (Final Report)
 
 **Last Updated:** 2026-01-24  
-**Version:** v1.1.0  
+**Version:** v1.1.1  
 **Status:** ✅ Final Ready
 
 ---
@@ -225,12 +225,36 @@
 | Sequence Diagrams | ✅ | 3 diagrams |
 | State Diagram | ✅ | 8 States (Updated) |
 | Activity Diagrams | ✅ | 8 diagrams |
+```
 | Screenshots | ✅ | 6 images |
 | Privacy/Mobile Flow | ✅ | Updated in ch4 |
 
 ---
 
-## 📋 Recent Updates (v0.9.12)
+## 📋 Recent- เวอร์ชันล่าสุด: v1.1.1 (2026-01-24)
+- v1.1.0 Changes: Enhanced Display (Side-by-Side, Grid, Mirror), Shortcuts, Performance Modes
+- v1.1.1 Changes: Quotes Centralization, About Info Easter Egg, UI Polish, Path Offsets
+
+### v1.1.1 Updates (Polishing & Easter Egg)
+
+| Document | Change |
+|----------|--------|
+| `translations.js` | ✨ Centralized Quotes logic & Added About Info |
+| `ui_manager.js` | ✨ Merged `wisdom_popup.js` & Added About Info Interaction |
+| `app.html` | ✨ Unified Modal Opacity (60%) & Font Consistency |
+| `path_generator.js` | ⚡ Tuned Path Offset (0.3) for better body alignment |
+
+### v1.1.0 Updates (Final Revision)
+
+| Document | Change |
+|----------|--------|
+| `chapter4.md` | Added BackgroundManager & Enhanced Display Modes |
+| `chapter5.md` | Added Implementation details for Virtual Backgrounds |
+| `chapter6.md` | Added Test Cases for Mirror, Side-by-Side, Blur |
+| `chapter7.md` | Updated Feature Summary & Future Work (WebGPU) |
+| `appendix_g` | Updated User Manual (New Shortcuts & Menus) |
+
+### v0.9.12 Updates
 
 | Document | Change |
 |----------|--------|
@@ -253,6 +277,15 @@
 | `chapter6.md` | Added Test Cases for Mirror, Side-by-Side, Blur |
 | `chapter7.md` | Updated Feature Summary & Future Work (WebGPU) |
 | `appendix_g` | Updated User Manual (New Shortcuts & Menus) |
+
+### v1.1.1 Updates (Polishing & Easter Egg)
+
+| Document | Change |
+|----------|--------|
+| `translations.js` | ✨ Centralized Quotes logic & Added About Info |
+| `ui_manager.js` | ✨ Merged `wisdom_popup.js` & Added About Info Interaction |
+| `app.html` | ✨ Unified Modal Opacity (60%) & Font Consistency |
+| `path_generator.js` | ⚡ Tuned Path Offset (0.3) for better body alignment |
 
 ### v0.9.9 Updates
 

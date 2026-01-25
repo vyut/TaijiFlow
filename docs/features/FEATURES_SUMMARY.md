@@ -1,7 +1,7 @@
 # TaijiFlow AI - Features Summary for SRS
 
-**Version:** 1.0  
-**Last Updated:** 2024-12-28
+**Version:** 1.1.1  
+**Last Updated:** 2026-01-24
 
 ---
 
@@ -40,9 +40,10 @@
 | Item | Description |
 |------|-------------|
 | **Module** | heuristics_engine.js |
-| **Description** | ตรวจสอบความถูกต้องของท่าทางตามหลักไท่จี๋ 8 ข้อ |
+| **MODULE** | heuristics_engine.js |
+| **Description** | ตรวจสอบความถูกต้องของท่าทางตามหลักไท่จี๋ 9 ข้อ |
 
-**8 กฎ:**
+**9 กฎ:**
 
 | # | Rule | Thai Principle |
 |---|------|----------------|
@@ -54,9 +55,10 @@
 | 6 | Smoothness | 如抽丝 - ลื่นไหลเหมือนดึงไหม |
 | 7 | Continuity | 绵绵不断 - ต่อเนื่องไม่ขาดตอน |
 | 8 | Weight Shift | 分虚实 - น้ำหนักอยู่ในฐาน |
+| 9 | Coordination | 上下相随 - มือและเท้าสัมพันธ์กัน |
 
 **FR ที่ควรเขียน:**
-- FR-02.1 ~ FR-02.8: แต่ละกฎ 1 FR
+- FR-02.1 ~ FR-02.9: แต่ละกฎ 1 FR
 
 ---
 
@@ -149,7 +151,7 @@
 |-------|:-------------:|-------------|
 | L1 | 3 กฎ | เริ่มต้น (Path, Elbow, Continuity) |
 | L2 | 5 กฎ | ปานกลาง (+Rotation, Smoothness) |
-| L3 | 8 กฎ | ขั้นสูง (ครบทุกกฎ) |
+| L3 | 9 กฎ | ขั้นสูง (ครบทุกกฎ) |
 
 ---
 

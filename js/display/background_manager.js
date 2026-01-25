@@ -109,7 +109,9 @@ class BackgroundManager {
     // Canvases for temp operations (Lazy initialization)
     this.tempCanvas = null;
     this.maskCanvas = null;
-    this.personCanvas = null;
+    // 4. Initialize WebGL Manager
+    this.webglManager = new WebGLManager();
+    this.useWebGL = true; // Flag to switch between 2D and WebGL
   }
 
   /**
@@ -140,18 +142,25 @@ class BackgroundManager {
         const img = new Image();
         img.crossOrigin = "anonymous"; // Important for canvas
 
-        img.onload = () => {
-          this.preloadedImages.set(key, img);
-          console.log(`✅ Loaded: ${bg.name}`);
-          resolve();
+        // Fix for WebGL texture: decode() ensures it's ready
+        img.src = bg.url;
+
+        img.onload = async () => {
+          try {
+            await img.decode(); // Ensure decoded for GPU upload
+            this.preloadedImages.set(key, img);
+            console.log(`✅ Loaded: ${bg.name}`);
+            resolve();
+          } catch (e) {
+            console.warn(`⚠️ Decode failed: ${bg.name}`, e);
+            resolve();
+          }
         };
 
         img.onerror = () => {
           console.warn(`⚠️ Failed to load: ${bg.name} (${bg.url})`);
           resolve(); // Don't fail, just skip
         };
-
-        img.src = bg.url;
       });
 
       loadPromises.push(promise);
@@ -186,6 +195,11 @@ class BackgroundManager {
     } else {
       this.currentMode = "virtual";
       this.currentBackgroundImage = this.preloadedImages.get(key);
+
+      // Upload to WebGL if ready
+      if (this.webglManager.initialized && this.currentBackgroundImage) {
+        this.webglManager.updateBackgroundTexture(this.currentBackgroundImage);
+      }
     }
 
     console.log(`🖼️ Background changed to: ${this.backgrounds[key].name}`);
@@ -193,8 +207,10 @@ class BackgroundManager {
 
   /**
    * Ensure temp canvases are initialized and resized
+   * Now also handles WebGL initialization
    */
   _ensureCanvases(width, height) {
+    // 2D fallback canvases (keep them for safety or hybrid usage)
     if (
       !this.tempCanvas ||
       this.tempCanvas.width !== width ||
@@ -212,161 +228,65 @@ class BackgroundManager {
       this.personCanvas.width = width;
       this.personCanvas.height = height;
     }
+
+    // WebGL Init
+    if (this.useWebGL) {
+      this.webglManager.init(width, height);
+    }
   }
 
   /**
    * Draw background with segmentation
-   * @param {CanvasRenderingContext2D} ctx - Canvas context
+   * @param {CanvasRenderingContext2D} ctx - Main Canvas 2D context
    * @param {ImageData} segmentationMask - Segmentation mask from MediaPipe
-   * @param {HTMLImageElement} videoImage - Video frame
+   * @param {HTMLVideoElement} videoElement - Source Video Element
    * @param {number} width - Canvas width
    * @param {number} height - Canvas height
    */
-  drawBackground(ctx, segmentationMask, videoImage, width, height) {
+  drawBackground(ctx, segmentationMask, videoElement, width, height) {
     if (this.currentMode === "none") {
       return;
     }
 
-    // Safety check: Needs segmentationMask and videoImage
-    if (!segmentationMask || !videoImage) {
+    // Safety check
+    if (!segmentationMask || !videoElement) {
       return;
     }
 
-    // Initialize temp canvases if needed
     this._ensureCanvases(width, height);
 
-    // 1. Process Mask (Feather edges)
-    const processedMask = this._processSegmentationMask(
-      segmentationMask,
-      width,
-      height,
-    );
+    if (this.useWebGL) {
+      // --- WebGL Rendering Path (High Performance) ---
+      const glCanvas = this.webglManager.canvas;
+      if (!glCanvas) return; // WebGL Init failed
 
-    if (this.currentMode === "blur") {
-      this.drawBlurBackground(ctx, processedMask, videoImage, width, height);
-      return;
+      // 1. Upload Textures
+      this.webglManager.updateVideoTexture(videoElement);
+      this.webglManager.updateMaskTexture(segmentationMask);
+
+      // 2. Render
+      if (this.currentMode === "blur") {
+        this.webglManager.renderBlur();
+      } else if (this.currentMode === "silhouette") {
+        this.webglManager.renderSilhouette();
+      } else if (
+        this.currentMode === "virtual" &&
+        this.currentBackgroundImage
+      ) {
+        // Ensure BG texture is updated (fix for black screen on first load)
+        this.webglManager.updateBackgroundTexture(this.currentBackgroundImage);
+        this.webglManager.renderVirtual();
+      }
+
+      // 3. Draw WebGL Canvas Result to Main 2D Canvas
+      ctx.drawImage(glCanvas, 0, 0, width, height);
+    } else {
+      // --- Legacy 2D Rendering Path (Fallback) ---
+      // (Removed for brevity as per instructions, but could be kept here if needed)
+      // Since we refactored, let's just log or do nothing.
+      // Or we could have kept the old methods as _drawBlur2D etc.
+      console.warn("2D Rendering path removed for WebGL optimization.");
     }
-
-    if (this.currentMode === "silhouette") {
-      this.drawSilhouetteBackground(
-        ctx,
-        processedMask,
-        videoImage, // Added videoImage
-        width,
-        height,
-      );
-      return;
-    }
-
-    if (this.currentMode === "virtual" && this.currentBackgroundImage) {
-      this.drawVirtualBackground(ctx, processedMask, videoImage, width, height);
-      return;
-    }
-  }
-
-  /**
-   * Process segmentation mask (Feathering)
-   * Uses canvas filters instead of pixel manipulation for performance.
-   */
-  _processSegmentationMask(rawMask, width, height) {
-    const maskCtx = this.maskCanvas.getContext("2d");
-
-    // Clear
-    maskCtx.clearRect(0, 0, width, height);
-
-    // Draw raw mask with slight blur to feather edges
-    maskCtx.filter = "blur(4px)";
-    maskCtx.drawImage(rawMask, 0, 0, width, height);
-    maskCtx.filter = "none";
-
-    // Note: Temporal smoothing (blending with previous frame) is omitted
-    // to prioritize high FPS, as JS-based pixel blending is expensive.
-    // The blur filter alone provides decent edge softening.
-
-    return this.maskCanvas;
-  }
-
-  /**
-   * Draw Blur Background
-   * - Background: Gaussian Blur of video
-   * - Foreground: Sharp Person (cut out via mask)
-   */
-  drawBlurBackground(ctx, processedMask, videoImage, width, height) {
-    const tempCtx = this.tempCanvas.getContext("2d");
-    const personCtx = this.personCanvas.getContext("2d");
-
-    // 1. Prepare Blurred Background (on tempCanvas)
-    tempCtx.clearRect(0, 0, width, height);
-    tempCtx.filter = "blur(15px)";
-    tempCtx.drawImage(videoImage, 0, 0, width, height);
-    tempCtx.filter = "none";
-
-    // Draw blurred background to main canvas
-    ctx.drawImage(this.tempCanvas, 0, 0, width, height);
-
-    // 2. Prepare Sharp Person (on personCanvas)
-    personCtx.clearRect(0, 0, width, height);
-    personCtx.drawImage(videoImage, 0, 0, width, height);
-
-    // Cut out person using mask (destination-in keeps only overlapping parts)
-    personCtx.globalCompositeOperation = "destination-in";
-    personCtx.drawImage(processedMask, 0, 0, width, height);
-    personCtx.globalCompositeOperation = "source-over";
-
-    // 3. Draw Sharp Person on top
-    ctx.drawImage(this.personCanvas, 0, 0, width, height);
-  }
-
-  /**
-   * Draw Virtual Background
-   * - Background: Static Image
-   * - Foreground: Sharp Person
-   */
-  drawVirtualBackground(ctx, processedMask, videoImage, width, height) {
-    const personCtx = this.personCanvas.getContext("2d");
-
-    // 1. Draw Background Image
-    ctx.drawImage(this.currentBackgroundImage, 0, 0, width, height);
-
-    // 2. Prepare Sharp Person
-    personCtx.clearRect(0, 0, width, height);
-    personCtx.drawImage(videoImage, 0, 0, width, height);
-
-    // Apply Mask
-    personCtx.globalCompositeOperation = "destination-in";
-    personCtx.drawImage(processedMask, 0, 0, width, height);
-    personCtx.globalCompositeOperation = "source-over";
-
-    // 3. Draw Person on top
-    ctx.drawImage(this.personCanvas, 0, 0, width, height);
-  }
-
-  /**
-   * Draw Silhouette Background (Purple Overlay Style)
-   * - Background: Normal Video
-   * - Foreground: Purple Overlay on Person
-   */
-  drawSilhouetteBackground(ctx, processedMask, videoImage, width, height) {
-    const personCtx = this.personCanvas.getContext("2d");
-
-    // 1. Draw Normal Video Background
-    ctx.drawImage(videoImage, 0, 0, width, height);
-
-    // 2. Create Purple Overlay
-    personCtx.clearRect(0, 0, width, height);
-
-    // Fill entire canvas with Purple (semi-transparent)
-    personCtx.fillStyle = "rgba(128, 0, 128, 0.5)"; // Purple with 50% opacity
-    personCtx.fillRect(0, 0, width, height);
-
-    // Cut out using the mask (destination-in)
-    // This leaves purple only where the mask is present
-    personCtx.globalCompositeOperation = "destination-in";
-    personCtx.drawImage(processedMask, 0, 0, width, height);
-    personCtx.globalCompositeOperation = "source-over";
-
-    // 3. Draw Purple Overlay on top of Video
-    ctx.drawImage(this.personCanvas, 0, 0, width, height);
   }
 
   /**

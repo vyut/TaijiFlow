@@ -1,8 +1,8 @@
 @startuml TaijiFlow_Activity_Diagram_Heuristics
 ' ============================================================================
-' TaijiFlow AI - Activity Diagram: Heuristics Engine (8 Rules Analysis)
+' TaijiFlow AI - Activity Diagram: Heuristics Engine (9 Rules Analysis)
 ' ============================================================================
-' แสดงขั้นตอนการวิเคราะห์ท่าทางตามหลักไท่จี๋ 8 ข้อ
+' แสดงขั้นตอนการวิเคราะห์ท่าทางตามหลักไท่จี๋ 9 ข้อ
 ' อ้างอิงจาก: heuristics_engine.js -> analyze() method
 ' ============================================================================
 
@@ -41,8 +41,8 @@ note right
     ✓ R1 Path, R2 Rotation, R3 Elbow,
       R4 Waist, R5 Stability, R7 Continuity
 
-    **L3 (ยืนย่อ) - 8 กฎ:**
-    ✓ ทุกกฎ (รวม R6 Smooth, R8 Weight)
+    **L3 (ยืนย่อ) - 9 กฎ:**
+    ✓ ทุกกฎ (รวม R6 Smooth, R8 Weight, R9 Coordination)
 end note
 
 partition "ตรวจสอบ 9 กฎ (ตาม Level Config)" {
@@ -125,7 +125,7 @@ end split
 
 if (พบข้อผิดพลาด?) then (ใช่)
     partition "Priority & Sticky Logic" {
-        :เรียงลำดับตาม Priority (1-8);
+        :เรียงลำดับตาม Priority (1-9);
         note right
             **สำคัญที่สุด:**
             1. Path Accuracy

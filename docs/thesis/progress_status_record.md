@@ -1,7 +1,7 @@
 # Progress Status Record (บันทึกความก้าวหน้า)
 
 **โครงการ:** TaijiFlow AI  
-**เวอร์ชัน:** 1.1  
+**เวอร์ชัน:** 1.1.1  
 **วันที่อัปเดต:** 24 มกราคม 2569  
 **ผู้จัดทำ:** วีรยุทธ เอื้อใจพระ
 
@@ -59,6 +59,7 @@
 | 2026-01-21 | v0.9.12 | Performance Mode + UI Standardization + Layout Fixes | ✅ |
 | 2026-01-21 | v0.9.13 | Rule 9 (Coordination) + UI Fixes (HTML/Layout) | ✅ |
 | 2026-01-24 | v1.1.0 | **Feature Complete:** Enhanced Display (Side-by-Side, Grid, Mirror) | ✅ |
+| 2026-01-24 | v1.1.1 | **Final Polish:** Quotes Centralization, Wisdom Popup Easter Egg, Path Offset Tuning | ✅ |
 | TBD | - | User Testing (5-10 คน) | ⏳ |
 | TBD | v1.2 | Post-UAT Improvements | ⏳ |
 

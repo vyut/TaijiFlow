@@ -434,7 +434,7 @@ class TutorialManager {
     container.id = "tutorial-container";
     container.className = "fixed inset-0 z-50 hidden";
     container.innerHTML = `
-      <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="tutorialManager.close()"></div>
+      <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="tutorialManager.close()"></div>
       <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
                   w-11/12 max-w-4xl h-[85vh] bg-gray-900 rounded-2xl shadow-2xl 
                   border border-purple-500/50 overflow-hidden flex flex-col">
@@ -490,23 +490,23 @@ class TutorialManager {
     // Update title and tabs
     document.getElementById("tutorial-title").textContent = this.t(
       "title",
-      lang
+      lang,
     );
     document.getElementById("tab-principles").textContent = this.t(
       "tabs.principles",
-      lang
+      lang,
     );
     document.getElementById("tab-exercises").textContent = this.t(
       "tabs.exercises",
-      lang
+      lang,
     );
     document.getElementById("tab-howto").textContent = this.t(
       "tabs.howto",
-      lang
+      lang,
     );
     document.getElementById("tutorial-close-btn").textContent = this.t(
       "closeBtn",
-      lang
+      lang,
     );
 
     this.switchTab(this.currentTab);
@@ -580,7 +580,7 @@ class TutorialManager {
             ${p.benefits.items
               .map(
                 (item) =>
-                  `<div class="text-gray-300 flex items-start"><span class="text-green-400 mr-2">✓</span>${item}</div>`
+                  `<div class="text-gray-300 flex items-start"><span class="text-green-400 mr-2">✓</span>${item}</div>`,
               )
               .join("")}
           </div>
@@ -597,7 +597,7 @@ class TutorialManager {
                 (item, i) =>
                   `<div class="text-gray-300 flex items-start"><span class="text-blue-400 mr-2 font-bold">${
                     i + 1
-                  }.</span>${item}</div>`
+                  }.</span>${item}</div>`,
               )
               .join("")}
           </div>
@@ -612,7 +612,7 @@ class TutorialManager {
             ${p.keyPoints.items
               .map(
                 (item) =>
-                  `<div class="text-gray-300 flex items-start"><span class="text-yellow-400 mr-2">•</span>${item}</div>`
+                  `<div class="text-gray-300 flex items-start"><span class="text-yellow-400 mr-2">•</span>${item}</div>`,
               )
               .join("")}
           </div>
@@ -649,7 +649,7 @@ class TutorialManager {
                 }">
               ${e.types[type].short}
             </button>
-          `
+          `,
             )
             .join("")}
         </div>
@@ -668,7 +668,7 @@ class TutorialManager {
                 }">
               ${level}
             </button>
-          `
+          `,
             )
             .join("")}
         </div>
@@ -680,8 +680,8 @@ class TutorialManager {
             <div>
               <img id="exercise-image" 
                 src="images/tutorial/${this.currentExercise}_${
-      this.currentLevel
-    }.png" 
+                  this.currentLevel
+                }.png" 
                 alt="${e.types[this.currentExercise].name}"
                 class="w-full rounded-lg bg-gray-700"
                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 200%22><rect fill=%22%23374151%22 width=%22800%22 height=%22200%22/><text x=%22400%22 y=%22100%22 text-anchor=%22middle%22 fill=%22%239CA3AF%22 font-size=%2216%22>Image: ${
@@ -709,7 +709,7 @@ class TutorialManager {
                     }</div>
                     <div class="text-gray-300 text-sm">${step}</div>
                   </div>
-                `
+                `,
                   )
                   .join("")}
               </div>
@@ -755,7 +755,7 @@ class TutorialManager {
               <span class="text-2xl">${step.icon}</span>
               <span class="text-gray-300">${step.text}</span>
             </div>
-          `
+          `,
             )
             .join("")}
         </div>
@@ -773,7 +773,7 @@ class TutorialManager {
                 <span class="text-green-400">${item.icon}</span>
                 <span><strong>${item.label}</strong> ${item.text}</span>
               </div>
-            `
+            `,
               )
               .join("")}
           </div>
@@ -792,7 +792,7 @@ class TutorialManager {
                 <span class="text-red-400">${item.icon}</span>
                 <span><strong>${item.label}</strong> ${item.text}</span>
               </div>
-            `
+            `,
               )
               .join("")}
           </div>

@@ -1,6 +1,6 @@
 # TaijiFlow AI - Module Dependencies
 
-> อัปเดต: 2025-01-08 | 21 Modules | สำหรับ Master's Thesis SE
+> อัปเดต: 2026-01-24 | 21 Modules | สำหรับ Master's Thesis SE (v1.1.1)
 
 ---
 

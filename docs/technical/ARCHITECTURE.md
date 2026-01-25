@@ -1,6 +1,6 @@
 # TaijiFlow AI - System Architecture
 
-**Version:** 1.1.0
+**Version:** 1.1.1
 **Last Updated:** 2026-01-24
 
 ---
@@ -51,7 +51,7 @@ TaijiFlow/
 │   │   # ═══════════════════════════════════════════════════════
 │   │   # UI MANAGERS
 │   │   # ═══════════════════════════════════════════════════════
-│   ├── ui_manager.js                # Theme, Notifications (~45KB)
+│   ├── ui_manager.js                # Theme, Notifications, Wisdom (~50KB)
 │   ├── audio_manager.js             # Text-to-Speech (~31KB)
 │   ├── score_popup_manager.js       # ผลคะแนน Popup (~7KB)
 │   ├── tutorial_manager.js          # Tutorial Popup (~30KB)
@@ -353,4 +353,4 @@ this.RULES_CONFIG = {
 
 ---
 
-*Document updated: 2026-01-24 (v1.1.0)*
+*Document updated: 2026-01-24 (v1.1.1)*

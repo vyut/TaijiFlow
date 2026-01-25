@@ -1,4 +1,4 @@
-# TaijiFlow AI - Heuristics Engine User Manual v3.0
+# TaijiFlow AI - Heuristics Engine User Manual v3.1 (System v1.1.1)
 
 คู่มือฉบับสมบูรณ์: อธิบายกฎการตรวจสอบท่าทาง 9 ข้อ พร้อมโค้ดและแผนภาพ
 

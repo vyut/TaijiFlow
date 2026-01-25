@@ -4,7 +4,29 @@
 
 ---
 
-## [v0.9.15] - 2026-01-24
+## [v1.1.1] - 2026-01-24
+
+### ✨ Final Polish & "About" Easter Egg
+
+#### Added
+- **About Info Easter Egg** (`translations.js`, `ui_manager.js`)
+  - **Feature**: Clicking the spinning Yin-Yang logo ☯️ in the Wisdom Popup toggles "About Developer" info.
+  - **Interaction**: Developer name is a clickable `mailto:` link.
+- **Quotes Centralization** (`translations.js`) - Refactored all quote logic from `score_popup_manager.js` to `translations.js`.
+
+#### Changed
+- **UI Consistency**:
+  - **Unified Opacity**: Adjusted `tutorial_manager.js` and `app.html` (Wisdom Popup) to use `bg-opacity-60` (60%) for consistent visual depth.
+  - **Font Styles**: Unified font weights for titles.
+- **Path Generator Tuning** (`path_generator.js`)
+  - **Adjusted Offset**: Reduced `sideOffset` from `0.7` to `0.3` (30% of shoulder width) to bring the exercise circle closer to the body for better alignment.
+
+#### Merged
+- **Wisdom Popup** - Merged `wisdom_popup.js` into `ui_manager.js` to reduce request count and centralized UI logic.
+
+---
+
+## [v1.1.0] - 2026-01-24
 
 ### 🚀 Performance & Core Systems (Features 8 & 3)
 

@@ -43,7 +43,7 @@ loop Camera Loop: ทุก Frame (~30 fps)
         end
 
         ' === Step 1: Analyze Pose (8 Rules) ===
-        group #FFF3E0 วิเคราะห์ท่า (8 กฎ)
+        group #FFF3E0 วิเคราะห์ท่า (9 กฎ)
             Training -> Heuristics : analyze(landmarks)
             activate Heuristics
             
@@ -69,7 +69,11 @@ loop Camera Loop: ทุก Frame (~30 fps)
             note right: เคลื่อนไหวลื่นไหล
             
             Heuristics -> Heuristics : 8. checkContinuity()
+            Heuristics -> Heuristics : 8. checkContinuity()
             note right: ต่อเนื่อง ไม่หยุดนิ่ง
+
+            Heuristics -> Heuristics : 9. checkCoordination()
+            note right: บนล่างสัมพันธ์กัน
             
             Heuristics --> Training : { feedback, errorJoints }
             deactivate Heuristics

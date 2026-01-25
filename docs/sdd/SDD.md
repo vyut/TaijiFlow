@@ -1,7 +1,7 @@
 # TaijiFlow AI - Software Design Document (SDD)
 
-**Version:** 1.0  
-**Last Updated:** 2026-01-09  
+**Version:** 1.1  
+**Last Updated:** 2026-01-24  
 **Status:** Final  
 **Standard:** ISO/IEC 29110
 
@@ -837,7 +837,7 @@ const response = await fetch(`https://generativelanguage.googleapis.com/v1/model
 | **Activity** | ActivityDiagram_UC04.wsd | UC-04: Tutorial |
 | **Activity** | ActivityDiagram_UC05.wsd | UC-05: AI Chatbot |
 | **Activity** | ActivityDiagram_UC06.wsd | UC-06: Manage Reference Data |
-| **Activity** | ActivityDiagram_Heuristics.wsd | 8 Heuristic Rules Flow |
+| **Activity** | ActivityDiagram_Heuristics.wsd | 9 Heuristic Rules Flow |
 | **Component** | SystemArchitecture.wsd | ภาพรวมสถาปัตยกรรมระบบ |
 | **Component** | ModuleDependencies.wsd | 22 Modules Dependencies |
 | **Component** | LayerArchitecture.wsd | 4-Layer Architecture |
@@ -1107,6 +1107,7 @@ const response = await fetch('/api/chat', {
 | Version | Date | Author | Changes |
 |:-------:|------|--------|---------|
 | 1.0 | 2026-01-09 | TaijiFlow Team | Initial SDD based on ISO 29110 |
+| 1.1 | 2026-01-24 | TaijiFlow Team | Updated to 9 Rules (Coordination) |
 
 ### 12.3 Document Approval
 

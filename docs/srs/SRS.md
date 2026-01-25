@@ -1,7 +1,7 @@
 # TaijiFlow AI - Software Requirements Specification (SRS)
 
-**Version:** 3.0  
-**Last Updated:** 2026-01-09  
+**Version:** 3.1  
+**Last Updated:** 2026-01-24  
 **Status:** Final
 
 ---
@@ -410,6 +410,7 @@ graph TB
 | 1.0 | 2024-12 | - | Initial draft |
 | 2.0 | 2024-12-28 | - | เพิ่ม 9 Rules, Display Options, Traceability |
 | 3.0 | 2026-01-09 | - | เพิ่ม F-09~F-11 (Gesture, Chatbot, Feedback), Exception Flows, SRS-02-10~16, NFR-09~10, Glossary, Acceptance Criteria |
+| 3.1 | 2026-01-24 | - | Updated to 9 Rules (Coordination) consistency |
 
 ---
 

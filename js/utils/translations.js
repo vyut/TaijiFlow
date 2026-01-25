@@ -195,7 +195,7 @@ window.TRANSLATIONS = {
     // Category Options (ประเภทท่า - สำหรับขยายในอนาคต)
     // -------------------------------------------------------------------------
     // Placeholder - ข้อความเริ่มต้นใน Dropdown
-    cat_placeholder: "-- เลือกหมวดหมู่ --",
+    cat_placeholder: "-- หมวดหมู่ --",
     cat_silk_single: "ท่าม้วนไหม - มือเดียว",
     // cat_silk_double: "ท่าม้วนไหม - สองมือ",
 
@@ -426,7 +426,7 @@ window.TRANSLATIONS = {
     // แบ่งตาม: มือ (ซ้าย/ขวา) x ทิศทาง (ตาม/ทวนเข็ม)
     //
     // Placeholder - ข้อความเริ่มต้นใน Dropdown
-    ex_placeholder: "-- เลือกท่าฝึก --",
+    ex_placeholder: "-- ท่าฝึก --",
     // Right Hand Clockwise - มือขวา หมุนตามเข็มนาฬิกา
     // หมุนแบบ 順纏 (Shùn Chán / Forward Reeling)
     ex_rh_cw: "1. มือขวา - ตามเข็ม",
@@ -444,7 +444,7 @@ window.TRANSLATIONS = {
     // Level Options (ตัวเลือกรูปแบบ)
     // -------------------------------------------------------------------------
     // Placeholder - ข้อความเริ่มต้นใน Dropdown
-    level_placeholder: "-- เลือกรูปแบบ --",
+    level_placeholder: "-- รูปแบบ --",
     // Level 1: Seated Position
     level_l1: "1. แบบนั่ง",
     // Level 2: Standing Position
@@ -538,7 +538,7 @@ window.TRANSLATIONS = {
     // -------------------------------------------------------------------------
     // Category Options
     // -------------------------------------------------------------------------
-    cat_placeholder: "-- Select Category --",
+    cat_placeholder: "-- Category --",
     cat_silk_single: "Silk Reeling - Single Hand",
     // cat_silk_double: "Silk Reeling - Double Hand",
 
@@ -731,7 +731,7 @@ window.TRANSLATIONS = {
     // -------------------------------------------------------------------------
     // Exercise Options
     // -------------------------------------------------------------------------
-    ex_placeholder: "-- Select Exercise --",
+    ex_placeholder: "-- Exercise --",
     ex_rh_cw: "1. Right Hand - Clockwise",
     ex_rh_ccw: "2. Right Hand - Counter-Clock",
     ex_lh_cw: "3. Left Hand - Clockwise",
@@ -741,7 +741,7 @@ window.TRANSLATIONS = {
     // -------------------------------------------------------------------------
     // Level Options
     // -------------------------------------------------------------------------
-    level_placeholder: "-- Select Level --",
+    level_placeholder: "-- Level --",
     level_l1: "1. Seated",
     level_l2: "2. Standing",
     level_l3: "3. Bow Stance",

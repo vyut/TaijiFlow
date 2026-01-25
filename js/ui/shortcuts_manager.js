@@ -49,100 +49,91 @@ class ShortcutsManager {
   /**
    * ข้อมูล Shortcuts แยกตามหมวดหมู่
    */
-  getShortcutsData(lang = "th") {
-    const t = window.uiManager?.translations[lang] || {};
-
-    // Helper to get text or fallback
-    const txt = (key, fallback) => t[key] || fallback;
-
+  getShortcutsData() {
     return {
       control: {
-        title: lang === "th" ? "🎮 การควบคุม" : "Control",
+        title: "Control",
         color: "blue",
         items: [
           {
             key: "Space",
-            desc: lang === "th" ? "เริ่ม / หยุดการฝึก" : "Start / Stop",
+            desc: "Start / Stop",
           },
           {
             key: "Esc",
-            desc: lang === "th" ? "ยกเลิก / ปิด" : "Cancel / Close",
+            desc: "Cancel / Close",
           },
           {
             key: "F",
-            desc: lang === "th" ? "เต็มจอ (Fullscreen)" : "Fullscreen",
+            desc: "Fullscreen",
           },
-          { key: "H", desc: lang === "th" ? "เปิดคู่มือ" : "Open Tutorial" },
-          { key: "/", desc: lang === "th" ? "คีย์ลัดนี้" : "Shortcuts" },
+          { key: "H", desc: "Open Tutorial" },
+          { key: "/", desc: "Shortcuts" },
         ],
       },
       display: {
-        title: lang === "th" ? "👁️ การแสดงผล" : "Display",
+        title: "Display",
         color: "purple",
         items: [
           {
             key: "I",
-            desc:
-              lang === "th" ? "จอครูฝึก (Instructor PiP)" : "Instructor PiP",
+            desc: "Instructor PiP",
           },
           {
             key: "S",
-            desc: lang === "th" ? "จอแยก (Side-by-Side)" : "Side-by-Side",
+            desc: "Side-by-Side",
           },
           {
             key: "M",
-            desc: lang === "th" ? "กระจก (Mirror Mode)" : "Mirror Mode",
+            desc: "Mirror Mode",
           },
           {
             key: "O",
-            desc: lang === "th" ? "เงาครูฝึก (Ghost)" : "Ghost Overlay",
+            desc: "Ghost Overlay",
           },
           {
             key: "B",
-            desc: lang === "th" ? "เบลอพื้นหลัง" : "Blur Background",
+            desc: "Blur Background",
           },
         ],
       },
       analysis: {
-        title: lang === "th" ? "📊 การวิเคราะห์" : "Analysis",
+        title: "Analysis",
         color: "green",
         items: [
           {
             key: "K",
-            desc: lang === "th" ? "โครงกระดูก (Skeleton)" : "Skeleton",
+            desc: "Skeleton",
           },
           {
             key: "P",
-            desc: lang === "th" ? "เส้นทางต้นแบบ (Path)" : "Reference Path",
+            desc: "Reference Path",
           },
           {
             key: "G",
-            desc: lang === "th" ? "เส้นตาราง (Grid)" : "Grid Overlay",
+            desc: "Grid Overlay",
           },
           {
             key: "R",
-            desc: lang === "th" ? "เส้นสัมผัส (Trail)" : "Motion Trail",
+            desc: "Motion Trail",
           },
           {
             key: "E",
-            desc:
-              lang === "th"
-                ? "จุดผิดพลาด (Error Highlights)"
-                : "Error Highlights",
+            desc: "Error Highlights",
           },
           {
             key: "D",
-            desc: lang === "th" ? "โหมดดีบัก (Debug)" : "Debug Mode",
+            desc: "Debug Mode",
           },
         ],
       },
       settings: {
-        title: lang === "th" ? "⚙️ ตั้งค่า" : "Settings",
+        title: "Settings",
         color: "gray",
         items: [
-          { key: "A", desc: lang === "th" ? "เปิด/ปิด เสียง" : "Toggle Audio" },
-          { key: "L", desc: lang === "th" ? "เปลี่ยนภาษา" : "Change Language" },
-          { key: "T", desc: lang === "th" ? "เปลี่ยน Theme" : "Toggle Theme" },
+          { key: "A", desc: "Toggle Audio" },
+          { key: "L", desc: "Change Language" },
+          { key: "T", desc: "Toggle Theme" },
         ],
       },
     };
@@ -151,8 +142,8 @@ class ShortcutsManager {
   /**
    * สร้าง HTML Popup Content
    */
-  generateHtml(lang) {
-    const data = this.getShortcutsData(lang);
+  generateHtml() {
+    const data = this.getShortcutsData();
     const sections = Object.values(data);
 
     let gridHtml = "";
@@ -217,7 +208,7 @@ class ShortcutsManager {
          <!-- Header -->
          <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-100 dark:border-gray-800">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-               ⌨️ ${lang === "th" ? "รายการคีย์ลัด" : "Keyboard Shortcuts"}
+               ⌨️ Keyboard Shortcuts
                <span class="text-xs font-normal text-gray-500 dark:text-gray-400 px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-full">
                  Press /
                </span>
@@ -234,7 +225,7 @@ class ShortcutsManager {
 
          <!-- Footer Hint -->
          <div class="mt-6 text-center text-xs text-gray-400 dark:text-gray-500">
-            ${lang === "th" ? "กดปุ่มคีย์ลัดเพื่อใช้งานได้ทันที" : "Press keys to trigger actions immediately"}
+            Press keys to trigger actions immediately
          </div>
          
          <style>
@@ -267,8 +258,7 @@ class ShortcutsManager {
     const overlay = document.getElementById(this.overlayId);
     if (!overlay) return;
 
-    const lang = window.uiManager?.currentLang || "th";
-    overlay.innerHTML = this.generateHtml(lang);
+    overlay.innerHTML = this.generateHtml();
 
     overlay.classList.remove("hidden");
 

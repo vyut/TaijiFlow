@@ -55,7 +55,16 @@
 
       <!-- Mobile: Start button + Hamburger -->
       <div class="nav-actions">
-        <a href="app.html" class="nav-btn-primary">▶️ Start</a>
+        <!-- Language Toggle (Mobile) -->
+        <button
+          class="nav-btn-secondary lang-toggle-btn"
+          onclick="window.i18nManager.toggleLanguage()"
+        >
+          🇺🇸 EN
+        </button>
+        <a href="app.html" class="nav-btn-primary" data-i18n="landing_nav_start"
+          >▶️ Start</a
+        >
         <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu">
           <span></span>
           <span></span>
@@ -65,12 +74,26 @@
 
       <!-- Navigation Links (Desktop: visible, Mobile: dropdown) -->
       <ul class="nav-links" id="nav-menu">
-        <li><a href="#about">เกี่ยวกับ</a></li>
-        <li><a href="#guide">คู่มือ</a></li>
-        <li><a href="#reference">เรียนรู้</a></li>
+        <li><a href="#about" data-i18n="landing_nav_about">เกี่ยวกับ</a></li>
+        <li><a href="#guide" data-i18n="landing_nav_guide">คู่มือ</a></li>
+        <li><a href="#reference" data-i18n="landing_nav_learn">เรียนรู้</a></li>
+        <!-- Desktop Language Toggle -->
+        <li>
+          <button
+            class="nav-btn-secondary lang-toggle-btn hidden md:block"
+            onclick="window.i18nManager.toggleLanguage()"
+          >
+            🇺🇸 EN
+          </button>
+        </li>
         <!-- Desktop only: Start button in menu -->
         <li class="nav-start-desktop">
-          <a href="app.html" class="nav-btn-primary">▶️ Start</a>
+          <a
+            href="app.html"
+            class="nav-btn-primary"
+            data-i18n="landing_nav_start"
+            >▶️ Start</a
+          >
         </li>
       </ul>
     </nav>
@@ -79,20 +102,33 @@
       <canvas id="silk-canvas"></canvas>
 
       <div class="hero-content">
-        <div class="badge">การบรรจบกันของ`ศาสตร์ AI`และ`ศิลป์ไท้เก๊ก`</div>
+        <div class="badge" data-i18n="landing_hero_badge">
+          การบรรจบกันของ`ศาสตร์ AI`และ`ศิลป์ไท้เก๊ก`
+        </div>
         <!-- <div class="badge">The Convergence of AI Science and Taiji Art</div> -->
         <h1>
           <span class="gradient-text">TaijiFlow AI</span><br />
-          <span style="font-size: 0.5em; font-weight: 400"
+          <span
+            style="font-size: 0.5em; font-weight: 400"
+            data-i18n="landing_hero_title_sub"
             >ผู้ช่วยฝึก Silk Reeling</span
           >
         </h1>
         <div class="button-group">
-          <a href="app.html" class="btn btn-primary">
+          <a
+            href="app.html"
+            class="btn btn-primary"
+            data-i18n="landing_hero_btn_start"
+          >
             <span>▶️</span>
             <span>เข้าสู่การฝึก</span>
           </a>
-          <a href="#guide" class="btn btn-secondary">📖 คู่มือใช้งาน</a>
+          <a
+            href="#guide"
+            class="btn btn-secondary"
+            data-i18n="landing_hero_btn_guide"
+            >📖 คู่มือใช้งาน</a
+          >
         </div>
       </div>
 
@@ -102,27 +138,31 @@
     <!-- About Section -->
     <section id="about" class="about-section">
       <div class="about-container">
-        <h2>เกี่ยวกับโครงการ</h2>
+        <h2 data-i18n="landing_about_title">เกี่ยวกับโครงการ</h2>
         <div class="about-content">
           <div class="about-card">
-            <h3>📜 ที่มาของโครงการ (Origins)</h3>
-            <strong>TaijiFlow AI</strong>
-            เกิดจากความตั้งใจแก้ปัญหาการเข้าถึง (Accessibility)
-            การเรียนรู้<strong> "ท่าม้วนไหม (Silk Reeling)"</strong>
-            อย่างถูกต้อง ด้วยการประยุกต์ใช้เทคโนโลยี
-            <strong>AI - Computer Vision</strong>
-            โดยมุ่งเน้นการแก้ปัญหาหลัก 3 ประการ:
+            <h3 data-i18n="landing_about_origins_title">
+              📜 ที่มาของโครงการ (Origins)
+            </h3>
+            <div data-i18n="landing_about_origins_desc">
+              <strong>TaijiFlow AI</strong>
+              เกิดจากความตั้งใจแก้ปัญหาการเข้าถึง (Accessibility)
+              การเรียนรู้<strong> "ท่าม้วนไหม (Silk Reeling)"</strong>
+              อย่างถูกต้อง ด้วยการประยุกต์ใช้เทคโนโลยี
+              <strong>AI - Computer Vision</strong>
+              โดยมุ่งเน้นการแก้ปัญหาหลัก 3 ประการ:
+            </div>
             <ul style="margin-top: 10px; font-size: 0.9em; opacity: 0.9">
-              <li>
+              <li data-i18n="landing_origins_1">
                 ❌
                 <strong>Scarcity:</strong>
                 การขาดผู้มีความรู้ความเชี่ยวชาญและแหล่งเรียนรู้ที่มีคุณภาพ
               </li>
-              <li>
+              <li data-i18n="landing_origins_2">
                 ❌ <strong>Time & Space Constraint:</strong> ข้อจำกัดด้านเวลา,
                 และสถานที่ที่เหมาะสม
               </li>
-              <li>
+              <li data-i18n="landing_origins_3">
                 ❌
                 <strong>No Feedback:</strong>
                 ผู้ฝึกไม่สามารถรู้ข้อผิดพลาดของตนเองเมื่อฝึกตามลำพัง
@@ -131,25 +171,27 @@
           </div>
 
           <div class="about-card">
-            <h3>💻 เทคโนโลยี (Technology)</h3>
+            <h3 data-i18n="landing_about_tech_title">
+              💻 เทคโนโลยี (Technology)
+            </h3>
             <ul>
-              <li>
+              <li data-i18n="landing_about_tech_1">
                 <strong>MediaPipe Pose</strong> - Computer Vision ตรวจจับท่าทาง
                 (Pose Estimation)
               </li>
-              <li>
+              <li data-i18n="landing_about_tech_2">
                 <strong>MediaPipe Gesture</strong> - ระบบสั่งงานด้วยมือ (Hand
                 Gesture Recognition)
               </li>
-              <li>
+              <li data-i18n="landing_about_tech_3">
                 <strong>Heuristic Algorithm</strong> -
                 ถอดรหัสหลักการไท้เก๊กสู่กฎเชิงคณิตศาสตร์ 9 ข้อ
               </li>
-              <li>
+              <li data-i18n="landing_tech_4">
                 <strong>Web Speech API</strong> - ระบบ Text-to-Speech
                 สำหรับแจ้งเตือนด้วยเสียง
               </li>
-              <li>
+              <li data-i18n="landing_tech_5">
                 <strong>Generative AI</strong> - Gemini API สำหรับ Chatbot
                 ให้คำปรึกษามวยไท้เก๊ก
               </li>
@@ -157,25 +199,27 @@
           </div>
 
           <div class="about-card">
-            <h3>✨ จุดเด่น (Key Features)</h3>
+            <h3 data-i18n="landing_about_features_title">
+              ✨ จุดเด่น (Key Features)
+            </h3>
             <ul>
-              <li>
+              <li data-i18n="landing_feat_1">
                 📹 <strong>Pose Detection</strong> - ตรวจจับท่าทางผู้ฝึก 33
                 จุดแบบ Real-time
               </li>
-              <li>
+              <li data-i18n="landing_feat_2">
                 📏 <strong>Body Calibration</strong> -
                 ปรับเทียบตามสัดส่วนร่างกายของผู้ใช้งาน
               </li>
-              <li>
+              <li data-i18n="landing_feat_3">
                 🧠 <strong>9 Rules Analysis</strong> -
                 ตรวจสอบความถูกต้องตามหลักไท้เก๊ก 9 ข้อ
               </li>
-              <li>
+              <li data-i18n="landing_feat_4">
                 ⚡ <strong>Real-time Feedback</strong> -
                 แจ้งข้อผิดพลาดทันทีด้วยภาพและเสียง
               </li>
-              <li>
+              <li data-i18n="landing_feat_5">
                 📊 <strong>Scoring System</strong> - สรุปผลคะแนน และตัดเกรด
                 พร้อมคำแนะนำ
               </li>
@@ -183,19 +227,21 @@
           </div>
 
           <div class="about-card">
-            <h3>🏗️ สถาปัตยกรรมระบบ (System Architecture)</h3>
+            <h3 data-i18n="landing_about_arch_title">
+              🏗️ สถาปัตยกรรมระบบ (System Architecture)
+            </h3>
             <!-- <p><strong>System Architecture & Workflow:</strong></p> -->
             <ul>
-              <li>
+              <li data-i18n="landing_arch_1">
                 📷 <strong>Input:</strong> รับภาพวิดีโอ (Video Stream) จาก
                 Webcam พร้อมปรับเทียบสัดส่วนร่างกาย (Calibration)
                 ผู้ฝึกอัตโนมัติ
               </li>
-              <li>
+              <li data-i18n="landing_arch_2">
                 ⚙️ <strong>Processing:</strong> สกัดจุด Keypoints 33 จุดด้วย
                 MediaPipe Pose และคำนวณความถูกต้องผ่าน Heuristic Engine
               </li>
-              <li>
+              <li data-i18n="landing_arch_3">
                 📊 <strong>Output:</strong> แสดงกราฟิก
                 (Skeleton/Path/Instructor/), แจ้งเตือนด้วยภาพและเสียง (TTS)
                 และประเมินเกรด (Scoring)
@@ -209,15 +255,17 @@
     <!-- Guide Section -->
     <section id="guide" class="guide-section">
       <div class="guide-container">
-        <h2>คู่มือใช้งาน</h2>
+        <h2 data-i18n="landing_guide_title">คู่มือใช้งาน</h2>
 
         <!-- Quickstart Box -->
 
         <div class="guide-steps">
           <div class="guide-step">
             <div class="step-number">1</div>
-            <h4>เตรียมตัว (Preparation)</h4>
-            <p>
+            <h4 data-i18n="landing_guide_step1_title">
+              เตรียมตัว (Preparation)
+            </h4>
+            <p data-i18n="landing_guide_step1_desc">
               เลือกท่าฝึกที่ต้องการและยืนหน้ากล้องเพื่อทำ
               <strong>Calibration</strong>
               ระบบจะปรับเส้นนำทาง (Path) ให้เข้ากับสรีระจริง
@@ -225,8 +273,10 @@
           </div>
           <div class="guide-step">
             <div class="step-number">2</div>
-            <h4>เริ่มการฝึก (Training)</h4>
-            <p>
+            <h4 data-i18n="landing_guide_step2_title">
+              เริ่มการฝึก (Training)
+            </h4>
+            <p data-i18n="landing_guide_step2_desc">
               เคลื่อนไหวตามเทรนเนอร์ (Trainer) พร้อมรับ
               <strong>Real-time Feedback</strong>
               ทันทีเมื่อทำไม่ถูกต้องด้วยภาพและเสียง
@@ -234,8 +284,10 @@
           </div>
           <div class="guide-step">
             <div class="step-number">3</div>
-            <h4>วัดผลการฝึก (Evaluation)</h4>
-            <p>
+            <h4 data-i18n="landing_guide_step3_title">
+              วัดผลการฝึก (Evaluation)
+            </h4>
+            <p data-i18n="landing_guide_step3_desc">
               เมื่อจบการฝึก ระบบจะสรุปผลคะแนน
               <strong>(Scoring)</strong> และตัดเกรด A-F
               พร้อมให้คำแนะนำเพื่อใช้ปรับปรุงการฝึก
@@ -246,17 +298,17 @@
         <div class="guide-extras-grid">
           <!-- Tips Column -->
           <div class="guide-extra-card">
-            <h4>📌 ข้อแนะนำ (Tips)</h4>
+            <h4 data-i18n="landing_guide_tips_title">📌 ข้อแนะนำ (Tips)</h4>
             <ul>
-              <li style="margin-bottom: 8px">
+              <li style="margin-bottom: 8px" data-i18n="landing_tips_1">
                 ✅ <strong>Device:</strong> รองรับ Mac/PC Desktop/Laptop ที่มี
                 Webcam
               </li>
-              <li style="margin-bottom: 8px">
+              <li style="margin-bottom: 8px" data-i18n="landing_tips_2">
                 ✅ <strong>Space:</strong> แสงสว่างเพียงพอและยืนห่างจากกล้อง 1.5
                 - 2 เมตร
               </li>
-              <li>
+              <li data-i18n="landing_tips_3">
                 ✅ <strong>Wear:</strong>
                 สวมเสื้อที่มีสีตัดกับพื้นหลังเพื่อการตรวจจับที่แม่นยำ
               </li>
@@ -265,17 +317,19 @@
 
           <!-- Warnings Column -->
           <div class="guide-extra-card warning">
-            <h4>⚠️ ข้อควรระวัง (Warnings)</h4>
+            <h4 data-i18n="landing_guide_warnings_title">
+              ⚠️ ข้อควรระวัง (Warnings)
+            </h4>
             <ul>
-              <li style="margin-bottom: 8px">
+              <li style="margin-bottom: 8px" data-i18n="landing_warn_1">
                 🛑 <strong>Limitation:</strong> AI เป็นผู้ช่วยฝึก
                 ไม่สามารถแทนครูผู้สอนจริง
               </li>
-              <li style="margin-bottom: 8px">
+              <li style="margin-bottom: 8px" data-i18n="landing_warn_2">
                 🛑 <strong>Health:</strong> หากมีอาการไม่สบาย หรือไม่ปกติ
                 ให้หยุดฝึกทันที
               </li>
-              <li>
+              <li data-i18n="landing_warn_3">
                 🛑 <strong>Disclaimer:</strong> สำหรับผู้มีปัญหาสุขภาพ
                 ปรึกษาแพทย์ก่อนใช้
               </li>
@@ -288,6 +342,7 @@
             href="app.html"
             class="nav-btn-primary"
             style="font-size: 18px; padding: 16px 40px"
+            data-i18n="landing_guide_cta_btn"
           >
             ▶️ เข้าสู่การฝึก
           </a>
@@ -297,6 +352,7 @@
               color: rgba(255, 255, 255, 0.6);
               font-size: 14px;
             "
+            data-i18n="landing_guide_cta_note"
           >
             * กดปุ่ม ❓ ในหน้าแอพเพื่อดูคู่มือแบบละเอียด
           </p>
@@ -307,27 +363,29 @@
     <!-- Reference Section -->
     <section id="reference" class="reference-section">
       <div class="reference-container">
-        <h2>เรียนรู้เพิ่มเติม</h2>
+        <h2 data-i18n="landing_ref_title">เรียนรู้เพิ่มเติม</h2>
         <div class="reference-content">
           <div class="reference-card">
-            <h3>🌀 ท่าม้วนไหมคืออะไร? (What is Silk Reeling?)</h3>
-            <p>
+            <h3 data-i18n="landing_ref_what_title">
+              🌀 ท่าม้วนไหมคืออะไร? (What is Silk Reeling?)
+            </h3>
+            <p data-i18n="landing_ref_what_desc">
               <strong>Silk Reeling (Chan Si Gong)</strong>
               คือหัวใจสำคัญของมวยไท้เก๊กตระกูลเฉิน เป็นระบบการฝึกที่หลอมรวมกาย
               จิต และพลังให้เคลื่อนไหวเป็นหนึ่งเดียว
               เปรียบเสมือนการสาวไหมออกจากรังที่ต้อง:
             </p>
             <ul>
-              <li>
+              <li data-i18n="landing_ref_what_1">
                 ✨ <strong>ต่อเนื่อง (Continuous):</strong> เคลื่อนไหวสอดคล้อง
                 สัมพันธ์ ต่อเนื่อง ไม่หยุด ไม่สะดุด
               </li>
-              <li>
+              <li data-i18n="landing_ref_what_2">
                 ✨
                 <strong>นุ่มนวล (Softness):</strong> เบา อ่อนโยน นุ่มนวล
                 ผ่อนคลาย แต่มีพลังแฝงอยู่ภายใน
               </li>
-              <li>
+              <li data-i18n="landing_ref_what_3">
                 ✨
                 <strong>เกลียว (Spiral):</strong> ส่งพลังหมุนวน (Spiral)
                 อย่างต่อเนื่องจากเท้าผ่านเอวไปสู่มือ
@@ -336,26 +394,28 @@
           </div>
 
           <div class="reference-card">
-            <h3>⚖️ หลักสำคัญ (Key Principles)</h3>
-            <p>
+            <h3 data-i18n="landing_ref_principles_title">
+              ⚖️ หลักสำคัญ (Key Principles)
+            </h3>
+            <p data-i18n="landing_ref_princ_desc">
               การเคลื่อนไหวที่ถูกต้องต้องอาศัยการทำงานสัมพันธ์กันของร่างกายทั้งระบบ
               (Whole Body Connection):
             </p>
             <ul>
-              <li>
+              <li data-i18n="landing_ref_princ_1">
                 1️⃣ <strong>Circular Motion:</strong> เคลื่อนไหวเป็นวงโค้ง
                 หลีกเลี่ยงเส้นตรง
               </li>
-              <li>
+              <li data-i18n="landing_ref_princ_2">
                 2️⃣ <strong>Waist as Axis:</strong> ใช้ "เอว"
                 เป็นแกนกลางในการขับเคลื่อน
               </li>
-              <li>
+              <li data-i18n="landing_ref_princ_3">
                 3️⃣
                 <strong>Upper-Lower Connect:</strong>
                 ช่วงบนและล่างทำงานสอดคล้องกัน
               </li>
-              <li>
+              <li data-i18n="landing_ref_princ_4">
                 4️⃣ <strong>Internal Qi:</strong> ใช้ "เจตนา (Mind)" นำ "พลัง
                 (Qi)"
               </li>
@@ -363,24 +423,28 @@
           </div>
 
           <div class="reference-card">
-            <h3>🎁 ประโยชน์ (Benefits)</h3>
-            <p>การฝึกฝนอย่างสม่ำเสมอส่งผลดีต่อทั้งร่างกายและจิตใจ:</p>
+            <h3 data-i18n="landing_ref_benefits_title">
+              🎁 ประโยชน์ (Benefits)
+            </h3>
+            <p data-i18n="landing_ref_ben_desc">
+              การฝึกฝนอย่างสม่ำเสมอส่งผลดีต่อทั้งร่างกายและจิตใจ:
+            </p>
             <ul>
-              <li>
+              <li data-i18n="landing_ref_ben_1">
                 🔗
                 <strong>Coordination:</strong>
                 พัฒนาการเคลื่อนไหวของร่างกายให้ประสาน สอดคล้องและสัมพันธ์กัน
               </li>
-              <li>
+              <li data-i18n="landing_ref_ben_2">
                 ⚖️
                 <strong>Balance & Structure:</strong>
                 เสริมความสมดุลย์โครงสร้างของร่างกาย และความมั่นคงภายใน
               </li>
-              <li>
+              <li data-i18n="landing_ref_ben_3">
                 🧠 <strong>Mental:</strong> ลดความเครียด ฝึกความตั้งมั่น
                 ผ่านสมาธิแบบเคลื่อนไหว (Moving Meditation)
               </li>
-              <li>
+              <li data-i18n="landing_ref_ben_4">
                 ⚡ <strong>Energy Flow:</strong> พัฒนาการไหลเวียนของพลังงาน (Qi)
                 ซึ่งเป็นหัวใจของการฝึกท่าม้วนไหม
               </li>
@@ -388,24 +452,28 @@
           </div>
 
           <div class="reference-card">
-            <h3>🧘 วิธีการฝึก (How to Practice)</h3>
-            <p>เคล็กลับการฝึกเพื่อให้ได้ประสิทธิภาพสูงสุด:</p>
+            <h3 data-i18n="landing_ref_how_title">
+              🧘 วิธีการฝึก (How to Practice)
+            </h3>
+            <p data-i18n="landing_ref_how_desc">
+              เคล็กลับการฝึกเพื่อให้ได้ประสิทธิภาพสูงสุด:
+            </p>
             <ul>
-              <li>
+              <li data-i18n="landing_ref_how_1">
                 🍃
                 <strong>ซง (Song - Relax):</strong> ผ่อนคลายร่างกายทุกส่วน
                 ไม่เกร็ง
               </li>
-              <li>
+              <li data-i18n="landing_ref_how_2">
                 🐢 <strong>ช้า (Slowness):</strong> เคลื่อนไหวช้าๆ
                 เพื่อจับความรู้สึกของร่างกาย
               </li>
-              <li>
+              <li data-i18n="landing_ref_how_3">
                 🎯
                 <strong>มีสมาธิ (Focus):</strong>
                 จดจ่อกับลมหายใจและการเคลื่อนไหว
               </li>
-              <li>
+              <li data-i18n="landing_ref_how_4">
                 🔁 <strong>ทำซ้ำ (Repetition):</strong> ฝึกฝนอย่างสม่ำเสมอวันละ
                 10-15 นาที
               </li>
@@ -448,15 +516,20 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <p>© 2026 TaijiFlow AI. All rights reserved.</p>
+      <p data-i18n="landing_footer_rights">
+        © 2026 TaijiFlow AI. All rights reserved.
+      </p>
       <p style="margin-top: 8px; font-size: 12px; opacity: 0.7">
-        Developed with ❤️ for Taijiquan practitioners by
+        <span data-i18n="landing_footer_dev_prefix"
+          >Developed with ❤️ for Taijiquan practitioners by</span
+        >
         <a href="mailto:vyut@msn.com">Yut</a>
       </p>
     </footer>
 
     <!-- Shared Translations (contains TAIJI_QUOTES) -->
     <script src="js/utils/translations.js"></script>
+    <script src="js/utils/i18n_manager.js"></script>
     <!-- Silk Reeling Animation -->
     <script src="js/display/silk-animation.js"></script>
 

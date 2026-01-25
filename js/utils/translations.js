@@ -160,6 +160,139 @@ window.TRANSLATIONS = {
     // -------------------------------------------------------------------------
     // Header & Title
     // -------------------------------------------------------------------------
+    // Landing Page
+    landing_nav_about: "เกี่ยวกับ",
+    landing_nav_guide: "คู่มือ",
+    landing_nav_learn: "เรียนรู้",
+    landing_nav_start: "▶️ Start",
+
+    landing_hero_badge: "การบรรจบกันของ `ศาสตร์ AI` และ `ศิลป์ไท้เก๊ก`",
+    landing_hero_title_sub: "ผู้ช่วยฝึก Silk Reeling",
+    landing_hero_btn_start: "เข้าสู่การฝึก",
+    landing_hero_btn_guide: "📖 คู่มือใช้งาน",
+
+    landing_about_title: "เกี่ยวกับโครงการ",
+    landing_about_origins_title: "📜 ที่มาของโครงการ (Origins)",
+    landing_about_origins_desc:
+      '<strong>TaijiFlow AI</strong> เกิดจากความตั้งใจแก้ปัญหาการเข้าถึง (Accessibility) การเรียนรู้<strong> "ท่าม้วนไหม (Silk Reeling)"</strong> อย่างถูกต้อง ด้วยการประยุกต์ใช้เทคโนโลยี <strong>AI - Computer Vision</strong> โดยมุ่งเน้นการแก้ปัญหาหลัก 3 ประการ:',
+    landing_about_tech_title: "💻 เทคโนโลยี (Technology)",
+    landing_about_features_title: "✨ จุดเด่น (Key Features)",
+    landing_feat_1:
+      "📹 <strong>Pose Detection</strong> - ตรวจจับท่าทางผู้ฝึก 33 จุดแบบ Real-time",
+    landing_feat_2:
+      "📏 <strong>Body Calibration</strong> - ปรับเทียบตามสัดส่วนร่างกายของผู้ใช้งาน",
+    landing_feat_3:
+      "🧠 <strong>9 Rules Analysis</strong> - ตรวจสอบความถูกต้องตามหลักไท้เก๊ก 9 ข้อ",
+    landing_feat_4:
+      "⚡ <strong>Real-time Feedback</strong> - แจ้งข้อผิดพลาดทันทีด้วยภาพและเสียง",
+    landing_feat_5:
+      "📊 <strong>Scoring System</strong> - สรุปผลคะแนน และตัดเกรด พร้อมคำแนะนำ",
+
+    landing_about_arch_title: "🏗️ สถาปัตยกรรมระบบ (System Architecture)",
+    landing_arch_1:
+      "📷 <strong>Input:</strong> รับภาพวิดีโอ (Video Stream) จาก Webcam พร้อมปรับเทียบสัดส่วนร่างกาย (Calibration) ผู้ฝึกอัตโนมัติ",
+    landing_arch_2:
+      "⚙️ <strong>Processing:</strong> สกัดจุด Keypoints 33 จุดด้วย MediaPipe Pose และคำนวณความถูกต้องผ่าน Heuristic Engine",
+    landing_arch_3:
+      "📊 <strong>Output:</strong> แสดงกราฟิก (Skeleton/Path/Instructor/), แจ้งเตือนด้วยภาพและเสียง (TTS) และประเมินเกรด (Scoring)",
+
+    // Origins List
+    landing_origins_1:
+      "❌ <strong>Scarcity:</strong> การขาดผู้มีความรู้ความเชี่ยวชาญและแหล่งเรียนรู้ที่มีคุณภาพ",
+    landing_origins_2:
+      "❌ <strong>Time & Space Constraint:</strong> ข้อจำกัดด้านเวลา, และสถานที่ที่เหมาะสม",
+    landing_origins_3:
+      "❌ <strong>No Feedback:</strong> ผู้ฝึกไม่สามารถรู้ข้อผิดพลาดของตนเองเมื่อฝึกตามลำพัง",
+
+    // Tech List (Items 4-5)
+    landing_about_tech_1:
+      "<strong>MediaPipe Pose</strong> - Computer Vision ตรวจจับท่าทาง (Pose Estimation)",
+    landing_about_tech_2:
+      "<strong>MediaPipe Gesture</strong> - ระบบสั่งงานด้วยมือ (Hand Gesture Recognition)",
+    landing_about_tech_3:
+      "<strong>Heuristic Algorithm</strong> - ถอดรหัสหลักการไท้เก๊กสู่กฎเชิงคณิตศาสตร์ 9 ข้อ",
+    landing_tech_4:
+      "<strong>Web Speech API</strong> - ระบบ Text-to-Speech สำหรับแจ้งเตือนด้วยเสียง",
+    landing_tech_5:
+      "<strong>Generative AI</strong> - Gemini API สำหรับ Chatbot ให้คำปรึกษามวยไท้เก๊ก",
+
+    // Guide Section
+    landing_guide_title: "คู่มือใช้งาน",
+    landing_guide_step1_title: "เตรียมตัว (Preparation)",
+    landing_guide_step1_desc:
+      "เลือกท่าฝึกที่ต้องการและยืนหน้ากล้องเพื่อทำ Calibration ระบบจะปรับเส้นนำทาง (Path) ให้เข้ากับสรีระจริง",
+    landing_guide_step2_title: "เริ่มการฝึก (Training)",
+    landing_guide_step2_desc:
+      "เคลื่อนไหวตามเทรนเนอร์ (Trainer) พร้อมรับ Real-time Feedback ทันทีเมื่อทำไม่ถูกต้องด้วยภาพและเสียง",
+    landing_guide_step3_title: "วัดผลการฝึก (Evaluation)",
+    landing_guide_step3_desc:
+      "เมื่อจบการฝึก ระบบจะสรุปผลคะแนน (Scoring) และตัดเกรด A-F พร้อมให้คำแนะนำเพื่อใช้ปรับปรุงการฝึก",
+
+    landing_guide_tips_title: "📌 ข้อแนะนำ (Tips)",
+    landing_tips_1:
+      "✅ <strong>Device:</strong> รองรับ Mac/PC Desktop/Laptop ที่มี Webcam",
+    landing_tips_2:
+      "✅ <strong>Space:</strong> แสงสว่างเพียงพอและยืนห่างจากกล้อง 1.5 - 2 เมตร",
+    landing_tips_3:
+      "✅ <strong>Wear:</strong> สวมเสื้อที่มีสีตัดกับพื้นหลังเพื่อการตรวจจับที่แม่นยำ",
+
+    landing_guide_warnings_title: "⚠️ ข้อควรระวัง (Warnings)",
+    landing_warn_1:
+      "🛑 <strong>Limitation:</strong> AI เป็นผู้ช่วยฝึก ไม่สามารถแทนครูผู้สอนจริง",
+    landing_warn_2:
+      "🛑 <strong>Health:</strong> หากมีอาการไม่สบาย หรือไม่ปกติ ให้หยุดฝึกทันที",
+    landing_warn_3:
+      "🛑 <strong>Disclaimer:</strong> สำหรับผู้มีปัญหาสุขภาพ ปรึกษาแพทย์ก่อนใช้",
+
+    landing_guide_cta_btn: "▶️ เข้าสู่การฝึก",
+    landing_guide_cta_note: "* กดปุ่ม ❓ ในหน้าแอพเพื่อดูคู่มือแบบละเอียด",
+
+    // Reference Section
+    landing_ref_title: "เรียนรู้เพิ่มเติม",
+    landing_ref_what_title: "🌀 ท่าม้วนไหมคืออะไร? (What is Silk Reeling?)",
+    landing_ref_what_desc:
+      "<strong>Silk Reeling (Chan Si Gong)</strong> คือหัวใจสำคัญของมวยไท้เก๊กตระกูลเฉิน เป็นระบบการฝึกที่หลอมรวมกาย จิต และพลังให้เคลื่อนไหวเป็นหนึ่งเดียว เปรียบเสมือนการสาวไหมออกจากรังที่ต้อง:",
+    landing_ref_what_1:
+      "✨ <strong>ต่อเนื่อง (Continuous):</strong> เคลื่อนไหวสอดคล้อง สัมพันธ์ ต่อเนื่อง ไม่หยุด ไม่สะดุด",
+    landing_ref_what_2:
+      "✨ <strong>นุ่มนวล (Softness):</strong> เบา อ่อนโยน นุ่มนวล ผ่อนคลาย แต่มีพลังแฝงอยู่ภายใน",
+    landing_ref_what_3:
+      "✨ <strong>เกลียว (Spiral):</strong> ส่งพลังหมุนวน (Spiral) อย่างต่อเนื่องจากเท้าผ่านเอวไปสู่มือ",
+
+    landing_ref_principles_title: "⚖️ หลักสำคัญ (Key Principles)",
+    landing_ref_princ_desc:
+      "การเคลื่อนไหวที่ถูกต้องต้องอาศัยการทำงานสัมพันธ์กันของร่างกายทั้งระบบ (Whole Body Connection):",
+    landing_ref_princ_1:
+      "1️⃣ <strong>Circular Motion:</strong> เคลื่อนไหวเป็นวงโค้ง หลีกเลี่ยงเส้นตรง",
+    landing_ref_princ_2:
+      '2️⃣ <strong>Waist as Axis:</strong> ใช้ "เอว" เป็นแกนกลางในการขับเคลื่อน',
+    landing_ref_princ_3:
+      "3️⃣ <strong>Upper-Lower Connect:</strong> ช่วงบนและล่างทำงานสอดคล้องกัน",
+    landing_ref_princ_4:
+      '4️⃣ <strong>Internal Qi:</strong> ใช้ "เจตนา (Mind)" นำ "พลัง (Qi)"',
+
+    landing_ref_benefits_title: "🎁 ประโยชน์ (Benefits)",
+    landing_ref_ben_desc: "การฝึกฝนอย่างสม่ำเสมอส่งผลดีต่อทั้งร่างกายและจิตใจ:",
+    landing_ref_ben_1:
+      "🔗 <strong>Coordination:</strong> พัฒนาการเคลื่อนไหวของร่างกายให้ประสาน สอดคล้องและสัมพันธ์กัน",
+    landing_ref_ben_2:
+      "⚖️ <strong>Balance & Structure:</strong> เสริมความสมดุลย์โครงสร้างของร่างกาย และความมั่นคงภายใน",
+    landing_ref_ben_3:
+      "🧠 <strong>Mental:</strong> ลดความเครียด ฝึกความตั้งมั่น ผ่านสมาธิแบบเคลื่อนไหว (Moving Meditation)",
+    landing_ref_ben_4:
+      "⚡ <strong>Energy Flow:</strong> พัฒนาการไหลเวียนของพลังงาน (Qi) ซึ่งเป็นหัวใจของการฝึกท่าม้วนไหม",
+
+    landing_ref_how_title: "🧘 วิธีการฝึก (How to Practice)",
+    landing_ref_how_desc: "เคล็กลับการฝึกเพื่อให้ได้ประสิทธิภาพสูงสุด:",
+    landing_ref_how_1:
+      "🍃 <strong>ซง (Song - Relax):</strong> ผ่อนคลายร่างกายทุกส่วน ไม่เกร็ง",
+    landing_ref_how_2:
+      "🐢 <strong>ช้า (Slowness):</strong> เคลื่อนไหวช้าๆ เพื่อจับความรู้สึกของร่างกาย",
+    landing_ref_how_3:
+      "🎯 <strong>มีสมาธิ (Focus):</strong> จดจ่อกับลมหายใจและการเคลื่อนไหว",
+    landing_ref_how_4:
+      "🔁 <strong>ทำซ้ำ (Repetition):</strong> ฝึกฝนอย่างสม่ำเสมอวันละ 10-15 นาที",
+
     // ชื่อแอปพลิเคชัน แสดงที่ Header
     app_title: "TaijiFlow AI: ผู้ช่วยฝึก Silk Reeling",
 
@@ -508,6 +641,138 @@ window.TRANSLATIONS = {
     // -------------------------------------------------------------------------
     // Header & Title
     // -------------------------------------------------------------------------
+    // Landing Page
+    landing_nav_about: "About",
+    landing_nav_guide: "Guide",
+    landing_nav_learn: "Learn",
+    landing_nav_start: "▶️ Start",
+
+    landing_hero_badge: "The Convergence of `AI Science` and `Taiji Art`",
+    landing_hero_title_sub: "Silk Reeling Assistant",
+    landing_hero_btn_start: "Start Training",
+    landing_hero_btn_guide: "📖 User Guide",
+
+    landing_about_title: "About Project",
+    landing_about_origins_title: "📜 Origins",
+    landing_about_origins_desc:
+      '<strong>TaijiFlow AI</strong> was born from the intention to solve the <strong>Accessibility</strong> problem of learning <strong>"Silk Reeling"</strong> correctly by applying <strong>AI - Computer Vision</strong> technology, focusing on solving 3 main problems:',
+    landing_about_tech_title: "💻 Technology",
+    landing_about_features_title: "✨ Key Features",
+    landing_feat_1:
+      "📹 <strong>Pose Detection</strong> - Real-time 33-point body tracking",
+    landing_feat_2:
+      "📏 <strong>Body Calibration</strong> - Calendarize to user's body proportions",
+    landing_feat_3:
+      "🧠 <strong>9 Rules Analysis</strong> - Verify correctness against 9 Taiji principals",
+    landing_feat_4:
+      "⚡ <strong>Real-time Feedback</strong> - Instant error notification via visuals and audio",
+    landing_feat_5:
+      "📊 <strong>Scoring System</strong> - Score summary and grading with improvement advice",
+
+    landing_about_arch_title: "🏗️ System Architecture",
+    landing_arch_1:
+      "📷 <strong>Input:</strong> Video Stream from Webcam with automatic body calibration",
+    landing_arch_2:
+      "⚙️ <strong>Processing:</strong> Extract 33 Keypoints via MediaPipe Pose and calculate correctness via Heuristic Engine",
+    landing_arch_3:
+      "📊 <strong>Output:</strong> Display graphics (Skeleton/Path/Instructor), Audio Feedback (TTS), and Scoring",
+
+    // Origins List
+    landing_origins_1:
+      "❌ <strong>Scarcity:</strong> Lack of qualified experts and quality learning resources",
+    landing_origins_2:
+      "❌ <strong>Time & Space Constraint:</strong> Limitations on time and suitable place",
+    landing_origins_3:
+      "❌ <strong>No Feedback:</strong> Practitioners cannot know their own mistakes when training alone",
+
+    // Tech List (Items 4-5)
+    landing_about_tech_1:
+      "<strong>MediaPipe Pose</strong> - Computer Vision, Pose Estimation",
+    landing_about_tech_2:
+      "<strong>MediaPipe Gesture</strong> - Hand Gesture Recognition",
+    landing_about_tech_3:
+      "<strong>Heuristic Algorithm</strong> - Decode Taiji principles into 9 mathematical rules",
+    landing_tech_4:
+      "<strong>Web Speech API</strong> - Text-to-Speech system for audio feedback",
+    landing_tech_5:
+      "<strong>Generative AI</strong> - Gemini API for Taiji counseling Chatbot",
+
+    // Guide Section
+    landing_guide_title: "User Guide",
+    landing_guide_step1_title: "Preparation",
+    landing_guide_step1_desc:
+      "Select exercise and stand in front of camera for Calibration.",
+    landing_guide_step2_title: "Training",
+    landing_guide_step2_desc:
+      "Follow the trainer and receive Real-time Feedback via visuals and audio.",
+    landing_guide_step3_title: "Evaluation",
+    landing_guide_step3_desc:
+      "Get score summary (Grades A-F) and improvement advice after training.",
+
+    landing_guide_tips_title: "📌 Tips",
+    landing_tips_1:
+      "✅ <strong>Device:</strong> Supports Mac/PC Desktop/Laptop with Webcam",
+    landing_tips_2:
+      "✅ <strong>Space:</strong> Adequate lighting and stand 1.5 - 2 meters from camera",
+    landing_tips_3:
+      "✅ <strong>Wear:</strong> Wear clothes that contrast with the background",
+
+    landing_guide_warnings_title: "⚠️ Warnings",
+    landing_warn_1:
+      "🛑 <strong>Limitation:</strong> AI is a training assistant, not a replacement for a teacher",
+    landing_warn_2:
+      "🛑 <strong>Health:</strong> Stop immediately if you feel unwell or abnormal",
+    landing_warn_3:
+      "🛑 <strong>Disclaimer:</strong> Consult a doctor before use if you have health issues",
+
+    landing_guide_cta_btn: "▶️ Start Training",
+    landing_guide_cta_note: "* Click ❓ in app for detailed guide",
+
+    // Reference Section
+    landing_ref_title: "Learn More",
+    landing_ref_what_title: "🌀 What is Silk Reeling?",
+    landing_ref_what_desc:
+      "<strong>Silk Reeling (Chan Si Gong)</strong> is the core of Chen Style Taijiquan. It fuses body, mind, and energy into one unified movement, like silk reeling from a cocoon:",
+    landing_ref_what_1:
+      "✨ <strong>Continuous:</strong> Smooth, connected, non-stop movement",
+    landing_ref_what_2:
+      "✨ <strong>Softness:</strong> Gentle, relaxed, but with hidden power",
+    landing_ref_what_3:
+      "✨ <strong>Spiral:</strong> Spiraling energy from feet through waist to hands",
+
+    landing_ref_principles_title: "⚖️ Key Principles",
+    landing_ref_princ_desc: "Correct movement requires Whole Body Connection:",
+    landing_ref_princ_1:
+      "1️⃣ <strong>Circular Motion:</strong> Move in arcs, avoid straight lines",
+    landing_ref_princ_2:
+      '2️⃣ <strong>Waist as Axis:</strong> Use the "Waist" as the driver',
+    landing_ref_princ_3:
+      "3️⃣ <strong>Upper-Lower Connect:</strong> Upper and lower body work in harmony",
+    landing_ref_princ_4:
+      '4️⃣ <strong>Internal Qi:</strong> Use "Mind" to lead "Qi"',
+
+    landing_ref_benefits_title: "🎁 Benefits",
+    landing_ref_ben_desc: "Consistent practice benefits both body and mind:",
+    landing_ref_ben_1:
+      "🔗 <strong>Coordination:</strong> Improve body coordination and connection",
+    landing_ref_ben_2:
+      "⚖️ <strong>Balance & Structure:</strong> Enhance physical balance and structural stability",
+    landing_ref_ben_3:
+      "🧠 <strong>Mental:</strong> Reduce stress and focus via Moving Meditation",
+    landing_ref_ben_4:
+      "⚡ <strong>Energy Flow:</strong> Improve Qi flow, the heart of Silk Reeling",
+
+    landing_ref_how_title: "🧘 How to Practice",
+    landing_ref_how_desc: "Tips for maximum efficiency:",
+    landing_ref_how_1:
+      "🍃 <strong>Song (Relax):</strong> Relax every part of the body",
+    landing_ref_how_2:
+      "🐢 <strong>Slowness:</strong> Move slowly to feel your body",
+    landing_ref_how_3:
+      "🎯 <strong>Focus:</strong> Concentrate on breath and movement",
+    landing_ref_how_4:
+      "🔁 <strong>Repetition:</strong> Practice regularly 10-15 mins daily",
+
     app_title: "TaijiFlow AI: Silk Reeling Assistant",
 
     // -------------------------------------------------------------------------

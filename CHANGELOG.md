@@ -4,6 +4,59 @@
 
 ---
 
+## [v0.9.10] - 2026-01-25
+
+### 🏗️ Architecture Refactoring (Hybrid Popup System)
+
+#### Added
+- **Unified Popup Shell** (`ui_manager.js`) - Centralized logic for all popups (Entrance/Exit animations, Backdrop blur, Z-index handling).
+- **WisdomManager** (`wisdom_manager.js`) - Replaced static HTML "Wisdom Quote" popup with dynamic JS class.
+  - Generates HTML on-the-fly.
+  - Manages random quote selection from `translations.js`.
+  - Controls "Silk Reeling" Canvas animation lifecycle.
+
+#### Changed
+- **Score & Feedback Popups** - Refactored to use the Unified Shell.
+  - `ScorePopupManager`: Now delegates DOM creation/display to `uiManager.showPopup()`.
+  - `FeedbackManager`: Now delegates generic overlay logic to UI Manager.
+- **Benefits**:
+  - **Consistency**: All popups now share identical animations and styles.
+  - **Maintainability**: Overlay logic (Click-outside, ESC key) is defined in ONE place.
+  - **Code Reduction**: Redundant HTML and CSS classes removed.
+
+### ⚡ Performance Optimization (WebGL Integration)
+
+#### Added
+- **WebGLManager** (`webgl_manager.js`) - New Low-level Graphics Engine.
+  - **Custom Shaders**: Implemented GLSL Shaders for Image Processing.
+  - **2-Pass Gaussian Blur**: High-quality blur with separated Horizontal/Vertical passes (50% faster than single-pass 2D Canvas).
+- **BackgroundManager Integration** - Updated to transparently use WebGL when available.
+  - Fallback to Canvas 2D if WebGL fails.
+  - Unified interface `drawBackground()` for both strategies.
+
+### 🔬 Future Research (WebGPU)
+
+#### Added
+- **WebGPU Feasibility Study** - Created `docs/technical/WEBGPU_FUTURE_PLAN.md`.
+  - Roadmap for Phase 2 (Two-Handed Silk Reeling).
+  - Prototype code moved to `js/experimental/webgpu_manager.js` (Archived).
+
+### 🧹 Code Cleanup
+
+#### Removed
+- **SilhouetteManager.js** - Deleted redundant file (Functionality merged into `BackgroundManager`).
+- **Legacy Static HTML** - Removed `#wisdom-popup` and `#feedback-popup` static blocks from `app.html` (now generated dynamically).
+
+### 🐛 Bug Fixes
+
+#### Fixed
+- **Side-by-Side Mode Regression** - Fixed issue where the comparison view (Coach vs Student) was broken/hidden.
+  - **Cause**: Missing `#instructor-video-container` HTML element in the new layout.
+  - **Fix**: Restored the container in `app.html` to support CSS Split Screen layout.
+
+---
+
+
 ## [v0.9.9] - 2026-01-14
 
 ### 🐛 Critical Bug Fix: Rule 7 (Continuity) Time-Based Detection

@@ -21,12 +21,13 @@
 
 ## 1. ภาพรวม
 
-`UIManager` เป็น Class หลักสำหรับจัดการ User Interface ทั้งหมด
+`UIManager` เป็น Class หลักสำหรับจัดการ User Interface ทั้งหมด รวมถึงระบบ **Unified Popups** ที่ใช้ร่วมกันระหว่าง Wisdom, Score, และ Feedback
 
 ### 🎯 หน้าที่หลัก
 
 | หน้าที่ | คำอธิบาย |
 |---------|---------|
+| **Unified Popups** | ระบบ Popup กลาง (showPopup) |
 | **Language Management** | สลับภาษา TH/EN |
 | **Theme Management** | สลับ Dark/Light Mode |
 | **Text Updates** | อัปเดตข้อความทั้งหน้า |
@@ -47,6 +48,9 @@ const newTheme = uiManager.toggleTheme(); // "dark" หรือ "light"
 
 // แสดง Notification
 uiManager.showNotification("บันทึกสำเร็จ!", "success");
+
+// แสดง Popup
+uiManager.showPopup("my-popup-id", "<h3>Title</h3><p>Content</p>");
 ```
 
 ---
@@ -155,7 +159,22 @@ controls.classList.toggle(...);
 
 ---
 
-## 6. Methods Reference
+## 6. Unified Popup System
+
+ระบบ Popup ทั้งหมดในแอพ (Wisdom, Score, Tutorial) ใช้โครงสร้างพื้นฐานเดียวกันผ่าน `showPopup`:
+
+```javascript
+showPopup(contentId, htmlContent, onCloseCallback) {
+    // 1. Create Overlay
+    // 2. Inject HTML
+    // 3. Bind Close Events
+    // 4. Animate Entrace
+}
+```
+
+---
+
+## 7. Methods Reference
 
 ### Initialization
 
@@ -163,6 +182,13 @@ controls.classList.toggle(...);
 |--------|-------------|
 | `constructor()` | กำหนดค่าเริ่มต้น, สร้าง translations |
 | `init()` | โหลดการตั้งค่าจาก localStorage |
+
+### Global UI Methods
+
+| Method | Parameters | Description |
+|--------|------------|-------------|
+| `showPopup(id, html, onClose)` | string, string, fn | แสดง Modal Popup กลางจอ |
+| `hidePopup()` | - | ปิด Popup ปัจจุบัน |
 
 ### Language Methods
 

@@ -1,7 +1,7 @@
 # TaijiFlow AI - Performance Guide
 
 **Version:** 1.1  
-**Last Updated:** 2026-01-24
+**Last Updated:** 2026-01-25
 
 ---
 
@@ -97,12 +97,12 @@
 
 | รายละเอียด | ค่า |
 |-----------|-----|
-| **Operation** | Pixel-level segmentation & blurring |
-| **ใช้ CPU/GPU** | สูงมาก (High) |
+| **Operation** | WebGL 2.0 Fragment Shader (Gaussian Blur) |
+| **ใช้ CPU/GPU** | GPU (Moderate) / CPU (Low) |
 | **MediaPipe** | ต้องเปิด `enableSegmentation: true` |
 | **Default** | OFF (เปิดเฉพาะใน Quality Mode) |
 
-> ⚠️ **หนักที่สุด** - ลด FPS ลง 40-50% ควรใช้เฉพาะเครื่องที่แรงเพียงพอ (PC/Mac M1+)
+> ⚠️ **กินทรัพยากร GPU** - ลด FPS ลง 20-30% (ดีขึ้นกว่า Canvas เดิมที่ลด 50%) ควรใช้เฉพาะเครื่องที่มี GPU
 
 ---
 ### 1.6 Motion Trail (เส้นหางการเคลื่อนไหว) ☄️

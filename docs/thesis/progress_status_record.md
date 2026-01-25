@@ -1,8 +1,8 @@
 # Progress Status Record (บันทึกความก้าวหน้า)
 
 **โครงการ:** TaijiFlow AI  
-**เวอร์ชัน:** 1.1.1  
-**วันที่อัปเดต:** 24 มกราคม 2569  
+**เวอร์ชัน:** 1.1.2
+**วันที่อัปเดต:** 25 มกราคม 2569
 **ผู้จัดทำ:** วีรยุทธ เอื้อใจพระ
 
 ---
@@ -60,6 +60,7 @@
 | 2026-01-21 | v0.9.13 | Rule 9 (Coordination) + UI Fixes (HTML/Layout) | ✅ |
 | 2026-01-24 | v1.1.0 | **Feature Complete:** Enhanced Display (Side-by-Side, Grid, Mirror) | ✅ |
 | 2026-01-24 | v1.1.1 | **Final Polish:** Quotes Centralization, Wisdom Popup Easter Egg, Path Offset Tuning | ✅ |
+| 2026-01-25 | v1.1.2 | **System Upgrade:** WebGL 2.0 Rendering + Hybrid Wisdom System | ✅ |
 | TBD | - | User Testing (5-10 คน) | ⏳ |
 | TBD | v1.2 | Post-UAT Improvements | ⏳ |
 
@@ -109,6 +110,8 @@
 | Side-by-Side Mode | ✅ |
 | Grid Overlay | ✅ |
 | Mirror Mode Control | ✅ |
+| WebGL Rendering Engine | ✅ |
+| Wisdom Manager (Quotes) | ✅ |
 
 ### ⏳ Milestone 5: Testing & Finalization
 
@@ -213,8 +216,8 @@
 - ระบบพร้อมสำหรับ User Testing
 - เอกสารทั้งหมดอยู่ใน `/docs/thesis/`
 - UML Diagrams อยู่ใน `/docs/diagrams/`
-- เวอร์ชันล่าสุด: v1.1.0 (2026-01-24)
-- v1.1.0 Changes: Enhanced Display (Side-by-Side, Grid, Mirror), Shortcuts, Performance Modes
+- เวอร์ชันล่าสุด: v1.1.2 (2026-01-25)
+- v1.1.2 Changes: WebGL Manager, Wisdom Manager, Unified Popups
 
 ---
 

@@ -1,8 +1,8 @@
 # Configuration Item Table (ตาราง Configuration Items)
 
 **โครงการ:** TaijiFlow AI  
-**เวอร์ชัน:** 1.1  
-**วันที่:** 24 มกราคม 2569  
+**เวอร์ชัน:** 1.1.2
+**วันที่:** 25 มกราคม 2569
 **ผู้จัดทำ:** วีรยุทธ เอื้อใจพระ
 
 ---
@@ -19,7 +19,7 @@
 |--------|:-----:|
 | HTML Files | 3 |
 | CSS Files | 5 |
-| JavaScript Files | 22 |
+| JavaScript Files | 24 |
 | Data Files | 4 |
 | UML Diagrams | 18 |
 | Documentation | 50+ |
@@ -69,6 +69,7 @@
 | CI-JS-05 | ghost_manager.js | /js/display/ghost_manager.js | Ghost Overlay | v0.2 |
 | CI-JS-06 | background_manager.js | /js/display/background_manager.js | **[New]** Virtual Backgrounds | v1.0 |
 | CI-JS-07 | silk-animation.js | /js/display/silk-animation.js | Landing Page Animation | v0.9.1 |
+| CI-JS-23 | webgl_manager.js | /js/display/webgl_manager.js | **[New]** WebGL Rendering Engine | v1.0 |
 
 #### UI Modules
 
@@ -82,6 +83,7 @@
 | CI-JS-13 | gesture_manager.js | /js/ui/gesture_manager.js | Hand Gesture Control | v0.8 |
 | CI-JS-14 | audio_manager.js | /js/ui/audio_manager.js | TTS Audio Feedback | v0.6 |
 | CI-JS-15 | chatbot.js | /js/ui/chatbot.js | Gemini AI Chatbot | v0.8 |
+| CI-JS-24 | wisdom_manager.js | /js/ui/wisdom_manager.js | **[New]** Wisdom Quotes & Animation | v1.0 |
 
 #### Controllers
 
@@ -148,6 +150,7 @@
 | CI-DOC-04 | ARCHITECTURE.md | /docs/ARCHITECTURE.md | System Architecture |
 | CI-DOC-05 | TESTING_CHECKLIST.md | /docs/TESTING_CHECKLIST.md | Manual Test Cases |
 | CI-DOC-06 | HEURISTICS_RULES_MANUAL.md | /docs/HEURISTICS_RULES_MANUAL.md | 9 Rules Documentation |
+| CI-DOC-07 | WEBGPU_FUTURE_PLAN.md | /docs/technical/WEBGPU_FUTURE_PLAN.md | **[New]** WebGL/WebGPU Roadmap |
 
 ---
 
@@ -160,7 +163,7 @@
 | Beta | v0.8 | 2026-01-07 | Gesture Control + Chatbot |
 | RC1 | v0.9.1 | 2026-01-09 | Landing Page + UML Complete |
 | RC2 | v0.9.2 | 2026-01-10 | Thesis Docs + Terminology |
-| Final | v1.1.0 | 2026-01-24 | Feature Complete (Enhanced Display) |
+| Final | v1.1.2 | 2026-01-25 | Feature Complete (WebGL + Hybrid Popups) |
 
 ---
 

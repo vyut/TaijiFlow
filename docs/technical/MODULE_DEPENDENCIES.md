@@ -1,6 +1,6 @@
 # TaijiFlow AI - Module Dependencies
 
-> อัปเดต: 2026-01-24 | 21 Modules | สำหรับ Master's Thesis SE (v1.1.1)
+> อัปเดต: 2026-01-25 | 22 Modules | สำหรับ Master's Thesis SE (v1.1.2)
 
 ---
 
@@ -30,6 +30,10 @@
 │  │  │ DrawingManager  │ │  GhostManager   │ │BackgroundManager│        │   │
 │  │  │ (Canvas)        │ │ (Instructor)    │ │ (Blur/Virtual)  │        │   │
 │  │  └─────────────────┘ └─────────────────┘ └─────────────────┘        │   │
+│  │  ┌─────────────────┐                                                │   │
+│  │  │ WebGLManager    │                                                │   │
+│  │  │ (Shaders)       │                                                │   │
+│  │  └─────────────────┘                                                │   │
 │  └──────────────────────────────────────────────────────────────────────┘   │
 │                                                                              │
 │  ┌──────────────────────────────────────────────────────────────────────┐   │
@@ -42,10 +46,10 @@
 │  │  │  AudioManager   │ │ GestureManager  │ │ FeedbackManager │        │   │
 │  │  │  (TTS)          │ │ (Hand Control)  │ │ (Bug Report)    │        │   │
 │  │  └─────────────────┘ └─────────────────┘ └─────────────────┘        │   │
-│  │  ┌─────────────────┐ ┌─────────────────┐                            │   │
-│  │  │    Chatbot      │ │RulesConfigManager│                            │   │
-│  │  │  (Gemini AI)    │ │ (Settings UI)   │                            │   │
-│  │  └─────────────────┘ └─────────────────┘                            │   │
+│  │  ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐        │   │
+│  │  │    Chatbot      │ │RulesConfigManager│ │  WisdomManager  │        │   │
+│  │  │  (Gemini AI)    │ │ (Settings UI)   │ │  (Quotes)       │        │   │
+│  │  └─────────────────┘ └─────────────────┘ └─────────────────┘        │   │
 │  └──────────────────────────────────────────────────────────────────────┘   │
 │                                                                              │
 │  ┌──────────────────────────────────────────────────────────────────────┐   │
@@ -97,14 +101,16 @@
 |--------|--------------|---------|
 | `drawing_manager.js` | Canvas API | วาด Skeleton, Path, Trail |
 | `ghost_manager.js` | Canvas API | วาดเงาครูผู้สอน |
-| `silhouette_manager.js` | Canvas API, MediaPipe Mask | วาดเงาผู้ฝึก (สีม่วง) |
+| `background_manager.js` | WebGLManager, Canvas | จัดการพื้นหลัง (Blur/Virtual) |
+| `webgl_manager.js` | WebGL API | Low-level Rendering Engine |
 
 ### 3. UI Managers (พึ่งพา DOM)
 
 | Module | Dependencies | หน้าที่ |
 |--------|--------------|---------|
-| `ui_manager.js` | `translations.js` | จัดการ Theme, Language, Notifications |
-| `score_popup_manager.js` | - | แสดง Popup ผลคะแนน |
+| `ui_manager.js` | `translations.js` | จัดการ Theme, Language, Notifications, Popups |
+| `wisdom_manager.js` | `translations.js` | จัดการ Wisdom Popup & Animation |
+| `score_popup_manager.js` | `UIManager` | แสดง Popup ผลคะแนน (ใช้ Shared Shell) |
 | `tutorial_manager.js` | - | แสดง Tutorial Popup |
 | `audio_manager.js` | Web Speech API | Text-to-Speech เสียงเตือน |
 | `gesture_manager.js` | MediaPipe Gesture | ตรวจจับท่ามือ 👍✊ |
@@ -116,7 +122,7 @@
 
 | Module | Dependencies | หน้าที่ |
 |--------|--------------|---------|
-| `display_controller.js` | `GhostManager`, `SilhouetteManager` | ควบคุม Display Options |
+| `display_controller.js` | `GhostManager`, `BackgroundManager` | ควบคุม Display Options |
 | `keyboard_controller.js` | `DisplayController`, `TutorialManager` | จัดการ Keyboard Shortcuts |
 
 ### 5. Utilities (Stateless Helper Functions)
@@ -166,12 +172,12 @@
 | Category | Count | Modules |
 |----------|:-----:|---------|
 | Core Managers | 3 | HeuristicsEngine, CalibrationManager, ScoringManager |
-| Display Managers | 3 | DrawingManager, GhostManager, SilhouetteManager |
-| UI Managers | 8 | UIManager, ScorePopupManager, TutorialManager, AudioManager, GestureManager, FeedbackManager, Chatbot, RulesConfigManager |
+| Display Managers | 4 | DrawingManager, GhostManager, BackgroundManager, WebGLManager |
+| UI Managers | 9 | UIManager, ScorePopupManager, TutorialManager, AudioManager, GestureManager, FeedbackManager, Chatbot, RulesConfigManager, WisdomManager |
 | Controllers | 2 | DisplayController, KeyboardController |
 | Utilities | 4 | DataExporter, PathGenerator, SessionManager, translations |
 | Main Controller | 1 | script.js |
-| **Total** | **21** | |
+| **Total** | **22** | |
 
 ---
 

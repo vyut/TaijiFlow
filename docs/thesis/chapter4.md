@@ -72,7 +72,7 @@ TaijiFlow AI ใช้สถาปัตยกรรมแบบ **Client-Side O
 
 | Layer | หน้าที่ | Modules | Responsibility |
 |-------|--------|---------|----------------|
-| **Presentation** | แสดงผล UI | ui_manager, drawing_manager, chatbot, tutorial_manager, gesture_manager, feedback_manager, score_popup_manager, background_manager | รับ input, แสดงผล Canvas, ตอบโต้ผู้ใช้ |
+| **Presentation** | แสดงผล UI | ui_manager, drawing_manager, shortcuts_manager, tutorial_manager, gesture_manager, feedback_manager, score_popup_manager, background_manager, webgl_manager, wisdom_manager | รับ input, แสดงผล Canvas/WebGL, ตอบโต้ผู้ใช้ |
 | **Business Logic** | ประมวลผลหลัก | script.js, heuristics_engine, calibration_manager, scoring_manager, rules_config_manager | วิเคราะห์ท่า, คำนวณคะแนน, จัดการกฎ |
 | **Data** | จัดการข้อมูล | session_manager, data_exporter, translations | Session, Export, i18n |
 | **External APIs** | บริการภายนอก | MediaPipe, Gemini API | Pose Detection, AI Chatbot |
@@ -106,6 +106,7 @@ TaijiFlow AI ใช้สถาปัตยกรรมแบบ **Client-Side O
 | API | Purpose |
 |-----|---------|
 | **Canvas API** | วาด Skeleton, Path, Trail, Ghost |
+| **WebGL 2.0** | Primitives Rendering, Shaders, Background Blur |
 | **Web Speech API** | Text-to-Speech เสียงเตือน |
 | **LocalStorage API** | บันทึก Calibration, Settings |
 | **Fullscreen API** | โหมดเต็มจอ |
@@ -128,12 +129,12 @@ TaijiFlow AI ใช้สถาปัตยกรรมแบบ **Client-Side O
 |----------|:-------:|:----------:|--------|
 | Main Controller | 1 | ~72 KB | ควบคุมการทำงานหลัก (Glue Code) |
 | Core Managers | 3 | ~77 KB | วิเคราะห์ท่า, Calibration, คะแนน |
-| Display Managers | 3 | ~36 KB | วาด Canvas, Ghost, Silhouette |
-| UI Managers | 8 | ~223 KB | จัดการ UI ทั้งหมด (Audio, Tutorial, Speech) |
+| Display Managers | 4 | ~45 KB | วาด Canvas, WebGL, Ghost, Background |
+| UI Managers | 9 | ~240 KB | จัดการ UI ทั้งหมด (Audio, Tutorial, Shortcuts) |
 | Controllers | 2 | ~17 KB | Keyboard, Display Options |
 | Utilities | 4 | ~41 KB | Export, Translation, Path |
 | Landing Page | 1 | ~7 KB | Landing Animation |
-| **Total** | **22** | **~473 KB** | - |
+| **Total** | **24** | **~480 KB** | - |
 
 ### 4.2.2 Main Controller
 
@@ -310,8 +311,23 @@ class GhostManager {
 ```javascript
 class BackgroundManager {
     + setMode(mode)         // none, blur, image, silhouette
-    + drawBackground(ctx)   // วาดพื้นหลัง/Mask ก่อนวาด Video
+    + drawBackground(ctx)   // วาดพื้นหลัง/Mask (ใช้ WebGLManager ถ้าจำเป็น)
     + loadVirtualImage(url) // โหลดรูปภาพพื้นหลัง
+}
+```
+
+#### 4.2.4.4 WebGLManager
+
+**ไฟล์:** `js/webgl_manager.js` (~8 KB)
+
+**หน้าที่:** จัดการ Low-level Rendering ด้วย WebGL 2.0 เพื่อประสิทธิภาพสูงสุด (เช่น Gaussian Blur, Image Processing)
+
+```javascript
+class WebGLManager {
+    + init(canvas)          // เตรียม WebGL Context
+    + createProgram(vs, fs) // Compile Shaders
+    + applyGaussianBlur()   // ใช้ Fragment Shader เบลอภาพ (GPU)
+    + drawTexture(image)    // วาดภาพลง Texture
 }
 ```
 
@@ -444,6 +460,34 @@ class RulesConfigManager {
     + setThreshold(key, val)  // ปรับค่า Threshold
     + resetToDefaults()       // คืนค่าเริ่มต้นตาม Level ที่เลือก
     + onLevelChange(level)    // อัปเดต UI เมื่อเปลี่ยน Level
+}
+```
+
+#### 4.2.5.9 WisdomManager
+
+**ไฟล์:** `js/wisdom_manager.js` (~5 KB)
+
+**หน้าที่:** สุ่มคำคมปรัชญาเต๋า (Taoist Wisdom) และแสดงผลพร้อม Animation เมื่อโหลดหน้าเว็บหรือหยุดพัก
+
+```javascript
+class WisdomManager {
+    + show()                  // สุ่มคำคมและแสดง Popup
+    + hide()                  // ซ่อน Popup
+    + animateSilkReeling()    // เล่น Animation วงกลม Enso (Pure CSS/JS)
+}
+```
+
+#### 4.2.5.10 ShortcutsManager
+
+**ไฟล์:** `js/ui/shortcuts_manager.js` (~8 KB)
+
+**หน้าที่:** แสดง Popup รายการคีย์ลัดทั้งหมดในรูปแบบ Grid แยกตามหมวดหมู่ (Control, Display, Analysis, Settings)
+
+```javascript
+class ShortcutsManager {
+    + init()                  // สร้าง DOM Elements (overlay, grid)
+    + toggle()                // เปิด/ปิด Popup
+    + getShortcutsData()      // คืนค่ารายการคีย์ลัดแยกตามหมวดหมู่
 }
 ```
 
@@ -665,8 +709,8 @@ class SilkReelingAnimation {
 |---------|:-------:|-------------|
 | Controllers | 3 | script.js, KeyboardController, DisplayController |
 | Core Managers | 3 | HeuristicsEngine, CalibrationManager, ScoringManager |
-| Display Managers | 3 | DrawingManager, GhostManager, SilhouetteManager |
-| UI & Feedback | 7 | UIManager, AudioManager, TutorialManager, ScorePopupManager, GestureManager, FeedbackManager, RulesConfigManager |
+| Display Managers | 4 | DrawingManager, GhostManager, BackgroundManager, WebGLManager |
+| UI & Feedback | 8 | UIManager, AudioManager, TutorialManager, ScorePopupManager, GestureManager, FeedbackManager, RulesConfigManager, WisdomManager |
 | Utilities | 3 | SessionManager, PathGenerator, DataExporter |
 
 ### 4.3.2 Key Class Relationships
@@ -688,7 +732,9 @@ script.js ──────┬───> HeuristicsEngine
 
 ```
 DisplayController ──┬───> GhostManager
-                    └───> SilhouetteManager
+                    ├───> BackgroundManager
+                    │      └──> WebGLManager
+                    └───> DisplayController
 ```
 
 **Heuristics Engine:**
@@ -798,6 +844,8 @@ HeuristicsEngine ───> DrawingManager (highlight violations)
 | MobileCheck | Idle | [isMobilePhone = false] + Camera Ready |
 | MobileWarning | Idle | กด "ดำเนินการต่อ →" |
 | MobileWarning | **[*]** | กด "← กลับหน้าหลัก" (redirect) |
+
+*Document updated: 2026-01-25 (v1.1.2)*
 | Idle | Calibrating | กด Start / ยก 👍 |
 | Calibrating | Countdown | Calibration Complete |
 | Calibrating | Idle | กด Cancel / Timeout |

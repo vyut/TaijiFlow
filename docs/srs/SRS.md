@@ -69,7 +69,7 @@
 | F-07 | **System Settings** | ตั้งค่าภาษา ธีมสี เสียงแจ้งเตือน |
 | F-08 | **Display Options** | ปรับการแสดงผล 7 รูปแบบ (Path, Instructor, Ghost, Skeleton, Trail, Silhouette, Debug) |
 | F-09 | **Gesture Control** | ควบคุมด้วยท่าทางมือ (👍 เริ่ม, ✊ หยุด) |
-| F-10 | **AI Chatbot** | ถาม-ตอบเกี่ยวกับไท่จี๋ (Gemini API) - Optional |
+| F-10 | **Shortcuts System** | ควบคุมด้วยคีย์ลัดพร้อม Popup Reference |
 | F-11 | **Feedback Report** | ส่ง feedback/bug report |
 
 #### 2.1.2 ระบบฝั่งผู้ดูแล (Admin) - 1 ฟีเจอร์
@@ -374,7 +374,7 @@ graph TB
 | F-07 Settings | | | | | ✓ | |
 | F-08 Display | | ✓ | | | ✓ | |
 | F-09 Gesture | | ✓ | | | | |
-| F-10 Chatbot | | ✓ | | | | |
+| F-10 Shortcuts | | ✓ | | | | |
 | F-11 Feedback Report | | | | | ✓ | |
 | F-12 Ref Data | | | | | | ✓ |
 
@@ -451,7 +451,6 @@ graph TB
 |--------|---------|
 | **MediaPipe Pose** | Library ของ Google สำหรับตรวจจับท่าทาง (33 Landmarks) |
 | **MediaPipe Gesture** | Library สำหรับจับท่าทางมือ (Thumbs Up, Fist) |
-| **Gemini API** | AI API ของ Google สำหรับ Chatbot |
 | **TTS (Text-to-Speech)** | Web Speech API สำหรับอ่านข้อความเป็นเสียง |
 | **LocalStorage** | ที่เก็บข้อมูลในเบราว์เซอร์ (Calibration, Settings) |
 | **Frame** | หนึ่งภาพจากกล้อง (~30 fps) |
@@ -472,7 +471,7 @@ graph TB
 | **F-05 Result** | คะแนนต้องคำนวณจาก (ถูก/ทั้งหมด)×100 และตัดเกรดถูกต้อง | เกรด: A≥85, B≥70, C≥55, D≥40, F<40 |
 | **F-08 Display** | ต้องมี 7 Display Options ที่เปิด/ปิดได้ | Path, Instructor, Ghost, Skeleton, Trail, Silhouette, Debug |
 | **F-09 Gesture** | ระบบต้องตรวจจับ Thumbs Up และ Fist gesture ได้ | MediaPipe Gesture Recognizer |
-| **F-10 Chatbot** | ระบบต้องตอบคำถามเกี่ยวกับไท่จี๋ผ่าน Gemini API | `chatbot.js` → Gemini API |
+| **F-10 Shortcuts** | กด `?` ต้องแสดงตารางคีย์ลัด | `ShortcutsManager.toggle()` |
 
 ### 8.2 เกณฑ์ระดับกฎ (9 Heuristics Rules)
 
@@ -523,7 +522,6 @@ graph TB
 | **MediaPipe Camera Utils** | JavaScript Library | @latest | Camera Wrapper | ✓ |
 | **MediaPipe Drawing Utils** | JavaScript Library | @latest | Canvas Drawing | ✓ |
 | **Web Speech API** | Browser API | - | Text-to-Speech สำหรับ Feedback เสียง | ✓ |
-| **Gemini API** | REST API | gemini-2.0-flash-exp | AI Chatbot ถาม-ตอบไท่จี๋ | Optional |
 | **WebRTC (getUserMedia)** | Browser API | - | เข้าถึง Webcam | ✓ |
 | **LocalStorage API** | Browser API | - | เก็บ Settings, Calibration Data | ✓ |
 
@@ -535,7 +533,7 @@ graph TB
 | **Control Panel** | ปุ่มเลือกท่า/ระดับ, Settings | User Click | State Change |
 | **Feedback Overlay** | แสดงข้อความแจ้งเตือน | Heuristics Result | Text + Color |
 | **Score Popup** | แสดงผลคะแนนหลังฝึก | Scoring Data | Grade + Stats |
-| **Chatbot Widget** | พูดคุยกับ AI | User Message | AI Response |
+| **Shortcuts Popup** | แสดงรายการคีย์ลัด | User Input (?) | Grid Table |
 
 ### 9.3 Hardware Interfaces
 

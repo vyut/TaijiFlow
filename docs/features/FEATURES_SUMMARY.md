@@ -11,8 +11,8 @@
 |----------|:-----:|
 | Core Features | 5 |
 | Supporting Features | 6 |
-| UI/UX Features | 4 (grouped) |
-| **Total** | **15** |
+| UI/UX Features | 5 (grouped) |
+| **Total** | **17** |
 
 ---
 
@@ -207,12 +207,33 @@
 
 ---
 
-### F-15: AI Chatbot (Optional)
+### F-15: Shortcuts System (คีย์ลัด)
 
 | Item | Description |
 |------|-------------|
-| **Module** | chatbot.js |
-| **Description** | ถาม-ตอบเกี่ยวกับไท่จี๋ (Gemini API) |
+| **Module** | shortcuts_manager.js, keyboard_controller.js |
+| **Description** | ระบบคีย์ลัดครอบคลุมทุกฟังก์ชัน พร้อม Popup Reference |
+| **Visual** | Grid Layout แยกหมวดหมู่ (Control, Display, Analysis) |
+
+---
+
+### F-16: Wisdom Quotes (ปรัชญาเต๋า)
+
+| Item | Description |
+|------|-------------|
+| **Module** | wisdom_manager.js |
+| **Description** | แสดงคำคมปรัชญาและหลักการไท่จี๋ระหว่างพักหรือเริ่มฝึก |
+| **Visual** | Enso Circle Animation + Typography |
+
+---
+
+### F-17: WebGL Background (Virtual BG)
+
+| Item | Description |
+|------|-------------|
+| **Module** | webgl_manager.js, background_manager.js |
+| **Description** | ระบบเบลอพื้นหลังความเร็วสูงด้วย WebGL 2.0 |
+| **Performance** | GPU Accelerated (Fragment Shader) |
 
 ---
 
@@ -234,7 +255,9 @@
 | F-12 | UI Configuration | UI | 2 (grouped) |
 | F-13 | Display Options | UI | 1 (grouped) |
 | F-14 | Tutorial System | UI | 1 |
-| F-15 | AI Chatbot | Optional | 1 |
+| F-15 | Shortcuts System | UI | 1 |
+| F-16 | Wisdom Quotes | UI | 1 |
+| F-17 | WebGL Background | UI | 1 |
 | F-16 | Low Light Warning | Support | 1 |
 | **Total** | | | **~36 FRs** |
 

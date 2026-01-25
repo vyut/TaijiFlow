@@ -205,7 +205,7 @@ npm test -- --coverage
 | 13.1 | Mirror Mode | กดตัว `M` หรือ Checkbox | ภาพแกน X พลิกกลับด้าน | ✅ |
 | 13.2 | Side-by-Side | กดตัว `S` | จอแบ่งซ้าย-ขวา | ✅ |
 | 13.3 | Grid Overlay | กดตัว `G` | เส้นตารางสีขาวปรากฏ | ✅ |
-| 13.4 | Background Blur | กดตัว `B` | ฉากหลังเบลอ คนชัด | ✅ |
+| 13.4 | Background Blur | กดตัว `B` | ฉากหลังเบลอ (WebGL) คนชัด | ✅ |
 | 13.5 | Auto-Light Warn | ลดแสงในห้อง | แจ้งเตือนแสงน้อย | ✅ |
 
 ---
@@ -337,4 +337,4 @@ npm test -- --coverage
 
 ---
 
-*Document updated: 2026-01-24 (v1.1.0)*
+*Document updated: 2026-01-25 (v1.1.2)*

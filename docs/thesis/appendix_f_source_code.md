@@ -27,10 +27,13 @@ TaijiFlow/
 │   │   └── keyboard_controller.js   # Keyboard Shortcuts
 │   ├── 📁 display/                  # Visual Rendering
 │   │   ├── drawing_manager.js       # Canvas Drawing
-│   │   └── ghost_manager.js         # Ghost Overlay
+│   │   ├── ghost_manager.js         # Ghost Overlay
+│   │   └── webgl_manager.js         # WebGL Rendering
 │   ├── 📁 ui/                       # UI Components
 │   │   ├── ui_manager.js            # Menu & Theme
 │   │   ├── audio_manager.js         # TTS Feedback
+│   │   ├── wisdom_manager.js        # Wisdom Quotes
+│   │   ├── shortcuts_manager.js     # Shortcuts Popup
 │   │   └── ...                      # Other UI managers
 │   └── 📁 utils/                    # Shared Utilities
 │
@@ -443,7 +446,66 @@ class DrawingManager {
 
 ---
 
-## ง.6 Unit Test Example
+## ง.6 WebGLManager - High Performance Rendering
+
+**ไฟล์:** `js/display/webgl_manager.js` (~8KB)
+
+```javascript
+class WebGLManager {
+    /**
+     * Compile Shader Program
+     */
+    createProgram(vsSource, fsSource) {
+        const vs = this.createShader(this.gl.VERTEX_SHADER, vsSource);
+        const fs = this.createShader(this.gl.FRAGMENT_SHADER, fsSource);
+        // Link program...
+        return program;
+    }
+    
+    /**
+     * Apply Gaussian Blur using Fragment Shader
+     */
+    applyGaussianBlur(image) {
+        this.gl.useProgram(this.blurProgram);
+        // Bind texture & render to framebuffer...
+    }
+}
+```
+
+---
+
+## ง.7 ShortcutsManager - Keyboard Reference
+
+**ไฟล์:** `js/ui/shortcuts_manager.js` (~8KB)
+
+```javascript
+class ShortcutsManager {
+    /**
+     * สร้าง HTML Grid สำหรับแสดงคีย์ลัด
+     */
+    generateHtml() {
+        // ... (Generates Tailwind Grid with colors based on category)
+        /*
+          control: blue
+          display: purple
+          analysis: green
+          settings: gray
+        */
+        return `...popup html...`;
+    }
+    
+    /**
+     * Toggle Popup Visualization
+     */
+    toggle() {
+        if (!this.initialized) this.init();
+        // Show/Hide Overlay with animation
+    }
+}
+
+---
+
+## ง.8 Unit Test Example
 
 **ไฟล์:** `tests/unit/heuristics_engine.test.js`
 

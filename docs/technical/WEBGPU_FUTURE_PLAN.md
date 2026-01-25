@@ -80,7 +80,23 @@ WebGPU ไม่ใช่เพียงการอัปเกรด WebGL แ
 
 ---
 
-## 5. แผนการดำเนินงาน (Roadmap Strategy for Phase 2)
+## 5. ข้อจำกัดและสาเหตุที่ยังไม่เปลี่ยนทันที (Current Constraints & Adoption Strategy)
+
+แม้ WebGPU จะมีประสิทธิภาพสูง แต่โครงการยังเลือกใช้ **WebGL 2.0 เป็นเทคโนโลยีหลักใน Phase 1** ด้วยเหตุผลสำคัญด้านความเข้ากันได้ (Compatibility):
+
+### 5.1 ปัญหาของ Apple Ecosystem (iOS/iPadOS)
+*   **WebKit Restriction:** บนระบบปฏิบัติการ iOS และ iPadOS แอปพลิเคชัน Browser ทั้งหมด (รวมถึง Chrome, Edge) ถูกบังคับให้ใช้ **WebKit Engine** ของ Apple เท่านั้น
+*   **Experimental Status:** ปัจจุบัน (Q1 2026) WebKit ยังปิดฟีเจอร์ WebGPU ไว้เป็นค่าเริ่มต้น (Disabled by default) ผู้ใช้ต้องเข้าไปเปิดใน Advanced Settings เอง ซึ่งไม่เหมาะกับผู้ใช้งานทั่วไป (UX Friction)
+*   **ผลกระทบ:** เนื่องจาก **iPad** เป็นหนึ่งในอุปกรณ์หลักที่เหมาะสมที่สุดสำหรับการฝึก (หน้าจอใหญ่ พกพาง่าย) การบังคับใช้ WebGPU ตอนนี้จะทำให้ผู้ใช้ iPad ไม่สามารถใช้งานได้
+
+### 5.2 การรองรับของ Android
+*   Chrome บน Android รองรับ WebGPU แล้ว แต่อุปกรณ์รุ่นเก่าบางรุ่น driver GPU อาจยังไม่รองรับ Vulkan อย่างสมบูรณ์ ทำให้เกิดปัญหาจอดำได้
+
+**สรุป:** เราจะเริ่มใช้ WebGPU เป็น "Optional / Experimental Mode" ใน Phase 2 และจะเปลี่ยนเป็น "Default" ก็ต่อเมื่อ Apple เปิดใช้งาน WebGPU เป็นมาตรฐาน (คาดการณ์ iOS 18/19)
+
+---
+
+## 6. แผนการดำเนินงาน (Roadmap Strategy for Phase 2)
 
 ### Q2 2026: Preparation & Prototype
 *   [ ] ศึกษา WebGPU API และ WGSL (WebGPU Shading Language)
@@ -98,7 +114,7 @@ WebGPU ไม่ใช่เพียงการอัปเกรด WebGL แ
 
 ---
 
-## 6. บทสรุป (Conclusion)
+## 7. บทสรุป (Conclusion)
 
 การนำ **WebGPU** มาใช้ใน TaijiFlow Phase 2 ไม่ใช่เป็นเพียงเรื่องของกราฟิกที่สวยงามขึ้น (Eye candy) แต่เป็น **ความจำเป็นทางวิศวกรรม (Engineering Necessity)** เพื่อรองรับความซับซ้อนของการคำนวณท่า 2 มือ และการแสดงผล Feedback แบบ Real-time Physics ที่จะช่วยให้ผู้ฝึก "เห็นภาพ" (Visualize) ความรู้สึก (Feeling) ของมวยไท่จี๋ได้ชัดเจนแบบที่ไม่เคยมีมาก่อน
 

@@ -1,7 +1,7 @@
 # TaijiFlow AI - System Architecture
 
-**Version:** 1.1.1
-**Last Updated:** 2026-01-24
+**Version:** 1.1.2
+**Last Updated:** 2026-01-25
 
 ---
 
@@ -45,13 +45,14 @@ TaijiFlow/
 │   │   # ═══════════════════════════════════════════════════════
 │   ├── drawing_manager.js           # วาด Skeleton, Path (~25KB)
 │   ├── ghost_manager.js             # เงาครูผู้สอน (~8KB)
-│   ├── background_manager.js        # จัดการพื้นหลัง/Segmentation (Virtual/Blur) (~12KB)
-│   ├── silhouette_manager.js        # จัดการเงาผู้ฝึก (Deprecated - merged to Display)
+│   ├── background_manager.js        # จัดการพื้นหลัง/Segmentation (Virtual/Blur) (~13KB)
+│   ├── webgl_manager.js             # [NEW] WebGL Rendering Engine (~8KB)
 │   │
 │   │   # ═══════════════════════════════════════════════════════
 │   │   # UI MANAGERS
 │   │   # ═══════════════════════════════════════════════════════
-│   ├── ui_manager.js                # Theme, Notifications, Wisdom (~50KB)
+│   ├── ui_manager.js                # Theme, Notifications (~50KB)
+│   ├── wisdom_manager.js            # [NEW] Wisdom Quotes & Animation (~5KB)
 │   ├── audio_manager.js             # Text-to-Speech (~31KB)
 │   ├── score_popup_manager.js       # ผลคะแนน Popup (~7KB)
 │   ├── tutorial_manager.js          # Tutorial Popup (~30KB)
@@ -105,12 +106,12 @@ TaijiFlow/
 | Category | Files | Total Size |
 | -------- | :---: | :--------: |
 | Core Managers | 3 | ~81 KB |
-| Display Managers | 3 | ~45 KB |
-| UI Managers | 8 | ~170 KB |
+| Display Managers | 4 | ~46 KB |
+| UI Managers | 9 | ~175 KB |
 | Controllers | 2 | ~30 KB |
 | Utilities | 4 | ~43 KB |
 | Main Controller | 1 | ~90 KB |
-| **Total JS** | **23** | **~460 KB** |
+| **Total JS** | **24** | **~465 KB** |
 
 ---
 
@@ -353,4 +354,4 @@ this.RULES_CONFIG = {
 
 ---
 
-*Document updated: 2026-01-24 (v1.1.1)*
+*Document updated: 2026-01-25 (v1.1.2)*

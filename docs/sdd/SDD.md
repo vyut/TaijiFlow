@@ -87,7 +87,7 @@ TaijiFlow AI ใช้ **Client-Side Architecture** ประมวลผลท�
 │  │                    Web Application                    │       │
 │  │  ┌─────────────────────────────────────────────────┐ │       │
 │  │  │              Presentation Layer                 │ │       │
-│  │  │   [UI Manager] [Drawing Manager] [Chatbot]      │ │       │
+│  │  │   [UI Manager] [Drawing Manager] [Shortcuts]    │ │       │
 │  │  └─────────────────────────────────────────────────┘ │       │
 │  │  ┌─────────────────────────────────────────────────┐ │       │
 │  │  │             Business Logic Layer                │ │       │
@@ -101,7 +101,7 @@ TaijiFlow AI ใช้ **Client-Side Architecture** ประมวลผลท�
 │                          │                                       │
 │  ┌───────────────────────┴───────────────────────────────┐       │
 │  │                   External APIs (CDN)                 │       │
-│  │  [MediaPipe Pose] [MediaPipe Gesture] [Gemini API]   │       │
+│  │  [MediaPipe Pose] [MediaPipe Gesture]                │       │
 │  └───────────────────────────────────────────────────────┘       │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
@@ -111,7 +111,7 @@ TaijiFlow AI ใช้ **Client-Side Architecture** ประมวลผลท�
 
 | Layer | หน้าที่ | Modules |
 |-------|--------|---------|
-| **Presentation** | แสดงผล UI, รับ input, วาด Canvas | ui_manager, drawing_manager, chatbot, tutorial_manager |
+| **Presentation** | แสดงผล UI, รับ input, วาด Canvas | ui_manager, drawing_manager, shortcuts_manager, tutorial_manager, wisdom_manager |
 | **Business Logic** | ประมวลผลหลัก, วิเคราะห์ท่า | script.js, heuristics_engine, calibration_manager, scoring_manager |
 | **Data** | จัดการข้อมูล, Session, Export | session_manager, data_exporter, translations |
 | **External APIs** | บริการภายนอก | MediaPipe Pose, MediaPipe Gesture, Gemini API |
@@ -138,7 +138,6 @@ TaijiFlow AI ใช้ **Client-Side Architecture** ประมวลผลท�
 |------------|:-------:|---------|
 | **MediaPipe Pose** | @latest | Pose Detection (33 landmarks) |
 | **MediaPipe Tasks Vision** | @0.10.8 | Hand Gesture Recognition (👍✊) |
-| **Gemini API** | - | AI Chatbot (Optional) |
 
 #### 2.3.3 Browser APIs
 
@@ -162,7 +161,7 @@ TaijiFlow/
 │   ├── base.css                     # Shared Styles (Variables, Reset, Components)
 │   ├── styles.css                   # App Styles (app.html)
 │   ├── landing.css                  # Landing Page Styles
-│   ├── chatbot.css                  # Chatbot Popup Styles
+│   ├── landing.css                  # Landing Page Styles
 │   └── feedback.css                 # Feedback Modal Styles
 │
 ├── 📁 js/                           # JavaScript Modules (22 files)
@@ -179,7 +178,10 @@ TaijiFlow/
 │   ├── tutorial_manager.js          # Tutorial Popup (~30KB)
 │   ├── gesture_manager.js           # Hand Control (~14KB)
 │   ├── feedback_manager.js          # Bug Report (~4KB)
-│   ├── chatbot.js                   # Gemini AI Chatbot (~26KB)
+│   ├── feedback_manager.js          # Bug Report (~4KB)
+│   ├── shortcuts_manager.js         # Shortcuts Grid (~8KB)
+│   ├── wisdom_manager.js            # Wisdom Quotes (~5KB)
+│   ├── webgl_manager.js             # WebGL Background (~8KB)
 │   ├── rules_config_manager.js      # Settings UI (~12KB)
 │   ├── display_controller.js        # Display Options (~7KB)
 │   ├── keyboard_controller.js       # Keyboard Shortcuts (~9KB)
@@ -206,12 +208,12 @@ TaijiFlow/
 |----------|:-----:|:----------:|
 | Core Managers | 3 | ~77 KB |
 | Display Managers | 3 | ~36 KB |
-| UI Managers | 8 | ~165 KB |
+| UI Managers | 9 | ~180 KB |
 | Controllers | 2 | ~16 KB |
 | Utilities | 4 | ~41 KB |
 | Main Controller | 1 | ~72 KB |
 | Landing Page | 1 | ~7 KB |
-| **Total JS** | **22** | **~414 KB** |
+| **Total JS** | **23** | **~429 KB** |
 
 ---
 
@@ -250,9 +252,13 @@ TaijiFlow/
 │  │  │ Manager │ │ Manager │ │ Popup   │ │ Manager │        │   │
 │  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘        │   │
 │  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐        │   │
-│  │  │ Gesture │ │Feedback │ │ Chatbot │ │ Rules   │        │   │
-│  │  │ Manager │ │ Manager │ │         │ │ Config  │        │   │
+│  │  │ Gesture │ │Feedback │ │Shortcuts│ │ Rules   │        │   │
+│  │  │ Manager │ │ Manager │ │ Manager │ │ Config  │        │   │
 │  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘        │   │
+│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐                    │   │
+│  │  │ Wisdom  │ │ WebGL   │ │ Back-   │                    │   │
+│  │  │ Manager │ │ Manager │ │ ground  │                    │   │
+│  │  └─────────┘ └─────────┘ └─────────┘                    │   │
 │  └──────────────────────────────────────────────────────────┘   │
 │                                                                  │
 │  ┌──────────────────────────────────────────────────────────┐   │

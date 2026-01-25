@@ -143,19 +143,12 @@ class FeedbackManager {
   }
 
   showPopup() {
+    if (!window.uiManager) return;
+
     const lang = this.getLang();
     // Helper for translations
     const t =
       TRANSLATIONS[lang]?.feedback_popup || TRANSLATIONS["th"].feedback_popup;
-
-    // Check global availability if needed, or fallback to local helper
-    // Note: this.getLang() handles retrieval.
-
-    const popup = document.createElement("div");
-    popup.id = "feedback-popup-v2";
-    // Glassmorphism Overlay
-    popup.className =
-      "fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-[100] transition-opacity duration-300 opacity-0 animate-[fadeIn_0.3s_ease-out_forwards]";
 
     // Survey Section HTML (shared component)
     const surveySectionHtml = createSurveySectionHtml({
@@ -165,8 +158,8 @@ class FeedbackManager {
       variant: "default",
     });
 
-    // Modal Content
-    popup.innerHTML = `
+    // Generate HTML Content
+    const html = `
       <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-6 max-w-sm w-full text-center relative transform scale-95 animate-[scaleIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards] border border-gray-100 dark:border-gray-700">
         
         <!-- Close X Button -->
@@ -175,32 +168,40 @@ class FeedbackManager {
         </button>
 
         ${surveySectionHtml}
+        
+        <style>
+          @keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        </style>
       </div>
-
-      <style>
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes scaleIn { from { transform: scale(0.95); } to { transform: scale(1); } }
-      </style>
     `;
 
-    document.body.appendChild(popup);
+    // Call Shared Shell
+    // Note: We need to bind BOTH close buttons (X and the Gray Button)
+    // showPopup accepts 'closeBtnId' for one, but we can manually bind others in a callback if needed,
+    // OR just let the shell closeOnClickOutside handle it for quick exit.
+    // However, the survey component creates a button with ID passed in 'closeButtonId'.
+    // We can use that as the primary closer for showPopup options.
 
-    // Event Handlers
-    const close = () => {
-      popup.style.opacity = "0";
-      setTimeout(() => popup.remove(), 200);
-    };
-
-    popup
-      .querySelector("#close-feedback-popup")
-      .addEventListener("click", close);
-
-    // Bind Close X Button
-    popup.querySelector("#close-x-btn-fb")?.addEventListener("click", close);
-
-    popup.addEventListener("click", (e) => {
-      if (e.target === popup) close();
+    const popupEl = window.uiManager.showPopup(html, {
+      id: "feedback-popup-v2",
+      closeBtnId: "close-feedback-popup", // Bind the bottom gray button
     });
+
+    // Manually bind the X button as well
+    const xBtn = popupEl.querySelector("#close-x-btn-fb");
+    if (xBtn) {
+      xBtn.addEventListener("click", () => {
+        // Trigger the close animation manually or if exposed?
+        // Since showPopup doesn't expose 'close()' publicly on the element easily (it's internal closure),
+        // we effectively need to trigger a click on the backdrop or existing close btn,
+        // OR update showPopup to attach a .close() method to the element.
+        //
+        // Strategy: Trigger click on the bound button :)
+        const boundBtn = popupEl.querySelector("#close-feedback-popup");
+        if (boundBtn) boundBtn.click();
+        // Or just remove since it's redundant if closeOnClickOutside is true.
+      });
+    }
   }
 }
 

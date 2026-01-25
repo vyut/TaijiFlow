@@ -76,7 +76,9 @@ class ScorePopupManager {
   }
 
   show(summary, gradeInfo, lang = "th") {
-    this.close();
+    // 1. Ensure UIManager exists
+    if (!window.uiManager) return;
+
     // Helper for translations
     const t = TRANSLATIONS[lang]?.score_popup || TRANSLATIONS["th"].score_popup;
 
@@ -121,17 +123,12 @@ class ScorePopupManager {
       `;
     }
 
-    // Popup Creation
-    this.popup = document.createElement("div");
-    this.popup.id = "score-popup";
-    this.popup.className =
-      "fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50 transition-opacity duration-300";
-
-    this.popup.innerHTML = `
-      <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-6 w-full text-center relative transform scale-95 opacity-0 animate-popup-in border border-gray-100 dark:border-gray-700 max-w-[700px] max-h-[90vh] overflow-y-auto custom-scrollbar">
+    // 2. Generate HTML Content
+    const html = `
+      <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-6 w-full text-center relative transform scale-95 animate-[scaleIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards] border border-gray-100 dark:border-gray-700 max-w-[700px] max-h-[90vh] overflow-y-auto custom-scrollbar">
         
         <!-- Close X Button -->
-        <button id="close-x-btn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition z-10">
+        <button id="close-x-btn-score" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition z-10">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
 
@@ -219,7 +216,7 @@ class ScorePopupManager {
                 TRANSLATIONS[lang]?.feedback_popup ||
                 TRANSLATIONS["th"].feedback_popup,
               formUrl: this.formUrl,
-              closeButtonId: "close-score-popup",
+              closeButtonId: "close-score-popup", // This ID is used for the button bottom right
               variant: "compact",
             })}
           </div>
@@ -243,38 +240,28 @@ class ScorePopupManager {
       <style>
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
-        @keyframes popup-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .animate-popup-in { animation: popup-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
       </style>
     `;
 
-    document.body.appendChild(this.popup);
-    this.bindEvents();
-  }
-
-  bindEvents() {
-    if (!this.popup) return;
-    const closeBtn = this.popup.querySelector("#close-score-popup");
-    if (closeBtn) closeBtn.addEventListener("click", () => this.close());
-
-    // Bind Close X Button
-    const closeXBtn = this.popup.querySelector("#close-x-btn");
-    if (closeXBtn) closeXBtn.addEventListener("click", () => this.close());
-
-    this.popup.addEventListener("click", (e) => {
-      // Close only if clicking strictly outside the content
-      if (e.target.id === "score-popup") this.close();
+    // 3. Call UIManager
+    const popupEl = window.uiManager.showPopup(html, {
+      id: "score-popup-dynamic",
+      closeBtnId: "close-x-btn-score", // Bind Top Right X
     });
-  }
 
-  close() {
-    if (this.popup) {
-      this.popup.style.opacity = "0";
-      setTimeout(() => {
-        if (this.popup) this.popup.remove();
-        this.popup = null;
-      }, 200);
+    // 4. Bind Secondary Close Button (survey close button)
+    const surveyCloseBtn = popupEl.querySelector("#close-score-popup");
+    if (surveyCloseBtn) {
+      surveyCloseBtn.addEventListener("click", () => {
+        // Simulate click on known close button or trigger close somehow?
+        // Since we know the X button is bound, let's just trigger it.
+        const xBtn = popupEl.querySelector("#close-x-btn-score");
+        if (xBtn) xBtn.click();
+      });
     }
+
+    this.popup = popupEl; // Keep reference if needed, though uiManager manages removal
   }
 }
 

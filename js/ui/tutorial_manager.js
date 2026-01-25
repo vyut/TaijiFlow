@@ -421,94 +421,112 @@ class TutorialManager {
 
   /**
    * Create Tutorial UI elements
+   * @deprecated v4.0 - Use open() with dynamic generation
    */
   createUI() {
-    // Tutorial Button - ใช้ปุ่มที่มีอยู่ใน HTML แทนสร้างใหม่
+    // Tutorial Button - Bind existing button in HTML
     const btn = document.getElementById("tutorial-btn");
     if (btn) {
       btn.onclick = () => this.open();
     }
-
-    // Tutorial Container (Modal)
-    const container = document.createElement("div");
-    container.id = "tutorial-container";
-    container.className = "fixed inset-0 z-50 hidden";
-    container.innerHTML = `
-      <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="tutorialManager.close()"></div>
-      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                  w-11/12 max-w-4xl h-[85vh] bg-gray-900 rounded-2xl shadow-2xl 
-                  border border-purple-500/50 overflow-hidden flex flex-col">
-        <!-- Header -->
-        <div class="flex items-center justify-between p-4 border-b border-gray-700">
-          <h2 id="tutorial-title" class="text-xl font-bold text-white">📖 คู่มือการฝึกท่าม้วนไหม</h2>
-          <button onclick="tutorialManager.close()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
-        </div>
-        
-        <!-- Tabs -->
-        <div class="flex border-b border-gray-700">
-          <button id="tab-principles" onclick="tutorialManager.switchTab('principles')" 
-                  class="tutorial-tab flex-1 py-3 text-center text-white bg-purple-600">หลักการ</button>
-          <button id="tab-exercises" onclick="tutorialManager.switchTab('exercises')" 
-                  class="tutorial-tab flex-1 py-3 text-center text-gray-400 hover:text-white">ท่า 4 แบบ</button>
-          <button id="tab-howto" onclick="tutorialManager.switchTab('howto')" 
-                  class="tutorial-tab flex-1 py-3 text-center text-gray-400 hover:text-white">วิธีใช้</button>
-        </div>
-        
-        <!-- Content -->
-        <div id="tutorial-content" class="flex-1 overflow-y-auto p-6">
-          <!-- Dynamic content here -->
-        </div>
-        
-        <!-- Footer -->
-        <div class="p-4 border-t border-gray-700 text-center">
-          <button onclick="tutorialManager.close()" 
-                  class="px-8 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors">
-            <span id="tutorial-close-btn">ปิด</span>
-          </button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(container);
-
-    this.containerEl = container;
-    this.contentEl = document.getElementById("tutorial-content");
   }
 
   /**
    * Open tutorial popup
    */
   open(lang = "th") {
+    if (!window.uiManager) return;
+
     // Try to get language from uiManager if available
-    if (typeof uiManager !== "undefined" && uiManager.currentLang) {
-      lang = uiManager.currentLang;
+    if (window.uiManager.currentLang) {
+      lang = window.uiManager.currentLang;
     }
 
     this.currentLang = lang;
-    this.containerEl.classList.remove("hidden");
     this.isOpen = true;
 
-    // Update title and tabs
-    document.getElementById("tutorial-title").textContent = this.t(
-      "title",
-      lang,
-    );
-    document.getElementById("tab-principles").textContent = this.t(
-      "tabs.principles",
-      lang,
-    );
-    document.getElementById("tab-exercises").textContent = this.t(
-      "tabs.exercises",
-      lang,
-    );
-    document.getElementById("tab-howto").textContent = this.t(
-      "tabs.howto",
-      lang,
-    );
-    document.getElementById("tutorial-close-btn").textContent = this.t(
-      "closeBtn",
-      lang,
-    );
+    // Prepare Translations
+    const t_Title = this.t("title", lang);
+    const t_Tab1 = this.t("tabs.principles", lang);
+    const t_Tab2 = this.t("tabs.exercises", lang);
+    const t_Tab3 = this.t("tabs.howto", lang);
+    const t_Close = this.t("closeBtn", lang);
 
+    // Generate Full HTML Structure
+    const html = `
+      <div class="w-11/12 max-w-4xl h-[85vh] bg-gray-900 rounded-2xl shadow-2xl 
+                  border border-purple-500/50 overflow-hidden flex flex-col 
+                  transform scale-95 animate-[scaleIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards]">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between p-4 border-b border-gray-700 bg-gray-800/50">
+          <h2 id="tutorial-title" class="text-xl font-bold text-white flex items-center gap-2">
+            ${t_Title}
+          </h2>
+          <!-- Close X Button managed by shell, but we can add one here too -->
+          <button id="tutorial-x-btn" class="text-gray-400 hover:text-white text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors">&times;</button>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="flex border-b border-gray-700 bg-gray-800/30">
+          <button id="tab-principles" onclick="tutorialManager.switchTab('principles')" 
+                  class="tutorial-tab flex-1 py-3 text-center text-gray-400 hover:text-white transition-colors font-medium border-b-2 border-transparent">
+            ${t_Tab1}
+          </button>
+          <button id="tab-exercises" onclick="tutorialManager.switchTab('exercises')" 
+                  class="tutorial-tab flex-1 py-3 text-center text-gray-400 hover:text-white transition-colors font-medium border-b-2 border-transparent">
+            ${t_Tab2}
+          </button>
+          <button id="tab-howto" onclick="tutorialManager.switchTab('howto')" 
+                  class="tutorial-tab flex-1 py-3 text-center text-gray-400 hover:text-white transition-colors font-medium border-b-2 border-transparent">
+            ${t_Tab3}
+          </button>
+        </div>
+        
+        <!-- Content Area -->
+        <div id="tutorial-content" class="flex-1 overflow-y-auto p-6 custom-scrollbar bg-gray-900">
+          <!-- Dynamic content will be injected here -->
+        </div>
+        
+        <!-- Footer -->
+        <div class="p-4 border-t border-gray-700 text-center bg-gray-800/50">
+          <button id="tutorial-close-btn" 
+                  class="px-8 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-purple-500/30">
+            ${t_Close}
+          </button>
+        </div>
+
+        <style>
+           .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+           .custom-scrollbar::-webkit-scrollbar-track { background: #1f2937; }
+           .custom-scrollbar::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
+           .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+           @keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        </style>
+      </div>
+    `;
+
+    // Call Shared Popup
+    window.uiManager.showPopup(html, {
+      id: "tutorial-popup",
+      closeBtnId: "tutorial-x-btn",
+      onClose: () => {
+        this.isOpen = false;
+        // Clean up references
+        this.contentEl = null;
+      },
+    });
+
+    // Re-bind content element reference immediately
+    this.contentEl = document.getElementById("tutorial-content");
+
+    // Bind Footer Close Button manually (since we used ID for X button in options)
+    const footerClose = document.getElementById("tutorial-close-btn");
+    if (footerClose) {
+      footerClose.onclick = () => this.close();
+    }
+
+    // Render Initial Tab
     this.switchTab(this.currentTab);
   }
 
@@ -516,25 +534,53 @@ class TutorialManager {
    * Close tutorial popup
    */
   close() {
-    this.containerEl.classList.add("hidden");
     this.isOpen = false;
+    // Let UIManager handle the DOM removal via its generic close mechanism
+    // We can simulate a click on the bound close button or just hide the popup ID
+    const popup = document.getElementById("tutorial-popup");
+    if (popup) {
+      // Trigger the standard close animation/logic from UIManager if possible,
+      // or just emulate user action.
+      // Easiest is to find the close button we told UIManager about.
+      const xBtn = document.getElementById("tutorial-x-btn");
+      if (xBtn) xBtn.click();
+      else popup.click(); // Click outside fallback
+    }
   }
 
+  /**
+   * Switch between tabs
+   */
   /**
    * Switch between tabs
    */
   switchTab(tab) {
     this.currentTab = tab;
 
-    // Update tab styles
-    document.querySelectorAll(".tutorial-tab").forEach((t) => {
-      t.classList.remove("bg-purple-600", "text-white");
-      t.classList.add("text-gray-400");
+    // Update tab styles (New Design: Border Bottom + Text Color)
+    const tabs = ["principles", "exercises", "howto"];
+    tabs.forEach((t) => {
+      const btn = document.getElementById(`tab-${t}`);
+      if (btn) {
+        if (t === tab) {
+          // Active
+          btn.classList.add(
+            "text-purple-400",
+            "border-purple-500",
+            "bg-white/5",
+          );
+          btn.classList.remove("text-gray-400", "border-transparent");
+        } else {
+          // Inactive
+          btn.classList.add("text-gray-400", "border-transparent");
+          btn.classList.remove(
+            "text-purple-400",
+            "border-purple-500",
+            "bg-white/5",
+          );
+        }
+      }
     });
-    document
-      .getElementById(`tab-${tab}`)
-      .classList.add("bg-purple-600", "text-white");
-    document.getElementById(`tab-${tab}`).classList.remove("text-gray-400");
 
     // Render content
     this.renderContent(tab);

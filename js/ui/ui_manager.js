@@ -269,7 +269,10 @@ class UIManager {
     // -------------------------------------------------------------------------
     // เริ่มต้นระบบ Wisdom Popup (New)
     // -------------------------------------------------------------------------
-    this.initWisdomPopup();
+    // -------------------------------------------------------------------------
+    // เริ่มต้นระบบ Wisdom Popup (New - Handled by WisdomManager automatically)
+    // -------------------------------------------------------------------------
+    // this.initWisdomPopup(); -> Removed in v4.0
   }
 
   // ===========================================================================
@@ -1026,202 +1029,97 @@ class UIManager {
   }
 
   // ===========================================================================
-  // SECTION: WISDOM POPUP (TAIJI WISDOM)
-  // ===========================================================================
-  // Merged from wisdom_popup.js
+  // SECTION: GENERIC POPUP MANAGEMENT (SHARED SHELL)
   // ===========================================================================
 
   /**
-   * Init Wisdom Popup - เริ่มต้นระบบ Wisdom Popup
+   * Show Generic Popup - แสดง Popup แบบมาตรฐาน (Overlay + HTML Content)
+   *
+   * @description
+   *   สร้างและแสดง Overlay Popup กลางที่จัดการเรื่องพื้นฐานให้:
+   *   - Animation Fade In/Out
+   *   - ปิดเมื่อคลิกพื้นที่ว่าง (Click Outside)
+   *   - ปิดเมื่อกด ESC
+   *   - Callback เมื่อเปิด/ปิด
+   *
+   * @param {string} contentHtml - HTML String ของเนื้อหา Popup (รวม Container กล่องขาว/ดำ)
+   * @param {Object} options - ตั้งค่าเพิ่มเติม
+   * @param {string} [options.id="universal-popup"] - ID ของ Element
+   * @param {boolean} [options.closeOnClickOutside=true] - ปิดเมื่อคลิกพื้นหลังหรือไม่
+   * @param {Function} [options.onClose=null] - เรียกเมื่อ Popup ถูกลบ
+   * @param {string} [options.closeBtnId=null] - ID ของปุ่มปิดใน HTML (เพื่อ Bind Event ให้อัตโนมัติ)
+   * @returns {HTMLElement} Popup Element ที่สร้างขึ้น
    */
-  initWisdomPopup() {
-    this.wisdomPopup = document.getElementById("wisdom-popup");
-    this.wisdomCloseBtn = document.getElementById("wisdom-close-btn");
-    this.wisdomQuoteText = document.getElementById("wisdom-quote");
-    this.wisdomQuoteSub = document.getElementById("wisdom-quote-sub");
-    this.wisdomCanvasId = "wisdom-canvas";
-    this.wisdomCanvasId = "wisdom-canvas";
-    this.wisdomAnimation = null;
-    this.isWisdomAnimating = false;
-    this.isShowingAbout = false; // State to track view mode
+  showPopup(contentHtml, options = {}) {
+    const {
+      id = "universal-popup",
+      closeOnClickOutside = true,
+      onClose = null,
+      closeBtnId = null,
+    } = options;
 
-    if (!this.wisdomPopup) return;
+    // 1. ลบ Popup เก่า (ถ้ามี)
+    const oldPopup = document.getElementById(id);
+    if (oldPopup) oldPopup.remove();
 
-    // Close Event
-    if (this.wisdomCloseBtn) {
-      this.wisdomCloseBtn.addEventListener("click", () =>
-        this.hideWisdomPopup(),
-      );
-    }
+    // 2. สร้าง Overlay
+    const popup = document.createElement("div");
+    popup.id = id;
+    // ใช้ Style เดียวกับ Feedback/Score Popup (Glassmorphism Overlay)
+    popup.className =
+      "fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-[100] transition-opacity duration-300 opacity-0";
+    popup.style.backdropFilter = "blur(4px)"; // เพิ่ม Blur Effect ให้ดู Premium
 
-    // Close on click outside
-    this.wisdomPopup.addEventListener("click", (e) => {
-      if (e.target === this.wisdomPopup) {
-        this.hideWisdomPopup();
-      }
+    // 3. ใส่เนื้อหา
+    popup.innerHTML = contentHtml;
+    document.body.appendChild(popup);
+
+    // 4. Animation In
+    requestAnimationFrame(() => {
+      popup.classList.remove("opacity-0");
     });
 
-    // ESC key to close
-    document.addEventListener("keydown", (e) => {
-      if (
-        e.key === "Escape" &&
-        !this.wisdomPopup.classList.contains("hidden")
-      ) {
-        this.hideWisdomPopup();
-      }
-    });
-
-    // Attach click to App Title to trigger Popup
-    const appTitle = document.getElementById("app-logo-container");
-    if (appTitle) {
-      appTitle.style.cursor = "pointer";
-      appTitle.addEventListener("click", () => {
-        this.showWisdomPopup();
-      });
-    }
-
-    // Attach click to Logo Canvas to toggle About Info
-    const canvasContainer = document.getElementById(
-      this.wisdomCanvasId,
-    )?.parentElement;
-    if (canvasContainer) {
-      canvasContainer.style.cursor = "pointer";
-      canvasContainer.addEventListener("click", (e) => {
-        e.stopPropagation(); // Prevent closing popup
-        this.toggleAboutInfo();
-      });
-    }
-  }
-
-  /**
-   * Show Wisdom Popup - แสดงหน้าต่าง Taiji Wisdom
-   */
-  showWisdomPopup() {
-    if (!this.wisdomPopup) return;
-
-    // 1. Reset state & Random Quote
-    this.isShowingAbout = false;
-    this.setRandomWisdomQuote();
-
-    // 2. Show Modal
-    this.wisdomPopup.classList.remove("hidden");
-    this.wisdomPopup.classList.add("flex");
-
-    // 3. Start Animation
-    this.startWisdomAnimation();
-  }
-
-  /**
-   * Hide Wisdom Popup - ปิดหน้าต่าง Taiji Wisdom
-   */
-  hideWisdomPopup() {
-    if (!this.wisdomPopup) return;
-
-    this.wisdomPopup.classList.add("hidden");
-    this.wisdomPopup.classList.remove("flex");
-
-    // Stop Animation to save resources
-    this.stopWisdomAnimation();
-  }
-
-  /**
-   * Set Random Wisdom Quote - สุ่มคำคมมาแสดง
-   */
-  setRandomWisdomQuote() {
-    if (typeof TRANSLATIONS === "undefined") return;
-
-    // Use current language setting
-    const lang = this.currentLang || "th";
-
-    // Access centralized quotes via TRANSLATIONS
-    const quotes =
-      TRANSLATIONS[lang]?.score_popup?.motivational_quotes ||
-      TRANSLATIONS["th"].score_popup.motivational_quotes;
-
-    if (quotes && quotes.length > 0) {
-      const randomIndex = Math.floor(Math.random() * quotes.length);
-      const quote = quotes[randomIndex];
-
-      // Display
-      if (this.wisdomQuoteText)
-        this.wisdomQuoteText.textContent = `"${quote.text}"`;
-      if (this.wisdomQuoteSub) this.wisdomQuoteSub.textContent = quote.zh;
-    }
-  }
-
-  /**
-   * Toggle About Info - สลับระหว่างคำคมและข้อมูลแอพ
-   */
-  toggleAboutInfo() {
-    this.isShowingAbout = !this.isShowingAbout;
-
-    if (!this.isShowingAbout) {
-      // Revert style from About mode
-      if (this.wisdomQuoteSub) {
-        this.wisdomQuoteSub.classList.add("font-serif", "tracking-widest");
-        this.wisdomQuoteSub.classList.remove("font-sans", "font-bold");
-      }
-      // Show Random Quote
-      this.setRandomWisdomQuote();
-    } else {
-      // Show About Info
-      if (typeof TRANSLATIONS === "undefined") return;
-      const lang = this.currentLang || "th";
-      const info =
-        TRANSLATIONS[lang]?.about_info || TRANSLATIONS["th"].about_info;
-
-      if (info) {
-        if (this.wisdomQuoteSub) {
-          this.wisdomQuoteSub.textContent = info.title;
-          this.wisdomQuoteSub.style.fontSize = "1.5rem";
-          // Switch to App Font (Sans) for Title
-          this.wisdomQuoteSub.classList.remove("font-serif", "tracking-widest");
-          this.wisdomQuoteSub.classList.add("font-sans", "font-bold");
-        }
-        if (this.wisdomQuoteText) {
-          this.wisdomQuoteText.innerHTML = `
-            <div style="font-size: 0.9em; line-height: 1.6;">
-              <p style="margin-bottom: 12px; font-style: italic;">${info.philosophy}</p>
-              <p style="font-size: 0.8em; opacity: 0.8;">
-                ${info.credit_prefix}
-                <a href="mailto:${info.email}" style="color: inherit; text-decoration: underline; font-weight: bold;" onclick="event.stopPropagation()">${info.developer_name}</a>
-              </p>
-            </div>
-          `;
-        }
-      }
-    }
-  }
-
-  /**
-   * Start Wisdom Animation - เริ่ม Animation วงกลม
-   */
-  startWisdomAnimation() {
-    if (this.isWisdomAnimating) return;
-
-    // Re-use SilkReelingAnimation global class if available
-    if (typeof SilkReelingAnimation !== "undefined") {
-      // Wait for DOM to be fully visible/rendered
+    // 5. Shared Close Function
+    const close = () => {
+      popup.classList.add("opacity-0");
       setTimeout(() => {
-        if (!this.wisdomAnimation) {
-          this.wisdomAnimation = new SilkReelingAnimation(this.wisdomCanvasId);
-        } else {
-          this.wisdomAnimation.start();
-        }
-        this.isWisdomAnimating = true;
-      }, 100);
+        if (popup.parentElement) popup.remove();
+        if (onClose) onClose();
+      }, 300); // รอ CSS Transition
+    };
+
+    // 6. Bind Events
+    // 6.1 Close Button (ถ้าระบุ ID)
+    if (closeBtnId) {
+      const btn = popup.querySelector(`#${closeBtnId}`);
+      if (btn) btn.addEventListener("click", close);
     }
+
+    // 6.2 Click Outside
+    if (closeOnClickOutside) {
+      popup.addEventListener("click", (e) => {
+        if (e.target === popup) close();
+      });
+    }
+
+    // 6.3 ESC Key
+    const escHandler = (e) => {
+      if (e.key === "Escape") {
+        close();
+        document.removeEventListener("keydown", escHandler);
+      }
+    };
+    document.addEventListener("keydown", escHandler);
+
+    return popup;
   }
 
-  /**
-   * Stop Wisdom Animation - หยุด Animation
-   */
-  stopWisdomAnimation() {
-    if (this.wisdomAnimation) {
-      this.wisdomAnimation.stop();
-      this.isWisdomAnimating = false;
-    }
-  }
+  // ===========================================================================
+  // NOTE: Wisdom Logic (Merged into WisdomManager)
+  // ===========================================================================
+  // Logic ถูกแยกออกไปที่ js/ui/wisdom_manager.js (v4.0 Refactor)
+  // ใช้: window.wisdomManager ที่เรียก uiManager.showPopup()
+  // ===========================================================================
 
   // ===========================================================================
   // NOTE: showScoreSummary() moved to js/score_popup_manager.js

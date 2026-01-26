@@ -231,6 +231,62 @@
   text-decoration: underline;
 }
 
+/* Microphone Button */
+#chat-mic-btn {
+  width: 45px;
+  height: 45px; /* Same as send button */
+  border-radius: 50%;
+  background: #333;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex; /* Center icon */
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+#chat-mic-btn:hover {
+  background: #444;
+  border-color: #8b5cf6;
+}
+
+#chat-mic-btn.recording {
+  background: #ef4444; /* Red */
+  box-shadow: 0 0 10px #ef4444;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Speak Button (in Chat Bubble) */
+.chat-speak-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 5px;
+  display: block; /* New line */
+  transition: color 0.2s;
+}
+
+.chat-speak-btn:hover {
+  color: white;
+  transform: scale(1.2);
+}
+
 /* Scrollbar */
 .chat-messages::-webkit-scrollbar {
   width: 6px;
@@ -263,36 +319,4 @@
   }
 }
 
-/* Light Mode Support */
-body:not(.dark) #chat-container {
-  background: #f8f8fc;
-  border-color: rgba(139, 92, 246, 0.2);
-}
-
-body:not(.dark) .chat-messages {
-  background: #f8f8fc;
-}
-
-body:not(.dark) .chat-welcome {
-  background: rgba(139, 92, 246, 0.08);
-  color: #333;
-}
-
-body:not(.dark) .chat-message.bot {
-  background: #e8e8f0;
-  color: #333;
-}
-
-body:not(.dark) .chat-input-area {
-  background: #ebebf4;
-}
-
-body:not(.dark) .chat-input-area input {
-  background: white;
-  color: #333;
-  border-color: #ddd;
-}
-
-body:not(.dark) .chat-input-area input::placeholder {
-  color: #999;
-}
+/* Light Mode Support Removed to force Dark Theme */

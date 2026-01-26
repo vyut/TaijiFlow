@@ -225,7 +225,7 @@ class TaijiChatbot {
 
 ## วิธีตอบคำถาม
 
-- ตอบภาษาไทยหากถามเป็นไทย, อังกฤษหากถามเป็นอังกฤษ
+- **Language Detection:** ตอบกลับในภาษาเดียวกับที่ผู้ใช้ถาม (เช่น ถามไทยตอบไทย, ถามอังกฤษตอบอังกฤษ, ถามจีนตอบจีน)
 - ใช้บุคลิกอาจารย์ผู้เฒ่าที่ใจดี น้ำเสียงนุ่มนวล ลึกซึ้ง ใจเย็น
 - ตอบกระชับแต่ครบถ้วน ยกตัวอย่างประกอบเมื่อเหมาะสม
 - เน้นย้ำเสมอว่า **"ใช้อี้ (จิต) นำ ชี่ (ปราณ) ไม่ใช้แรงกาย (Li)"**
@@ -302,7 +302,8 @@ class TaijiChatbot {
         </div>
       </div>
       <div class="chat-input-area">
-        <input type="text" id="chat-input" placeholder="พิมพ์คำถาม..." />
+        <button id="chat-mic-btn" title="พูดคุยด้วยเสียง">🎤</button>
+        <input type="text" id="chat-input" placeholder="พิมพ์คำถาม... หรือกด 🎤" />
         <button id="chat-send-btn">➤</button>
       </div>
     `;
@@ -335,6 +336,39 @@ class TaijiChatbot {
         this.sendMessage();
       }
     });
+
+    // Microphone logic
+    const micBtn = document.getElementById("chat-mic-btn");
+    if (micBtn && "webkitSpeechRecognition" in window) {
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = "th-TH"; // ภาษาไทย
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.onstart = () => {
+        micBtn.classList.add("recording");
+        document.getElementById("chat-input").placeholder = "กำลังฟัง...";
+      };
+
+      recognition.onend = () => {
+        micBtn.classList.remove("recording");
+        document.getElementById("chat-input").placeholder =
+          "พิมพ์คำถาม... หรือกด 🎤";
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("chat-input").value = transcript;
+        // Auto send after 1 second? No, let user confirm first.
+        document.getElementById("chat-input").focus();
+      };
+
+      micBtn.addEventListener("click", () => {
+        recognition.start();
+      });
+    } else if (micBtn) {
+      micBtn.style.display = "none"; // Hide if not supported
+    }
   }
 
   // เปิด/ปิด Chat Panel
@@ -371,6 +405,8 @@ class TaijiChatbot {
     try {
       const response = await this.callProxyAPI(message);
       this.updateMessage(loadingId, response);
+      // Auto-speak response if mic was used? Or create a setting.
+      // For now, let user click speaker button.
     } catch (error) {
       console.error("Chatbot error:", error);
       let errorMsg = `❌ เกิดข้อผิดพลาด: ${error.message}`;
@@ -453,7 +489,16 @@ class TaijiChatbot {
     const msgDiv = document.createElement("div");
     msgDiv.id = msgId;
     msgDiv.className = `chat-message ${role}`;
-    msgDiv.innerHTML = this.formatMessage(content);
+
+    // Add Speaker Button to Bot messages
+    let htmlContent = this.formatMessage(content);
+    if (role === "bot") {
+      htmlContent += `
+        <button class="chat-speak-btn" onclick="window.taijiChatbot.speak('${msgId}')" title="อ่านให้ฟัง">🔊</button>
+        `;
+    }
+
+    msgDiv.innerHTML = htmlContent;
 
     messagesContainer.appendChild(msgDiv);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -469,7 +514,12 @@ class TaijiChatbot {
   updateMessage(msgId, content) {
     const msgDiv = document.getElementById(msgId);
     if (msgDiv) {
-      msgDiv.innerHTML = this.formatMessage(content);
+      let htmlContent = this.formatMessage(content);
+      // Re-add speaker button
+      htmlContent += `
+        <button class="chat-speak-btn" onclick="window.taijiChatbot.speak('${msgId}')" title="อ่านให้ฟัง">🔊</button>
+        `;
+      msgDiv.innerHTML = htmlContent;
 
       // Update in messages array
       const lastBotMsgIndex = this.messages.findLastIndex(
@@ -479,6 +529,28 @@ class TaijiChatbot {
         this.messages[lastBotMsgIndex].content = content;
       }
     }
+  }
+
+  // Speak Function (Using Web Speech API)
+  speak(msgId) {
+    const msgDiv = document.getElementById(msgId);
+    if (!msgDiv) return;
+
+    // Get text content (strip HTML)
+    let text = msgDiv.innerText.replace("🔊", "").trim();
+
+    // Cancel previous speech
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    // Auto-detect Language
+    // Check if text contains Thai characters
+    const isThai = /[\u0E00-\u0E7F]/.test(text);
+    utterance.lang = isThai ? "th-TH" : "en-US";
+
+    utterance.rate = 1.0;
+    window.speechSynthesis.speak(utterance);
   }
 
   // แปลง Markdown เป็น HTML (bold, italic, headers, lists)

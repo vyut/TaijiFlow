@@ -105,7 +105,7 @@ let trainingStartTime = 0; // เวลาเริ่มฝึก
 // -----------------------------------------------------------------------------
 // Auto-Adjust Light - ตัวแปรสำหรับปรับความสว่างอัตโนมัติ
 // -----------------------------------------------------------------------------
-let autoAdjustLightEnabled = false; // เปิด/ปิด Auto-Adjust
+let autoAdjustLightEnabled = true; // เปิด/ปิด Auto-Adjust (CSS Filter: Low CPU Usage)
 let currentBrightnessLevel = 1.0; // ระดับความสว่างปัจจุบัน (1.0 = ปกติ)
 let segmentationEnabled = false; // 🆕 Track if segmentation has been enabled for virtual backgrounds
 
@@ -1190,38 +1190,6 @@ async function loadReferenceData() {
 // =============================================================================
 
 // =============================================================================
-// Helper: Calculate Auto Brightness
-// =============================================================================
-/**
- * คำนวณระดับความสว่างที่เหมาะสมตาม landmark visibility
- * @param {Array} landmarks - Pose landmarks จาก MediaPipe
- * @returns {number} - Brightness level (1.0 = normal, 2.0 = 2x brighter)
- */
-function calculateAutoBrightness(landmarks) {
-  if (!landmarks || landmarks.length === 0) return 1.0;
-
-  // ใช้ keypoints สำคัญเหมือน low light detection
-  const keyIndices = [11, 12, 13, 14, 15, 16, 23, 24];
-  const visibilitySum = keyIndices.reduce(
-    (sum, i) => sum + (landmarks[i]?.visibility || 0),
-    0,
-  );
-  const avgVisibility = visibilitySum / keyIndices.length;
-
-  // คำนวณ brightness ตาม visibility
-  // visibility >= 0.5 → brightness = 1.0 (ปกติ)
-  // visibility = 0.3 → brightness = 1.4 (+40%)
-  // visibility = 0.1 → brightness = 1.8 (+80%)
-  // visibility < 0.1 → brightness = 2.0 (max)
-
-  if (avgVisibility >= 0.5) {
-    return 1.0; // แสงเพียงพอ
-  }
-
-  // แปลง visibility (0.5 → 0.0) เป็น brightness (1.0 → 2.0)
-  const brightnessLevel = 1.0 + (0.5 - avgVisibility) * 2.0;
-  return Math.min(brightnessLevel, 2.0); // จำกัดไม่เกิน 2.0
-}
 
 // =============================================================================
 // SECTION 4: MEDIAPIPE POSE PROCESSING
@@ -1291,42 +1259,39 @@ async function onResults(results) {
   // ใน Fullscreen (canvas-container) CSS นี้ยังคงทำงาน
   // ดังนั้นไม่ต้อง mirror เพิ่มใน JS
 
-  // 🆕 Auto-Adjust Light - ปรับความสว่างอัตโนมัติถ้าเปิดใช้งาน
-  let brightnessLevel = 1.0;
+  // 🆕 Auto-Adjust Light (CSS Filter Version)
+  // คำนวณความสว่างจาก visibility และปรับ CSS filter แทนการแก้ pixel
+  let brightnessFilter = "none";
   if (window.autoAdjustLightEnabled && results.poseLandmarks) {
-    brightnessLevel = calculateAutoBrightness(results.poseLandmarks);
+    const keyIndices = [11, 12, 13, 14, 15, 16, 23, 24];
+    const visibilitySum = keyIndices.reduce(
+      (sum, i) => sum + (results.poseLandmarks[i]?.visibility || 0),
+      0,
+    );
+    const avgVisibility = visibilitySum / keyIndices.length;
+
+    // ถ้า visibility ต่ำกว่า 0.5 ให้เริ่มเร่งแสง
+    if (avgVisibility < 0.5) {
+      // คำนวณความสว่าง 1.0 -> 1.5 (Max 50% boost เพื่อไม่ให้ภาพแตกเกินไป)
+      const boost = 1.0 + (0.5 - avgVisibility);
+      const finalBrightness = Math.min(boost, 1.5);
+      brightnessFilter = `brightness(${finalBrightness})`;
+    }
   }
 
-  // วาดภาพ
+  // Apply CSS Filter (Zero CPU Cost)
+  if (canvasElement.style.filter !== brightnessFilter) {
+    canvasElement.style.filter = brightnessFilter;
+  }
+
+  // วาดภาพ (Clean Draw)
   canvasCtx.drawImage(
-    results.image, // ภาพที่ได้จาก MediaPipe
+    results.image,
     0,
     0,
     canvasElement.width,
     canvasElement.height,
   );
-
-  // Apply brightness adjustment (iOS Safari compatible - manual pixel manipulation)
-  if (window.autoAdjustLightEnabled && brightnessLevel > 1.0) {
-    const imageData = canvasCtx.getImageData(
-      0,
-      0,
-      canvasElement.width,
-      canvasElement.height,
-    );
-    const data = imageData.data;
-
-    // Adjust each pixel
-    for (let i = 0; i < data.length; i += 4) {
-      data[i] = Math.min(255, data[i] * brightnessLevel); // R
-      data[i + 1] = Math.min(255, data[i + 1] * brightnessLevel); // G
-      data[i + 2] = Math.min(255, data[i + 2] * brightnessLevel); // B
-      // data[i + 3] is alpha, keep unchanged
-    }
-
-    // Put adjusted image back
-    canvasCtx.putImageData(imageData, 0, 0);
-  }
 
   // DrawingManager: mirrorDisplay = false เพราะ landmarks ก็ตรงกับภาพ webcam อยู่แล้ว
 

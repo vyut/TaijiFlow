@@ -296,8 +296,10 @@ class DisplayController {
       const saved = localStorage.getItem("autoAdjustLight");
       if (saved !== null) {
         window.autoAdjustLightEnabled = saved === "true";
-        checkAutoAdjust.checked = window.autoAdjustLightEnabled;
       }
+
+      // Sync UI with state (Default is TRUE in script.js)
+      checkAutoAdjust.checked = window.autoAdjustLightEnabled;
 
       checkAutoAdjust.addEventListener("change", () => {
         window.autoAdjustLightEnabled = checkAutoAdjust.checked;

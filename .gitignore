@@ -49,3 +49,5 @@ docs/ebooks/
 
 # Session exports (user-generated training data)
 *.json.gz
+.vercel
+.env*.local

@@ -51,7 +51,7 @@ class KeyboardController {
       uiManager,
       tutorialManager,
       displayController,
-      toggleDebugOverlay,
+      debugManager, // Replaced toggleDebugOverlay
       currentExercise,
       currentLevel,
       isTrainingMode,
@@ -305,7 +305,7 @@ class KeyboardController {
       case "KeyD":
         e.preventDefault();
         this.deps.engine.setDebugMode(!this.deps.engine.debugMode);
-        toggleDebugOverlay(this.deps.engine.debugMode);
+        debugManager.toggle(this.deps.engine.debugMode);
         const debugCheckbox = document.getElementById("check-debug");
         if (debugCheckbox) debugCheckbox.checked = this.deps.engine.debugMode;
         uiManager.showNotification(

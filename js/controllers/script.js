@@ -74,6 +74,11 @@ const rulesConfigManager = new RulesConfigManager(engine); // ปรับค่
 const calibrator = new CalibrationManager(); // ปรับเทียบสัดส่วนร่างกาย
 const uiManager = new UIManager(); // จัดการ UI และภาษา
 window.uiManager = uiManager; // Expose globally for other managers (e.g. FeedbackManager)
+// 🆕 Debug Manager
+const debugManager = new DebugManager(
+  document.getElementById("debug-overlay"),
+  document.getElementById("debug-content"),
+);
 const drawer = new DrawingManager(canvasCtx, canvasElement); // วาดภาพบน Canvas
 const scorer = new ScoringManager(); // คำนวณคะแนน
 const audioManager = new AudioManager(); // เสียงพูดแจ้งเตือน
@@ -173,44 +178,6 @@ if (privacyAcceptBtn) {
 // -----------------------------------------------------------------------------
 // Helper Functions - ฟังก์ชันช่วยสร้าง ID และดึงข้อมูล
 // -----------------------------------------------------------------------------
-
-// Debug Overlay Elements
-const debugOverlay = document.getElementById("debug-overlay");
-const debugContent = document.getElementById("debug-content");
-
-/**
- * อัพเดท Debug Overlay (HTML version - ไม่ถูก CSS mirror)
- * @param {Object} debugInfo - ข้อมูล debug ที่จะแสดง
- */
-function updateDebugOverlay(debugInfo) {
-  if (!debugContent || !debugInfo) return;
-
-  // แปลง object เป็น HTML
-  const html = Object.entries(debugInfo)
-    .map(([key, value]) => {
-      // Regex: Insert space before capital letters, but handle consecutive caps correctly
-      // e.g. "camFPS" -> "cam FPS", "AI FPS" -> "AI FPS"
-      // Or safer: just capitalize first letter if it's camelCase
-      const displayKey = key.replace(/([A-Z][a-z])/g, " $1").trim();
-      return `<div>${displayKey}: <strong>${value}</strong></div>`;
-    })
-    .join("");
-
-  debugContent.innerHTML = html;
-}
-
-/**
- * แสดง/ซ่อน Debug Overlay
- * @param {boolean} show - true = แสดง, false = ซ่อน
- */
-function toggleDebugOverlay(show) {
-  if (!debugOverlay) return;
-  if (show) {
-    debugOverlay.classList.remove("hidden");
-  } else {
-    debugOverlay.classList.add("hidden");
-  }
-}
 
 // Feedback Overlay Elements
 const feedbackOverlay = document.getElementById("feedback-overlay");
@@ -575,45 +542,18 @@ levelButtons.forEach((btn) => {
  * @returns {Promise} Resolves เมื่อนับถอยหลังเสร็จ + เสียงพูดจบ
  */
 function showCountdown() {
-  return new Promise(async (resolve) => {
-    countdownOverlay.classList.remove("hidden");
-    let count = 3;
-    countdownNumber.textContent = count;
+  const countdownOverlay = document.getElementById("countdown-overlay");
+  const countdownNumber = document.getElementById("countdown-number");
 
-    // 1. รอให้เสียงเก่า (Calibration) จบก่อน 100%
-    await audioManager.waitForIdle();
+  const exerciseText = audioManager.getExerciseSpokenText(
+    currentExercise,
+    currentLevel,
+  );
 
-    // 2. พูดชื่อท่า (Speaking...)
-    const exerciseText = audioManager.getExerciseSpokenText(
-      currentExercise,
-      currentLevel,
-    );
-    audioManager.speak(exerciseText, true);
-
-    const interval = setInterval(async () => {
-      count--;
-      if (count > 0) {
-        countdownNumber.textContent = count;
-      } else {
-        clearInterval(interval);
-        countdownOverlay.classList.add("hidden");
-
-        // 3. รอให้เสียงชื่อท่าจบก่อน 100% แล้วค่อยเริ่มฝึก
-        await audioManager.waitForIdle();
-        resolve();
-      }
-    }, 1000);
+  return TimeUtils.startCountdown(countdownOverlay, countdownNumber, {
+    audioManager,
+    exerciseText,
   });
-}
-
-/**
- * Format เวลาเป็น mm:ss
- */
-function formatTime(ms) {
-  const totalSeconds = Math.ceil(ms / 1000);
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 
 /**
@@ -622,11 +562,11 @@ function formatTime(ms) {
 function updateTrainingTimer() {
   const elapsed = Date.now() - trainingStartTime;
   const remaining = Math.max(0, TRAINING_DURATION_MS - elapsed);
-  const timeStr = formatTime(remaining);
-
   // Update both timers
-  if (trainingTimerTop) trainingTimerTop.textContent = timeStr;
-  if (trainingTimerOverlay) trainingTimerOverlay.textContent = timeStr;
+  if (trainingTimerTop)
+    trainingTimerTop.textContent = TimeUtils.formatTime(remaining);
+  if (trainingTimerOverlay)
+    trainingTimerOverlay.textContent = TimeUtils.formatTime(remaining);
 
   if (remaining <= 0) {
     endTrainingSession();
@@ -705,7 +645,7 @@ async function startTrainingAfterCalibration() {
 
   // 5. แสดง Timer (ซ้ายล่าง)
   trainingControls.classList.remove("hidden");
-  const timeStr = formatTime(TRAINING_DURATION_MS);
+  const timeStr = TimeUtils.formatTime(TRAINING_DURATION_MS);
   if (trainingTimerTop) trainingTimerTop.textContent = timeStr;
   if (trainingTimerOverlay) trainingTimerOverlay.textContent = timeStr;
 
@@ -740,7 +680,7 @@ function endTrainingSession() {
 
   // 3.1 ซ่อน HTML overlays
   toggleFeedbackOverlay(false);
-  toggleDebugOverlay(false);
+  debugManager.toggle(false); // Use debugManager to hide debug overlay
 
   // 3.2 หยุด Ghost playback
   if (typeof ghostManager !== "undefined" && ghostManager.isPlaying) {
@@ -841,7 +781,7 @@ function resetToHomeScreen() {
   }
   const debugCheckbox = document.getElementById("check-debug");
   if (debugCheckbox) debugCheckbox.checked = false;
-  toggleDebugOverlay(false);
+  debugManager.toggle(false); // Use debugManager to hide debug overlay
 
   // Reset Rules Settings to defaults
   if (typeof rulesManager !== "undefined") {
@@ -1066,9 +1006,10 @@ const keyboardController = new KeyboardController({
   tutorialManager,
   displayController, // เพิ่มสำหรับ toggleInstructor และ showInstructor
   backgroundManager, // เพิ่มสำหรับ toggle blur background (Key B)
+  debugManager, // Pass debugManager
 
   // Functions
-  toggleDebugOverlay,
+  // toggleDebugOverlay, // Removed, now handled by debugManager
   loadReferenceData,
   resetToHomeScreen,
 
@@ -1378,8 +1319,6 @@ async function onResults(results) {
         );
       }
 
-      // 1. วาด Ghost (เงาคนสอน) ถ้าเปิดใช้งาน (วาดก่อน Grid หรือหลังก็ได้ แต่วาดหลัง Grid จะเห็นชัดกว่า)
-
       // 🆕 0.5 วาด Grid Overlay (ถ้าเปิดใช้งาน)
       if (displayController.showGrid) {
         // console.log("📐 Drawing Grid..."); // Debug log (uncomment to check loop)
@@ -1388,6 +1327,7 @@ async function onResults(results) {
         drawer.drawGrid("rgba(255, 255, 255, 0.3)", gridSize); // เพิ่ม opacity นิดนึง
       }
 
+      // 1. วาด Ghost (เงาคนสอน) ถ้าเปิดใช้งาน (วาดก่อน Grid หรือหลังก็ได้ แต่วาดหลัง Grid จะเห็นชัดกว่า)
       if (displayController.showGhostOverlay && ghostManager.isPlaying) {
         ghostManager.update(); // อัปเดต frame
 
@@ -1619,13 +1559,22 @@ async function onResults(results) {
           // 1.2.2 Add Training Specific Metrics (Only when training)
           if (isRecording && shouldCheckHeuristics) {
             debugInfo["Frame"] = frameCounter;
-            debugInfo["Score"] = scorer.getCurrentScore().toFixed(1) + "%";
-            // Merge detailed rule metrics
-            Object.assign(debugInfo, engine.getDebugInfo());
+            // Debug Overlay Update
+            debugManager.update(
+              {
+                FPS: currentFps,
+                State: calibrator.isActive
+                  ? "Calibrating"
+                  : isTrainingMode
+                    ? "Training"
+                    : "Idle",
+              },
+              engine,
+            );
           }
 
           fpsFrameCount++; // Increment counter for AI Rate calculation
-          updateDebugOverlay(debugInfo);
+          debugManager.update(debugInfo); // Use debugManager to update debug overlay
         }
 
         // 2. *** เก็บข้อมูล (Data Logging) - เก็บทุก 3 frames เพื่อลดขนาดไฟล์ ***
@@ -1747,7 +1696,7 @@ async function onResults(results) {
     const aiLatency = (performance.now() - timestamp).toFixed(1);
 
     let debugInfo = {
-      FPS: currentCamFps, // Camera FPS
+      FPS: currentCamFps, // Camera FPS - Note: currentCamFps needs to be ensured defined context
       "AI Rate": currentFps, // AI Processing Rate
       "AI Time": aiLatency + "ms", // 🆕 Latency
       Res: `${w}x${h}`, // 🆕 Resolution
@@ -1767,18 +1716,21 @@ async function onResults(results) {
 
     // 1.2.2 Add Training Specific Metrics (Only when training)
     // Note: isRecording is global, shouldCheckHeuristics is calculated above
-    // Re-calculate shouldCheckHeuristics locally if needed, or rely on variable scope if valid
-    // Ideally we assume shouldCheckHeuristics is available in scope or dependent on poseLandmarks.
-    // However, if poseLandmarks is null, shouldCheckHeuristics might be false or undefined.
-    // Safe check:
     if (isRecording && results.poseLandmarks) {
       debugInfo["Frame"] = frameCounter;
       debugInfo["Score"] = scorer.getCurrentScore().toFixed(1) + "%";
-      Object.assign(debugInfo, engine.getDebugInfo());
+
+      // Pass engine to let DebugManager handle Heuristics info
+      // Instead of merging manually
     }
 
     fpsFrameCount++;
-    updateDebugOverlay(debugInfo);
+
+    // Call Manager
+    debugManager.update(
+      debugInfo,
+      isRecording && results.poseLandmarks ? engine : null,
+    );
   }
 
   canvasCtx.restore();

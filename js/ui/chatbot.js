@@ -233,7 +233,34 @@ class TaijiChatbot {
 - หากไม่แน่ใจ ให้บอกตรงๆ
 `;
 
+    // เรียก Fetch ข้อมูลเว็บทันที (ใส่ Try-Catch กัน Error แล้วทำให้ปุ่มไม่ขึ้น)
+    this.websiteContext = "";
+    try {
+      this.extractWebsiteContent();
+    } catch (e) {
+      console.warn("Could not extract website content:", e);
+    }
+
     this.init();
+  }
+
+  // ดึงข้อมูลจากหน้าเว็บ (index.html) มาเป็น Context
+  extractWebsiteContent() {
+    // เลือกเฉพาะ Section ที่มีเนื้อหาสำคัญ
+    const contentSections = ["hero", "about", "guide", "reference"];
+
+    let extractedText = "### ข้อมูลจากหน้าเว็บไซต์ (Website Content):\n";
+
+    contentSections.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) {
+        // แปลง HTML เป็น Text แบบคร่าวๆ (ลบ space เกิน)
+        const text = element.innerText.replace(/\s+/g, " ").trim();
+        extractedText += `- **Section ${id}**: ${text}\n`;
+      }
+    });
+
+    this.websiteContext = extractedText;
   }
 
   // เริ่มต้น Chatbot - สร้าง UI และ bind events
@@ -367,17 +394,20 @@ class TaijiChatbot {
   async callProxyAPI(userMessage) {
     const url = `/api/chat`; // Call local serverless function
 
+    // รวม System Prompt กับ Website Context
+    const fullSystemPrompt = `${this.systemPrompt}\n\n---\n\n${this.websiteContext}`;
+
     // Build conversation history
     const contents = [
       {
         role: "user",
-        parts: [{ text: this.systemPrompt }],
+        parts: [{ text: fullSystemPrompt }],
       },
       {
         role: "model",
         parts: [
           {
-            text: "เข้าใจแล้วครับ ผม อาจารย์ Dao พร้อมตอบคำถามเกี่ยวกับมวยไท้เก๊กและท่าม้วนไหมแล้วครับ",
+            text: "เข้าใจแล้วครับ ผม อาจารย์ Dao พร้อมตอบคำถามเกี่ยวกับมวยไท้เก๊ก, ท่าม้วนไหม และข้อมูลในเว็บไซต์นี้แล้วครับ",
           },
         ],
       },

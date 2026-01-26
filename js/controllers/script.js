@@ -82,6 +82,12 @@ const debugManager = new DebugManager(
 const drawer = new DrawingManager(canvasCtx, canvasElement); // วาดภาพบน Canvas
 const scorer = new ScoringManager(); // คำนวณคะแนน
 const audioManager = new AudioManager(); // เสียงพูดแจ้งเตือน
+
+// 🆕 Camera Manager
+const cameraManager = new CameraManager(videoElement, canvasElement, {
+  uiManager,
+  onCameraError: showCameraError,
+});
 const gestureManager = new GestureManager(); // ควบคุมด้วยท่ามือ
 const backgroundManager = new BackgroundManager(); // จัดการพื้นหลัง (Virtual Backgrounds)
 const shortcutsManager = new ShortcutsManager(); // Popup คีย์ลัด (New)
@@ -1696,8 +1702,8 @@ async function onResults(results) {
     const aiLatency = (performance.now() - timestamp).toFixed(1);
 
     let debugInfo = {
-      FPS: currentCamFps, // Camera FPS - Note: currentCamFps needs to be ensured defined context
-      "AI Rate": currentFps, // AI Processing Rate
+      FPS: cameraManager.currentCamFps, // Camera FPS
+      "AI Rate": cameraManager.currentFps, // AI Processing Rate
       "AI Time": aiLatency + "ms", // 🆕 Latency
       Res: `${w}x${h}`, // 🆕 Resolution
     };
@@ -1744,31 +1750,7 @@ async function onResults(results) {
 // ทำงานเมื่อ Script โหลดเสร็จ
 // =============================================================================
 
-// -----------------------------------------------------------------------------
-// MediaPipe Pose Model
-// -----------------------------------------------------------------------------
-// สร้าง Instance ของ MediaPipe Pose
-// ใช้ CDN สำหรับโหลด Model Files
-const pose = new Pose({
-  locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
-});
-
-// ตั้งค่า Pose Model
-// - modelComplexity: 0=Lite, 1=Full, 2=Heavy (ความแม่นยำ)
-// - smoothLandmarks: ทำให้จุดนิ่งขึ้น ลดการกระตุก
-// - minDetectionConfidence: ความมั่นใจขั้นต่ำในการตรวจจับ
-// - minTrackingConfidence: ความมั่นใจขั้นต่ำในการติดตาม
-pose.setOptions({
-  modelComplexity: 1, // Full Model (สมดุลระหว่างความแม่นยำและความเร็ว)
-  smoothLandmarks: true, // เปิด Smoothing
-  enableSegmentation: false, // 🔧 ปิดเป็น default (จะเปิดเฉพาะตอนใช้ Virtual Backgrounds/Silhouette)
-  smoothSegmentation: false, // 🔧 ปิดเพื่อประหยัด performance
-  minDetectionConfidence: 0.5, // 50% ขึ้นไปถึงจะยอมรับ
-  minTrackingConfidence: 0.5, // 50% ขึ้นไปถึงจะติดตามต่อ
-});
-
-// ผูก Callback Function
-pose.onResults(onResults);
+// (MediaPipe Pose initialized in CameraManager)
 
 // -----------------------------------------------------------------------------
 // Background Manager Initialization
@@ -1785,7 +1767,7 @@ backgroundManager
 
 // Expose globally for DisplayController
 window.backgroundManager = backgroundManager;
-window.pose = pose; // 🆕 Expose pose for segmentation control
+// window.pose handled by CameraManager
 
 // หมายเหตุ: Loading Overlay จะแสดงตอน initCamera() (หลังกด "เข้าใจแล้ว")
 // ไม่แสดงตั้งแต่ตอนนี้เพราะยังไม่ได้เปิดกล้อง
@@ -1799,41 +1781,17 @@ window.pose = pose; // 🆕 Expose pose for segmentation control
 // =============================================================================
 // PERFORMANCE MODE MANAGEMENT
 // =============================================================================
-let currentPerformanceMode = localStorage.getItem("perfMode") || "balanced"; // lite, balanced, quality
+// NOTE: Logic ย้ายไป CameraManager แล้ว
+// Wrapper คงไว้เพื่อ compatibility กับ HTML onclick
 
 /**
  * ตั้งค่า Performance Mode และ Restart ระบบ AI
  * @param {string} mode - "lite", "balanced", "quality"
  */
-window.setPerformanceMode = async function (mode) {
-  if (mode === currentPerformanceMode) return;
+window.setPerformanceMode = function (mode) {
+  cameraManager.setPerformanceMode(mode);
 
-  console.log(
-    `⚡ Switching Performance Mode: ${currentPerformanceMode} -> ${mode}`,
-  );
-  currentPerformanceMode = mode;
-  localStorage.setItem("perfMode", mode);
-
-  // 1. Update Pose Options
-  const complexity = mode === "lite" ? 0 : mode === "quality" ? 2 : 1;
-  const enableSmooth = mode !== "lite";
-
-  pose.setOptions({
-    modelComplexity: complexity,
-    smoothLandmarks: enableSmooth,
-    enableSegmentation: false, // Reset segmentation (will be enabled if needed)
-    minDetectionConfidence: 0.5,
-    minTrackingConfidence: 0.5,
-  });
-
-  // 2. Restart Camera with new Resolution
-  if (camera) await camera.stop();
-  uiManager.showNotification(
-    uiManager.getText("alert_perf_changed") || `Performance Mode: ${mode}`,
-    "success",
-  );
-  createCamera(); // Re-create camera with new dimensions
-  await camera.start();
+  // Update UI Checkmarks is handled in selectPerformanceMode
 };
 
 /**
@@ -1867,78 +1825,14 @@ const settingsMenu = document.getElementById("settings-menu");
 
 // Set initial Performance UI state
 if (settingsMenu) {
-  updatePerformanceMenuUI(currentPerformanceMode);
+  updatePerformanceMenuUI(cameraManager.currentPerformanceMode);
 }
 
 // -----------------------------------------------------------------------------
 // Camera Initialization (Dynamic)
 // -----------------------------------------------------------------------------
-let camera; // Change to let for re-assignment
-
-function createCamera() {
-  // 1. Determine target resolution
-  const targetWidth = currentPerformanceMode === "lite" ? 640 : 1280;
-  const targetHeight = currentPerformanceMode === "lite" ? 480 : 720;
-
-  // 2. Resize Canvas to match target resolution (Prevents Aspect Ratio Distortion)
-  if (canvasElement) {
-    canvasElement.width = targetWidth;
-    canvasElement.height = targetHeight;
-    console.log(`🖼️ Canvas Resized to: ${targetWidth}x${targetHeight}`);
-  }
-
-  camera = new Camera(videoElement, {
-    onFrame: async () => {
-      try {
-        // Throttling: ลดภาระเครื่องโดยการข้ามเฟรม
-        // SKIP_FRAMES: ประมวลผล 1 เฟรม ข้าม N เฟรม
-        // Lite Mode: Skip 4 (AI ~6 FPS) - เย็นสุด
-        // Balanced: Skip 3 (AI ~7.5 FPS) - สมดุล
-        // Quality: Skip 2 (AI ~10 FPS) - ลื่นไหล
-        throttleFrameCounter++;
-        camFrameCount++; // นับทุกเฟรมที่กล้องส่งมา
-
-        // คำนวณ FPS ทุก 1 วินาที
-        const now = performance.now();
-        if (now - lastFpsTime >= 1000) {
-          currentFps = fpsFrameCount; // AI FPS
-          currentCamFps = camFrameCount; // Camera FPS
-          fpsFrameCount = 0;
-          camFrameCount = 0;
-          lastFpsTime = now;
-        }
-
-        // Dynamic Throttling based on Performance Mode
-        const skipFrames =
-          currentPerformanceMode === "lite"
-            ? 4
-            : currentPerformanceMode === "quality"
-              ? 2
-              : 3;
-
-        if (throttleFrameCounter % (skipFrames + 1) === 0) {
-          await pose.send({ image: videoElement });
-          // fpsFrameCount++; // Moved to onResults
-        }
-
-        if (
-          !loadingOverlay.classList.contains("hidden") &&
-          throttleFrameCounter > 10
-        ) {
-          loadingOverlay.classList.add("hidden");
-        }
-      } catch (error) {
-        console.error("❌ Error in onFrame:", error);
-        // Optional: Show notification if it keeps failing?
-        // uiManager.showNotification("Frame Error: " + error.message, "error");
-      }
-    },
-    width: targetWidth,
-    height: targetHeight,
-  });
-}
-// Initial Creation
-createCamera();
+// (Camera Creation logic moved to CameraManager)
+// Initial Creation handled by CameraManager on start
 
 // -----------------------------------------------------------------------------
 // Camera Error Handling
@@ -1988,7 +1882,8 @@ async function initCamera() {
   loadingOverlay.classList.remove("hidden");
 
   try {
-    await camera.start();
+    // Use CameraManager
+    await cameraManager.start(onResults);
     console.log("✅ Camera started successfully");
   } catch (error) {
     console.error("❌ Camera initialization failed:", error);

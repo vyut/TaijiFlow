@@ -164,7 +164,7 @@ window.TRANSLATIONS = {
     landing_nav_about: "เกี่ยวกับ",
     landing_nav_guide: "คู่มือ",
     landing_nav_learn: "เรียนรู้",
-    landing_nav_start: "▶️ Start",
+    landing_nav_start: "▶️ เริ่มต้น",
 
     landing_hero_badge: "การบรรจบกันของ `ศาสตร์ AI` และ `ศิลป์ไท้เก๊ก`",
     landing_hero_title_sub: "ผู้ช่วยฝึก Silk Reeling",
@@ -649,7 +649,7 @@ window.TRANSLATIONS = {
 
     landing_hero_badge: "The Convergence of `AI Science` and `Taiji Art`",
     landing_hero_title_sub: "Silk Reeling Assistant",
-    landing_hero_btn_start: "Start Training",
+    landing_hero_btn_start: "▶️ Start Training",
     landing_hero_btn_guide: "📖 User Guide",
 
     landing_about_title: "About Project",

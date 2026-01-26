@@ -9,10 +9,25 @@
       content="TaijiFlow AI - ระบบฝึกท่าม้วนไหม (Silk Reeling) โดยใช้ระบบปัญญาประดิษฐ์วิเคราะห์ท่าทางและให้คำแนะนำแบบ Real-time"
     />
     <link rel="icon" type="image/png" href="favicon.png" />
+
+    <!-- 🚀 Performance: Preconnect to Font Server -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- 🌏 SEO & Open Graph -->
+    <meta property="og:title" content="TaijiFlow AI - Silk Reeling Assistant" />
+    <meta
+      property="og:description"
+      content="ฝึกท่าม้วนไหม (Silk Reeling) ด้วยระบบ AI อัจฉริยะ วิเคราะห์ท่าทางและให้คำแนะนำแบบ Real-time"
+    />
+    <meta property="og:image" content="https://taijiflow.ai/og-image.jpg" />
+    <meta property="og:url" content="https://taijiflow.ai" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <!-- 🚀 Prefetch MediaPipe Models (ให้ app.html โหลดเร็วขึ้น) -->
     <link
@@ -100,7 +115,7 @@
     </nav>
 
     <section id="hero" class="hero">
-      <canvas id="silk-canvas"></canvas>
+      <canvas id="silk-canvas" aria-hidden="true"></canvas>
 
       <div class="hero-content">
         <div class="badge" data-i18n="landing_hero_badge">
@@ -484,30 +499,6 @@
       </div>
     </section>
 
-    <!-- Stats Section -->
-    <!-- <section class="stats-section">
-      <div class="stats-container">
-        <div class="stat-item">
-          <div class="stat-icon">⭐️</div>
-          <span class="stat-number">4.2/5</span>
-          <span class="stat-label">User Satisfaction</span>
-        </div>
-        <div class="stat-item">
-          <div class="stat-icon">🚀</div>
-          <span class="stat-number">87.5%</span>
-          <span class="stat-label">Intent to Use</span>
-        </div>
-        <div class="stat-item">
-          <div class="stat-icon">🎯</div>
-          <span class="stat-number">100%</span>
-          <span class="stat-label">Training Success</span>
-        </div>
-      </div>
-      <p class="stats-ref">
-        *Reference: Usability Testing Results
-      </p>
-    </section> -->
-
     <!-- Motivational Quote Section -->
     <section class="quote-section">
       <div class="quote-container">
@@ -528,6 +519,11 @@
       </p>
     </footer>
 
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top" aria-label="Back to Top">
+      ↑
+    </button>
+
     <!-- Shared Translations (contains TAIJI_QUOTES) -->
     <script src="js/utils/translations.js"></script>
     <script src="js/utils/i18n_manager.js"></script>
@@ -536,46 +532,7 @@
     <!-- Chatbot -->
     <script src="js/ui/chatbot.js" defer></script>
 
-    <!-- Hamburger Menu Toggle -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const hamburger = document.getElementById("hamburger-btn");
-        const navMenu = document.getElementById("nav-menu");
-
-        if (hamburger && navMenu) {
-          // Toggle menu on hamburger click
-          hamburger.addEventListener("click", function () {
-            hamburger.classList.toggle("active");
-            navMenu.classList.toggle("active");
-          });
-
-          // Close menu when clicking a link
-          navMenu.querySelectorAll("a").forEach((link) => {
-            link.addEventListener("click", function () {
-              hamburger.classList.remove("active");
-              navMenu.classList.remove("active");
-            });
-          });
-
-          // Close menu when clicking outside
-          document.addEventListener("click", function (e) {
-            if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
-              hamburger.classList.remove("active");
-              navMenu.classList.remove("active");
-            }
-          });
-        }
-
-        // Random Motivational Quote (Derived from Shared Source)
-        if (typeof TAIJI_QUOTES !== "undefined") {
-          const quotes = TAIJI_QUOTES;
-          const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-          const quoteText = document.getElementById("quote-text");
-          if (quoteText && randomQuote) {
-            quoteText.innerHTML = `"${randomQuote.zh}" — ${randomQuote.th}<br><span style="font-size: 0.9em; opacity: 0.8;">${randomQuote.en}</span>`;
-          }
-        }
-      });
-    </script>
+    <!-- Hamburger Menu & Landing Interactions -->
+    <script src="js/ui/landing_manager.js" defer></script>
   </body>
 </html>

@@ -583,44 +583,6 @@ class HeuristicsEngine {
   // 🛠️ HELPER FUNCTIONS: ฟังก์ชันช่วยคำนวณ
   // ===========================================================================
 
-  /**
-   * คำนวณระยะห่างระหว่าง 2 จุด (Euclidean Distance)
-   * @param {Object} p1 - จุดที่ 1 {x, y}
-   * @param {Object} p2 - จุดที่ 2 {x, y}
-   * @returns {number} ระยะห่าง (หน่วย normalized 0-1)
-   */
-  calculateDistance(p1, p2) {
-    if (!p1 || !p2) return 0;
-    return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
-  }
-
-  /**
-   * คำนวณมุมของเส้นตรงระหว่าง 2 จุด (เทียบกับแกนนอน)
-   * @param {Object} p1 - จุดเริ่มต้น
-   * @param {Object} p2 - จุดปลายทาง
-   * @returns {number} มุมเป็นองศา (-180 ถึง 180)
-   */
-  getLineAngle(p1, p2) {
-    return (Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180) / Math.PI;
-  }
-
-  /**
-   * คำนวณความเร็วเชิงมุม (Angular Velocity)
-   * รองรับการ Wrap-around (-180 <-> 180)
-   * @param {number} angle1 - มุมเริ่มต้น (degrees)
-   * @param {number} angle2 - มุมสิ้นสุด (degrees)
-   * @param {number} deltaTime - ช่วงเวลา (วินาที)
-   * @returns {number} ความเร็ว (degrees/second)
-   */
-  getAngularVelocity(angle1, angle2, deltaTime) {
-    if (deltaTime <= 0) return 0;
-    let diff = angle2 - angle1;
-    // Handle wrap-around: -170° to 170° shouldn't be 340°, should be -20°
-    if (diff > 180) diff -= 360;
-    if (diff < -180) diff += 360;
-    return Math.abs(diff / deltaTime);
-  }
-
   // ===========================================================================
   // 📋 HELPER METHODS: ฟังก์ชันช่วยเหลือ
   // ===========================================================================
@@ -646,7 +608,7 @@ class HeuristicsEngine {
     // คำนวณ total distance traveled ใน window
     let totalDistance = 0;
     for (let i = 1; i < recentPoints.length; i++) {
-      totalDistance += this.calculateDistance(
+      totalDistance += MathUtils.calculateDistance(
         recentPoints[i - 1],
         recentPoints[i],
       );
@@ -799,7 +761,7 @@ class HeuristicsEngine {
         const ghostWristIndex = isRightHand ? 16 : 15;
         const ghostWrist = ghostFrame[ghostWristIndex];
         if (ghostWrist) {
-          minDistance = this.calculateDistance(userWrist, ghostWrist);
+          minDistance = MathUtils.calculateDistance(userWrist, ghostWrist);
         }
       }
     }
@@ -807,7 +769,7 @@ class HeuristicsEngine {
     // Fallback: ถ้าไม่มี Ghost ให้ใช้ path เดิม
     if (minDistance === Infinity && referencePath && referencePath.length > 0) {
       for (const refPoint of referencePath) {
-        const d = this.calculateDistance(userWrist, refPoint);
+        const d = MathUtils.calculateDistance(userWrist, refPoint);
         if (d < minDistance) minDistance = d;
       }
     }
@@ -983,24 +945,27 @@ class HeuristicsEngine {
     if (dt < 0.01) return null; // ป้องกัน division by zero
 
     // คำนวณมุมของไหล่และสะโพก (เส้นเชื่อมซ้าย-ขวา)
-    const curShoulderAngle = this.getLineAngle(landmarks[11], landmarks[12]);
-    const lastShoulderAngle = this.getLineAngle(
+    const curShoulderAngle = MathUtils.getLineAngle(
+      landmarks[11],
+      landmarks[12],
+    );
+    const lastShoulderAngle = MathUtils.getLineAngle(
       this.lastWaistLandmarks[11],
       this.lastWaistLandmarks[12],
     );
-    const curHipAngle = this.getLineAngle(landmarks[23], landmarks[24]);
-    const lastHipAngle = this.getLineAngle(
+    const curHipAngle = MathUtils.getLineAngle(landmarks[23], landmarks[24]);
+    const lastHipAngle = MathUtils.getLineAngle(
       this.lastWaistLandmarks[23],
       this.lastWaistLandmarks[24],
     );
 
     // คำนวณความเร็วเชิงมุม (degrees/second)
-    const shoulderVel = this.getAngularVelocity(
+    const shoulderVel = MathUtils.getAngularVelocity(
       lastShoulderAngle,
       curShoulderAngle,
       dt,
     );
-    const hipVel = this.getAngularVelocity(lastHipAngle, curHipAngle, dt);
+    const hipVel = MathUtils.getAngularVelocity(lastHipAngle, curHipAngle, dt);
 
     // อัปเดต state สำหรับเฟรมถัดไป
     this.lastWaistTimestamp = now;
@@ -1107,8 +1072,8 @@ class HeuristicsEngine {
     const dt1 = (p2.t - p1.t) / 1000;
     if (dt1 <= 0 || dt2 <= 0) return null;
 
-    const dist2 = this.calculateDistance(p2, p3);
-    const dist1 = this.calculateDistance(p1, p2);
+    const dist2 = MathUtils.calculateDistance(p2, p3);
+    const dist1 = MathUtils.calculateDistance(p1, p2);
     const v2 = dist2 / dt2;
     const v1 = dist1 / dt1;
     const acceleration = Math.abs(v2 - v1);

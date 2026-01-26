@@ -7,20 +7,26 @@
 
 describe("HeuristicsEngine", () => {
   // =========================================================================
-  // Helper Functions (extracted from heuristics_engine.js)
+  // Load MathUtils from Source (Integration-style Unit Test)
   // =========================================================================
+  const fs = require("fs");
+  const path = require("path");
+  const vm = require("vm");
 
-  function calculateDistance(p1, p2) {
-    const dx = p2.x - p1.x;
-    const dy = p2.y - p1.y;
-    return Math.sqrt(dx * dx + dy * dy);
-  }
+  const mathUtilsPath = path.resolve(__dirname, "../../js/utils/math_utils.js");
+  const mathUtilsCode = fs.readFileSync(mathUtilsPath, "utf8");
 
-  function getLineAngle(p1, p2) {
-    const dx = p2.x - p1.x;
-    const dy = p2.y - p1.y;
-    return Math.atan2(dy, dx) * (180 / Math.PI);
-  }
+  // Mock window object
+  const sandbox = { window: {} };
+  vm.createContext(sandbox);
+  vm.runInContext(mathUtilsCode, sandbox);
+
+  // Extract class
+  const MathUtils = sandbox.window.MathUtils;
+
+  // Shortcuts for existing tests
+  const calculateDistance = MathUtils.calculateDistance;
+  const getLineAngle = MathUtils.getLineAngle;
 
   // =========================================================================
   // Helper Function Tests
@@ -62,6 +68,30 @@ describe("HeuristicsEngine", () => {
 
     test("vertical up = -90 degrees", () => {
       expect(getLineAngle({ x: 0, y: 0 }, { x: 0, y: -1 })).toBe(-90);
+    });
+  });
+
+  describe("getAngularVelocity", () => {
+    const getAngularVelocity = MathUtils.getAngularVelocity;
+
+    test("simple rotation", () => {
+      expect(getAngularVelocity(0, 90, 1.0)).toBe(90);
+    });
+
+    test("time duration scaling", () => {
+      // 90 degrees in 0.5s = 180 deg/s
+      expect(getAngularVelocity(0, 90, 0.5)).toBe(180);
+    });
+
+    test("wrap-around (170 -> -170 should be 20 deg diff)", () => {
+      // 170 to 180(or -180) is 10 deg
+      // 180 to -170 is 10 deg
+      // Total 20 deg
+      expect(getAngularVelocity(170, -170, 1.0)).toBeCloseTo(20);
+    });
+
+    test("no time wrap division by zero", () => {
+      expect(getAngularVelocity(0, 90, 0)).toBe(0);
     });
   });
 

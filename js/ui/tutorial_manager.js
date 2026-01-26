@@ -129,6 +129,7 @@ class TutorialManager {
         },
         exercises: {
           heading: "เลือกท่าที่ต้องการเรียนรู้",
+          step: "ขั้นที่",
           types: {
             rh_cw: { name: "มือขวา ตามเข็ม", short: "RH-CW" },
             rh_ccw: { name: "มือขวา ทวนเข็ม", short: "RH-CCW" },
@@ -288,6 +289,7 @@ class TutorialManager {
         },
         exercises: {
           heading: "Select an exercise to learn",
+          step: "Step",
           types: {
             rh_cw: { name: "Right Hand Clockwise", short: "RH-CW" },
             rh_ccw: { name: "Right Hand Counter-CW", short: "RH-CCW" },
@@ -702,32 +704,13 @@ class TutorialManager {
             .map(
               (type) => `
             <button onclick="tutorialManager.selectExercise('${type}')" 
-              class="exercise-type-btn px-4 py-2 rounded-lg transition-colors
+              class="exercise-type-btn px-4 py-2 rounded-lg transition-colors text-sm font-medium
                 ${
                   this.currentExercise === type
-                    ? "bg-purple-600 text-white"
+                    ? "bg-purple-600 text-white shadow-md transform scale-105"
                     : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                 }">
-              ${e.types[type].short}
-            </button>
-          `,
-            )
-            .join("")}
-        </div>
-        
-        <!-- Level Buttons -->
-        <div class="flex gap-2">
-          ${levels
-            .map(
-              (level) => `
-            <button onclick="tutorialManager.selectLevel('${level}')" 
-              class="level-btn px-4 py-2 rounded-lg transition-colors
-                ${
-                  this.currentLevel === level
-                    ? "bg-green-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-                }">
-              ${level}
+              ${e.types[type].name}
             </button>
           `,
             )
@@ -737,26 +720,21 @@ class TutorialManager {
         <!-- Exercise Detail -->
         <div class="bg-gray-100 dark:bg-gray-800/50 rounded-xl p-4">
           <div class="flex flex-col gap-4">
-            <!-- Image (full width for wide images) -->
+            <!-- Image -->
             <div>
               <img id="exercise-image" 
-                src="images/tutorial/${this.currentExercise}_${
-                  this.currentLevel
-                }.png" 
+                src="images/tutorial/${this.currentExercise}_L1.png" 
                 alt="${e.types[this.currentExercise].name}"
                 class="w-full rounded-lg bg-gray-200 dark:bg-gray-700"
                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 200%22><rect fill=%22%23374151%22 width=%22800%22 height=%22200%22/><text x=%22400%22 y=%22100%22 text-anchor=%22middle%22 fill=%22%239CA3AF%22 font-size=%2216%22>Image: ${
                   this.currentExercise
-                }_${this.currentLevel}</text></svg>'">
+                }</text></svg>'">
             </div>
             <!-- Description -->
             <div>
               <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-2">${
                 e.types[this.currentExercise].name
               }</h4>
-              <p class="text-purple-600 dark:text-purple-400 mb-3">${
-                e.levels[this.currentLevel].name
-              } - ${e.levels[this.currentLevel].desc}</p>
               <p class="text-gray-700 dark:text-gray-300 mb-4">${exerciseDesc.summary}</p>
               
               <!-- 4 Steps -->
@@ -765,7 +743,7 @@ class TutorialManager {
                   .map(
                     (step, i) => `
                   <div class="bg-white dark:bg-gray-700/50 rounded-lg p-3 text-center shadow-sm dark:shadow-none">
-                    <div class="text-purple-600 dark:text-purple-400 font-bold mb-1">ขั้นที่ ${
+                    <div class="text-purple-600 dark:text-purple-400 font-bold mb-1">${e.step} ${
                       i + 1
                     }</div>
                     <div class="text-gray-600 dark:text-gray-300 text-sm">${step}</div>
@@ -804,58 +782,63 @@ class TutorialManager {
     const h = this.t("howto", lang);
 
     this.contentEl.innerHTML = `
-      <div class="space-y-6">
-        <h3 class="text-2xl font-bold text-purple-600 dark:text-purple-400">${h.heading}</h3>
+      <div class="h-full flex flex-col">
+        <h3 class="text-2xl font-bold text-purple-600 dark:text-purple-400 mb-4 shrink-0">${h.heading}</h3>
         
-        <!-- Steps -->
-        <div class="space-y-3">
-          ${h.steps
-            .map(
-              (step) => `
-            <div class="flex items-center gap-4 bg-gray-100 dark:bg-gray-800/50 rounded-xl p-4">
-              <span class="text-2xl">${step.icon}</span>
-              <span class="text-gray-700 dark:text-gray-300">${step.text}</span>
-            </div>
-          `,
-            )
-            .join("")}
-        </div>
-        
-        <!-- Tips Section -->
-        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-600/30 rounded-xl p-4">
-          <h4 class="text-lg font-semibold text-blue-600 dark:text-blue-400 mb-3">${
-            h.tips.heading
-          }</h4>
-          <div class="space-y-2">
-            ${h.tips.items
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 overflow-y-auto custom-scrollbar">
+          <!-- Left Column: Steps -->
+          <div class="space-y-3">
+            ${h.steps
               .map(
-                (item) => `
-              <div class="flex items-start gap-2 text-gray-700 dark:text-gray-300">
-                <span class="text-green-600 dark:text-green-400">${item.icon}</span>
-                <span><strong>${item.label}</strong> ${item.text}</span>
+                (step) => `
+              <div class="flex items-center gap-4 bg-gray-100 dark:bg-gray-800/50 rounded-xl p-4 transition hover:bg-white dark:hover:bg-gray-800 border border-transparent hover:border-purple-200 dark:hover:border-purple-800">
+                <span class="text-3xl filter drop-shadow-sm">${step.icon}</span>
+                <span class="text-gray-800 dark:text-gray-200 font-medium">${step.text}</span>
               </div>
             `,
               )
               .join("")}
           </div>
-        </div>
-        
-        <!-- Warnings Section -->
-        <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-600/30 rounded-xl p-4">
-          <h4 class="text-lg font-semibold text-amber-600 dark:text-amber-400 mb-3">${
-            h.warnings.heading
-          }</h4>
-          <div class="space-y-2">
-            ${h.warnings.items
-              .map(
-                (item) => `
-              <div class="flex items-start gap-2 text-gray-700 dark:text-gray-300">
-                <span class="text-red-500 dark:text-red-400">${item.icon}</span>
-                <span><strong>${item.label}</strong> ${item.text}</span>
+          
+          <!-- Right Column: Tips & Warning -->
+          <div class="space-y-6">
+            <!-- Tips Section -->
+            <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-600/30 rounded-xl p-5 shadow-sm">
+              <h4 class="text-lg font-bold text-blue-700 dark:text-blue-400 mb-4 flex items-center gap-2">
+                ${h.tips.heading}
+              </h4>
+              <div class="space-y-3">
+                ${h.tips.items
+                  .map(
+                    (item) => `
+                  <div class="flex items-start gap-3 text-gray-700 dark:text-gray-300">
+                    <span class="text-green-600 dark:text-green-400 mt-0.5 text-lg">${item.icon}</span>
+                    <span class="leading-relaxed"><strong class="text-gray-900 dark:text-white">${item.label}</strong> ${item.text}</span>
+                  </div>
+                `,
+                  )
+                  .join("")}
               </div>
-            `,
-              )
-              .join("")}
+            </div>
+            
+            <!-- Warnings Section -->
+            <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-600/30 rounded-xl p-5 shadow-sm">
+              <h4 class="text-lg font-bold text-amber-700 dark:text-amber-400 mb-4 flex items-center gap-2">
+                ${h.warnings.heading}
+              </h4>
+              <div class="space-y-3">
+                ${h.warnings.items
+                  .map(
+                    (item) => `
+                  <div class="flex items-start gap-3 text-gray-700 dark:text-gray-300">
+                    <span class="text-red-500 dark:text-red-400 mt-0.5 text-lg">${item.icon}</span>
+                    <span class="leading-relaxed"><strong class="text-gray-900 dark:text-white">${item.label}</strong> ${item.text}</span>
+                  </div>
+                `,
+                  )
+                  .join("")}
+              </div>
+            </div>
           </div>
         </div>
       </div>

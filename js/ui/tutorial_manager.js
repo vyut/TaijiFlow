@@ -456,7 +456,7 @@ class TutorialManager {
 
     // Generate Full HTML Structure
     const html = `
-      <div class="w-11/12 max-w-4xl h-[85vh] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl 
+      <div class="w-11/12 max-w-4xl max-h-[80vh] h-auto bg-white dark:bg-gray-900 rounded-2xl shadow-2xl 
                   border border-purple-500/50 overflow-hidden flex flex-col 
                   transform scale-95 animate-[scaleIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards]">
         

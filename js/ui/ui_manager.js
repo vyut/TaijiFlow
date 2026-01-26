@@ -703,35 +703,49 @@ class UIManager {
     // Update Dropdown: Category Select (ประเภทท่า)
     // -------------------------------------------------------------------------
     const catSelect = document.getElementById("category-select");
-    if (catSelect && catSelect.options.length >= 1) {
-      catSelect.options[0].text = t["cat_placeholder"]; // -- เลือกหมวดหมู่ --
-      catSelect.options[1].text = t["cat_silk_single"]; // ม้วนไหม - มือเดียว
-      // catSelect.options[2].text = t["cat_silk_double"]; // ม้วนไหม - สองมือ
+    if (catSelect) {
+      const catMap = {
+        silk_single: "cat_silk_single",
+        silk_double: "cat_silk_double",
+      };
+      Array.from(catSelect.options).forEach((opt) => {
+        if (opt.value === "") opt.text = t["cat_placeholder"];
+        else if (catMap[opt.value]) opt.text = t[catMap[opt.value]];
+      });
     }
 
     // -------------------------------------------------------------------------
     // Update Dropdown: Exercise Select
     // -------------------------------------------------------------------------
-    // Dropdown มี Options หลายตัว ต้องอัปเดตทีละ Option
     const exSelect = document.getElementById("exercise-select");
-    if (exSelect && exSelect.options.length >= 6) {
-      exSelect.options[0].text = t["ex_placeholder"]; // -- เลือกท่าฝึก --
-      exSelect.options[1].text = t["ex_rh_cw"]; // 1. มือขวา - ตามเข็ม
-      exSelect.options[2].text = t["ex_rh_ccw"]; // 2. มือขวา - ทวนเข็ม
-      exSelect.options[3].text = t["ex_lh_cw"]; // 3. มือซ้าย - ตามเข็ม
-      exSelect.options[4].text = t["ex_lh_ccw"]; // 4. มือซ้าย - ทวนเข็ม
-      exSelect.options[5].text = t["ex_random"]; // 🎲 สุ่มท่าฝึก (New - Moved to bottom)
+    if (exSelect) {
+      const exMap = {
+        rh_cw: "ex_rh_cw",
+        rh_ccw: "ex_rh_ccw",
+        lh_cw: "ex_lh_cw",
+        lh_ccw: "ex_lh_ccw",
+        random: "ex_random",
+      };
+      Array.from(exSelect.options).forEach((opt) => {
+        if (opt.value === "") opt.text = t["ex_placeholder"];
+        else if (exMap[opt.value]) opt.text = t[exMap[opt.value]];
+      });
     }
 
     // -------------------------------------------------------------------------
     // Update Dropdown: Level Select
     // -------------------------------------------------------------------------
     const levelSelect = document.getElementById("level-select");
-    if (levelSelect && levelSelect.options.length >= 4) {
-      levelSelect.options[0].text = t["level_placeholder"]; // -- เลือกระดับ --
-      levelSelect.options[1].text = t["level_l1"]; // Level 1: ท่านั่ง
-      levelSelect.options[2].text = t["level_l2"]; // Level 2: ท่ายืน
-      levelSelect.options[3].text = t["level_l3"]; // Level 3: ท่ายืนย่อ
+    if (levelSelect) {
+      const levelMap = {
+        L1: "level_l1",
+        L2: "level_l2",
+        L3: "level_l3",
+      };
+      Array.from(levelSelect.options).forEach((opt) => {
+        if (opt.value === "") opt.text = t["level_placeholder"];
+        else if (levelMap[opt.value]) opt.text = t[levelMap[opt.value]];
+      });
     }
 
     // -------------------------------------------------------------------------

@@ -139,7 +139,6 @@ Version: 0.9.9 (2026-01-17)
     <!-- จัดการ UI State -->
     <script src="js/ui/tutorial_manager.js" defer></script>
     <!-- Popup Tutorial -->
-    <!-- Gemini Chatbot Removed (Moved to index.html) -->
     <script src="js/ui/feedback_manager.js" defer></script>
     <!-- Feedback Popup (includes shared Survey Section) -->
 
@@ -184,9 +183,8 @@ Version: 0.9.9 (2026-01-17)
     <!-- Floating Help Button (Bottom Right) -->
     <button
       id="tutorial-btn"
-      class="fixed bottom-5 right-5 w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg flex items-center justify-center text-3xl z-50 hover:scale-110 transition-transform border-2 border-white/20"
+      class="fixed bottom-5 right-5 w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-[0_4px_20px_rgba(139,92,246,0.4)] flex items-center justify-center text-3xl z-50 hover:scale-110 transition-transform border-2 border-white/20"
       title="คู่มือการฝึก (H) - Help"
-      style="box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);"
     >
       ❓
     </button>
@@ -335,9 +333,6 @@ Version: 0.9.9 (2026-01-17)
       </div>
     </div>
 
-    <!-- Header Removed for Max View -->
-    <!-- <h1 id="app-title" ...> ... </h1> -->
-
     <!-- Main Container -->
     <div
       id="main-card"
@@ -362,18 +357,16 @@ Version: 0.9.9 (2026-01-17)
             </span>
           </div>
 
-          <!-- Category Dropdown (สำหรับขยายในอนาคต) -->
+          <!-- Category Dropdown -->
           <div>
             <select
               id="category-select"
               class="px-3 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
-              title="เลือกหมวดหมู่ของท่าฝึก - Select exercise category"
+              title="Select exercise category"
             >
-              <option value="" disabled>-- หมวดหมู่ --</option>
-              <option value="silk_single" selected>
-                ท่าม้วนไหม - มือเดียว
-              </option>
-              <!-- <option value="silk_double" disabled>ท่าม้วนไหม - สองมือ</option> -->
+              <option value="" disabled>-- Category --</option>
+              <option value="silk_single" selected>Silk Reeling - Single Hand</option>
+              <!-- <option value="silk_double" disabled>Silk Reeling - Double Hand</option> -->
             </select>
           </div>
 
@@ -382,14 +375,14 @@ Version: 0.9.9 (2026-01-17)
             <select
               id="exercise-select"
               class="px-3 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
-              title="เลือกท่าฝึก: มือซ้าย/ขวา, ตาม/ทวนเข็ม - Select exercise"
+              title="Select exercise"
             >
-              <option value="" disabled>-- ท่าฝึก --</option>
-              <option value="rh_cw" selected>1. มือขวา - ตามเข็ม</option>
-              <option value="rh_ccw">2. มือขวา - ทวนเข็ม</option>
-              <option value="lh_cw">3. มือซ้าย - ตามเข็ม</option>
-              <option value="lh_ccw">4. มือซ้าย - ทวนเข็ม</option>
-              <option value="random">🎲 สุ่มท่าฝึก (Surprise Me)</option>
+              <option value="" disabled>-- Exercise --</option>
+              <option value="rh_cw" selected>1. Right Hand - CW</option>
+              <option value="rh_ccw">2. Right Hand - CCW</option>
+              <option value="lh_cw">3. Left Hand - CW</option>
+              <option value="lh_ccw">4. Left Hand - CCW</option>
+              <option value="random">🎲 Random Exercise</option>
             </select>
           </div>
 
@@ -398,12 +391,12 @@ Version: 0.9.9 (2026-01-17)
             <select
               id="level-select"
               class="px-3 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-purple-500 focus:outline-none"
-              title="เลือกระดับ: นั่ง/ยืน/ยืนย่อ - Select difficulty level"
+              title="Select difficulty level"
             >
-              <option value="" disabled>-- รูปแบบ --</option>
-              <option value="L1" selected>1. แบบนั่ง</option>
-              <option value="L2">2. แบบยืน</option>
-              <option value="L3">3. แบบยืนย่อ</option>
+              <option value="" disabled>-- Level --</option>
+              <option value="L1" selected>1. Level 1 (Seated)</option>
+              <option value="L2">2. Level 2 (Standing)</option>
+              <option value="L3">3. Level 3 (Bow Stance)</option>
             </select>
           </div>
 
@@ -693,7 +686,7 @@ Version: 0.9.9 (2026-01-17)
               id="rules-menu"
               class="hidden absolute right-0 mt-2 w-64 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden no-scrollbar"
               style="max-height: 78vh; overflow-y: scroll"
-            >
+              >
               <div
                 class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900 sticky top-0"
               >
@@ -1395,24 +1388,11 @@ Version: 0.9.9 (2026-01-17)
         <!-- Feedback Overlay (HTML - ไม่ถูก CSS mirror) -->
         <div
           id="feedback-overlay"
-          class="absolute top-4 left-4 z-30 hidden"
-          style="
-            background: rgba(0, 0, 0, 0.75);
-            border-radius: 10px;
-            padding: 12px 16px;
-            font-family: &quot;Sarabun&quot;, sans-serif;
-            min-width: 280px;
-            max-width: 450px;
-          "
+          class="absolute top-4 left-4 z-30 hidden bg-black/75 rounded-[10px] px-4 py-3 font-['Sarabun',sans-serif] min-w-[280px] max-w-[450px]"
         >
           <div
             id="feedback-content"
-            style="
-              color: #ffd700;
-              font-size: 18px;
-              font-weight: bold;
-              line-height: 1.5;
-            "
+            class="text-[#ffd700] text-lg font-bold leading-normal"
           >
             <!-- Feedback messages will be inserted here by JS -->
           </div>
@@ -1421,29 +1401,14 @@ Version: 0.9.9 (2026-01-17)
         <!-- Debug Overlay (HTML - ไม่ถูก CSS mirror) -->
         <div
           id="debug-overlay"
-          class="absolute top-4 right-4 z-30 hidden"
-          style="
-            background: rgba(0, 0, 40, 0.95);
-            border: 2px solid #00ffff;
-            border-radius: 10px;
-            padding: 12px 16px;
-            font-family: &quot;Consolas&quot;, &quot;Monaco&quot;, monospace;
-            min-width: 280px;
-          "
+          class="absolute top-4 right-4 z-30 hidden bg-[#000028]/95 border-2 border-[#00ffff] rounded-[10px] px-4 py-3 font-mono min-w-[280px]"
         >
-          <div
-            style="
-              color: #00ffff;
-              font-size: 16px;
-              font-weight: bold;
-              margin-bottom: 8px;
-            "
-          >
+          <div class="text-[#00ffff] text-base font-bold mb-2">
             🐞 DEBUG MODE
           </div>
           <div
             id="debug-content"
-            style="color: #00ff00; font-size: 14px; line-height: 1.6"
+            class="text-[#00ff00] text-sm leading-relaxed"
           >
             <!-- Debug values will be inserted here by JS -->
           </div>

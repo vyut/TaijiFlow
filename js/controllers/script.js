@@ -91,6 +91,18 @@ const cameraManager = new CameraManager(videoElement, canvasElement, {
 const gestureManager = new GestureManager(); // ควบคุมด้วยท่ามือ
 const backgroundManager = new BackgroundManager(); // จัดการพื้นหลัง (Virtual Backgrounds)
 const shortcutsManager = new ShortcutsManager(); // Popup คีย์ลัด (New)
+const performanceMonitor = new PerformanceMonitor({
+  uiManager,
+  backgroundManager,
+});
+const lightingManager = new LightingManager(canvasElement, {
+  uiManager,
+  audioManager,
+});
+
+// Expose for usage if needed
+window.lightingManager = lightingManager;
+
 window.shortcutsManager = shortcutsManager; // Expose globally
 
 // -----------------------------------------------------------------------------
@@ -113,11 +125,8 @@ const TRAINING_DURATION_MS = 5 * 60 * 1000; // 5 นาที = 300,000 ms
 let trainingTimerId = null; // ID ของ setInterval
 let trainingStartTime = 0; // เวลาเริ่มฝึก
 
+// (Lighting variables moved to LightingManager)
 // -----------------------------------------------------------------------------
-// Auto-Adjust Light - ตัวแปรสำหรับปรับความสว่างอัตโนมัติ
-// -----------------------------------------------------------------------------
-let autoAdjustLightEnabled = true; // เปิด/ปิด Auto-Adjust (CSS Filter: Low CPU Usage)
-let currentBrightnessLevel = 1.0; // ระดับความสว่างปัจจุบัน (1.0 = ปกติ)
 let segmentationEnabled = false; // 🆕 Track if segmentation has been enabled for virtual backgrounds
 
 // -----------------------------------------------------------------------------
@@ -151,18 +160,10 @@ let currentFps = 0;
 let camFrameCount = 0;
 let currentCamFps = 0;
 
-const LOW_LIGHT_THRESHOLD = 0.5; // visibility ต่ำกว่านี้จะเตือน (0-1)
-const LOW_LIGHT_WARNING_COOLDOWN = 30000; // cooldown 30 วินาที
-let lastLowLightWarningTime = 0; // เวลาที่เตือนล่าสุด
-const STARTUP_DELAY = 3000; // รอ 3 วินาทีก่อนเริ่มตรวจ (ให้กล้องปรับแสง)
+// (Lighting variables moved to LightingManager)
 
 // -----------------------------------------------------------------------------
-// Low Performance FPS Detection (Visual Effects Warning)
-// -----------------------------------------------------------------------------
-const LOW_FPS_THRESHOLD = 18; // ถ้าต่ำกว่านี้จะเตือนให้ปิด Blur
-const LOW_FPS_CHECK_INTERVAL = 5000; // เช็คทุก 5 วินาที
-let lowFpsWarningShown = false; // แสดงเตือนแค่ครั้งเดียวต่อ session
-let lastLowFpsCheckTime = 0; // เวลาที่เช็คล่าสุด
+// (Performance variables moved to PerformanceMonitor)
 
 // -----------------------------------------------------------------------------
 // Fullscreen State
@@ -221,30 +222,6 @@ function toggleFeedbackOverlay(show) {
     feedbackOverlay.classList.remove("hidden");
   } else {
     feedbackOverlay.classList.add("hidden");
-  }
-}
-
-/**
- * 🆕 ตรวจ Low FPS สำหรับ Visual Effects (Blur Background)
- * ถ้าเปิด Blur อยู่และ FPS ต่ำกว่า 18 จะแจ้งเตือน
- */
-function checkLowFpsPerformance() {
-  const now = Date.now();
-  if (now - lastLowFpsCheckTime < LOW_FPS_CHECK_INTERVAL) return;
-  lastLowFpsCheckTime = now;
-
-  // เช็คเฉพาะเมื่อเปิด Virtual Background และยังไม่เคยเตือน
-  const bgMode = backgroundManager?.getCurrentMode();
-  const hasVirtualBg = bgMode && bgMode !== "none";
-
-  if (hasVirtualBg && currentFps < LOW_FPS_THRESHOLD && !lowFpsWarningShown) {
-    lowFpsWarningShown = true;
-    uiManager.showNotification(
-      uiManager.getText("blur_bg_warning"),
-      "warning",
-      8000,
-    );
-    console.log(`⚠️ Low FPS Warning: ${currentFps} FPS with Blur enabled`);
   }
 }
 
@@ -378,6 +355,18 @@ audioBtn.addEventListener("click", () => {
   const isEnabled = audioManager.toggle();
   audioBtn.innerText = isEnabled ? "🔊" : "🔇";
 });
+
+// 🆕 Auto-Adjust Light UI Sync
+const checkAutoAdjust = document.getElementById("check-auto-adjust-light");
+if (checkAutoAdjust) {
+  // Sync initial state
+  checkAutoAdjust.checked = lightingManager.isEnabled;
+
+  // Add listener
+  checkAutoAdjust.addEventListener("change", (e) => {
+    lightingManager.setEnabled(e.target.checked);
+  });
+}
 
 // Display Controller (extracted to display_controller.js)
 const displayController = new DisplayController({
@@ -1186,7 +1175,8 @@ async function onResults(results) {
   }
 
   // 🆕 Low FPS Warning (Visual Effects)
-  checkLowFpsPerformance();
+  // 🆕 Performance Check using Monitor
+  performanceMonitor.check(cameraManager.currentFps);
 
   // Gesture Detection - ตรวจจับท่ามือสำหรับควบคุม UI
   if (gestureManager.getIsReady() && videoElement.readyState >= 2) {
@@ -1206,29 +1196,11 @@ async function onResults(results) {
   // ใน Fullscreen (canvas-container) CSS นี้ยังคงทำงาน
   // ดังนั้นไม่ต้อง mirror เพิ่มใน JS
 
-  // 🆕 Auto-Adjust Light (CSS Filter Version)
-  // คำนวณความสว่างจาก visibility และปรับ CSS filter แทนการแก้ pixel
-  let brightnessFilter = "none";
-  if (window.autoAdjustLightEnabled && results.poseLandmarks) {
-    const keyIndices = [11, 12, 13, 14, 15, 16, 23, 24];
-    const visibilitySum = keyIndices.reduce(
-      (sum, i) => sum + (results.poseLandmarks[i]?.visibility || 0),
-      0,
-    );
-    const avgVisibility = visibilitySum / keyIndices.length;
-
-    // ถ้า visibility ต่ำกว่า 0.5 ให้เริ่มเร่งแสง
-    if (avgVisibility < 0.5) {
-      // คำนวณความสว่าง 1.0 -> 1.5 (Max 50% boost เพื่อไม่ให้ภาพแตกเกินไป)
-      const boost = 1.0 + (0.5 - avgVisibility);
-      const finalBrightness = Math.min(boost, 1.5);
-      brightnessFilter = `brightness(${finalBrightness})`;
-    }
-  }
-
-  // Apply CSS Filter (Zero CPU Cost)
-  if (canvasElement.style.filter !== brightnessFilter) {
-    canvasElement.style.filter = brightnessFilter;
+  // 🆕 Lighting Manager Update (Auto-Brightness & Warnings)
+  try {
+    lightingManager.update(results, calibrator.isActive);
+  } catch (e) {
+    console.error("LightingManager Error:", e);
   }
 
   // วาดภาพ (Clean Draw)
@@ -1247,37 +1219,6 @@ async function onResults(results) {
     if (calibrator.isActive) {
       // กำลังปรับเทียบ
       drawer.drawSkeleton(results.poseLandmarks);
-
-      // ---------------------------------------------------------------------
-      // Low Light Check (Visibility-Based with Delay)
-      // ---------------------------------------------------------------------
-      // กลับมาใช้ Visibility Check แต่เพิ่ม Delay ตามที่ user ขอ
-      // ---------------------------------------------------------------------
-      const keyIndices = [11, 12, 13, 14, 15, 16, 23, 24]; // ไหล่, ศอก, ข้อมือ, สะโพก
-      const visibilitySum = keyIndices.reduce(
-        (sum, i) => sum + (results.poseLandmarks[i]?.visibility || 0),
-        0,
-      );
-      const avgVisibility = visibilitySum / keyIndices.length;
-      const now = Date.now();
-
-      // เงื่อนไข:
-      // 1. ผ่าน Startup Delay แล้ว (ป้องกันเตือนตอนเริ่ม)
-      // 2. Visibility ต่ำกว่าเกณฑ์
-      // 3. ไม่อยู่ใน Cooldown
-      if (
-        now - sessionStartTime > STARTUP_DELAY &&
-        avgVisibility < LOW_LIGHT_THRESHOLD &&
-        now - lastLowLightWarningTime > LOW_LIGHT_WARNING_COOLDOWN
-      ) {
-        lastLowLightWarningTime = now;
-        uiManager.showNotification(
-          uiManager.getText("alert_low_light_calibration"),
-          "warning",
-          6000,
-        );
-        audioManager.speak(uiManager.getText("alert_low_light_short"));
-      }
 
       const calibResult = calibrator.process(results.poseLandmarks);
       calibrator.drawOverlay(
@@ -1607,38 +1548,6 @@ async function onResults(results) {
           //   2. เช็คว่าเกิน cooldown แล้ว (10 วินาที) เพื่อไม่เตือนซ้ำถี่เกินไป
           //   3. แสดง notification (ภาพ) + พูดเตือน (เสียง)
           // -------------------------------------------------------------------------
-          const now = Date.now();
-
-          // 🆕 Auto-Adjust Aware Logic
-          const isAutoAdjustOn = window.autoAdjustLightEnabled || false;
-          let shouldWarn = false;
-          let warningKey = "alert_low_light";
-
-          if (!isAutoAdjustOn) {
-            // Auto-Adjust OFF: เตือนถ้าแสงน้อย (< 0.5)
-            shouldWarn = avgVisibility < LOW_LIGHT_THRESHOLD;
-          } else {
-            // Auto-Adjust ON: เตือนเฉพาะถ้ามืดมากๆ (< 0.3)
-            shouldWarn = avgVisibility < 0.3;
-            warningKey = "alert_low_light_critical";
-          }
-
-          if (
-            shouldWarn &&
-            now - lastLowLightWarningTime > LOW_LIGHT_WARNING_COOLDOWN
-          ) {
-            lastLowLightWarningTime = now;
-
-            // แสดง notification บนหน้าจอ (สีเหลือง = warning)
-            uiManager.showNotification(
-              uiManager.getText(warningKey),
-              "warning",
-              5000,
-            );
-
-            // พูดเตือนด้วยเสียง (TTS)
-            audioManager.speak(uiManager.getText(warningKey + "_short"));
-          }
 
           // เก็บ Snapshot ของเฟรมนี้
           recordedSessionData.push({
@@ -1673,19 +1582,8 @@ async function onResults(results) {
     // -------------------------------------------------------------------------
     // ไม่พบ poseLandmarks (กล้องถูกบังหรือไม่เห็นคน)
     // -------------------------------------------------------------------------
-    // ถ้าอยู่ใน Calibration และไม่เห็นตัวเลย → เตือนผู้ใช้
-    if (calibrator.isActive) {
-      const now = Date.now();
-      if (now - lastLowLightWarningTime > LOW_LIGHT_WARNING_COOLDOWN) {
-        lastLowLightWarningTime = now;
-        uiManager.showNotification(
-          uiManager.getText("alert_low_light_calibration"),
-          "warning",
-          6000,
-        );
-        audioManager.speak(uiManager.getText("alert_low_light_short"));
-      }
-    }
+    // ถ้าอยู่ใน Calibration และไม่เห็นตัวเลย → เตือนผู้ใช้ (อาจจะมืดเกินไป)
+    lightingManager.handleNoPose(calibrator.isActive);
   }
   // =====================================================================
   // 1.2 Global Debug Overlay (Updates EVERY FRAME if D is pressed)

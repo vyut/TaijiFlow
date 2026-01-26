@@ -1191,4 +1191,4 @@ localStorage.setItem('geminiApiKey', 'YOUR_API_KEY');
 
 ---
 
-*Document updated: 2026-01-14*
+*Document updated: 2026-01-26 (v1.2.0)*

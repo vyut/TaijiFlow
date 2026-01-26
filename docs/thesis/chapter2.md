@@ -220,6 +220,7 @@ Shin et al. (2024) ได้ทบทวนวรรณกรรมเกี่�
 | **CSS3** | การออกแบบ UI, Dark/Light Mode |
 | **JavaScript** | ตรรกะการทำงาน, Heuristics Engine |
 | **Canvas API** | วาด Skeleton, Path, Ghost |
+| **WebGL 2.0** | เร่งการประมวลผลกราฟิกและ Background Blur |
 | **WebRTC** | เข้าถึง Webcam |
 | **Web Speech API** | Text-to-Speech สำหรับ Audio Feedback |
 
@@ -229,6 +230,7 @@ Shin et al. (2024) ได้ทบทวนวรรณกรรมเกี่�
 |----------|----------|
 | **MediaPipe Pose** | Pose Estimation 33 landmarks |
 | **MediaPipe Hand** | Gesture Detection (👍, ✊) |
+| **MediaPipe Selfie Segmentation** | ตัดฉากหลังสำหรับการเบลอภาพ (Virtual Background) |
 | **TensorFlow.js** | Runtime สำหรับ MediaPipe |
 
 ### 2.5.3 Development Tools
@@ -261,4 +263,4 @@ Shin et al. (2024) ได้ทบทวนวรรณกรรมเกี่�
 
 ---
 
-*Document updated: 2026-01-21 (v0.9.12)*
+*Document updated: 2026-01-26 (v1.2.0)*

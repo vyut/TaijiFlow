@@ -4,6 +4,43 @@
 
 ---
 
+## [v1.2.0] - 2026-01-26
+
+### 🏗️ Major Architecture Refactoring & Smart Chatbot
+
+#### Refactored (De-monolithization)
+- **Script.js Breakup** - Separated complex logic into specialized managers:
+  - **`js/core/camera_manager.js`** - Manages MediaPipe setup, camera loop, and resolution.
+  - **`js/ui/lighting_manager.js`** - Manages auto-brightness and low-light detection.
+  - **`js/core/performance_monitor.js`** - Monitors FPS and handles "Lite Mode" automatically.
+  - **`js/utils/time_utils.js`** - Centralized time formatting and countdown logic.
+  - **`js/ui/debug_manager.js`** - Manages the debug overlay and performance stats.
+- **Code Health** - Reduced `script.js` complexity significantly; it now acts as a high-level "Conductor".
+
+#### Added
+- **Smart AI Chatbot** (`index.html`)
+  - **Migration**: Moved Chatbot from the App page to the Landing Page.
+  - **Voice Integration**: Added Speech-to-Text (STT) for voice commands.
+  - **TTS Support**: AI replies with Voice (Text-to-Speech) for natural interaction.
+- **Auto-Brightness Optimization**
+  - **CSS Filter**: Replaced Canvas manipulation with `filter: brightness(...)` for better performance.
+  - **Toggle**: Added manual toggle in Settings.
+
+#### Changed (UX Improvements)
+- **Tutorial Guide** (`tutorial_manager.js`)
+  - **2-Column Layout**: Redesigned "How to Use" tab for better readability on Desktop.
+  - **Simplification**: Removed L1/L2/L3 buttons from the "Exercises" tab.
+  - **Full Names**: Renamed exercise buttons to full descriptive names (TH/EN).
+- **Localization**
+  - **Step Translation**: Added translations for "Step 1-4".
+  - **Full Support**: Expanded translations for all new UI elements.
+
+#### Fixed
+- **Menu System**: Fixed a critical `ReferenceError` preventing menu interaction.
+- **Notifications**: Suppressed redundant "Auto-Adjust ON/OFF" popup notifications.
+
+---
+
 ## [v1.1.1] - 2026-01-24
 
 ### ✨ Final Polish & "About" Easter Egg

@@ -42,6 +42,11 @@ package "🖥️ PRESENTATION LAYER" <<presentation>> {
     [score_popup_manager.js] as ScorePopup
     [chatbot.js] as Chatbot
     [feedback_manager.js] as FeedbackManager
+    [lighting_manager.js] as Lighting
+    [debug_manager.js] as Debug
+    [wisdom_manager.js] as Wisdom
+    [shortcuts_manager.js] as Shortcuts
+    [webgl_manager.js] as WebGL
 }
 
 ' ============================================================================
@@ -55,6 +60,8 @@ package "⚙️ BUSINESS LOGIC LAYER" <<business>> {
     [scoring_manager.js] as Scoring
     [gesture_manager.js] as Gesture
     [audio_manager.js] as Audio
+    [camera_manager.js] as Camera
+    [performance_monitor.js] as PerfMon
 }
 
 ' ============================================================================
@@ -67,6 +74,9 @@ package "💾 DATA LAYER" <<data>> {
     [LocalStorage] as LocalStorage
     [path_generator.js] as PathGen
     [translations.js] as Translations
+    [i18n_manager.js] as I18n
+    [time_utils.js] as TimeUtils
+    [math_utils.js] as MathUtils
 }
 
 ' ============================================================================
@@ -89,21 +99,39 @@ UIManager --> Script : ใช้งาน
 DrawingManager --> Heuristics : รับผลวิเคราะห์
 ScorePopup --> Scoring : แสดงคะแนน
 TutorialManager --> Script : ควบคุม
+Shortcuts --> Script : ส่งคำสั่ง
+Lighting --> Script : ตรวจสอบแสง
+Debug --> PerfMon : อ่านค่า FPS
+Wisdom --> Script : แสดงคำคม
+FeedbackManager --> Script : แจ้งปัญหา
 
 ' Business Logic → Data
 Script --> Session : จัดการ session
 Script --> Exporter : ส่งออกข้อมูล
 Script --> PathGen : สร้าง path
-UIManager --> Translations : i18n
+Script --> TimeUtils : แปลงเวลา
+Heuristics --> MathUtils : คำนวณ
+UIManager --> I18n : แปลภาษา
+I18n --> Translations : โหลดข้อมูล
 
 ' Business Logic → External APIs
 Heuristics --> MPPose : ตรวจจับท่า
+Camera --> MPPose : ส่งภาพ
 Gesture --> MPGesture : ตรวจจับมือ
 Audio --> WebSpeech : เสียงเตือน
 Chatbot --> Gemini : AI ตอบคำถาม
 
 ' Data → LocalStorage
 Session --> LocalStorage : บันทึก/อ่าน
+I18n --> LocalStorage : บันทึกภาษา
+
+' Internal Layer Connections (Helpers)
+Script --> Calibration : ปรับเทียบ
+Script --> PerfMon : ตรวจสอบ Perf
+Script --> Camera : คุมกล้อง
+Script --> Audio : พูดเตือน
+WebGL --> DrawingManager : Render
+
 
 ' ============================================================================
 ' LEGEND

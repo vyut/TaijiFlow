@@ -157,63 +157,62 @@ TaijiFlow/
 ├── 📄 app.html                      # Training Application (Main App)
 ├── 📄 data_collector.html           # เครื่องมือเก็บข้อมูล Reference
 │
-├── 📁 css/                          # Stylesheets (5 files)
-│   ├── base.css                     # Shared Styles (Variables, Reset, Components)
-│   ├── styles.css                   # App Styles (app.html)
+├── 📁 css/                          # Stylesheets
+│   ├── base.css                     # Shared Styles
+│   ├── styles.css                   # App Styles
 │   ├── landing.css                  # Landing Page Styles
-│   ├── landing.css                  # Landing Page Styles
-│   └── feedback.css                 # Feedback Modal Styles
+│   └── ...
 │
-├── 📁 js/                           # JavaScript Modules (22 files)
-│   ├── script.js                    # Main Controller (~72KB)
-│   ├── heuristics_engine.js         # 9 Rules Analysis (~51KB)
-│   ├── calibration_manager.js       # T-Pose Calibration (~15KB)
-│   ├── scoring_manager.js           # Score Calculation (~11KB)
-│   ├── drawing_manager.js           # Canvas Rendering (~25KB)
-│   ├── ghost_manager.js             # Instructor Overlay (~8KB)
-│   ├── silhouette_manager.js        # User Silhouette (~3KB)
-│   ├── ui_manager.js                # Theme, Notifications (~41KB)
-│   ├── audio_manager.js             # Text-to-Speech (~31KB)
-│   ├── score_popup_manager.js       # Result Popup (~7KB)
-│   ├── tutorial_manager.js          # Tutorial Popup (~30KB)
-│   ├── gesture_manager.js           # Hand Control (~14KB)
-│   ├── feedback_manager.js          # Bug Report (~4KB)
-│   ├── feedback_manager.js          # Bug Report (~4KB)
-│   ├── shortcuts_manager.js         # Shortcuts Grid (~8KB)
-│   ├── wisdom_manager.js            # Wisdom Quotes (~5KB)
-│   ├── webgl_manager.js             # WebGL Background (~8KB)
-│   ├── rules_config_manager.js      # Settings UI (~12KB)
-│   ├── display_controller.js        # Display Options (~7KB)
-│   ├── keyboard_controller.js       # Keyboard Shortcuts (~9KB)
-│   ├── data_exporter.js             # Export JSON/CSV (~8KB)
-│   ├── path_generator.js            # Dynamic Path (~5KB)
-│   ├── session_manager.js           # User/Session ID (~5KB)
-│   ├── translations.js              # i18n TH/EN (~23KB)
-│   └── silk-animation.js            # Landing Animation (~7KB)
+├── 📁 js/                           # JavaScript Modules
+│   ├── script.js                    # Main Controller
+│   ├── heuristics_engine.js         # 9 Rules Analysis
+│   ├── calibration_manager.js       # T-Pose Calibration
+│   ├── scoring_manager.js           # Score Calculation
+│   ├── camera_manager.js            # [NEW] Camera & MediaPipe
+│   ├── performance_monitor.js       # [NEW] FPS & Adaptive Quality
+│   ├── drawing_manager.js           # Canvas Rendering
+│   ├── ghost_manager.js             # Instructor Overlay
+│   ├── background_manager.js        # Background & Segmentation
+│   ├── webgl_manager.js             # [NEW] WebGL Effects
+│   ├── ui_manager.js                # Theme, Notifications
+│   ├── lighting_manager.js          # [NEW] Light Detection
+│   ├── debug_manager.js             # [NEW] Debug Stats
+│   ├── shortcuts_manager.js         # [NEW] Shortcuts Grid
+│   ├── audio_manager.js             # Text-to-Speech
+│   ├── score_popup_manager.js       # Result Popup
+│   ├── tutorial_manager.js          # Tutorial Popup
+│   ├── gesture_manager.js           # Hand Control
+│   ├── feedback_manager.js          # Bug Report
+│   ├── chatbot.js                   # Gemini AI Chatbot
+│   ├── rules_config_manager.js      # Settings UI
+│   ├── display_controller.js        # Display Logic
+│   ├── keyboard_controller.js       # Input Logic
+│   ├── data_exporter.js             # Export Utility
+│   ├── path_generator.js            # Path Utility
+│   ├── session_manager.js           # Session Utility
+│   ├── i18n_manager.js              # [NEW] Shared i18n
+│   ├── time_utils.js                # [NEW] Time Helper
+│   ├── math_utils.js                # [NEW] Math Helper
+│   └── translations.js              # i18n Data
 │
 ├── 📁 data/                         # Reference Data
-│   ├── {exercise}.json              # Ghost landmarks
-│   ├── {exercise}.webm              # Instructor video
-│   └── {exercise}_silhouette.webm   # Silhouette video
+│   └── ...
 │
 └── 📁 docs/                         # Documentation
-    ├── diagrams/                    # UML Diagrams (15 files)
-    ├── srs/SRS.md                   # Requirements
-    └── sdd/SDD.md                   # This file
+    └── ...
 ```
 
 #### File Statistics
 
 | Category | Files | Total Size |
 |----------|:-----:|:----------:|
-| Core Managers | 3 | ~77 KB |
-| Display Managers | 3 | ~36 KB |
-| UI Managers | 9 | ~180 KB |
-| Controllers | 2 | ~16 KB |
-| Utilities | 4 | ~41 KB |
-| Main Controller | 1 | ~72 KB |
-| Landing Page | 1 | ~7 KB |
-| **Total JS** | **23** | **~429 KB** |
+| Core Managers | 5 | ~96 KB |
+| Display Managers | 4 | ~46 KB |
+| UI Managers | 11 | ~190 KB |
+| Controllers | 2 | ~30 KB |
+| Utilities | 7 | ~50 KB |
+| Main Controller | 1 | ~60 KB |
+| **Total JS** | **30+** | **~470 KB** |
 
 ---
 
@@ -221,59 +220,38 @@ TaijiFlow/
 
 ### 3.1 Module Overview
 
-ระบบประกอบด้วย 22 JavaScript modules แบ่งเป็น 6 กลุ่ม:
+ระบบประกอบด้วย JavaScript modules ที่ทำงานร่วมกัน แบ่งเป็น 6 กลุ่มหลัก:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                        script.js                                 │
-│                     (Main Controller)                            │
+│                     (Main Orchestrator)                          │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │                    Core Managers                          │   │
-│  │  ┌───────────────┐ ┌───────────────┐ ┌───────────────┐   │   │
-│  │  │ Heuristics    │ │ Calibration   │ │   Scoring     │   │   │
-│  │  │  Engine       │ │   Manager     │ │   Manager     │   │   │
-│  │  └───────────────┘ └───────────────┘ └───────────────┘   │   │
+│  │  [Heuristics] [Calibration] [Scoring] [Camera] [Perf]    │   │
 │  └──────────────────────────────────────────────────────────┘   │
 │                                                                  │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │                   Display Managers                        │   │
-│  │  ┌───────────────┐ ┌───────────────┐ ┌───────────────┐   │   │
-│  │  │   Drawing     │ │    Ghost      │ │  Silhouette   │   │   │
-│  │  │   Manager     │ │   Manager     │ │   Manager     │   │   │
-│  │  └───────────────┘ └───────────────┘ └───────────────┘   │   │
+│  │  [Drawing] [Ghost] [Background] [WebGL]                  │   │
 │  └──────────────────────────────────────────────────────────┘   │
 │                                                                  │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │                     UI Managers                           │   │
-│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐        │   │
-│  │  │   UI    │ │  Audio  │ │ Score   │ │Tutorial │        │   │
-│  │  │ Manager │ │ Manager │ │ Popup   │ │ Manager │        │   │
-│  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘        │   │
-│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐        │   │
-│  │  │ Gesture │ │Feedback │ │Shortcuts│ │ Rules   │        │   │
-│  │  │ Manager │ │ Manager │ │ Manager │ │ Config  │        │   │
-│  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘        │   │
-│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐                    │   │
-│  │  │ Wisdom  │ │ WebGL   │ │ Back-   │                    │   │
-│  │  │ Manager │ │ Manager │ │ ground  │                    │   │
-│  │  └─────────┘ └─────────┘ └─────────┘                    │   │
+│  │  [UI] [Audio] [Score] [Tutorial] [Gesture] [Feedback]    │   │
+│  │  [Shortcuts] [Rules] [Wisdom] [Lighting] [Debug] [Chat]  │   │
 │  └──────────────────────────────────────────────────────────┘   │
 │                                                                  │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │                      Controllers                          │   │
-│  │  ┌───────────────────┐ ┌───────────────────┐             │   │
-│  │  │ Display Controller│ │ Keyboard Controller│             │   │
-│  │  └───────────────────┘ └───────────────────┘             │   │
+│  │  [Display Controller]       [Keyboard Controller]        │   │
 │  └──────────────────────────────────────────────────────────┘   │
 │                                                                  │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │                       Utilities                           │   │
-│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐        │   │
-│  │  │  Data   │ │  Path   │ │ Session │ │ Trans-  │        │   │
-│  │  │Exporter │ │Generator│ │ Manager │ │ lations │        │   │
-│  │  └─────────┘ └─────────┘ └─────────┘ └─────────┘        │   │
+│  │  [Exporter] [Path] [Session] [Time] [Math] [i18n]        │   │
 │  └──────────────────────────────────────────────────────────┘   │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘

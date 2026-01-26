@@ -24,94 +24,81 @@ TaijiFlow/
 ├── 📄 app.html                      # Training Application (Main App)
 ├── 📄 data_collector.html           # เครื่องมือเก็บข้อมูล Reference
 │
-├── 📁 css/                          # Stylesheets (5 files)
-│   ├── base.css                     # Shared Styles (Variables, Reset, Components)
-│   ├── styles.css                   # App Styles (app.html)
+├── 📁 css/                          # Stylesheets
+│   ├── base.css                     # Shared Styles
+│   ├── styles.css                   # App Styles
 │   ├── landing.css                  # Landing Page Styles
-│   ├── chatbot.css                  # Chatbot Popup Styles
-│   └── feedback.css                 # Feedback Modal Styles
+│   └── ...
 │
-├── 📁 js/                           # JavaScript Modules (23 files)
+├── 📁 js/                           # JavaScript Modules
 │   │
 │   │   # ═══════════════════════════════════════════════════════
-│   │   # CORE MANAGERS (ไม่พึ่งพา Module อื่น)
+│   │   # CORE MANAGERS (Business Logic)
 │   │   # ═══════════════════════════════════════════════════════
-│   ├── heuristics_engine.js         # วิเคราะห์ท่า 9 กฎ (~55KB)
-│   ├── calibration_manager.js       # ปรับเทียบ T-Pose (~15KB)
-│   ├── scoring_manager.js           # คำนวณคะแนน (~11KB)
+│   ├── heuristics_engine.js         # วิเคราะห์ท่า 9 กฎ
+│   ├── calibration_manager.js       # ปรับเทียบ T-Pose
+│   ├── scoring_manager.js           # คำนวณคะแนน
+│   ├── camera_manager.js            # [NEW] จัดการกล้อง & MediaPipe
+│   ├── performance_monitor.js       # [NEW] ตรวจสอบ FPS & Quality
 │   │
 │   │   # ═══════════════════════════════════════════════════════
-│   │   # DISPLAY MANAGERS (Canvas API)
+│   │   # DISPLAY MANAGERS (Visuals)
 │   │   # ═══════════════════════════════════════════════════════
-│   ├── drawing_manager.js           # วาด Skeleton, Path (~25KB)
-│   ├── ghost_manager.js             # เงาครูผู้สอน (~8KB)
-│   ├── background_manager.js        # จัดการพื้นหลัง/Segmentation (Virtual/Blur) (~13KB)
-│   ├── webgl_manager.js             # [NEW] WebGL Rendering Engine (~8KB)
+│   ├── drawing_manager.js           # วาด Skeleton, Path, Grid
+│   ├── ghost_manager.js             # เงาครูผู้สอน
+│   ├── background_manager.js        # จัดการพื้นหลัง/Segmentation
+│   ├── webgl_manager.js             # [NEW] WebGL Rendering Engine (Blur/Mattes)
 │   │
 │   │   # ═══════════════════════════════════════════════════════
-│   │   # UI MANAGERS
+│   │   # UI MANAGERS (Interaction)
 │   │   # ═══════════════════════════════════════════════════════
-│   ├── ui_manager.js                # Theme, Notifications (~50KB)
-│   ├── wisdom_manager.js            # [NEW] Wisdom Quotes & Animation (~5KB)
-│   ├── audio_manager.js             # Text-to-Speech (~31KB)
-│   ├── score_popup_manager.js       # ผลคะแนน Popup (~7KB)
-│   ├── tutorial_manager.js          # Tutorial Popup (~30KB)
-│   ├── gesture_manager.js           # ควบคุมด้วยมือ 👍✊ (~14KB)
-│   ├── feedback_manager.js          # Bug Report (~4KB)
-│   ├── chatbot.js                   # Gemini AI Chatbot (~26KB)
-│   ├── rules_config_manager.js      # Settings UI (~12KB)
+│   ├── ui_manager.js                # Theme, Language, Notifications
+│   ├── lighting_manager.js          # [NEW] Auto-Brightness & Low Light
+│   ├── debug_manager.js             # [NEW] Debug Overlay & Stats
+│   ├── shortcuts_manager.js         # [NEW] Keyboard Shortcuts Grid
+│   ├── wisdom_manager.js            # Wisdom Quotes & Animation
+│   ├── audio_manager.js             # Text-to-Speech
+│   ├── score_popup_manager.js       # ผลคะแนน Popup
+│   ├── tutorial_manager.js          # Tutorial Popup
+│   ├── gesture_manager.js           # ควบคุมด้วยมือ 👍✊
+│   ├── feedback_manager.js          # Bug Report
+│   ├── chatbot.js                   # Gemini AI Chatbot
+│   ├── rules_config_manager.js      # Settings UI
 │   │
 │   │   # ═══════════════════════════════════════════════════════
 │   │   # CONTROLLERS
 │   │   # ═══════════════════════════════════════════════════════
-│   ├── display_controller.js        # Display Options & Visual Effects (~16KB)
-│   ├── keyboard_controller.js       # Keyboard Shortcuts (~14KB)
+│   ├── display_controller.js        # Display Options & Visual Effects
+│   ├── keyboard_controller.js       # Keyboard Shortcuts Handler
 │   │
 │   │   # ═══════════════════════════════════════════════════════
 │   │   # UTILITIES (Stateless Helpers)
 │   │   # ═══════════════════════════════════════════════════════
-│   ├── data_exporter.js             # Export JSON/CSV (~8KB)
-│   ├── path_generator.js            # Dynamic Path (~5KB)
-│   ├── session_manager.js           # User/Session ID (~5KB)
-│   ├── translations.js              # i18n TH/EN (~25KB)
+│   ├── data_exporter.js             # Export JSON/CSV
+│   ├── path_generator.js            # Dynamic Path
+│   ├── session_manager.js           # User/Session ID
+│   ├── i18n_manager.js              # [NEW] Shared i18n logic
+│   ├── time_utils.js                # [NEW] Time formatting & Countdown
+│   ├── math_utils.js                # [NEW] Geometry calculations
+│   ├── translations.js              # i18n Data
 │   │
 │   │   # ═══════════════════════════════════════════════════════
-│   │   # MAIN CONTROLLER (Entry Point)
+│   │   # MAIN CONTROLLER
 │   │   # ═══════════════════════════════════════════════════════
-│   ├── script.js                    # Main Controller & Performance Mode (~90KB)
-│   │
-│   │   # ═══════════════════════════════════════════════════════
-│   │   # LANDING PAGE (Standalone)
-│   │   # ═══════════════════════════════════════════════════════
-│   └── silk-animation.js            # Silk Reeling Animation (~7KB)
-│
-├── 📁 data/                         # Reference Data
-│   ├── rh_cw_L1.json                # Ghost landmarks (มือขวา-ตามเข็ม L1)
-│   ├── rh_cw_L1.webm                # Video ต้นแบบ
-│   ├── rh_cw_L1_silhouette.webm     # Video เงาครู
-│   └── ...
-│
-├── 📁 docs/                         # Documentation
-│   ├── diagrams/                    # UML Diagrams (14 files)
-│   ├── ARCHITECTURE.md              # This file
-│   ├── CHANGELOG.md                 # Version History
-│   └── ...
-│
-└── 📁 tests/                        # Unit Tests
-    └── *.test.js
+│   └── script.js                    # Main Orchestrator
 ```
 
 ### File Statistics
 
-| Category | Files | Total Size |
-| -------- | :---: | :--------: |
-| Core Managers | 3 | ~81 KB |
-| Display Managers | 4 | ~46 KB |
-| UI Managers | 9 | ~175 KB |
-| Controllers | 2 | ~30 KB |
-| Utilities | 4 | ~43 KB |
-| Main Controller | 1 | ~90 KB |
-| **Total JS** | **24** | **~465 KB** |
+| Category | Files | Notes |
+| -------- | :---: | :---: |
+| Core Managers | 5 | Logic heavy |
+| Display Managers | 4 | Visuals & WebGL |
+| UI Managers | 12 | Interaction |
+| Controllers | 2 | Input Handling |
+| Utilities | 7 | Pure functions |
+| Main Controller | 1 | Glue code |
+| **Total JS** | **31** | **Modular Architecture** |
 
 ---
 
@@ -119,176 +106,93 @@ TaijiFlow/
 
 ### Frontend
 
-| Technology | Version | Purpose |
-| ---------- | :-----: | ------- |
-| **HTML5** | - | Page Structure |
-| **CSS3** | - | Styling |
-| **JavaScript** | ES6+ | Core Logic |
-| **TailwindCSS** | 3.x | Utility CSS Framework |
-| **Google Fonts** | - | Sarabun Thai Font |
+| Technology | Purpose |
+| ---------- | ------- |
+| **HTML5/CSS3** | Structure & Styling |
+| **JavaScript (ES6+)** | Core Logic |
+| **TailwindCSS** | Utility CSS Framework |
+| **WebGL 2.0** | High-performance Visual Effects (Blur) |
 
 ### AI / Machine Learning
 
-| Technology | Version | Purpose |
-| ---------- | :-----: | ------- |
-| **MediaPipe Pose** | 0.5 | Pose Detection (33 landmarks) |
-| **MediaPipe Gesture** | 0.10.8 | Hand Gesture Recognition (👍✊) |
-| **MediaPipe Segmentation** | 0.1 | Selfie Segmentation (Background Blur) |
-| **Gemini API** | 1.5 | AI Chatbot (Free Tier) |
-
-### Browser APIs
-
-| API | Purpose |
-| --- | ------- |
-| **Web Speech API** | Text-to-Speech เสียงเตือน |
-| **Canvas API** | วาด Skeleton, Path, Trail, Visual Effects |
-| **LocalStorage API** | บันทึก Calibration, Settings, Performance Mode |
-| **Fullscreen API** | โหมดเต็มจอ |
-| **Fetch API** | ส่ง Bug Report |
-
-### Development Tools
-
-| Tool | Purpose |
-| ---- | ------- |
-| **Jest** | Unit Testing |
-| **PlantUML** | UML Diagrams |
-| **Git** | Version Control |
-| **VS Code** | IDE |
+| Technology | Purpose |
+| ---------- | ------- |
+| **MediaPipe Pose** | Pose Detection (33 landmarks) |
+| **MediaPipe Gesture** | Hand Gesture Recognition (👍✊) |
+| **MediaPipe Segmentation** | Selfie Segmentation (Background Blur) |
+| **Gemini API** | AI Chatbot (อาจารย์เต๋า) |
 
 ---
 
 ## 3. Design Patterns
 
-| Pattern | Where Used | Purpose |
-| ------- | ---------- | ------- |
-| **Module Pattern** | ทุก Manager classes | Encapsulation - แยก scope |
-| **Singleton** | `ghostManager`, `uiManager` | Single Instance - ป้องกันสร้างซ้ำ |
-| **Observer** | Event Listeners | Reactive UI - อัปเดตเมื่อ state เปลี่ยน |
-| **Facade** | `script.js` | Simplify Access - รวม dependencies |
-| **Factory** | `generateDynamicPath()` | Create Objects - สร้าง path ตามสัดส่วน |
-| **Strategy** | `HeuristicsEngine` rules | Swappable Algorithms - เปิด/ปิดกฎได้ |
-| **Controller** | `KeyboardController`, `DisplayController` | Separation of Concerns |
-| **State** | `Performance Mode` | จัดการ Configuration ตามโหมดเครื่อง |
-
-### Pattern Examples
-
-```javascript
-// Singleton Pattern
-const ghostManager = new GhostManager(); // สร้างครั้งเดียวใน script.js
-window.ghostManager = ghostManager;      // เข้าถึง global
-
-// Module Pattern
-class HeuristicsEngine {
-    constructor() {
-        this.CONFIG = { ... };  // Private-like config
-    }
-    analyze() { ... }           // Public method
-}
-
-// Observer Pattern
-document.addEventListener('languageChange', () => {
-    uiManager.updateAllTexts();  // React to state change
-});
-
-// Strategy Pattern
-this.RULES_CONFIG = {
-    L1: { checkPath: true, checkWaist: false },  // Easy
-    L3: { checkPath: true, checkWaist: true }    // Hard
-};
-```
+| Pattern | Where Used |
+| ------- | ---------- |
+| **Module Pattern** | All Managers |
+| **Singleton** | `uiManager`, `ghostManager` |
+| **Observer** | Event Listeners |
+| **Facade** | `script.js` |
+| **Strategy** | `HeuristicsEngine` rules |
+| **State** | `PerformanceMonitor` modes |
 
 ---
 
 ## 4. Module Dependencies
 
-### Dependency Diagram
-
-![Module Dependencies Diagram](../../out/docs/diagrams/ModuleDependencies/ModuleDependencies.svg)
-
-```text
-┌─────────────────────────────────────────────────────────────┐
-│                     Layer 1: Entry Point                     │
-│                        [script.js]                           │
-└─────────────────────────┬───────────────────────────────────┘
-                          │
-┌─────────────────────────┴───────────────────────────────────┐
-│                     Layer 2: Controllers                     │
-│          [DisplayController]  [KeyboardController]           │
-└─────────────────────────┬───────────────────────────────────┘
-                          │
-┌─────────┬───────────────┴───────────────┬───────────────────┐
-│  Core   │           Display             │        UI         │
-├─────────┼───────────────────────────────┼───────────────────┤
-│Heuristics│      DrawingManager          │    UIManager      │
-│Calibration│     GhostManager            │   AudioManager    │
-│ Scoring  │    BackgroundManager         │  GestureManager   │
-│          │                              │  ScorePopup...    │
-│          │                              │  RulesConfig...   │
-└─────────┴───────────────────────────────┴───────────────────┘
-                          │
-┌─────────────────────────┴───────────────────────────────────┐
-│                     Layer 4: Utilities                       │
-│    [DataExporter] [PathGenerator] [SessionManager] [i18n]    │
-└─────────────────────────┬───────────────────────────────────┘
-                          │
-┌─────────────────────────┴───────────────────────────────────┐
-│                   Layer 5: External APIs                     │
-│   [MediaPipe Pose]  [MediaPipe Gesture]  [Web Speech]  [AI]  │
-└─────────────────────────────────────────────────────────────┘
-```
-
 ### Dependency Table
 
-#### Core Managers (ไม่พึ่งพา Module อื่น)
 
-| Module | Dependencies | หน้าที่ |
-| ------ | ------------ | ------- |
-| `heuristics_engine.js` | MediaPipe Pose | วิเคราะห์ท่า 9 กฎ |
-| `calibration_manager.js` | - | ปรับเทียบสัดส่วน T-Pose |
-| `scoring_manager.js` | - | คำนวณคะแนน % |
+#### Core Managers
+
+
+| Module | Responsibilities |
+| ------ | ---------------- |
+| `heuristics_engine.js` | Analyzes pose against 9 Taiji rules |
+| `calibration_manager.js` | Handles T-Pose calibration |
+| `scoring_manager.js` | Calculates session score and grade |
+| `camera_manager.js` | Manages Webcam & MediaPipe loop |
+| `performance_monitor.js` | Monitors FPS, handles quality downgrades |
+
 
 #### Display Managers
 
-| Module | Dependencies | หน้าที่ |
-| ------ | ------------ | ------- |
-| `drawing_manager.js` | Canvas API | วาด Skeleton, Path, Trail, Grid |
-| `ghost_manager.js` | - | เงาครูผู้สอน (วิดีโอ/Skeleton) |
-| `background_manager.js` | MediaPipe Mask/Canvas | จัดการ Virtual Backgrounds & Blur |
+
+| Module | Responsibilities |
+| ------ | ---------------- |
+| `drawing_manager.js` | Canvas 2D rendering (Skeleton, Path) |
+| `ghost_manager.js` | Instructor overlay playback |
+| `background_manager.js` | Virtual background logic |
+| `webgl_manager.js` | Hardware-accelerated blur/rendering |
+
 
 #### UI Managers
 
-| Module | Dependencies | หน้าที่ |
-| ------ | ------------ | ------- |
-| `ui_manager.js` | `translations.js` | Theme, Language, Notifications, Menus |
-| `audio_manager.js` | Web Speech API | Text-to-Speech เสียงเตือน |
-| `score_popup_manager.js` | - | แสดง Popup ผลคะแนน |
-| `tutorial_manager.js` | - | แสดง Tutorial Popup |
-| `gesture_manager.js` | MediaPipe Gesture | ตรวจจับท่ามือ 👍✊ |
-| `feedback_manager.js` | Fetch API | ส่ง Bug Report |
-| `chatbot.js` | Gemini API | AI ตอบคำถาม |
-| `rules_config_manager.js` | `HeuristicsEngine` | Settings UI สำหรับปรับกฎ |
 
-#### Controllers
+| Module | Responsibilities |
+| ------ | ---------------- |
+| `ui_manager.js` | General UI state, Theme, Language |
+| `lighting_manager.js` | Checks lighting conditions |
+| `debug_manager.js` | Renders technical stats overlay |
+| `shortcuts_manager.js` | Renders keyboard shortcuts grid |
+| `wisdom_manager.js` | Quotes animation |
+| `audio_manager.js` | Text-to-Speech feedback |
+| `tutorial_manager.js` | Help/Onboarding popup |
+| `gesture_manager.js` | Hand gesture controls |
+| `feedback_manager.js` | User feedback form |
+| `chatbot.js` | AI Assistant |
 
-| Module | Dependencies | หน้าที่ |
-| ------ | ------------ | ------- |
-| `display_controller.js` | `GhostManager`, `BackgroundManager` | ควบคุม Display Options, Visual Effects |
-| `keyboard_controller.js` | `DisplayController`, `TutorialManager` | Keyboard Shortcuts |
 
-#### Utilities (Stateless)
+#### Utilities
 
-| Module | Dependencies | หน้าที่ |
-| ------ | ------------ | ------- |
-| `data_exporter.js` | - | Export JSON/CSV |
-| `path_generator.js` | - | สร้าง Dynamic Path |
-| `session_manager.js` | LocalStorage | User ID, Session ID |
-| `translations.js` | - | i18n Data TH/EN |
 
-#### Main Controller
-
-| Module | Dependencies | หน้าที่ |
-| ------ | ------------ | ------- |
-| `script.js` | **ทุก Module ข้างบน** | Entry Point, MediaPipe Integration, Perf Mode |
+| Module | Responsibilities |
+| ------ | ---------------- |
+| `i18n_manager.js` | Shared translation logic |
+| `time_utils.js` | Countdown & time formatting |
+| `math_utils.js` | Geometric calculations |
+| `session_manager.js` | User & Session ID management |
+| `data_exporter.js` | Export training data |
+| `path_generator.js` | Create reference paths |
 
 ---
 
@@ -353,5 +257,7 @@ this.RULES_CONFIG = {
 | Video Load Error | วิดีโอครูโหลดไม่ได้ | ซ่อน Instructor thumbnail |
 
 ---
+
+## Document Status
 
 *Document updated: 2026-01-25 (v1.1.2)*

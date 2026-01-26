@@ -1,86 +1,57 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="2035px" preserveAspectRatio="none" style="width:1653px;height:2035px;" version="1.1" viewBox="0 0 1653 2035" width="1653px" zoomAndPan="magnify"><defs><filter height="300%" id="fs14mc9o758nt" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[ed1d20ea533a2a0e7df5ba3c35e56ced]
-cluster Controllers--><rect fill="#E3F2FD" filter="url(#fs14mc9o758nt)" height="371" style="stroke:#000000;stroke-width:1.5;" width="836.5" x="74.5" y="1034"/><text fill="#000000" font-family="sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="76" x="454.75" y="1050.952">«Controller»</text><text fill="#000000" font-family="sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="73" x="456.25" y="1069.152">Controllers</text><!--MD5=[1fc7141c6f48660c71a2006c6bf2683f]
-cluster Core Managers--><rect fill="#FFF3E0" filter="url(#fs14mc9o758nt)" height="269" style="stroke:#000000;stroke-width:1.5;" width="626" x="1015" y="1754"/><text fill="#000000" font-family="sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="42" x="1307" y="1770.952">«Core»</text><text fill="#000000" font-family="sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="95" x="1280.5" y="1789.152">Core Managers</text><!--MD5=[af552435e54b04649ea7481a5d22641b]
-cluster Display Managers--><rect fill="#E0F7FA" filter="url(#fs14mc9o758nt)" height="929" style="stroke:#000000;stroke-width:1.5;" width="289" x="958" y="801"/><text fill="#000000" font-family="sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="58" x="1073.5" y="817.952">«Display»</text><text fill="#000000" font-family="sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="109" x="1048" y="836.152">Display Managers</text><!--MD5=[7ac1916149c3369d001f628ff410a677]
-cluster UI & Feedback--><rect fill="#E8F5E9" filter="url(#fs14mc9o758nt)" height="972" style="stroke:#000000;stroke-width:1.5;" width="513.5" x="420.5" y="7"/><text fill="#000000" font-family="sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="27" x="663.75" y="23.952">«UI»</text><text fill="#000000" font-family="sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="91" x="631.75" y="42.152">UI &amp; Feedback</text><!--MD5=[0b7db6fcd588f8499928e45a474751dc]
-cluster Utilities--><rect fill="#F3E5F5" filter="url(#fs14mc9o758nt)" height="463" style="stroke:#000000;stroke-width:1.5;" width="315" x="394" y="1429"/><text fill="#000000" font-family="sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="49" x="527" y="1445.952">«Utility»</text><text fill="#000000" font-family="sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="51" x="526" y="1464.152">Utilities</text><!--MD5=[d0d7b0900e371541ba11cbff692d2bc7]
-class Script--><rect codeLine="35" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="171.6" id="Script" style="stroke:#000000;stroke-width:1.5;" width="184" x="100" y="1217.2"/><ellipse cx="167.25" cy="1237.8" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M169.7231,1243.9431 Q169.1421,1244.2419 168.5029,1244.3913 Q167.8638,1244.5407 167.1582,1244.5407 Q164.6514,1244.5407 163.3315,1242.8889 Q162.0117,1241.237 162.0117,1238.1159 Q162.0117,1234.9865 163.3315,1233.3347 Q164.6514,1231.6828 167.1582,1231.6828 Q167.8638,1231.6828 168.5112,1231.8322 Q169.1587,1231.9816 169.7231,1232.2805 L169.7231,1235.0031 Q169.0923,1234.4221 168.4988,1234.1523 Q167.9053,1233.8825 167.2744,1233.8825 Q165.9297,1233.8825 165.2449,1234.9492 Q164.5601,1236.0158 164.5601,1238.1159 Q164.5601,1240.2077 165.2449,1241.2744 Q165.9297,1242.341 167.2744,1242.341 Q167.9053,1242.341 168.4988,1242.0712 Q169.0923,1241.8015 169.7231,1241.2204 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39" x="188.75" y="1235.016">«Main»</text><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="41" x="187.75" y="1250.616">script.js</text><line style="stroke:#000000;stroke-width:1.5;" x1="101" x2="283" y1="1258.4" y2="1258.4"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="108" y="1266.4"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="120" x="120" y="1274.148">isTrainingMode: boolean</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="108" y="1280.7"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="158" x="120" y="1288.448">currentPerformanceMode: string</text><line style="stroke:#000000;stroke-width:1.0;" x1="101" x2="283" y1="1295" y2="1295"/><ellipse cx="111" cy="1306" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="91" x="120" y="1310.748">startTrainingFlow()</text><ellipse cx="111" cy="1320.3" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="101" x="120" y="1325.048">endTrainingSession()</text><ellipse cx="111" cy="1334.6" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="86" x="120" y="1339.348">onResults(results)</text><ellipse cx="111" cy="1348.9" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="99" x="120" y="1353.648">loadReferenceData()</text><ellipse cx="111" cy="1363.2" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="137" x="120" y="1367.948">setPerformanceMode(mode)</text><ellipse cx="111" cy="1377.5" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="151" x="120" y="1382.248">selectPerformanceMode(mode)</text><!--MD5=[8efddad45aa6a4eb444717d204646b2a]
-class KeyboardController--><rect codeLine="47" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="90.9" id="KeyboardController" style="stroke:#000000;stroke-width:1.5;" width="135" x="484" y="1293.55"/><ellipse cx="499" cy="1309.55" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M501.4731,1315.6931 Q500.8921,1315.9919 500.2529,1316.1413 Q499.6138,1316.2907 498.9082,1316.2907 Q496.4014,1316.2907 495.0815,1314.6389 Q493.7617,1312.987 493.7617,1309.8659 Q493.7617,1306.7365 495.0815,1305.0847 Q496.4014,1303.4328 498.9082,1303.4328 Q499.6138,1303.4328 500.2612,1303.5822 Q500.9087,1303.7316 501.4731,1304.0305 L501.4731,1306.7531 Q500.8423,1306.1721 500.2488,1305.9023 Q499.6553,1305.6325 499.0244,1305.6325 Q497.6797,1305.6325 496.9949,1306.6992 Q496.3101,1307.7658 496.3101,1309.8659 Q496.3101,1311.9577 496.9949,1313.0244 Q497.6797,1314.091 499.0244,1314.091 Q499.6553,1314.091 500.2488,1313.8212 Q500.8423,1313.5515 501.4731,1312.9704 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="103" x="513" y="1314.566">KeyboardController</text><line style="stroke:#000000;stroke-width:1.5;" x1="485" x2="618" y1="1325.55" y2="1325.55"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="492" y="1333.55"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="59" x="504" y="1341.298">deps: object</text><line style="stroke:#000000;stroke-width:1.0;" x1="485" x2="618" y1="1347.85" y2="1347.85"/><ellipse cx="495" cy="1358.85" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="109" x="504" y="1363.598">handleKeydown(event)</text><ellipse cx="495" cy="1373.15" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="98" x="504" y="1377.898">showShortcutsHelp()</text><!--MD5=[8172fdb26fe0b4f66f8ce07666356cda]
-class DisplayController--><rect codeLine="54" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="291.1" id="DisplayController" style="stroke:#000000;stroke-width:1.5;" width="170" x="725" y="1097.45"/><ellipse cx="761.6" cy="1113.45" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M764.0731,1119.5931 Q763.4921,1119.8919 762.8529,1120.0413 Q762.2138,1120.1907 761.5082,1120.1907 Q759.0014,1120.1907 757.6815,1118.5389 Q756.3617,1116.887 756.3617,1113.7659 Q756.3617,1110.6365 757.6815,1108.9847 Q759.0014,1107.3328 761.5082,1107.3328 Q762.2138,1107.3328 762.8612,1107.4822 Q763.5087,1107.6316 764.0731,1107.9305 L764.0731,1110.6531 Q763.4423,1110.0721 762.8488,1109.8023 Q762.2553,1109.5325 761.6244,1109.5325 Q760.2797,1109.5325 759.5949,1110.5992 Q758.9101,1111.6658 758.9101,1113.7659 Q758.9101,1115.8577 759.5949,1116.9244 Q760.2797,1117.991 761.6244,1117.991 Q762.2553,1117.991 762.8488,1117.7212 Q763.4423,1117.4515 764.0731,1116.8704 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="90" x="780.4" y="1118.466">DisplayController</text><line style="stroke:#000000;stroke-width:1.5;" x1="726" x2="894" y1="1129.45" y2="1129.45"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="733" y="1137.45"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="133" x="745" y="1145.198">showGhostOverlay: boolean</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="733" y="1151.75"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="91" x="745" y="1159.498">showPath: boolean</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="733" y="1166.05"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="111" x="745" y="1173.798">showSkeleton: boolean</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="733" y="1180.35"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="119" x="745" y="1188.098">showSilhouette: boolean</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="733" y="1194.65"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="91" x="745" y="1202.398">showTrail: boolean</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="733" y="1208.95"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="144" x="745" y="1216.698">showBlurBackground: boolean</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="733" y="1223.25"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="122" x="745" y="1230.998">showSideBySide: boolean</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="733" y="1237.55"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="142" x="745" y="1245.298">showErrorHighlights: boolean</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="733" y="1251.85"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="85" x="745" y="1259.598">trailHistory: array</text><line style="stroke:#000000;stroke-width:1.0;" x1="726" x2="894" y1="1266.15" y2="1266.15"/><ellipse cx="736" cy="1277.15" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="22" x="745" y="1281.898">init()</text><ellipse cx="736" cy="1291.45" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="108" x="745" y="1296.198">toggleInstructor(show)</text><ellipse cx="736" cy="1305.75" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="84" x="745" y="1310.498">resetToDefaults()</text><ellipse cx="736" cy="1320.05" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="87" x="745" y="1324.798">addTrailPoint(x, y)</text><ellipse cx="736" cy="1334.35" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="52" x="745" y="1339.098">clearTrail()</text><ellipse cx="736" cy="1348.65" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="52" x="745" y="1353.398">clearTrail()</text><ellipse cx="736" cy="1362.95" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="142" x="745" y="1367.698">initBlurBackgroundCheckbox()</text><ellipse cx="736" cy="1377.25" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="141" x="745" y="1381.998">autoDisableHighCostEffects()</text><path d="M90.5,1089.2 L90.5,1166.8 L293.5,1166.8 L293.5,1099.2 L283.5,1089.2 L90.5,1089.2 " fill="#FBFB77" filter="url(#fs14mc9o758nt)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M283.5,1089.2 L283.5,1099.2 L293.5,1099.2 L283.5,1089.2 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="137" x="96.5" y="1108.084">จัดการ Application Flow</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="136" x="96.5" y="1124.984">Script = Main Controller</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="182" x="96.5" y="1141.884">Keyboard = 15 Shortcuts (เพิ่ม K)</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="166" x="96.5" y="1158.784">Display = 7 Options (เพิ่ม Blur)</text><!--MD5=[acf674d2eee96cced2a8b22730b1989e]
-class HeuristicsEngine--><rect codeLine="88" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="198.15" id="HeuristicsEngine" style="stroke:#000000;stroke-width:1.5;" width="177" x="1271" y="1808.93"/><ellipse cx="1311.65" cy="1824.93" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M1314.1231,1831.0731 Q1313.5421,1831.3719 1312.9029,1831.5213 Q1312.2638,1831.6707 1311.5582,1831.6707 Q1309.0514,1831.6707 1307.7315,1830.0189 Q1306.4117,1828.367 1306.4117,1825.2459 Q1306.4117,1822.1165 1307.7315,1820.4647 Q1309.0514,1818.8128 1311.5582,1818.8128 Q1312.2638,1818.8128 1312.9112,1818.9622 Q1313.5587,1819.1116 1314.1231,1819.4105 L1314.1231,1822.1331 Q1313.4923,1821.5521 1312.8988,1821.2823 Q1312.3053,1821.0125 1311.6744,1821.0125 Q1310.3297,1821.0125 1309.6449,1822.0792 Q1308.9601,1823.1458 1308.9601,1825.2459 Q1308.9601,1827.3377 1309.6449,1828.4044 Q1310.3297,1829.471 1311.6744,1829.471 Q1312.3053,1829.471 1312.8988,1829.2012 Q1313.4923,1828.9315 1314.1231,1828.3504 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="88" x="1331.35" y="1829.946">HeuristicsEngine</text><line style="stroke:#000000;stroke-width:1.5;" x1="1272" x2="1447" y1="1840.93" y2="1840.93"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1279" y="1848.93"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="66" x="1291" y="1856.678">config: object</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1279" y="1863.23"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="111" x="1291" y="1870.978">calibrationData: object</text><line style="stroke:#000000;stroke-width:1.0;" x1="1272" x2="1447" y1="1877.53" y2="1877.53"/><ellipse cx="1282" cy="1888.53" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="151" x="1291" y="1893.278">analyze(landmarks): Feedback[]</text><ellipse cx="1282" cy="1902.83" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="96" x="1291" y="1907.578">setCalibration(data)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1279" y="1914.13"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="85" x="1291" y="1921.878">checkPathShape()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1279" y="1928.43"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="96" x="1291" y="1936.178">checkElbowSinking()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1279" y="1942.73"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="82" x="1291" y="1950.478">checkContinuity()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1279" y="1957.03"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="82" x="1291" y="1964.778">checkContinuity()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1279" y="1971.33"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="94" x="1291" y="1979.078">checkArmRotation()</text><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="1272" x2="1325.5" y1="1992.78" y2="1992.78"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="68" x="1325.5" y="1996.878">+4 more rules</text><line style="stroke:#000000;stroke-width:1.0;stroke-dasharray:1.0,2.0;" x1="1393.5" x2="1447" y1="1992.78" y2="1992.78"/><!--MD5=[2695471b11f4afe9b2f935479e6afc73]
-class CalibrationManager--><rect codeLine="102" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="176.7" id="CalibrationManager" style="stroke:#000000;stroke-width:1.5;" width="137" x="1488" y="1825.65"/><ellipse cx="1503.9" cy="1841.65" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M1506.3731,1847.7931 Q1505.7921,1848.0919 1505.1529,1848.2413 Q1504.5138,1848.3907 1503.8082,1848.3907 Q1501.3014,1848.3907 1499.9815,1846.7389 Q1498.6617,1845.087 1498.6617,1841.9659 Q1498.6617,1838.8365 1499.9815,1837.1847 Q1501.3014,1835.5328 1503.8082,1835.5328 Q1504.5138,1835.5328 1505.1612,1835.6822 Q1505.8087,1835.8316 1506.3731,1836.1305 L1506.3731,1838.8531 Q1505.7423,1838.2721 1505.1488,1838.0023 Q1504.5553,1837.7325 1503.9244,1837.7325 Q1502.5797,1837.7325 1501.8949,1838.7992 Q1501.2101,1839.8658 1501.2101,1841.9659 Q1501.2101,1844.0577 1501.8949,1845.1244 Q1502.5797,1846.191 1503.9244,1846.191 Q1504.5553,1846.191 1505.1488,1845.9212 Q1505.7423,1845.6515 1506.3731,1845.0704 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="103" x="1518.1" y="1846.666">CalibrationManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="1489" x2="1624" y1="1857.65" y2="1857.65"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1496" y="1865.65"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="83" x="1508" y="1873.398">isActive: boolean</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1496" y="1879.95"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="111" x="1508" y="1887.698">calibrationData: object</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1496" y="1894.25"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="57" x="1508" y="1901.998">level: string</text><line style="stroke:#000000;stroke-width:1.0;" x1="1489" x2="1624" y1="1908.55" y2="1908.55"/><ellipse cx="1499" cy="1919.55" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="29" x="1508" y="1924.298">start()</text><ellipse cx="1499" cy="1933.85" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="27" x="1508" y="1938.598">stop()</text><ellipse cx="1499" cy="1948.15" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="37" x="1508" y="1952.898">cancel()</text><ellipse cx="1499" cy="1962.45" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="93" x="1508" y="1967.198">process(landmarks)</text><ellipse cx="1499" cy="1976.75" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="70" x="1508" y="1981.498">setLevel(level)</text><ellipse cx="1499" cy="1991.05" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="79" x="1508" y="1995.798">drawOverlay(ctx)</text><!--MD5=[49faa9a638d20fb09fbea4482760b511]
-class ScoringManager--><rect codeLine="115" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="119.5" id="ScoringManager" style="stroke:#000000;stroke-width:1.5;" width="143" x="1031" y="1848.25"/><ellipse cx="1058.15" cy="1864.25" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M1060.6231,1870.3931 Q1060.0421,1870.6919 1059.4029,1870.8413 Q1058.7638,1870.9907 1058.0582,1870.9907 Q1055.5514,1870.9907 1054.2315,1869.3389 Q1052.9117,1867.687 1052.9117,1864.5659 Q1052.9117,1861.4365 1054.2315,1859.7847 Q1055.5514,1858.1328 1058.0582,1858.1328 Q1058.7638,1858.1328 1059.4112,1858.2822 Q1060.0587,1858.4316 1060.6231,1858.7305 L1060.6231,1861.4531 Q1059.9923,1860.8721 1059.3988,1860.6023 Q1058.8053,1860.3325 1058.1744,1860.3325 Q1056.8297,1860.3325 1056.1449,1861.3992 Q1055.4601,1862.4658 1055.4601,1864.5659 Q1055.4601,1866.6577 1056.1449,1867.7244 Q1056.8297,1868.791 1058.1744,1868.791 Q1058.8053,1868.791 1059.3988,1868.5212 Q1059.9923,1868.2515 1060.6231,1867.6704 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="84" x="1074.85" y="1869.266">ScoringManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="1032" x2="1173" y1="1880.25" y2="1880.25"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1039" y="1888.25"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="78" x="1051" y="1895.998">totalFrames: int</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1039" y="1902.55"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="89" x="1051" y="1910.298">correctFrames: int</text><line style="stroke:#000000;stroke-width:1.0;" x1="1032" x2="1173" y1="1916.85" y2="1916.85"/><ellipse cx="1042" cy="1927.85" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="29" x="1051" y="1932.598">start()</text><ellipse cx="1042" cy="1942.15" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="117" x="1051" y="1946.898">recordFrame(feedbacks)</text><ellipse cx="1042" cy="1956.45" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="103" x="1051" y="1961.198">getSummary(): object</text><!--MD5=[828ae382eab9d522464ba4a27d91b499]
-class BackgroundManager--><rect codeLine="130" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="133.8" id="BackgroundManager" style="stroke:#000000;stroke-width:1.5;" width="257" x="974" y="1580.1"/><ellipse cx="1044.25" cy="1596.1" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M1046.7231,1602.2431 Q1046.1421,1602.5419 1045.5029,1602.6913 Q1044.8638,1602.8407 1044.1582,1602.8407 Q1041.6514,1602.8407 1040.3315,1601.1889 Q1039.0117,1599.537 1039.0117,1596.4159 Q1039.0117,1593.2865 1040.3315,1591.6347 Q1041.6514,1589.9828 1044.1582,1589.9828 Q1044.8638,1589.9828 1045.5112,1590.1322 Q1046.1587,1590.2816 1046.7231,1590.5805 L1046.7231,1593.3031 Q1046.0923,1592.7221 1045.4988,1592.4523 Q1044.9053,1592.1825 1044.2744,1592.1825 Q1042.9297,1592.1825 1042.2449,1593.2492 Q1041.5601,1594.3158 1041.5601,1596.4159 Q1041.5601,1598.5077 1042.2449,1599.5744 Q1042.9297,1600.641 1044.2744,1600.641 Q1044.9053,1600.641 1045.4988,1600.3712 Q1046.0923,1600.1015 1046.7231,1599.5204 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="108" x="1064.75" y="1601.116">BackgroundManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="975" x2="1230" y1="1612.1" y2="1612.1"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="982" y="1620.1"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="61" x="994" y="1627.848">mode: string</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="982" y="1634.4"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="100" x="994" y="1642.148">blurAmount: number</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="982" y="1648.7"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="122" x="994" y="1656.448">backgroundImage: Image</text><line style="stroke:#000000;stroke-width:1.0;" x1="975" x2="1230" y1="1663" y2="1663"/><ellipse cx="985" cy="1674" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="75" x="994" y="1678.748">setMode(mode)</text><ellipse cx="985" cy="1688.3" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="115" x="994" y="1693.048">setBlurAmount(amount)</text><ellipse cx="985" cy="1702.6" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="231" x="994" y="1707.348">drawBackground(ctx, mask, video, width, height)</text><!--MD5=[8958e3f2cd182a600109a4071ffc2916]
-class WebGLManager--><rect codeLine="140" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="133.8" id="WebGLManager" style="stroke:#000000;stroke-width:1.5;" width="206" x="999.5" y="1396.1"/><ellipse cx="1056.75" cy="1412.1" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M1059.2231,1418.2431 Q1058.6421,1418.5419 1058.0029,1418.6913 Q1057.3638,1418.8407 1056.6582,1418.8407 Q1054.1514,1418.8407 1052.8315,1417.1889 Q1051.5117,1415.537 1051.5117,1412.4159 Q1051.5117,1409.2865 1052.8315,1407.6347 Q1054.1514,1405.9828 1056.6582,1405.9828 Q1057.3638,1405.9828 1058.0112,1406.1322 Q1058.6587,1406.2816 1059.2231,1406.5805 L1059.2231,1409.3031 Q1058.5923,1408.7221 1057.9988,1408.4523 Q1057.4053,1408.1825 1056.7744,1408.1825 Q1055.4297,1408.1825 1054.7449,1409.2492 Q1054.0601,1410.3158 1054.0601,1412.4159 Q1054.0601,1414.5077 1054.7449,1415.5744 Q1055.4297,1416.641 1056.7744,1416.641 Q1057.4053,1416.641 1057.9988,1416.3712 Q1058.5923,1416.1015 1059.2231,1415.5204 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="83" x="1077.25" y="1417.116">WebGLManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="1000.5" x2="1204.5" y1="1428.1" y2="1428.1"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1007.5" y="1436.1"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="141" x="1019.5" y="1443.848">gl: WebGL2RenderingContext</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1007.5" y="1450.4"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="73" x="1019.5" y="1458.148">programs: Map</text><line style="stroke:#000000;stroke-width:1.0;" x1="1000.5" x2="1204.5" y1="1464.7" y2="1464.7"/><ellipse cx="1010.5" cy="1475.7" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="55" x="1019.5" y="1480.448">init(canvas)</text><ellipse cx="1010.5" cy="1490" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="103" x="1019.5" y="1494.748">createProgram(vs, fs)</text><ellipse cx="1010.5" cy="1504.3" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="180" x="1019.5" y="1509.048">applyGaussianBlur(image, horizontal)</text><ellipse cx="1010.5" cy="1518.6" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="96" x="1019.5" y="1523.348">drawTexture(image)</text><!--MD5=[7065e7be84ffd0ebe64c11e25c182e37]
-class DrawingManager--><rect codeLine="150" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="233.9" id="DrawingManager" style="stroke:#000000;stroke-width:1.5;" width="213" x="996" y="856.05"/><ellipse cx="1055.25" cy="872.05" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M1057.7231,878.1931 Q1057.1421,878.4919 1056.5029,878.6413 Q1055.8638,878.7907 1055.1582,878.7907 Q1052.6514,878.7907 1051.3315,877.1389 Q1050.0117,875.487 1050.0117,872.3659 Q1050.0117,869.2365 1051.3315,867.5847 Q1052.6514,865.9328 1055.1582,865.9328 Q1055.8638,865.9328 1056.5112,866.0822 Q1057.1587,866.2316 1057.7231,866.5305 L1057.7231,869.2531 Q1057.0923,868.6721 1056.4988,868.4023 Q1055.9053,868.1325 1055.2744,868.1325 Q1053.9297,868.1325 1053.2449,869.1992 Q1052.5601,870.2658 1052.5601,872.3659 Q1052.5601,874.4577 1053.2449,875.5244 Q1053.9297,876.591 1055.2744,876.591 Q1055.9053,876.591 1056.4988,876.3212 Q1057.0923,876.0515 1057.7231,875.4704 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="86" x="1075.75" y="877.066">DrawingManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="997" x2="1208" y1="888.05" y2="888.05"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1004" y="896.05"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="153" x="1016" y="903.798">ctx: CanvasRenderingContext2D</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1004" y="910.35"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="95" x="1016" y="918.098">isMirrored: boolean</text><line style="stroke:#000000;stroke-width:1.0;" x1="997" x2="1208" y1="924.65" y2="924.65"/><ellipse cx="1007" cy="935.65" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="121" x="1016" y="940.398">drawSkeleton(landmarks)</text><ellipse cx="1007" cy="949.95" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="103" x="1016" y="954.698">drawPath(path, color)</text><ellipse cx="1007" cy="964.25" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="84" x="1016" y="968.998">drawTrail(history)</text><ellipse cx="1007" cy="978.55" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="151" x="1016" y="983.298">drawFeedbackPanel(feedbacks)</text><ellipse cx="1007" cy="992.85" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="145" x="1016" y="997.598">drawDebugOverlay(debugInfo)</text><ellipse cx="1007" cy="1007.15" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="149" x="1016" y="1011.898">drawGhostSkeleton(landmarks)</text><ellipse cx="1007" cy="1021.45" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="174" x="1016" y="1026.198">drawSilhouetteVideo(video, opacity)</text><ellipse cx="1007" cy="1035.75" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="134" x="1016" y="1040.498">drawSilhouette(mask, color)</text><ellipse cx="1007" cy="1050.05" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="157" x="1016" y="1054.798">drawGestureFeedback(feedback)</text><ellipse cx="1007" cy="1064.35" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="147" x="1016" y="1069.098">drawCircularityIndicator(score)</text><ellipse cx="1007" cy="1078.65" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="187" x="1016" y="1083.398">drawErrorHighlights(landmarks, errors)</text><!--MD5=[27430a77e3018f6a78460c75ee8741e0]
-class GhostManager--><rect codeLine="167" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="205.3" id="GhostManager" style="stroke:#000000;stroke-width:1.5;" width="205" x="1000" y="1140.35"/><ellipse cx="1059.75" cy="1156.35" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M1062.2231,1162.4931 Q1061.6421,1162.7919 1061.0029,1162.9413 Q1060.3638,1163.0907 1059.6582,1163.0907 Q1057.1514,1163.0907 1055.8315,1161.4389 Q1054.5117,1159.787 1054.5117,1156.6659 Q1054.5117,1153.5365 1055.8315,1151.8847 Q1057.1514,1150.2328 1059.6582,1150.2328 Q1060.3638,1150.2328 1061.0112,1150.3822 Q1061.6587,1150.5316 1062.2231,1150.8305 L1062.2231,1153.5531 Q1061.5923,1152.9721 1060.9988,1152.7023 Q1060.4053,1152.4325 1059.7744,1152.4325 Q1058.4297,1152.4325 1057.7449,1153.4992 Q1057.0601,1154.5658 1057.0601,1156.6659 Q1057.0601,1158.7577 1057.7449,1159.8244 Q1058.4297,1160.891 1059.7744,1160.891 Q1060.4053,1160.891 1060.9988,1160.6212 Q1061.5923,1160.3515 1062.2231,1159.7704 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="77" x="1080.25" y="1161.366">GhostManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="1001" x2="1204" y1="1172.35" y2="1172.35"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1008" y="1180.35"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="88" x="1020" y="1188.098">isPlaying: boolean</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1008" y="1194.65"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="78" x="1020" y="1202.398">opacity: number</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="1008" y="1208.95"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="179" x="1020" y="1216.698">silhouetteVideo: HTMLVideoElement</text><line style="stroke:#000000;stroke-width:1.0;" x1="1001" x2="1204" y1="1223.25" y2="1223.25"/><ellipse cx="1011" cy="1234.25" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="49" x="1020" y="1238.998">load(data)</text><ellipse cx="1011" cy="1248.55" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="118" x="1020" y="1253.298">loadSilhouetteVideo(url)</text><ellipse cx="1011" cy="1262.85" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="29" x="1020" y="1267.598">start()</text><ellipse cx="1011" cy="1277.15" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="27" x="1020" y="1281.898">stop()</text><ellipse cx="1011" cy="1291.45" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="40" x="1020" y="1296.198">update()</text><ellipse cx="1011" cy="1305.75" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="89" x="1020" y="1310.498">getCurrentFrame()</text><ellipse cx="1011" cy="1320.05" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="80" x="1020" y="1324.798">setSpeed(speed)</text><ellipse cx="1011" cy="1334.35" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="92" x="1020" y="1339.098">setOpacity(opacity)</text><!--MD5=[d602b77267d5088762cb6a59b8ed96b1]
-class UIManager--><rect codeLine="194" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="162.4" id="UIManager" style="stroke:#000000;stroke-width:1.5;" width="143" x="480" y="723.8"/><ellipse cx="519.3" cy="739.8" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M521.7731,745.9431 Q521.1921,746.2419 520.5529,746.3913 Q519.9138,746.5407 519.2082,746.5407 Q516.7014,746.5407 515.3815,744.8889 Q514.0617,743.237 514.0617,740.1159 Q514.0617,736.9865 515.3815,735.3347 Q516.7014,733.6828 519.2082,733.6828 Q519.9138,733.6828 520.5612,733.8322 Q521.2087,733.9816 521.7731,734.2805 L521.7731,737.0031 Q521.1423,736.4221 520.5488,736.1523 Q519.9553,735.8825 519.3244,735.8825 Q517.9797,735.8825 517.2949,736.9492 Q516.6101,738.0158 516.6101,740.1159 Q516.6101,742.2077 517.2949,743.2744 Q517.9797,744.341 519.3244,744.341 Q519.9553,744.341 520.5488,744.0712 Q521.1423,743.8015 521.7731,743.2204 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="57" x="538.7" y="744.816">UIManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="481" x2="622" y1="755.8" y2="755.8"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="488" y="763.8"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="93" x="500" y="771.548">currentLang: string</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="488" y="778.1"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="102" x="500" y="785.848">currentTheme: string</text><line style="stroke:#000000;stroke-width:1.0;" x1="481" x2="622" y1="792.4" y2="792.4"/><ellipse cx="491" cy="803.4" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="85" x="500" y="808.148">toggleLanguage()</text><ellipse cx="491" cy="817.7" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="70" x="500" y="822.448">toggleTheme()</text><ellipse cx="491" cy="832" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="85" x="500" y="836.748">toggleLanguage()</text><ellipse cx="491" cy="846.3" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="70" x="500" y="851.048">toggleTheme()</text><ellipse cx="491" cy="860.6" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="108" x="500" y="865.348">showNotification(msg)</text><ellipse cx="491" cy="874.9" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="117" x="500" y="879.648">closeAllMenus(exceptId)</text><!--MD5=[162c7d13120dbc88836e45e3f84fc1dd]
-class WisdomManager--><rect codeLine="206" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="133.8" id="WisdomManager" style="stroke:#000000;stroke-width:1.5;" width="125" x="747.5" y="241.1"/><ellipse cx="765.2" cy="257.1" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M767.6731,263.2431 Q767.0921,263.5419 766.4529,263.6913 Q765.8138,263.8407 765.1082,263.8407 Q762.6014,263.8407 761.2815,262.1889 Q759.9617,260.537 759.9617,257.4159 Q759.9617,254.2865 761.2815,252.6347 Q762.6014,250.9828 765.1082,250.9828 Q765.8138,250.9828 766.4612,251.1322 Q767.1087,251.2816 767.6731,251.5805 L767.6731,254.3031 Q767.0423,253.7221 766.4488,253.4523 Q765.8553,253.1825 765.2244,253.1825 Q763.8797,253.1825 763.1949,254.2492 Q762.5101,255.3158 762.5101,257.4159 Q762.5101,259.5077 763.1949,260.5744 Q763.8797,261.641 765.2244,261.641 Q765.8553,261.641 766.4488,261.3712 Q767.0423,261.1015 767.6731,260.5204 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="87" x="779.8" y="262.116">WisdomManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="748.5" x2="871.5" y1="273.1" y2="273.1"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="755.5" y="281.1"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="64" x="767.5" y="288.848">quotes: array</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="755.5" y="295.4"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="98" x="767.5" y="303.148">currentQuote: string</text><line style="stroke:#000000;stroke-width:1.0;" x1="748.5" x2="871.5" y1="309.7" y2="309.7"/><ellipse cx="758.5" cy="320.7" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="30" x="767.5" y="325.448">show()</text><ellipse cx="758.5" cy="335" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="27" x="767.5" y="339.748">hide()</text><ellipse cx="758.5" cy="349.3" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="69" x="767.5" y="354.048">updateQuote()</text><ellipse cx="758.5" cy="363.6" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="99" x="767.5" y="368.348">animateSilkReeling()</text><!--MD5=[ac8dee583d7fe71a8d5304bc4e1befc2]
-class ShortcutsManager--><rect codeLine="216" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="105.2" id="ShortcutsManager" style="stroke:#000000;stroke-width:1.5;" width="129" x="745.5" y="86.4"/><ellipse cx="760.5" cy="102.4" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M762.9731,108.5431 Q762.3921,108.8419 761.7529,108.9913 Q761.1138,109.1407 760.4082,109.1407 Q757.9014,109.1407 756.5815,107.4889 Q755.2617,105.837 755.2617,102.7159 Q755.2617,99.5865 756.5815,97.9347 Q757.9014,96.2828 760.4082,96.2828 Q761.1138,96.2828 761.7612,96.4322 Q762.4087,96.5816 762.9731,96.8805 L762.9731,99.6031 Q762.3423,99.0221 761.7488,98.7523 Q761.1553,98.4825 760.5244,98.4825 Q759.1797,98.4825 758.4949,99.5492 Q757.8101,100.6158 757.8101,102.7159 Q757.8101,104.8077 758.4949,105.8744 Q759.1797,106.941 760.5244,106.941 Q761.1553,106.941 761.7488,106.6712 Q762.3423,106.4015 762.9731,105.8204 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="97" x="774.5" y="107.416">ShortcutsManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="746.5" x2="873.5" y1="118.4" y2="118.4"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="753.5" y="126.4"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="73" x="765.5" y="134.148">popupId: string</text><line style="stroke:#000000;stroke-width:1.0;" x1="746.5" x2="873.5" y1="140.7" y2="140.7"/><ellipse cx="756.5" cy="151.7" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="22" x="765.5" y="156.448">init()</text><ellipse cx="756.5" cy="166" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="37" x="765.5" y="170.748">toggle()</text><ellipse cx="756.5" cy="180.3" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="91" x="765.5" y="185.048">getShortcutsData()</text><!--MD5=[347a6de240a7e533fe3f585d0ed7a7fe]
-class AudioManager--><rect codeLine="224" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="133.8" id="AudioManager" style="stroke:#000000;stroke-width:1.5;" width="182" x="460.5" y="540.1"/><ellipse cx="509.25" cy="556.1" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M511.7231,562.2431 Q511.1421,562.5419 510.5029,562.6913 Q509.8638,562.8407 509.1582,562.8407 Q506.6514,562.8407 505.3315,561.1889 Q504.0117,559.537 504.0117,556.4159 Q504.0117,553.2865 505.3315,551.6347 Q506.6514,549.9828 509.1582,549.9828 Q509.8638,549.9828 510.5112,550.1322 Q511.1587,550.2816 511.7231,550.5805 L511.7231,553.3031 Q511.0923,552.7221 510.4988,552.4523 Q509.9053,552.1825 509.2744,552.1825 Q507.9297,552.1825 507.2449,553.2492 Q506.5601,554.3158 506.5601,556.4159 Q506.5601,558.5077 507.2449,559.5744 Q507.9297,560.641 509.2744,560.641 Q509.9053,560.641 510.4988,560.3712 Q511.0923,560.1015 511.7231,559.5204 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="76" x="529.75" y="561.116">AudioManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="461.5" x2="641.5" y1="572.1" y2="572.1"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="468.5" y="580.1"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="84" x="480.5" y="587.848">enabled: boolean</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="468.5" y="594.4"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="88" x="480.5" y="602.148">cooldown: number</text><line style="stroke:#000000;stroke-width:1.0;" x1="461.5" x2="641.5" y1="608.7" y2="608.7"/><ellipse cx="471.5" cy="619.7" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="77" x="480.5" y="624.448">speak(message)</text><ellipse cx="471.5" cy="634" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="129" x="480.5" y="638.748">speakFeedback(feedbacks)</text><ellipse cx="471.5" cy="648.3" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="98" x="480.5" y="653.048">waitForIdle(timeout)</text><ellipse cx="471.5" cy="662.6" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="156" x="480.5" y="667.348">getExerciseSpokenText(id, level)</text><!--MD5=[1dd07b0d44aee610d043a0002d5988d9]
-class TutorialManager--><rect codeLine="234" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="90.9" id="TutorialManager" style="stroke:#000000;stroke-width:1.5;" width="119" x="492" y="399.55"/><ellipse cx="507" cy="415.55" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M509.4731,421.6931 Q508.8921,421.9919 508.2529,422.1413 Q507.6138,422.2907 506.9082,422.2907 Q504.4014,422.2907 503.0815,420.6389 Q501.7617,418.987 501.7617,415.8659 Q501.7617,412.7365 503.0815,411.0847 Q504.4014,409.4328 506.9082,409.4328 Q507.6138,409.4328 508.2612,409.5822 Q508.9087,409.7316 509.4731,410.0305 L509.4731,412.7531 Q508.8423,412.1721 508.2488,411.9023 Q507.6553,411.6325 507.0244,411.6325 Q505.6797,411.6325 504.9949,412.6992 Q504.3101,413.7658 504.3101,415.8659 Q504.3101,417.9577 504.9949,419.0244 Q505.6797,420.091 507.0244,420.091 Q507.6553,420.091 508.2488,419.8212 Q508.8423,419.5515 509.4731,418.9704 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="87" x="521" y="420.566">TutorialManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="493" x2="610" y1="431.55" y2="431.55"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="500" y="439.55"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="78" x="512" y="447.298">isOpen: boolean</text><line style="stroke:#000000;stroke-width:1.0;" x1="493" x2="610" y1="453.85" y2="453.85"/><ellipse cx="503" cy="464.85" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="51" x="512" y="469.598">open(lang)</text><ellipse cx="503" cy="479.15" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="31" x="512" y="483.898">close()</text><!--MD5=[1027430669dbe09cf3ac84b359d871ec]
-class ScorePopupManager--><rect codeLine="241" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="76.6" id="ScorePopupManager" style="stroke:#000000;stroke-width:1.5;" width="141" x="739.5" y="862.7"/><ellipse cx="754.5" cy="878.7" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M756.9731,884.8431 Q756.3921,885.1419 755.7529,885.2913 Q755.1138,885.4407 754.4082,885.4407 Q751.9014,885.4407 750.5815,883.7889 Q749.2617,882.137 749.2617,879.0159 Q749.2617,875.8865 750.5815,874.2347 Q751.9014,872.5828 754.4082,872.5828 Q755.1138,872.5828 755.7612,872.7322 Q756.4087,872.8816 756.9731,873.1805 L756.9731,875.9031 Q756.3423,875.3221 755.7488,875.0523 Q755.1553,874.7825 754.5244,874.7825 Q753.1797,874.7825 752.4949,875.8492 Q751.8101,876.9158 751.8101,879.0159 Q751.8101,881.1077 752.4949,882.1744 Q753.1797,883.241 754.5244,883.241 Q755.1553,883.241 755.7488,882.9712 Q756.3423,882.7015 756.9731,882.1204 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="109" x="768.5" y="883.716">ScorePopupManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="740.5" x2="879.5" y1="894.7" y2="894.7"/><line style="stroke:#000000;stroke-width:1.0;" x1="740.5" x2="879.5" y1="902.7" y2="902.7"/><ellipse cx="750.5" cy="913.7" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="108" x="759.5" y="918.448">show(summary, grade)</text><ellipse cx="750.5" cy="928" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="31" x="759.5" y="932.748">close()</text><!--MD5=[ca58359f07f9a4065c7e5ec85443e727]
-class RulesConfigManager--><rect codeLine="247" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="76.6" id="RulesConfigManager" style="stroke:#000000;stroke-width:1.5;" width="168" x="726" y="735.7"/><ellipse cx="754.05" cy="751.7" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M756.5231,757.8431 Q755.9421,758.1419 755.3029,758.2913 Q754.6638,758.4407 753.9582,758.4407 Q751.4514,758.4407 750.1315,756.7889 Q748.8117,755.137 748.8117,752.0159 Q748.8117,748.8865 750.1315,747.2347 Q751.4514,745.5828 753.9582,745.5828 Q754.6638,745.5828 755.3112,745.7322 Q755.9587,745.8816 756.5231,746.1805 L756.5231,748.9031 Q755.8923,748.3221 755.2988,748.0523 Q754.7053,747.7825 754.0744,747.7825 Q752.7297,747.7825 752.0449,748.8492 Q751.3601,749.9158 751.3601,752.0159 Q751.3601,754.1077 752.0449,755.1744 Q752.7297,756.241 754.0744,756.241 Q754.7053,756.241 755.2988,755.9712 Q755.8923,755.7015 756.5231,755.1204 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="107" x="770.95" y="756.716">RulesConfigManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="727" x2="893" y1="767.7" y2="767.7"/><line style="stroke:#000000;stroke-width:1.0;" x1="727" x2="893" y1="775.7" y2="775.7"/><ellipse cx="737" cy="786.7" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="142" x="746" y="791.448">setRuleEnabled(key, enabled)</text><ellipse cx="737" cy="801" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="84" x="746" y="805.748">resetToDefaults()</text><!--MD5=[45ce707b976a738d2e4595cad6afaa40]
-class GestureManager--><rect codeLine="253" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="90.9" id="GestureManager" style="stroke:#000000;stroke-width:1.5;" width="132" x="744" y="594.55"/><ellipse cx="765.3" cy="610.55" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M767.7731,616.6931 Q767.1921,616.9919 766.5529,617.1413 Q765.9138,617.2907 765.2082,617.2907 Q762.7014,617.2907 761.3815,615.6389 Q760.0617,613.987 760.0617,610.8659 Q760.0617,607.7365 761.3815,606.0847 Q762.7014,604.4328 765.2082,604.4328 Q765.9138,604.4328 766.5612,604.5822 Q767.2087,604.7316 767.7731,605.0305 L767.7731,607.7531 Q767.1423,607.1721 766.5488,606.9023 Q765.9553,606.6325 765.3244,606.6325 Q763.9797,606.6325 763.2949,607.6992 Q762.6101,608.7658 762.6101,610.8659 Q762.6101,612.9577 763.2949,614.0244 Q763.9797,615.091 765.3244,615.091 Q765.9553,615.091 766.5488,614.8212 Q767.1423,614.5515 767.7731,613.9704 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="86" x="780.7" y="615.566">GestureManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="745" x2="875" y1="626.55" y2="626.55"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="752" y="634.55"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="82" x="764" y="642.298">isReady: boolean</text><line style="stroke:#000000;stroke-width:1.0;" x1="745" x2="875" y1="648.85" y2="648.85"/><ellipse cx="755" cy="659.85" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="22" x="764" y="664.598">init()</text><ellipse cx="755" cy="674.15" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="106" x="764" y="678.898">detectGestures(video)</text><!--MD5=[a53eb7802fcf6e4afed3783382088263]
-class FeedbackManager--><rect codeLine="260" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="119.5" id="FeedbackManager" style="stroke:#000000;stroke-width:1.5;" width="128" x="746" y="425.25"/><ellipse cx="761" cy="441.25" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M763.4731,447.3931 Q762.8921,447.6919 762.2529,447.8413 Q761.6138,447.9907 760.9082,447.9907 Q758.4014,447.9907 757.0815,446.3389 Q755.7617,444.687 755.7617,441.5659 Q755.7617,438.4365 757.0815,436.7847 Q758.4014,435.1328 760.9082,435.1328 Q761.6138,435.1328 762.2612,435.2822 Q762.9087,435.4316 763.4731,435.7305 L763.4731,438.4531 Q762.8423,437.8721 762.2488,437.6023 Q761.6553,437.3325 761.0244,437.3325 Q759.6797,437.3325 758.9949,438.3992 Q758.3101,439.4658 758.3101,441.5659 Q758.3101,443.6577 758.9949,444.7244 Q759.6797,445.791 761.0244,445.791 Q761.6553,445.791 762.2488,445.5212 Q762.8423,445.2515 763.4731,444.6704 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="96" x="775" y="446.266">FeedbackManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="747" x2="873" y1="457.25" y2="457.25"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="754" y="465.25"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="71" x="766" y="472.998">formUrl: string</text><line style="stroke:#000000;stroke-width:1.0;" x1="747" x2="873" y1="479.55" y2="479.55"/><ellipse cx="757" cy="490.55" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="69" x="766" y="495.298">createButton()</text><ellipse cx="757" cy="504.85" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="60" x="766" y="509.598">showPopup()</text><ellipse cx="757" cy="519.15" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="69" x="766" y="523.898">createButton()</text><ellipse cx="757" cy="533.45" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="60" x="766" y="538.198">showPopup()</text><!--MD5=[f097a9da547c6f19ba7a5c97c093eb18]
-class SessionManager--><rect codeLine="287" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="85.8" id="SessionManager" style="stroke:#000000;stroke-width:1.5;" width="122" x="490.5" y="1766.1"/><ellipse cx="508.2" cy="1786.7" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M510.6731,1792.8431 Q510.0921,1793.1419 509.4529,1793.2913 Q508.8138,1793.4407 508.1082,1793.4407 Q505.6014,1793.4407 504.2815,1791.7889 Q502.9617,1790.137 502.9617,1787.0159 Q502.9617,1783.8865 504.2815,1782.2347 Q505.6014,1780.5828 508.1082,1780.5828 Q508.8138,1780.5828 509.4612,1780.7322 Q510.1087,1780.8816 510.6731,1781.1805 L510.6731,1783.9031 Q510.0423,1783.3221 509.4488,1783.0523 Q508.8553,1782.7825 508.2244,1782.7825 Q506.8797,1782.7825 506.1949,1783.8492 Q505.5101,1784.9158 505.5101,1787.0159 Q505.5101,1789.1077 506.1949,1790.1744 Q506.8797,1791.241 508.2244,1791.241 Q508.8553,1791.241 509.4488,1790.9712 Q510.0423,1790.7015 510.6731,1790.1204 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="45" x="542.3" y="1783.916">«Utility»</text><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="84" x="522.8" y="1799.516">SessionManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="491.5" x2="611.5" y1="1807.3" y2="1807.3"/><line style="stroke:#000000;stroke-width:1.5;" x1="491.5" x2="611.5" y1="1815.3" y2="1815.3"/><ellipse cx="501.5" cy="1826.3" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="96" x="510.5" y="1831.048">getOrCreateUserId()</text><ellipse cx="501.5" cy="1840.6" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="96" x="510.5" y="1845.348">generateSessionId()</text><!--MD5=[cbfd515719b6910b093ca89747820c68]
-class PathGenerator--><rect codeLine="292" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="71.5" id="PathGenerator" style="stroke:#000000;stroke-width:1.5;" width="235" x="434" y="1644.25"/><ellipse cx="508.25" cy="1664.85" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M510.7231,1670.9931 Q510.1421,1671.2919 509.5029,1671.4413 Q508.8638,1671.5907 508.1582,1671.5907 Q505.6514,1671.5907 504.3315,1669.9389 Q503.0117,1668.287 503.0117,1665.1659 Q503.0117,1662.0365 504.3315,1660.3847 Q505.6514,1658.7328 508.1582,1658.7328 Q508.8638,1658.7328 509.5112,1658.8822 Q510.1587,1659.0316 510.7231,1659.3305 L510.7231,1662.0531 Q510.0923,1661.4721 509.4988,1661.2023 Q508.9053,1660.9325 508.2744,1660.9325 Q506.9297,1660.9325 506.2449,1661.9992 Q505.5601,1663.0658 505.5601,1665.1659 Q505.5601,1667.2577 506.2449,1668.3244 Q506.9297,1669.391 508.2744,1669.391 Q508.9053,1669.391 509.4988,1669.1212 Q510.0923,1668.8515 510.7231,1668.2704 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="45" x="545.25" y="1662.066">«Utility»</text><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="78" x="528.75" y="1677.666">PathGenerator</text><line style="stroke:#000000;stroke-width:1.5;" x1="435" x2="668" y1="1685.45" y2="1685.45"/><line style="stroke:#000000;stroke-width:1.5;" x1="435" x2="668" y1="1693.45" y2="1693.45"/><ellipse cx="445" cy="1704.45" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="209" x="454" y="1709.198">generateDynamicPath(landmarks, exercise)</text><!--MD5=[e219136ea99e406b0a84800811d2e145]
-class DataExporter--><rect codeLine="296" fill="#FFFFFF" filter="url(#fs14mc9o758nt)" height="85.8" id="DataExporter" style="stroke:#000000;stroke-width:1.5;" width="111" x="496" y="1508.1"/><ellipse cx="515.05" cy="1528.7" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M517.5231,1534.8431 Q516.9421,1535.1419 516.3029,1535.2913 Q515.6638,1535.4407 514.9582,1535.4407 Q512.4514,1535.4407 511.1315,1533.7889 Q509.8117,1532.137 509.8117,1529.0159 Q509.8117,1525.8865 511.1315,1524.2347 Q512.4514,1522.5828 514.9582,1522.5828 Q515.6638,1522.5828 516.3112,1522.7322 Q516.9587,1522.8816 517.5231,1523.1805 L517.5231,1525.9031 Q516.8923,1525.3221 516.2988,1525.0523 Q515.7053,1524.7825 515.0744,1524.7825 Q513.7297,1524.7825 513.0449,1525.8492 Q512.3601,1526.9158 512.3601,1529.0159 Q512.3601,1531.1077 513.0449,1532.1744 Q513.7297,1533.241 515.0744,1533.241 Q515.7053,1533.241 516.2988,1532.9712 Q516.8923,1532.7015 517.5231,1532.1204 Z " fill="#000000"/><text fill="#000000" font-family="sarabun" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="45" x="542.45" y="1525.916">«Utility»</text><text fill="#000000" font-family="sarabun" font-size="12" lengthAdjust="spacing" textLength="70" x="529.95" y="1541.516">DataExporter</text><line style="stroke:#000000;stroke-width:1.5;" x1="497" x2="606" y1="1549.3" y2="1549.3"/><line style="stroke:#000000;stroke-width:1.5;" x1="497" x2="606" y1="1557.3" y2="1557.3"/><ellipse cx="507" cy="1568.3" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="85" x="516" y="1573.048">exportJSON(data)</text><ellipse cx="507" cy="1582.6" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="11" lengthAdjust="spacing" textLength="78" x="516" y="1587.348">exportCSV(data)</text><path d="M6,839.5 L6,1018.5 L378,1018.5 L378,849.5 L368,839.5 L6,839.5 " fill="#FBFB77" filter="url(#fs14mc9o758nt)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M368,839.5 L368,849.5 L378,849.5 L368,839.5 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="145" x="12" y="858.384">TaijiFlow AI Architecture</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="0" x="15" y="875.284"/><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="172" x="12" y="892.184">MVC-like Pattern (5 Packages):</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="4" x="12" y="909.084">-</text><text fill="#000000" font-family="sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="67" x="19" y="909.084">Controllers</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="170" x="86" y="909.084">: script.js + Keyboard + Display</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="4" x="12" y="925.984">-</text><text fill="#000000" font-family="sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="28" x="19" y="925.984">Core</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="216" x="47" y="925.984">: HeuristicsEngine, Calibration, Scoring</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="4" x="12" y="942.884">-</text><text fill="#000000" font-family="sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="43" x="19" y="942.884">Display</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="163" x="62" y="942.884">: Drawing, Ghost, Background</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="4" x="12" y="959.784">-</text><text fill="#000000" font-family="sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="13" x="19" y="959.784">UI</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="331" x="32" y="959.784">: UIManager + 8 more (Shortcuts added, Chatbot removed)</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="4" x="12" y="976.684">-</text><text fill="#000000" font-family="sarabun" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="38" x="19" y="976.684">Utility</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="134" x="57" y="976.684">: Session, Path, Exporter</text><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="0" x="15" y="993.584"/><text fill="#000000" font-family="sarabun" font-size="13" lengthAdjust="spacing" textLength="246" x="12" y="1010.484">Total: 21 Classes, 24 Modules (documented)</text><!--MD5=[32b2559013a2af7d3fbb88a153276af5]
-link DrawingManager to GhostManager--><!--MD5=[611aeed3de9f8f9f0e8e54271a83fcd1]
-link GhostManager to BackgroundManager--><!--MD5=[073fe855a1745c5f5f95d9b7907244af]
-link BackgroundManager to WebGLManager--><!--MD5=[073fe855a1745c5f5f95d9b7907244af]
-link BackgroundManager to WebGLManager--><path codeLine="327" d="M1137,1579.79 C1137,1579.79 1137,1536.85 1137,1536.85 " fill="none" id="BackgroundManager-to-WebGLManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="1137,1531.85,1133,1540.85,1137,1536.85,1141,1540.85,1137,1531.85" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[51eaa1b43a149febd10d66dbba0f63b6]
-link UIManager to AudioManager--><!--MD5=[206c125da6c0fa549c2eb92f359766ca]
-link AudioManager to TutorialManager--><!--MD5=[a0969e0435b22411c39d04728eb08a32]
-link TutorialManager to ScorePopupManager--><!--MD5=[17a773bcde99f8f6aad6ef435d752061]
-link ScorePopupManager to RulesConfigManager--><!--MD5=[78b5e27333e049fa5626f7341eb605de]
-link RulesConfigManager to GestureManager--><!--MD5=[ec4871536f25f262224859d313d60b14]
-link GestureManager to FeedbackManager--><!--MD5=[80417987861201121d21ca76f11d96de]
-link FeedbackManager to WisdomManager--><!--MD5=[1eda136c4664ea9d5ba34ae5e6772f21]
-link WisdomManager to ShortcutsManager--><!--MD5=[8ecf8a2be7bc1144d736fe69cb3dc5d0]
-link SessionManager to PathGenerator--><!--MD5=[b4153a4765cd3212441a027f5c92dbfd]
-link PathGenerator to DataExporter--><!--MD5=[bf3c87166e1461fb0037a62116064262]
-link Script to KeyboardController--><path codeLine="312" d="M284.11,1323.85 C284.11,1323.85 477.24,1323.85 477.24,1323.85 " fill="none" id="Script-to-KeyboardController" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="482.24,1323.85,473.24,1319.85,477.24,1323.85,473.24,1327.85,482.24,1323.85" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[066c35afdd785367532baf5480047ad9]
-link Script to DisplayController--><path codeLine="313" d="M284.19,1285.07 C284.19,1285.07 718.2,1285.07 718.2,1285.07 " fill="none" id="Script-to-DisplayController" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="723.2,1285.07,714.2,1281.07,718.2,1285.07,714.2,1289.07,723.2,1285.07" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[bb640fb10fb5d2929dca8b96a4ce4b2e]
-link Script to HeuristicsEngine--><path codeLine="314" d="M131,1388.99 C131,1572.81 131,1987.41 131,1987.41 C131,1987.41 1264.14,1987.41 1264.14,1987.41 " fill="none" id="Script-to-HeuristicsEngine" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="1269.14,1987.41,1260.14,1983.41,1264.14,1987.41,1260.14,1991.41,1269.14,1987.41" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[df44e9dcfa25f6d6d0ebc55302acba7f]
-link Script to CalibrationManager--><path codeLine="315" d="M192,1389.26 C192,1516.84 192,1740.93 192,1740.93 C192,1740.93 1556,1740.93 1556,1740.93 C1556,1740.93 1556,1818.67 1556,1818.67 " fill="none" id="Script-to-CalibrationManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="1556,1823.67,1560,1814.67,1556,1818.67,1552,1814.67,1556,1823.67" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[e96b2d5337d6cc8c6fa37ff8fa78d55e]
-link Script to DrawingManager--><path codeLine="316" d="M284.47,1251.13 C397.53,1251.13 574,1251.13 574,1251.13 C574,1251.13 574,1053.85 574,1053.85 C574,1053.85 989.04,1053.85 989.04,1053.85 " fill="none" id="Script-to-DrawingManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="994.04,1053.85,985.04,1049.85,989.04,1053.85,985.04,1057.85,994.04,1053.85" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[316c9feee76975263e4d8c48afaa721b]
-link Script to BackgroundManager--><path codeLine="317" d="M223,1388.95 C223,1482.55 223,1619.07 223,1619.07 C223,1619.07 967.16,1619.07 967.16,1619.07 " fill="none" id="Script-to-BackgroundManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="972.16,1619.07,963.16,1615.07,967.16,1619.07,963.16,1623.07,972.16,1619.07" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[6fbfb2b36488141d6f4cc532d3959812]
-link Script to UIManager--><path codeLine="318" d="M284.09,1242.65 C383.87,1242.65 529,1242.65 529,1242.65 C529,1242.65 529,893.06 529,893.06 " fill="none" id="Script-to-UIManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="529,888.06,525,897.06,529,893.06,533,897.06,529,888.06" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[1b30a48cdca0eca6112e471747dd5049]
-link Script to AudioManager--><path codeLine="319" d="M284.18,1234.17 C365.11,1234.17 470,1234.17 470,1234.17 C470,1234.17 470,680.63 470,680.63 " fill="none" id="Script-to-AudioManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="470,675.63,466,684.63,470,680.63,474,684.63,470,675.63" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[d3159cad506f0cb1a1310c2a9273c5ba]
-link Script to TutorialManager--><path codeLine="320" d="M284.31,1225.68 C342.23,1225.68 406,1225.68 406,1225.68 C406,1225.68 406,445 406,445 C406,445 485.39,445 485.39,445 " fill="none" id="Script-to-TutorialManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="490.39,445,481.39,441,485.39,445,481.39,449,490.39,445" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[c9d5948225815dc913d981d595174205]
-link Script to GestureManager--><path codeLine="321" d="M284.45,1259.62 C413.76,1259.62 633,1259.62 633,1259.62 C633,1259.62 633,679.67 633,679.67 C633,679.67 737.07,679.67 737.07,679.67 " fill="none" id="Script-to-GestureManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="742.07,679.67,733.07,675.67,737.07,679.67,733.07,683.67,742.07,679.67" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[d83a339530a69f056b722631b3ba707e]
-link Script to ShortcutsManager--><path codeLine="322" d="M284.33,1268.1 C418.37,1268.1 651,1268.1 651,1268.1 C651,1268.1 651,139 651,139 C651,139 738.82,139 738.82,139 " fill="none" id="Script-to-ShortcutsManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="743.82,139,734.82,135,738.82,139,734.82,143,743.82,139" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[054d7b1fdba22383893cfa838083967a]
-link DisplayController to GhostManager--><path codeLine="325" d="M895.39,1208.78 C895.39,1208.78 993.14,1208.78 993.14,1208.78 " fill="none" id="DisplayController-to-GhostManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="998.14,1208.78,989.14,1204.78,993.14,1208.78,989.14,1212.78,998.14,1208.78" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[a17a43ae14a6d55146cc3d2e4d7a0615]
-link DisplayController to BackgroundManager--><path codeLine="326" d="M895.5,1367.1 C938.25,1367.1 981,1367.1 981,1367.1 C981,1367.1 981,1573.09 981,1573.09 " fill="none" id="DisplayController-to-BackgroundManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="981,1578.09,985,1569.09,981,1573.09,977,1569.09,981,1578.09" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[114b1c542304188696707e3b7725b454]
-link KeyboardController to DisplayController--><path codeLine="328" d="M619.42,1339 C619.42,1339 718.44,1339 718.44,1339 " fill="none" id="KeyboardController-to-DisplayController" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="723.44,1339,714.44,1335,718.44,1339,714.44,1343,723.44,1339" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[93c85ec313925d227df23d58d1ea3cf5]
-link HeuristicsEngine to CalibrationManager--><path codeLine="331" d="M1448.49,1914 C1448.49,1914 1481.17,1914 1481.17,1914 " fill="none" id="HeuristicsEngine-to-CalibrationManager" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="1486.17,1914,1477.17,1910,1481.17,1914,1477.17,1918,1486.17,1914" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[f54eabe09eee0fd5b70ad09dfcf80d76]
-reverse link ScoringManager to HeuristicsEngine--><path codeLine="332" d="M1180.94,1908 C1180.94,1908 1270.64,1908 1270.64,1908 " fill="none" id="ScoringManager-backto-HeuristicsEngine" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="1175.94,1908,1184.94,1912,1180.94,1908,1184.94,1904,1175.94,1908" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[8130cbae6e915c6bd816ad1177fd8668]
-reverse link DrawingManager to HeuristicsEngine--><path codeLine="333" d="M1215.77,973 C1215.77,973 1330,973 1330,973 C1330,973 1330,1568.19 1330,1808.82 " fill="none" id="DrawingManager-backto-HeuristicsEngine" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="1210.77,973,1219.77,977,1215.77,973,1219.77,969,1210.77,973" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[21cbf8643b8569618ababa145af3b81c]
-link UIManager to ScorePopupManager--><path codeLine="336" d="M623.16,878.37 C623.16,878.37 732.58,878.37 732.58,878.37 " fill="none" id="UIManager-to-ScorePopupManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="737.58,878.37,728.58,874.37,732.58,878.37,728.58,882.37,737.58,878.37" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[0b9ad05266fc989d553c8e2c96494de2]
-link UIManager to WisdomManager--><path codeLine="337" d="M623.35,729.75 C656.23,729.75 688,729.75 688,729.75 C688,729.75 688,308 688,308 C688,308 740.7,308 740.7,308 " fill="none" id="UIManager-to-WisdomManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="745.7,308,736.7,304,740.7,308,736.7,312,745.7,308" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[6cc97f7bc7c31b26f16b0bdedb965ee3]
-link ScoringManager to ScorePopupManager--><path codeLine="338" d="M1030.98,1909.83 C985.45,1909.83 935,1909.83 935,1909.83 C935,1909.83 935,901 935,901 C935,901 887.41,901 887.41,901 " fill="none" id="ScoringManager-to-ScorePopupManager" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="882.41,901,891.41,905,887.41,901,891.41,897,882.41,901" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[fefc158ffacc74b4ea6c698976d9bb28]
-link Script to FeedbackManager--><path codeLine="339" d="M284.49,1276.58 C432.47,1276.58 706,1276.58 706,1276.58 C706,1276.58 706,515.28 706,515.28 C706,515.28 739.1,515.28 739.1,515.28 " fill="none" id="Script-to-FeedbackManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="744.1,515.27,735.1,511.27,739.1,515.27,735.1,519.27,744.1,515.27" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[9b185d876e8dca1007bb9a7007ca0ac2]
-link RulesConfigManager to HeuristicsEngine--><path codeLine="340" d="M894.19,774 C1054.78,774 1389,774 1389,774 C1389,774 1389,1802.34 1389,1802.34 " fill="none" id="RulesConfigManager-to-HeuristicsEngine" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="1389,1807.34,1393,1798.34,1389,1802.34,1385,1798.34,1389,1807.34" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[e978cfe7b79b9a9eecbc1f12c7812525]
-link Script to SessionManager--><path codeLine="343" d="M161,1389.12 C161,1533.56 161,1809 161,1809 C161,1809 483.54,1809 483.54,1809 " fill="none" id="Script-to-SessionManager" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="488.54,1809,479.54,1805,483.54,1809,479.54,1813,488.54,1809" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[a0e975fe68959f3d5f45bfbb14c56c08]
-link Script to PathGenerator--><path codeLine="344" d="M284.42,1354.15 C357.4,1354.15 447,1354.15 447,1354.15 C447,1354.15 447,1637.37 447,1637.37 " fill="none" id="Script-to-PathGenerator" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="447,1642.37,451,1633.37,447,1637.37,443,1633.37,447,1642.37" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[107d199cd8363bbd797a6879dcd0743d]
-link Script to DataExporter--><path codeLine="345" d="M253,1389.04 C253,1460.67 253,1551 253,1551 C253,1551 489.19,1551 489.19,1551 " fill="none" id="Script-to-DataExporter" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="494.19,1551,485.19,1547,489.19,1551,485.19,1555,494.19,1551" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[68b58a452f414556a5c783b221a25cd8]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="2171px" preserveAspectRatio="none" style="width:995px;height:2171px;" version="1.1" viewBox="0 0 995 2171" width="995px" zoomAndPan="magnify"><defs><filter height="300%" id="fyml8xri9x84" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[ed1d20ea533a2a0e7df5ba3c35e56ced]
+cluster Controllers--><rect fill="#E3F2FD" filter="url(#fyml8xri9x84)" height="199" style="stroke:#000000;stroke-width:1.5;" width="167" x="21" y="606.516"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="76" x="66.5" y="623.468">«Controller»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="73" x="68" y="641.668">Controllers</text><!--MD5=[1fc7141c6f48660c71a2006c6bf2683f]
+cluster Core Managers--><rect fill="#FFF3E0" filter="url(#fyml8xri9x84)" height="721" style="stroke:#000000;stroke-width:1.5;" width="691" x="292" y="227.516"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="42" x="616.5" y="244.468">«Core»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="95" x="590" y="262.668">Core Managers</text><!--MD5=[af552435e54b04649ea7481a5d22641b]
+cluster Display Managers--><rect fill="#E0F7FA" filter="url(#fyml8xri9x84)" height="506" style="stroke:#000000;stroke-width:1.5;" width="950" x="7" y="1653.516"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="58" x="453" y="1670.468">«Display»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="109" x="427.5" y="1688.668">Display Managers</text><!--MD5=[e873ec7d27de412066bc40843bdb27df]
+cluster UI Managers--><rect fill="#E8F5E9" filter="url(#fyml8xri9x84)" height="657" style="stroke:#000000;stroke-width:1.5;" width="593.5" x="368" y="972.516"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="27" x="651.25" y="989.468">«UI»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="78" x="625.75" y="1007.668">UI Managers</text><!--MD5=[d0d7b0900e371541ba11cbff692d2bc7]
+class Script--><rect codeLine="31" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="128.7" id="Script" style="stroke:#000000;stroke-width:1.5;" width="135" x="37" y="661.166"/><ellipse cx="79.9" cy="681.766" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M82.3731,687.9091 Q81.7921,688.2079 81.1529,688.3573 Q80.5138,688.5067 79.8082,688.5067 Q77.3014,688.5067 75.9815,686.8549 Q74.6617,685.203 74.6617,682.0819 Q74.6617,678.9525 75.9815,677.3007 Q77.3014,675.6488 79.8082,675.6488 Q80.5138,675.6488 81.1612,675.7982 Q81.8087,675.9476 82.3731,676.2465 L82.3731,678.9691 Q81.7423,678.3881 81.1488,678.1183 Q80.5553,677.8485 79.9244,677.8485 Q78.5797,677.8485 77.8949,678.9152 Q77.2101,679.9818 77.2101,682.0819 Q77.2101,684.1737 77.8949,685.2404 Q78.5797,686.307 79.9244,686.307 Q80.5553,686.307 81.1488,686.0372 Q81.7423,685.7675 82.3731,685.1864 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39" x="101.1" y="678.982">«Main»</text><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="41" x="100.1" y="694.582">script.js</text><line style="stroke:#000000;stroke-width:1.5;" x1="38" x2="171" y1="702.366" y2="702.366"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="45" y="710.366"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="61" x="57" y="718.114">state: object</text><line style="stroke:#000000;stroke-width:1.0;" x1="38" x2="171" y1="724.666" y2="724.666"/><ellipse cx="48" cy="735.666" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="22" x="57" y="740.414">init()</text><ellipse cx="48" cy="749.966" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="79" x="57" y="754.714">loop(timestamp)</text><ellipse cx="48" cy="764.266" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="77" x="57" y="769.014">toggleTraining()</text><ellipse cx="48" cy="778.566" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="109" x="57" y="783.314">onPoseResults(results)</text><!--MD5=[acf674d2eee96cced2a8b22730b1989e]
+class HeuristicsEngine--><rect codeLine="46" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="276.8" id="HeuristicsEngine" style="stroke:#000000;stroke-width:1.5;" width="323" x="308" y="448.116"/><ellipse cx="421.25" cy="464.116" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M423.7231,470.2591 Q423.1421,470.5579 422.5029,470.7073 Q421.8638,470.8567 421.1582,470.8567 Q418.6514,470.8567 417.3315,469.2049 Q416.0117,467.553 416.0117,464.4319 Q416.0117,461.3025 417.3315,459.6507 Q418.6514,457.9988 421.1582,457.9988 Q421.8638,457.9988 422.5112,458.1482 Q423.1587,458.2976 423.7231,458.5965 L423.7231,461.3191 Q423.0923,460.7381 422.4988,460.4683 Q421.9053,460.1985 421.2744,460.1985 Q419.9297,460.1985 419.2449,461.2652 Q418.5601,462.3318 418.5601,464.4319 Q418.5601,466.5237 419.2449,467.5904 Q419.9297,468.657 421.2744,468.657 Q421.9053,468.657 422.4988,468.3872 Q423.0923,468.1175 423.7231,467.5364 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="88" x="441.75" y="469.132">HeuristicsEngine</text><line style="stroke:#000000;stroke-width:1.5;" x1="309" x2="630" y1="480.116" y2="480.116"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="316" y="488.116"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="73" x="328" y="495.864">CONFIG: object</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="316" y="502.416"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="111" x="328" y="510.164">calibrationData: object</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="316" y="516.716"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="108" x="328" y="524.464">RULES_CONFIG: object</text><line style="stroke:#000000;stroke-width:1.0;" x1="309" x2="630" y1="531.016" y2="531.016"/><ellipse cx="319" cy="542.016" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="297" x="328" y="546.764">analyze(landmarks, timestamp, refPath, exercise): Feedback[]</text><ellipse cx="319" cy="556.316" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="96" x="328" y="561.064">setCalibration(data)</text><ellipse cx="319" cy="570.616" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="115" x="328" y="575.364">updateRuleConfig(level)</text><ellipse cx="319" cy="584.916" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="118" x="328" y="589.664">setDebugMode(enabled)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="316" y="596.216"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="85" x="328" y="603.964">checkPathShape()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="316" y="610.516"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="94" x="328" y="618.264">checkArmRotation()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="316" y="624.816"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="96" x="328" y="632.564">checkElbowSinking()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="316" y="639.116"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="104" x="328" y="646.864">checkWaistInitiation()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="316" y="653.416"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="111" x="328" y="661.164">checkVerticalStability()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="316" y="667.716"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="92" x="328" y="675.464">checkSmoothness()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="316" y="682.016"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="82" x="328" y="689.764">checkContinuity()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="316" y="696.316"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="90" x="328" y="704.064">checkWeightShift()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="316" y="710.616"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="95" x="328" y="718.364">checkCoordination()</text><!--MD5=[2695471b11f4afe9b2f935479e6afc73]
+class CalibrationManager--><rect codeLine="66" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="162.4" id="CalibrationManager" style="stroke:#000000;stroke-width:1.5;" width="162" x="794" y="497.316"/><ellipse cx="821.15" cy="513.316" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M823.6231,519.4591 Q823.0421,519.7579 822.4029,519.9073 Q821.7638,520.0567 821.0582,520.0567 Q818.5514,520.0567 817.2315,518.4049 Q815.9117,516.753 815.9117,513.6319 Q815.9117,510.5025 817.2315,508.8507 Q818.5514,507.1988 821.0582,507.1988 Q821.7638,507.1988 822.4112,507.3482 Q823.0587,507.4976 823.6231,507.7965 L823.6231,510.5191 Q822.9923,509.9381 822.3988,509.6683 Q821.8053,509.3985 821.1744,509.3985 Q819.8297,509.3985 819.1449,510.4652 Q818.4601,511.5318 818.4601,513.6319 Q818.4601,515.7237 819.1449,516.7904 Q819.8297,517.857 821.1744,517.857 Q821.8053,517.857 822.3988,517.5872 Q822.9923,517.3175 823.6231,516.7364 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="103" x="837.85" y="518.332">CalibrationManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="795" x2="955" y1="529.316" y2="529.316"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="802" y="537.316"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="83" x="814" y="545.064">isActive: boolean</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="802" y="551.616"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="111" x="814" y="559.364">calibrationData: object</text><line style="stroke:#000000;stroke-width:1.0;" x1="795" x2="955" y1="565.916" y2="565.916"/><ellipse cx="805" cy="576.916" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="29" x="814" y="581.664">start()</text><ellipse cx="805" cy="591.216" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="27" x="814" y="595.964">stop()</text><ellipse cx="805" cy="605.516" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="129" x="814" y="610.264">process(landmarks): object</text><ellipse cx="805" cy="619.816" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="78" x="814" y="624.564">saveToStorage()</text><ellipse cx="805" cy="634.116" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="90" x="814" y="638.864">loadFromStorage()</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="802" y="645.416"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="136" x="814" y="653.164">calculateMetrics(landmarks)</text><!--MD5=[49faa9a638d20fb09fbea4482760b511]
+class ScoringManager--><rect codeLine="78" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="148.1" id="ScoringManager" style="stroke:#000000;stroke-width:1.5;" width="154" x="392.5" y="784.466"/><ellipse cx="424.6" cy="800.466" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M427.0731,806.6091 Q426.4921,806.9079 425.8529,807.0573 Q425.2138,807.2067 424.5082,807.2067 Q422.0014,807.2067 420.6815,805.5549 Q419.3617,803.903 419.3617,800.7819 Q419.3617,797.6525 420.6815,796.0007 Q422.0014,794.3488 424.5082,794.3488 Q425.2138,794.3488 425.8612,794.4982 Q426.5087,794.6476 427.0731,794.9465 L427.0731,797.6691 Q426.4423,797.0881 425.8488,796.8183 Q425.2553,796.5485 424.6244,796.5485 Q423.2797,796.5485 422.5949,797.6152 Q421.9101,798.6818 421.9101,800.7819 Q421.9101,802.8737 422.5949,803.9404 Q423.2797,805.007 424.6244,805.007 Q425.2553,805.007 425.8488,804.7372 Q426.4423,804.4675 427.0731,803.8864 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="84" x="442.4" y="805.482">ScoringManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="393.5" x2="545.5" y1="816.466" y2="816.466"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="400.5" y="824.466"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="93" x="412.5" y="832.214">errorCounts: object</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="400.5" y="838.766"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="102" x="412.5" y="846.514">totalFrames: number</text><line style="stroke:#000000;stroke-width:1.0;" x1="393.5" x2="545.5" y1="853.066" y2="853.066"/><ellipse cx="403.5" cy="864.066" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="29" x="412.5" y="868.814">start()</text><ellipse cx="403.5" cy="878.366" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="63" x="412.5" y="883.114">stop(): object</text><ellipse cx="403.5" cy="892.666" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="117" x="412.5" y="897.414">recordFrame(feedbacks)</text><ellipse cx="403.5" cy="906.966" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="128" x="412.5" y="911.714">getCurrentScore(): number</text><ellipse cx="403.5" cy="921.266" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="103" x="412.5" y="926.014">getSummary(): object</text><!--MD5=[58d63e8ae810fc1ec86cf96c289507d4]
+class CameraManager--><rect codeLine="89" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="148.1" id="CameraManager" style="stroke:#000000;stroke-width:1.5;" width="184" x="783" y="282.466"/><ellipse cx="828.75" cy="298.466" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M831.2231,304.6091 Q830.6421,304.9079 830.0029,305.0573 Q829.3638,305.2067 828.6582,305.2067 Q826.1514,305.2067 824.8315,303.5549 Q823.5117,301.903 823.5117,298.7819 Q823.5117,295.6525 824.8315,294.0007 Q826.1514,292.3488 828.6582,292.3488 Q829.3638,292.3488 830.0112,292.4982 Q830.6587,292.6476 831.2231,292.9465 L831.2231,295.6691 Q830.5923,295.0881 829.9988,294.8183 Q829.4053,294.5485 828.7744,294.5485 Q827.4297,294.5485 826.7449,295.6152 Q826.0601,296.6818 826.0601,298.7819 Q826.0601,300.8737 826.7449,301.9404 Q827.4297,303.007 828.7744,303.007 Q829.4053,303.007 829.9988,302.7372 Q830.5923,302.4675 831.2231,301.8864 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="84" x="849.25" y="303.482">CameraManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="784" x2="966" y1="314.466" y2="314.466"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="791" y="322.466"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="52" x="803" y="330.214">pose: Pose</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="791" y="336.766"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="79" x="803" y="344.514">camera: Camera</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="791" y="351.066"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="158" x="803" y="358.814">currentPerformanceMode: string</text><line style="stroke:#000000;stroke-width:1.0;" x1="784" x2="966" y1="365.366" y2="365.366"/><ellipse cx="794" cy="376.366" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="116" x="803" y="381.114">start(onResultsCallback)</text><ellipse cx="794" cy="390.666" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="27" x="803" y="395.414">stop()</text><ellipse cx="794" cy="404.966" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="137" x="803" y="409.714">setPerformanceMode(mode)</text><ellipse cx="794" cy="419.266" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="105" x="803" y="424.014">getTargetResolution()</text><!--MD5=[3cad1fde2288c8cf949149a763ceb2ec]
+class PerformanceMonitor--><rect codeLine="100" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="105.2" id="PerformanceMonitor" style="stroke:#000000;stroke-width:1.5;" width="142" x="398.5" y="282.916"/><ellipse cx="413.5" cy="298.916" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M415.9731,305.0591 Q415.3921,305.3579 414.7529,305.5073 Q414.1138,305.6567 413.4082,305.6567 Q410.9014,305.6567 409.5815,304.0049 Q408.2617,302.353 408.2617,299.2319 Q408.2617,296.1025 409.5815,294.4507 Q410.9014,292.7988 413.4082,292.7988 Q414.1138,292.7988 414.7612,292.9482 Q415.4087,293.0976 415.9731,293.3965 L415.9731,296.1191 Q415.3423,295.5381 414.7488,295.2683 Q414.1553,294.9985 413.5244,294.9985 Q412.1797,294.9985 411.4949,296.0652 Q410.8101,297.1318 410.8101,299.2319 Q410.8101,301.3237 411.4949,302.3904 Q412.1797,303.457 413.5244,303.457 Q414.1553,303.457 414.7488,303.1872 Q415.3423,302.9175 415.9731,302.3364 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="110" x="427.5" y="303.932">PerformanceMonitor</text><line style="stroke:#000000;stroke-width:1.5;" x1="399.5" x2="539.5" y1="314.916" y2="314.916"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="406.5" y="322.916"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="58" x="418.5" y="330.664">fps: number</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="406.5" y="337.216"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="93" x="418.5" y="344.964">qualityLevel: string</text><line style="stroke:#000000;stroke-width:1.0;" x1="399.5" x2="539.5" y1="351.516" y2="351.516"/><ellipse cx="409.5" cy="362.516" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="85" x="418.5" y="367.264">check(currentFps)</text><ellipse cx="409.5" cy="376.816" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="31" x="418.5" y="381.564">reset()</text><!--MD5=[7065e7be84ffd0ebe64c11e25c182e37]
+class DrawingManager--><rect codeLine="113" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="148.1" id="DrawingManager" style="stroke:#000000;stroke-width:1.5;" width="206" x="366.5" y="1708.466"/><ellipse cx="422.25" cy="1724.466" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M424.7231,1730.6091 Q424.1421,1730.9079 423.5029,1731.0573 Q422.8638,1731.2067 422.1582,1731.2067 Q419.6514,1731.2067 418.3315,1729.5549 Q417.0117,1727.903 417.0117,1724.7819 Q417.0117,1721.6525 418.3315,1720.0007 Q419.6514,1718.3488 422.1582,1718.3488 Q422.8638,1718.3488 423.5112,1718.4982 Q424.1587,1718.6476 424.7231,1718.9465 L424.7231,1721.6691 Q424.0923,1721.0881 423.4988,1720.8183 Q422.9053,1720.5485 422.2744,1720.5485 Q420.9297,1720.5485 420.2449,1721.6152 Q419.5601,1722.6818 419.5601,1724.7819 Q419.5601,1726.8737 420.2449,1727.9404 Q420.9297,1729.007 422.2744,1729.007 Q422.9053,1729.007 423.4988,1728.7372 Q424.0923,1728.4675 424.7231,1727.8864 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="86" x="442.75" y="1729.482">DrawingManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="367.5" x2="571.5" y1="1740.466" y2="1740.466"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="374.5" y="1748.466"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="153" x="386.5" y="1756.214">ctx: CanvasRenderingContext2D</text><line style="stroke:#000000;stroke-width:1.0;" x1="367.5" x2="571.5" y1="1762.766" y2="1762.766"/><ellipse cx="377.5" cy="1773.766" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="180" x="386.5" y="1778.514">drawSkeleton(landmarks, errorJoints)</text><ellipse cx="377.5" cy="1788.066" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="103" x="386.5" y="1792.814">drawPath(path, color)</text><ellipse cx="377.5" cy="1802.366" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="84" x="386.5" y="1807.114">drawTrail(history)</text><ellipse cx="377.5" cy="1816.666" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="151" x="386.5" y="1821.414">drawFeedbackPanel(feedbacks)</text><ellipse cx="377.5" cy="1830.966" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="115" x="386.5" y="1835.714">drawDebugOverlay(info)</text><ellipse cx="377.5" cy="1845.266" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="90" x="386.5" y="1850.014">setMirror(enabled)</text><!--MD5=[8172fdb26fe0b4f66f8ce07666356cda]
+class DisplayController--><rect codeLine="124" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="133.8" id="DisplayController" style="stroke:#000000;stroke-width:1.5;" width="163" x="23" y="1887.616"/><ellipse cx="56.45" cy="1903.616" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M58.9231,1909.7591 Q58.3421,1910.0579 57.7029,1910.2073 Q57.0638,1910.3567 56.3582,1910.3567 Q53.8514,1910.3567 52.5315,1908.7049 Q51.2117,1907.053 51.2117,1903.9319 Q51.2117,1900.8025 52.5315,1899.1507 Q53.8514,1897.4988 56.3582,1897.4988 Q57.0638,1897.4988 57.7112,1897.6482 Q58.3587,1897.7976 58.9231,1898.0965 L58.9231,1900.8191 Q58.2923,1900.2381 57.6988,1899.9683 Q57.1053,1899.6985 56.4744,1899.6985 Q55.1297,1899.6985 54.4449,1900.7652 Q53.7601,1901.8318 53.7601,1903.9319 Q53.7601,1906.0237 54.4449,1907.0904 Q55.1297,1908.157 56.4744,1908.157 Q57.1053,1908.157 57.6988,1907.8872 Q58.2923,1907.6175 58.9231,1907.0364 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="90" x="74.55" y="1908.632">DisplayController</text><line style="stroke:#000000;stroke-width:1.5;" x1="24" x2="185" y1="1919.616" y2="1919.616"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="31" y="1927.616"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="72" x="43" y="1935.364">options: object</text><line style="stroke:#000000;stroke-width:1.0;" x1="24" x2="185" y1="1941.916" y2="1941.916"/><ellipse cx="34" cy="1952.916" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="22" x="43" y="1957.664">init()</text><ellipse cx="34" cy="1967.216" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="84" x="43" y="1971.964">toggleInstructor()</text><ellipse cx="34" cy="1981.516" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="67" x="43" y="1986.264">toggleMirror()</text><ellipse cx="34" cy="1995.816" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="79" x="43" y="2000.564">toggleSkeleton()</text><ellipse cx="34" cy="2010.116" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="137" x="43" y="2014.864">setVirtualBackground(mode)</text><!--MD5=[27430a77e3018f6a78460c75ee8741e0]
+class GhostManager--><rect codeLine="134" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="90.9" id="GhostManager" style="stroke:#000000;stroke-width:1.5;" width="155" x="392" y="2053.066"/><ellipse cx="427.7" cy="2069.066" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M430.1731,2075.2091 Q429.5921,2075.5079 428.9529,2075.6573 Q428.3138,2075.8067 427.6082,2075.8067 Q425.1014,2075.8067 423.7815,2074.1549 Q422.4617,2072.503 422.4617,2069.3819 Q422.4617,2066.2525 423.7815,2064.6007 Q425.1014,2062.9488 427.6082,2062.9488 Q428.3138,2062.9488 428.9612,2063.0982 Q429.6087,2063.2476 430.1731,2063.5465 L430.1731,2066.2691 Q429.5423,2065.6881 428.9488,2065.4183 Q428.3553,2065.1485 427.7244,2065.1485 Q426.3797,2065.1485 425.6949,2066.2152 Q425.0101,2067.2818 425.0101,2069.3819 Q425.0101,2071.4737 425.6949,2072.5404 Q426.3797,2073.607 427.7244,2073.607 Q428.3553,2073.607 428.9488,2073.3372 Q429.5423,2073.0675 430.1731,2072.4864 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="77" x="446.3" y="2074.082">GhostManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="393" x2="546" y1="2085.066" y2="2085.066"/><line style="stroke:#000000;stroke-width:1.5;" x1="393" x2="546" y1="2093.066" y2="2093.066"/><ellipse cx="403" cy="2104.066" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="116" x="412" y="2108.814">loadReference(exercise)</text><ellipse cx="403" cy="2118.366" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="129" x="412" y="2123.114">syncWithVideo(timestamp)</text><ellipse cx="403" cy="2132.666" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="113" x="412" y="2137.414">drawGhostSkeleton(ctx)</text><!--MD5=[828ae382eab9d522464ba4a27d91b499]
+class BackgroundManager--><rect codeLine="140" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="76.6" id="BackgroundManager" style="stroke:#000000;stroke-width:1.5;" width="140" x="399.5" y="1916.216"/><ellipse cx="414.5" cy="1932.216" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M416.9731,1938.3591 Q416.3921,1938.6579 415.7529,1938.8073 Q415.1138,1938.9567 414.4082,1938.9567 Q411.9014,1938.9567 410.5815,1937.3049 Q409.2617,1935.653 409.2617,1932.5319 Q409.2617,1929.4025 410.5815,1927.7507 Q411.9014,1926.0988 414.4082,1926.0988 Q415.1138,1926.0988 415.7612,1926.2482 Q416.4087,1926.3976 416.9731,1926.6965 L416.9731,1929.4191 Q416.3423,1928.8381 415.7488,1928.5683 Q415.1553,1928.2985 414.5244,1928.2985 Q413.1797,1928.2985 412.4949,1929.3652 Q411.8101,1930.4318 411.8101,1932.5319 Q411.8101,1934.6237 412.4949,1935.6904 Q413.1797,1936.757 414.5244,1936.757 Q415.1553,1936.757 415.7488,1936.4872 Q416.3423,1936.2175 416.9731,1935.6364 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="108" x="428.5" y="1937.232">BackgroundManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="400.5" x2="538.5" y1="1948.216" y2="1948.216"/><line style="stroke:#000000;stroke-width:1.5;" x1="400.5" x2="538.5" y1="1956.216" y2="1956.216"/><ellipse cx="410.5" cy="1967.216" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="75" x="419.5" y="1971.964">setMode(mode)</text><ellipse cx="410.5" cy="1981.516" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="99" x="419.5" y="1986.264">drawBackground(ctx)</text><!--MD5=[8958e3f2cd182a600109a4071ffc2916]
+class WebGLManager--><rect codeLine="145" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="90.9" id="WebGLManager" style="stroke:#000000;stroke-width:1.5;" width="132" x="809" y="1909.066"/><ellipse cx="831.65" cy="1925.066" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M834.1231,1931.2091 Q833.5421,1931.5079 832.9029,1931.6573 Q832.2638,1931.8067 831.5582,1931.8067 Q829.0514,1931.8067 827.7315,1930.1549 Q826.4117,1928.503 826.4117,1925.3819 Q826.4117,1922.2525 827.7315,1920.6007 Q829.0514,1918.9488 831.5582,1918.9488 Q832.2638,1918.9488 832.9112,1919.0982 Q833.5587,1919.2476 834.1231,1919.5465 L834.1231,1922.2691 Q833.4923,1921.6881 832.8988,1921.4183 Q832.3053,1921.1485 831.6744,1921.1485 Q830.3297,1921.1485 829.6449,1922.2152 Q828.9601,1923.2818 828.9601,1925.3819 Q828.9601,1927.4737 829.6449,1928.5404 Q830.3297,1929.607 831.6744,1929.607 Q832.3053,1929.607 832.8988,1929.3372 Q833.4923,1929.0675 834.1231,1928.4864 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="83" x="847.35" y="1930.082">WebGLManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="810" x2="940" y1="1941.066" y2="1941.066"/><line style="stroke:#000000;stroke-width:1.5;" x1="810" x2="940" y1="1949.066" y2="1949.066"/><ellipse cx="820" cy="1960.066" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="55" x="829" y="1964.814">init(canvas)</text><ellipse cx="820" cy="1974.366" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="95" x="829" y="1979.114">applyGaussianBlur()</text><ellipse cx="820" cy="1988.666" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="106" x="829" y="1993.414">renderSegmentation()</text><!--MD5=[d602b77267d5088762cb6a59b8ed96b1]
+class UIManager--><rect codeLine="156" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="176.7" id="UIManager" style="stroke:#000000;stroke-width:1.5;" width="134" x="402.5" y="1286.166"/><ellipse cx="437.75" cy="1302.166" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M440.2231,1308.3091 Q439.6421,1308.6079 439.0029,1308.7573 Q438.3638,1308.9067 437.6582,1308.9067 Q435.1514,1308.9067 433.8315,1307.2549 Q432.5117,1305.603 432.5117,1302.4819 Q432.5117,1299.3525 433.8315,1297.7007 Q435.1514,1296.0488 437.6582,1296.0488 Q438.3638,1296.0488 439.0112,1296.1982 Q439.6587,1296.3476 440.2231,1296.6465 L440.2231,1299.3691 Q439.5923,1298.7881 438.9988,1298.5183 Q438.4053,1298.2485 437.7744,1298.2485 Q436.4297,1298.2485 435.7449,1299.3152 Q435.0601,1300.3818 435.0601,1302.4819 Q435.0601,1304.5737 435.7449,1305.6404 Q436.4297,1306.707 437.7744,1306.707 Q438.4053,1306.707 438.9988,1306.4372 Q439.5923,1306.1675 440.2231,1305.5864 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="57" x="456.25" y="1307.182">UIManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="403.5" x2="535.5" y1="1318.166" y2="1318.166"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="410.5" y="1326.166"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="93" x="422.5" y="1333.914">currentLang: string</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="410.5" y="1340.466"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="102" x="422.5" y="1348.214">currentTheme: string</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="410.5" y="1354.766"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="94" x="422.5" y="1362.514">translations: object</text><line style="stroke:#000000;stroke-width:1.0;" x1="403.5" x2="535.5" y1="1369.066" y2="1369.066"/><ellipse cx="413.5" cy="1380.066" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="22" x="422.5" y="1384.814">init()</text><ellipse cx="413.5" cy="1394.366" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="85" x="422.5" y="1399.114">toggleLanguage()</text><ellipse cx="413.5" cy="1408.666" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="70" x="422.5" y="1413.414">toggleTheme()</text><ellipse cx="413.5" cy="1422.966" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="108" x="422.5" y="1427.714">showNotification(msg)</text><ellipse cx="413.5" cy="1437.266" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="61" x="422.5" y="1442.014">updateText()</text><ellipse cx="413.5" cy="1451.566" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="98" x="422.5" y="1456.314">checkMobileDevice()</text><!--MD5=[347a6de240a7e533fe3f585d0ed7a7fe]
+class AudioManager--><rect codeLine="169" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="90.9" id="AudioManager" style="stroke:#000000;stroke-width:1.5;" width="116" x="817" y="1329.066"/><ellipse cx="835.6" cy="1345.066" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M838.0731,1351.2091 Q837.4921,1351.5079 836.8529,1351.6573 Q836.2138,1351.8067 835.5082,1351.8067 Q833.0014,1351.8067 831.6815,1350.1549 Q830.3617,1348.503 830.3617,1345.3819 Q830.3617,1342.2525 831.6815,1340.6007 Q833.0014,1338.9488 835.5082,1338.9488 Q836.2138,1338.9488 836.8612,1339.0982 Q837.5087,1339.2476 838.0731,1339.5465 L838.0731,1342.2691 Q837.4423,1341.6881 836.8488,1341.4183 Q836.2553,1341.1485 835.6244,1341.1485 Q834.2797,1341.1485 833.5949,1342.2152 Q832.9101,1343.2818 832.9101,1345.3819 Q832.9101,1347.4737 833.5949,1348.5404 Q834.2797,1349.607 835.6244,1349.607 Q836.2553,1349.607 836.8488,1349.3372 Q837.4423,1349.0675 838.0731,1348.4864 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="76" x="850.4" y="1350.082">AudioManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="818" x2="932" y1="1361.066" y2="1361.066"/><line style="stroke:#000000;stroke-width:1.5;" x1="818" x2="932" y1="1369.066" y2="1369.066"/><ellipse cx="828" cy="1380.066" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="53" x="837" y="1384.814">speak(text)</text><ellipse cx="828" cy="1394.366" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="83" x="837" y="1399.114">playSound(name)</text><ellipse cx="828" cy="1408.666" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="90" x="837" y="1413.414">setLanguage(lang)</text><!--MD5=[1dd07b0d44aee610d043a0002d5988d9]
+class TutorialManager--><rect codeLine="175" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="76.6" id="TutorialManager" style="stroke:#000000;stroke-width:1.5;" width="119" x="815.5" y="1192.216"/><ellipse cx="830.5" cy="1208.216" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M832.9731,1214.3591 Q832.3921,1214.6579 831.7529,1214.8073 Q831.1138,1214.9567 830.4082,1214.9567 Q827.9014,1214.9567 826.5815,1213.3049 Q825.2617,1211.653 825.2617,1208.5319 Q825.2617,1205.4025 826.5815,1203.7507 Q827.9014,1202.0988 830.4082,1202.0988 Q831.1138,1202.0988 831.7612,1202.2482 Q832.4087,1202.3976 832.9731,1202.6965 L832.9731,1205.4191 Q832.3423,1204.8381 831.7488,1204.5683 Q831.1553,1204.2985 830.5244,1204.2985 Q829.1797,1204.2985 828.4949,1205.3652 Q827.8101,1206.4318 827.8101,1208.5319 Q827.8101,1210.6237 828.4949,1211.6904 Q829.1797,1212.757 830.5244,1212.757 Q831.1553,1212.757 831.7488,1212.4872 Q832.3423,1212.2175 832.9731,1211.6364 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="87" x="844.5" y="1213.232">TutorialManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="816.5" x2="933.5" y1="1224.216" y2="1224.216"/><line style="stroke:#000000;stroke-width:1.5;" x1="816.5" x2="933.5" y1="1232.216" y2="1232.216"/><ellipse cx="826.5" cy="1243.216" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="30" x="835.5" y="1247.964">open()</text><ellipse cx="826.5" cy="1257.516" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="80" x="835.5" y="1262.264">switchTab(index)</text><!--MD5=[1027430669dbe09cf3ac84b359d871ec]
+class ScorePopupManager--><rect codeLine="180" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="62.3" id="ScorePopupManager" style="stroke:#000000;stroke-width:1.5;" width="141" x="804.5" y="1480.366"/><ellipse cx="819.5" cy="1496.366" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M821.9731,1502.5091 Q821.3921,1502.8079 820.7529,1502.9573 Q820.1138,1503.1067 819.4082,1503.1067 Q816.9014,1503.1067 815.5815,1501.4549 Q814.2617,1499.803 814.2617,1496.6819 Q814.2617,1493.5525 815.5815,1491.9007 Q816.9014,1490.2488 819.4082,1490.2488 Q820.1138,1490.2488 820.7612,1490.3982 Q821.4087,1490.5476 821.9731,1490.8465 L821.9731,1493.5691 Q821.3423,1492.9881 820.7488,1492.7183 Q820.1553,1492.4485 819.5244,1492.4485 Q818.1797,1492.4485 817.4949,1493.5152 Q816.8101,1494.5818 816.8101,1496.6819 Q816.8101,1498.7737 817.4949,1499.8404 Q818.1797,1500.907 819.5244,1500.907 Q820.1553,1500.907 820.7488,1500.6372 Q821.3423,1500.3675 821.9731,1499.7864 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="109" x="833.5" y="1501.382">ScorePopupManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="805.5" x2="944.5" y1="1512.366" y2="1512.366"/><line style="stroke:#000000;stroke-width:1.5;" x1="805.5" x2="944.5" y1="1520.366" y2="1520.366"/><ellipse cx="815.5" cy="1531.366" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="97" x="824.5" y="1536.114">show(summaryData)</text><!--MD5=[ca58359f07f9a4065c7e5ec85443e727]
+class RulesConfigManager--><rect codeLine="184" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="90.9" id="RulesConfigManager" style="stroke:#000000;stroke-width:1.5;" width="171" x="384" y="1523.066"/><ellipse cx="413.4" cy="1539.066" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M415.8731,1545.2091 Q415.2921,1545.5079 414.6529,1545.6573 Q414.0138,1545.8067 413.3082,1545.8067 Q410.8014,1545.8067 409.4815,1544.1549 Q408.1617,1542.503 408.1617,1539.3819 Q408.1617,1536.2525 409.4815,1534.6007 Q410.8014,1532.9488 413.3082,1532.9488 Q414.0138,1532.9488 414.6612,1533.0982 Q415.3087,1533.2476 415.8731,1533.5465 L415.8731,1536.2691 Q415.2423,1535.6881 414.6488,1535.4183 Q414.0553,1535.1485 413.4244,1535.1485 Q412.0797,1535.1485 411.3949,1536.2152 Q410.7101,1537.2818 410.7101,1539.3819 Q410.7101,1541.4737 411.3949,1542.5404 Q412.0797,1543.607 413.4244,1543.607 Q414.0553,1543.607 414.6488,1543.3372 Q415.2423,1543.0675 415.8731,1542.4864 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="107" x="430.6" y="1544.082">RulesConfigManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="385" x2="554" y1="1555.066" y2="1555.066"/><line style="stroke:#000000;stroke-width:1.5;" x1="385" x2="554" y1="1563.066" y2="1563.066"/><ellipse cx="395" cy="1574.066" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="22" x="404" y="1578.814">init()</text><ellipse cx="395" cy="1588.366" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="92" x="404" y="1593.114">syncUIWithEngine()</text><ellipse cx="395" cy="1602.666" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="145" x="404" y="1607.414">setRuleEnabled(rule, enabled)</text><!--MD5=[45ce707b976a738d2e4595cad6afaa40]
+class GestureManager--><rect codeLine="190" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="62.3" id="GestureManager" style="stroke:#000000;stroke-width:1.5;" width="118" x="410.5" y="1163.366"/><ellipse cx="425.5" cy="1179.366" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M427.9731,1185.5091 Q427.3921,1185.8079 426.7529,1185.9573 Q426.1138,1186.1067 425.4082,1186.1067 Q422.9014,1186.1067 421.5815,1184.4549 Q420.2617,1182.803 420.2617,1179.6819 Q420.2617,1176.5525 421.5815,1174.9007 Q422.9014,1173.2488 425.4082,1173.2488 Q426.1138,1173.2488 426.7612,1173.3982 Q427.4087,1173.5476 427.9731,1173.8465 L427.9731,1176.5691 Q427.3423,1175.9881 426.7488,1175.7183 Q426.1553,1175.4485 425.5244,1175.4485 Q424.1797,1175.4485 423.4949,1176.5152 Q422.8101,1177.5818 422.8101,1179.6819 Q422.8101,1181.7737 423.4949,1182.8404 Q424.1797,1183.907 425.5244,1183.907 Q426.1553,1183.907 426.7488,1183.6372 Q427.3423,1183.3675 427.9731,1182.7864 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="86" x="439.5" y="1184.382">GestureManager</text><line style="stroke:#000000;stroke-width:1.5;" x1="411.5" x2="527.5" y1="1195.366" y2="1195.366"/><line style="stroke:#000000;stroke-width:1.5;" x1="411.5" x2="527.5" y1="1203.366" y2="1203.366"/><ellipse cx="421.5" cy="1214.366" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="87" x="430.5" y="1219.114">detect(landmarks)</text><!--MD5=[2172d93a7709c776b1dc0a6c4a9c1c8d]
+class Chatbot--><rect codeLine="194" fill="#FFFFFF" filter="url(#fyml8xri9x84)" height="76.6" id="Chatbot" style="stroke:#000000;stroke-width:1.5;" width="117" x="411" y="1027.216"/><ellipse cx="444.45" cy="1043.216" fill="#ADD1B2" rx="11" ry="11" style="stroke:#000000;stroke-width:1.0;"/><path d="M446.9231,1049.3591 Q446.3421,1049.6579 445.7029,1049.8073 Q445.0638,1049.9567 444.3582,1049.9567 Q441.8514,1049.9567 440.5315,1048.3049 Q439.2117,1046.653 439.2117,1043.5319 Q439.2117,1040.4025 440.5315,1038.7507 Q441.8514,1037.0988 444.3582,1037.0988 Q445.0638,1037.0988 445.7112,1037.2482 Q446.3587,1037.3976 446.9231,1037.6965 L446.9231,1040.4191 Q446.2923,1039.8381 445.6988,1039.5683 Q445.1053,1039.2985 444.4744,1039.2985 Q443.1297,1039.2985 442.4449,1040.3652 Q441.7601,1041.4318 441.7601,1043.5319 Q441.7601,1045.6237 442.4449,1046.6904 Q443.1297,1047.757 444.4744,1047.757 Q445.1053,1047.757 445.6988,1047.4872 Q446.2923,1047.2175 446.9231,1046.6364 Z " fill="#000000"/><text fill="#000000" font-family="Sarabun" font-size="12" lengthAdjust="spacing" textLength="44" x="462.55" y="1048.232">Chatbot</text><line style="stroke:#000000;stroke-width:1.5;" x1="412" x2="527" y1="1059.216" y2="1059.216"/><line style="stroke:#000000;stroke-width:1.5;" x1="412" x2="527" y1="1067.216" y2="1067.216"/><ellipse cx="422" cy="1078.216" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="59" x="431" y="1082.964">toggleChat()</text><ellipse cx="422" cy="1092.516" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="11" lengthAdjust="spacing" textLength="91" x="431" y="1097.264">sendMessage(text)</text><!--MD5=[05909aeebb4e559cbb7df43645e910bb]
+link Script to CameraManager--><path codeLine="205" d="M127,660.766 C127,568.266 127,409.336 127,409.336 C127,409.336 776.02,409.336 776.02,409.336 " fill="none" id="Script-to-CameraManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="781.02,409.336,772.02,405.336,776.02,409.336,772.02,413.336,781.02,409.336" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="46" x="446.5" y="21.4">controls</text><!--MD5=[bb640fb10fb5d2929dca8b96a4ce4b2e]
+link Script to HeuristicsEngine--><path codeLine="206" d="M172.3,693.036 C172.3,693.036 301.21,693.036 301.21,693.036 " fill="none" id="Script-to-HeuristicsEngine" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="306.21,693.036,297.21,689.036,301.21,693.036,297.21,697.036,306.21,693.036" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="24" x="234" y="677.4">uses</text><!--MD5=[df44e9dcfa25f6d6d0ebc55302acba7f]
+link Script to CalibrationManager--><path codeLine="207" d="M172.36,736.826 C347.11,736.826 799,736.826 799,736.826 C799,736.826 799,666.506 799,666.506 " fill="none" id="Script-to-CalibrationManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="799,661.506,795,670.506,799,666.506,803,670.506,799,661.506" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="51" x="444" y="159.4">manages</text><!--MD5=[abfbbd53a5a13134cb8b119118b32f22]
+link Script to ScoringManager--><path codeLine="208" d="M172.21,748.736 C277.62,748.736 469,748.736 469,748.736 C469,748.736 469,777.566 469,777.566 " fill="none" id="Script-to-ScoringManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="469,782.566,473,773.566,469,777.566,465,773.566,469,782.566" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="51" x="220.5" y="811.4">manages</text><!--MD5=[e96b2d5337d6cc8c6fa37ff8fa78d55e]
+link Script to DrawingManager--><path codeLine="209" d="M172.41,772.556 C252.54,772.556 375,772.556 375,772.556 C375,772.556 375,1701.736 375,1701.736 " fill="none" id="Script-to-DrawingManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="375,1706.736,379,1697.736,375,1701.736,371,1697.736,375,1706.736" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="43" x="224.5" y="1736.4">renders</text><!--MD5=[6fbfb2b36488141d6f4cc532d3959812]
+link Script to UIManager--><path codeLine="210" d="M104,790.116 C104,954.276 104,1374.516 104,1374.516 C104,1374.516 395.52,1374.516 395.52,1374.516 " fill="none" id="Script-to-UIManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="400.52,1374.516,391.52,1370.516,395.52,1374.516,391.52,1378.516,400.52,1374.516" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="37" x="227.5" y="1133.4">events</text><!--MD5=[74cd24788cb1be9e7b88559ca708dbd2]
+link Script to PerformanceMonitor--><path codeLine="211" d="M82,660.676 C82,549.776 82,335.516 82,335.516 C82,335.516 391.91,335.516 391.91,335.516 " fill="none" id="Script-to-PerformanceMonitor" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="396.91,335.516,387.91,331.516,391.91,335.516,387.91,339.516,396.91,335.516" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="45" x="223.5" y="463.4">updates</text><!--MD5=[93c85ec313925d227df23d58d1ea3cf5]
+link HeuristicsEngine to CalibrationManager--><path codeLine="214" d="M631.22,578.516 C631.22,578.516 787.05,578.516 787.05,578.516 " fill="none" id="HeuristicsEngine-to-CalibrationManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="792.05,578.516,783.05,574.516,787.05,578.516,783.05,582.516,792.05,578.516" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="90" x="662" y="579.4">reads attributes</text><!--MD5=[e00eea6ab78fd216d6232bafb136ddaf]
+link PerformanceMonitor to CameraManager--><path codeLine="215" d="M540.6,335.516 C540.6,335.516 776.05,335.516 776.05,335.516 " fill="none" id="PerformanceMonitor-to-CameraManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="781.05,335.516,772.05,331.516,776.05,335.516,772.05,339.516,781.05,335.516" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="39" x="687.5" y="343.4">adjusts</text><!--MD5=[114e3c9c957c2550a34db814f5fa2eef]
+link DisplayController to DrawingManager--><path codeLine="218" d="M186.49,1898.346 C267.37,1898.346 379,1898.346 379,1898.346 C379,1898.346 379,1863.366 379,1863.366 " fill="none" id="DisplayController-to-DrawingManager" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="379,1858.366,375,1867.366,379,1863.366,383,1867.366,379,1858.366" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="58" x="217" y="1822.4">configures</text><!--MD5=[054d7b1fdba22383893cfa838083967a]
+link DisplayController to GhostManager--><path codeLine="219" d="M186.47,2010.686 C272.69,2010.686 396,2010.686 396,2010.686 C396,2010.686 396,2046.286 396,2046.286 " fill="none" id="DisplayController-to-GhostManager" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="396,2051.286,400,2042.286,396,2046.286,392,2042.286,396,2051.286" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="46" x="223" y="2057.4">controls</text><!--MD5=[a17a43ae14a6d55146cc3d2e4d7a0615]
+link DisplayController to BackgroundManager--><path codeLine="220" d="M186.41,1954.516 C186.41,1954.516 392.72,1954.516 392.72,1954.516 " fill="none" id="DisplayController-to-BackgroundManager" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="397.72,1954.516,388.72,1950.516,392.72,1954.516,388.72,1958.516,397.72,1954.516" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="46" x="223" y="1951.4">controls</text><!--MD5=[073fe855a1745c5f5f95d9b7907244af]
+link BackgroundManager to WebGLManager--><path codeLine="221" d="M539.67,1954.516 C539.67,1954.516 802.2,1954.516 802.2,1954.516 " fill="none" id="BackgroundManager-to-WebGLManager" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="807.2,1954.516,798.2,1950.516,802.2,1954.516,798.2,1958.516,807.2,1954.516" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="24" x="695" y="1951.4">uses</text><!--MD5=[51eaa1b43a149febd10d66dbba0f63b6]
+link UIManager to AudioManager--><path codeLine="224" d="M536.92,1374.516 C536.92,1374.516 810.13,1374.516 810.13,1374.516 " fill="none" id="UIManager-to-AudioManager" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="815.13,1374.516,806.13,1370.516,810.13,1374.516,806.13,1378.516,815.13,1374.516" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="44" x="685" y="1371.4">triggers</text><!--MD5=[4680a6f352bffbe3eccbdb89294d1ddc]
+link UIManager to TutorialManager--><path codeLine="225" d="M532,1285.776 C532,1264.216 532,1247.246 532,1247.246 C532,1247.246 808.74,1247.246 808.74,1247.246 " fill="none" id="UIManager-to-TutorialManager" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="813.74,1247.236,804.74,1243.236,808.74,1247.236,804.74,1251.236,813.74,1247.236" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="46" x="684" y="1258.4">controls</text><!--MD5=[21cbf8643b8569618ababa145af3b81c]
+link UIManager to ScorePopupManager--><path codeLine="226" d="M536.77,1441.416 C636,1441.416 810,1441.416 810,1441.416 C810,1441.416 810,1473.646 810,1473.646 " fill="none" id="UIManager-to-ScorePopupManager" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="810,1478.646,814,1469.646,810,1473.646,806,1469.646,810,1478.646" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="33" x="690.5" y="1481.4">shows</text><!--MD5=[e149f91fdbe645e9bb3d85ce9bfa0914]
+link Script to RulesConfigManager--><path codeLine="227" d="M172.41,760.646 C256.28,760.646 388,760.646 388,760.646 C388,760.646 388,1516.256 388,1516.256 " fill="none" id="Script-to-RulesConfigManager" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="388,1521.256,392,1512.256,388,1516.256,384,1512.256,388,1521.256" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="58" x="217" y="1510.4">configures</text><!--MD5=[8db701283c893deb935ab8859bfc1ea3]
 @startuml TaijiFlow_Class_Diagram
 ' ============================================================================
-' TaijiFlow AI - Class Diagram v1.3 (Updated: 2026-01-25)
+' TaijiFlow AI - Class Diagram (Detailed)
 ' ============================================================================
-' จัดกลุ่มด้วย Packages เพื่อความชัดเจน
-' อ้างอิง: 21 JavaScript Modules (Chatbot removed, ShortcutsManager added)
+' Focus: Architectural Components, Managers & Public Interfaces
+' Note: Internal helpers and private methods are partially omitted for clarity.
 ' ============================================================================
 
-skinparam defaultFontName "sarabun"
+skinparam defaultFontName "Sarabun"
 skinparam packageStyle rectangle
-
-' === Line Style Settings (ลดเส้นซ้อนทับ) ===
 left to right direction
 skinparam linetype ortho
-skinparam nodesep 50
-skinparam ranksep 40
+skinparam nodesep 60
+skinparam ranksep 60
 
 skinparam class {
     BackgroundColor White
@@ -92,354 +63,220 @@ skinparam package {
     BackgroundColor<<Core>> #FFF3E0
     BackgroundColor<<Display>> #E0F7FA
     BackgroundColor<<UI>> #E8F5E9
-    BackgroundColor<<Utility>> #F3E5F5
 }
 
 ' ============================================================================
-' CONTROLLERS PACKAGE
+' 1. MAIN CONTROLLER
 ' ============================================================================
-
 package "Controllers" <<Controller>> {
     class "script.js" as Script <<Main>> {
-        - isTrainingMode: boolean
-        - currentPerformanceMode: string
-        - -
-        + startTrainingFlow()
-        + endTrainingSession()
-        + onResults(results)
-        + loadReferenceData()
-        + setPerformanceMode(mode)
-        + selectPerformanceMode(mode)
-    }
-    
-    class KeyboardController {
-        - deps: object
-        - -
-        + handleKeydown(event)
-        + showShortcutsHelp()
-    }
-    
-    class DisplayController {
-        - showGhostOverlay: boolean
-        - showPath: boolean
-        - showSkeleton: boolean
-        - showSilhouette: boolean
-        - showTrail: boolean
-        - showBlurBackground: boolean
-        - showSideBySide: boolean
-        - showErrorHighlights: boolean
-        - trailHistory: array
+        - state: object
         - -
         + init()
-        + toggleInstructor(show)
-        + resetToDefaults()
-        + addTrailPoint(x, y)
-        + clearTrail()
-        + clearTrail()
-        + initBlurBackgroundCheckbox()
-        + autoDisableHighCostEffects()
+        + loop(timestamp)
+        + toggleTraining()
+        + onPoseResults(results)
     }
-    
-    note as NC
-        **จัดการ Application Flow**
-        Script = Main Controller
-        Keyboard = 15 Shortcuts (เพิ่ม K)
-        Display = 7 Options (เพิ่ม Blur)
-    end note
 }
 
 ' ============================================================================
-' CORE MANAGERS PACKAGE
+' 2. CORE LOGIC (The Brains)
 ' ============================================================================
-
 package "Core Managers" <<Core>> {
+
     class HeuristicsEngine {
-        - config: object
+        - CONFIG: object
         - calibrationData: object
+        - RULES_CONFIG: object
         - -
-        + analyze(landmarks): Feedback[]
+        + analyze(landmarks, timestamp, refPath, exercise): Feedback[]
         + setCalibration(data)
+        + updateRuleConfig(level)
+        + setDebugMode(enabled)
         - checkPathShape()
-        - checkElbowSinking()
-        - checkContinuity()
-        - checkContinuity()
         - checkArmRotation()
-        .. +4 more rules ..
+        - checkElbowSinking()
+        - checkWaistInitiation()
+        - checkVerticalStability()
+        - checkSmoothness()
+        - checkContinuity()
+        - checkWeightShift()
+        - checkCoordination()
     }
     
     class CalibrationManager {
         - isActive: boolean
         - calibrationData: object
-        - level: string
         - -
         + start()
         + stop()
-        + cancel()
-        + process(landmarks)
-        + setLevel(level)
-        + drawOverlay(ctx)
+        + process(landmarks): object
+        + saveToStorage()
+        + loadFromStorage()
+        - calculateMetrics(landmarks)
     }
     
     class ScoringManager {
-        - totalFrames: int
-        - correctFrames: int
+        - errorCounts: object
+        - totalFrames: number
         - -
         + start()
+        + stop(): object
         + recordFrame(feedbacks)
+        + getCurrentScore(): number
         + getSummary(): object
+    }
+    
+    class CameraManager {
+        - pose: Pose
+        - camera: Camera
+        - currentPerformanceMode: string
+        - -
+        + start(onResultsCallback)
+        + stop()
+        + setPerformanceMode(mode)
+        + getTargetResolution()
+    }
+    
+    class PerformanceMonitor {
+        - fps: number
+        - qualityLevel: string
+        - -
+        + check(currentFps)
+        + reset()
     }
 }
 
 ' ============================================================================
-' DISPLAY MANAGERS PACKAGE (แยกจาก Core เพราะเป็น View/Render)
+' 3. VISUALIZATION (The Eyes)
 ' ============================================================================
-
 package "Display Managers" <<Display>> {
-    class BackgroundManager {
-        - mode: string
-        - blurAmount: number
-        - backgroundImage: Image
-        - -
-        + setMode(mode)
-        + setBlurAmount(amount)
-        + drawBackground(ctx, mask, video, width, height)
-    }
-
-    class WebGLManager {
-        - gl: WebGL2RenderingContext
-        - programs: Map
-        - -
-        + init(canvas)
-        + createProgram(vs, fs)
-        + applyGaussianBlur(image, horizontal)
-        + drawTexture(image)
-    }
-
     class DrawingManager {
         - ctx: CanvasRenderingContext2D
-        - isMirrored: boolean
         - -
-        + drawSkeleton(landmarks)
+        + drawSkeleton(landmarks, errorJoints)
         + drawPath(path, color)
         + drawTrail(history)
         + drawFeedbackPanel(feedbacks)
-        + drawDebugOverlay(debugInfo)
-        + drawGhostSkeleton(landmarks)
-        + drawSilhouetteVideo(video, opacity)
-        + drawSilhouette(mask, color)
-        + drawGestureFeedback(feedback)
-        + drawCircularityIndicator(score)
-        + drawErrorHighlights(landmarks, errors)
+        + drawDebugOverlay(info)
+        + setMirror(enabled)
+    }
+
+    class DisplayController {
+        - options: object
+        - -
+        + init()
+        + toggleInstructor()
+        + toggleMirror()
+        + toggleSkeleton()
+        + setVirtualBackground(mode)
     }
     
     class GhostManager {
-        - isPlaying: boolean
-        - opacity: number
-        - silhouetteVideo: HTMLVideoElement
+        + loadReference(exercise)
+        + syncWithVideo(timestamp)
+        + drawGhostSkeleton(ctx)
+    }
+    
+    class BackgroundManager {
+        + setMode(mode)
+        + drawBackground(ctx)
+    }
+    
+    class WebGLManager {
+        + init(canvas)
+        + applyGaussianBlur()
+        + renderSegmentation()
+    }
+}
+
+' ============================================================================
+' 4. INTERACTION (The Interface)
+' ============================================================================
+package "UI Managers" <<UI>> {
+    class UIManager {
+        - currentLang: string
+        - currentTheme: string
+        - translations: object
         - -
-        + load(data)
-        + loadSilhouetteVideo(url)
-        + start()
-        + stop()
-        + update()
-        + getCurrentFrame()
-        + setSpeed(speed)
-        + setOpacity(opacity)
+        + init()
+        + toggleLanguage()
+        + toggleTheme()
+        + showNotification(msg)
+        + updateText()
+        + checkMobileDevice()
+    }
+
+    class AudioManager {
+        + speak(text)
+        + playSound(name)
+        + setLanguage(lang)
+    }
+
+    class TutorialManager {
+        + open()
+        + switchTab(index)
+    }
+
+    class ScorePopupManager {
+        + show(summaryData)
+    }
+
+    class RulesConfigManager {
+        + init()
+        + syncUIWithEngine()
+        + setRuleEnabled(rule, enabled)
     }
     
-    ' Force horizontal layout
-    DrawingManager -[hidden]right- GhostManager
-    GhostManager -[hidden]right- BackgroundManager
-    BackgroundManager -[hidden]right- WebGLManager
+    class GestureManager {
+        + detect(landmarks)
+    }
+    
+    class Chatbot {
+        + toggleChat()
+        + sendMessage(text)
+    }
 }
 
 ' ============================================================================
-' UI MANAGERS PACKAGE
+' RELATIONSHIPS
 ' ============================================================================
 
-package "UI & Feedback" <<UI>> {
-    together {
-        class UIManager {
-            - currentLang: string
-            - currentTheme: string
-            - -
-            + toggleLanguage()
-            + toggleTheme()
-            + toggleLanguage()
-            + toggleTheme()
-            + showNotification(msg)
-            + closeAllMenus(exceptId)
-        }
-        
-        class WisdomManager {
-            - quotes: array
-            - currentQuote: string
-            - -
-            + show()
-            + hide()
-            + updateQuote()
-            + animateSilkReeling()
-        }
-        
-        class ShortcutsManager {
-            - popupId: string
-            - -
-            + init()
-            + toggle()
-            + getShortcutsData()
-        }
-        
-        class AudioManager {
-            - enabled: boolean
-            - cooldown: number
-            - -
-            + speak(message)
-            + speakFeedback(feedbacks)
-            + waitForIdle(timeout)
-            + getExerciseSpokenText(id, level)
-        }
-        
-        class TutorialManager {
-            - isOpen: boolean
-            - -
-            + open(lang)
-            + close()
-        }
-        
-        class ScorePopupManager {
-            - -
-            + show(summary, grade)
-            + close()
-        }
-        
-        class RulesConfigManager {
-            - -
-            + setRuleEnabled(key, enabled)
-            + resetToDefaults()
-        }
-        
-        class GestureManager {
-            - isReady: boolean
-            - -
-            + init()
-            + detectGestures(video)
-        }
-        
-        class FeedbackManager {
-            - formUrl: string
-            - -
-            + createButton()
-            + showPopup()
-            + createButton()
-            + showPopup()
-        }
-    }
-    
-    ' Force horizontal layout
-    UIManager -[hidden]right- AudioManager
-    AudioManager -[hidden]right- TutorialManager
-    TutorialManager -[hidden]right- ScorePopupManager
-    ScorePopupManager -[hidden]right- RulesConfigManager
-    RulesConfigManager -[hidden]right- GestureManager
-    GestureManager -[hidden]right- FeedbackManager
-    FeedbackManager -[hidden]right- WisdomManager
-    WisdomManager -[hidden]right- ShortcutsManager
-}
+' Main relationships
+Script - -> CameraManager : controls
+Script - -> HeuristicsEngine : uses
+Script - -> CalibrationManager : manages
+Script - -> ScoringManager : manages
+Script - -> DrawingManager : renders
+Script - -> UIManager : events
+Script - -> PerformanceMonitor : updates
 
-' ============================================================================
-' UTILITIES PACKAGE
-' ============================================================================
+' Core Dependencies
+HeuristicsEngine - -> CalibrationManager : reads attributes
+PerformanceMonitor - -> CameraManager : adjusts
 
-package "Utilities" <<Utility>> {
-    together {
-        class SessionManager <<Utility>> {
-            + getOrCreateUserId()
-            + generateSessionId()
-        }
-        
-        class PathGenerator <<Utility>> {
-            + generateDynamicPath(landmarks, exercise)
-        }
-        
-        class DataExporter <<Utility>> {
-            + exportJSON(data)
-            + exportCSV(data)
-        }
-    }
-    
-    ' Force horizontal layout
-    SessionManager -[hidden]right- PathGenerator
-    PathGenerator -[hidden]right- DataExporter
-}
+' Display Dependencies
+DisplayController ..> DrawingManager : configures
+DisplayController ..> GhostManager : controls
+DisplayController ..> BackgroundManager : controls
+BackgroundManager ..> WebGLManager : uses
 
-' ============================================================================
-' RELATIONSHIPS (Simplified - ไม่มี label เพื่อความสะอาด)
-' ============================================================================
-
-' Controller relationships
-Script - -> KeyboardController
-Script - -> DisplayController
-Script - -> HeuristicsEngine
-Script - -> CalibrationManager
-Script - -> DrawingManager
-Script - -> BackgroundManager
-Script - -> UIManager
-Script - -> AudioManager
-Script - -> TutorialManager
-Script - -> GestureManager
-Script - -> ShortcutsManager
-
-' Display Controller
-DisplayController - -> GhostManager
-DisplayController - -> BackgroundManager
-BackgroundManager - -> WebGLManager
-KeyboardController ..> DisplayController
-
-' Core relationships
-HeuristicsEngine ..> CalibrationManager
-ScoringManager <.. HeuristicsEngine
-DrawingManager <.. HeuristicsEngine
-
-' UI relationships
-UIManager - -> ScorePopupManager
-UIManager - -> WisdomManager
-ScoringManager .[norank].> ScorePopupManager
-Script - -> FeedbackManager
-RulesConfigManager - -> HeuristicsEngine
-
-' Utilities (เส้นประ = indirect)
-Script ..> SessionManager
-Script ..> PathGenerator
-Script ..> DataExporter
-
-' ============================================================================
-' ARCHITECTURE NOTE
-' ============================================================================
-
-note as N1
-    **TaijiFlow AI Architecture**
-    
-    MVC-like Pattern (5 Packages):
-    - **Controllers**: script.js + Keyboard + Display
-    - **Core**: HeuristicsEngine, Calibration, Scoring
-    - **Display**: Drawing, Ghost, Background
-    - **UI**: UIManager + 8 more (Shortcuts added, Chatbot removed)
-    - **Utility**: Session, Path, Exporter
-    
-    Total: 21 Classes, 24 Modules (documented)
-end note
+' UI Dependencies
+UIManager ..> AudioManager : triggers
+UIManager ..> TutorialManager : controls
+UIManager ..> ScorePopupManager : shows
+Script - -> RulesConfigManager : configures
 
 @enduml
 
 @startuml TaijiFlow_Class_Diagram
 
-skinparam defaultFontName "sarabun"
+skinparam defaultFontName "Sarabun"
 skinparam packageStyle rectangle
-
 left to right direction
 skinparam linetype ortho
-skinparam nodesep 50
-skinparam ranksep 40
+skinparam nodesep 60
+skinparam ranksep 60
 
 skinparam class {
     BackgroundColor White
@@ -451,313 +288,190 @@ skinparam package {
     BackgroundColor<<Core>> #FFF3E0
     BackgroundColor<<Display>> #E0F7FA
     BackgroundColor<<UI>> #E8F5E9
-    BackgroundColor<<Utility>> #F3E5F5
 }
-
 
 package "Controllers" <<Controller>> {
     class "script.js" as Script <<Main>> {
-        - isTrainingMode: boolean
-        - currentPerformanceMode: string
-        - -
-        + startTrainingFlow()
-        + endTrainingSession()
-        + onResults(results)
-        + loadReferenceData()
-        + setPerformanceMode(mode)
-        + selectPerformanceMode(mode)
-    }
-    
-    class KeyboardController {
-        - deps: object
-        - -
-        + handleKeydown(event)
-        + showShortcutsHelp()
-    }
-    
-    class DisplayController {
-        - showGhostOverlay: boolean
-        - showPath: boolean
-        - showSkeleton: boolean
-        - showSilhouette: boolean
-        - showTrail: boolean
-        - showBlurBackground: boolean
-        - showSideBySide: boolean
-        - showErrorHighlights: boolean
-        - trailHistory: array
+        - state: object
         - -
         + init()
-        + toggleInstructor(show)
-        + resetToDefaults()
-        + addTrailPoint(x, y)
-        + clearTrail()
-        + clearTrail()
-        + initBlurBackgroundCheckbox()
-        + autoDisableHighCostEffects()
+        + loop(timestamp)
+        + toggleTraining()
+        + onPoseResults(results)
     }
-    
-    note as NC
-        **จัดการ Application Flow**
-        Script = Main Controller
-        Keyboard = 15 Shortcuts (เพิ่ม K)
-        Display = 7 Options (เพิ่ม Blur)
-    end note
 }
 
-
 package "Core Managers" <<Core>> {
+
     class HeuristicsEngine {
-        - config: object
+        - CONFIG: object
         - calibrationData: object
+        - RULES_CONFIG: object
         - -
-        + analyze(landmarks): Feedback[]
+        + analyze(landmarks, timestamp, refPath, exercise): Feedback[]
         + setCalibration(data)
+        + updateRuleConfig(level)
+        + setDebugMode(enabled)
         - checkPathShape()
-        - checkElbowSinking()
-        - checkContinuity()
-        - checkContinuity()
         - checkArmRotation()
-        .. +4 more rules ..
+        - checkElbowSinking()
+        - checkWaistInitiation()
+        - checkVerticalStability()
+        - checkSmoothness()
+        - checkContinuity()
+        - checkWeightShift()
+        - checkCoordination()
     }
     
     class CalibrationManager {
         - isActive: boolean
         - calibrationData: object
-        - level: string
         - -
         + start()
         + stop()
-        + cancel()
-        + process(landmarks)
-        + setLevel(level)
-        + drawOverlay(ctx)
+        + process(landmarks): object
+        + saveToStorage()
+        + loadFromStorage()
+        - calculateMetrics(landmarks)
     }
     
     class ScoringManager {
-        - totalFrames: int
-        - correctFrames: int
+        - errorCounts: object
+        - totalFrames: number
         - -
         + start()
+        + stop(): object
         + recordFrame(feedbacks)
+        + getCurrentScore(): number
         + getSummary(): object
+    }
+    
+    class CameraManager {
+        - pose: Pose
+        - camera: Camera
+        - currentPerformanceMode: string
+        - -
+        + start(onResultsCallback)
+        + stop()
+        + setPerformanceMode(mode)
+        + getTargetResolution()
+    }
+    
+    class PerformanceMonitor {
+        - fps: number
+        - qualityLevel: string
+        - -
+        + check(currentFps)
+        + reset()
     }
 }
 
-
 package "Display Managers" <<Display>> {
-    class BackgroundManager {
-        - mode: string
-        - blurAmount: number
-        - backgroundImage: Image
-        - -
-        + setMode(mode)
-        + setBlurAmount(amount)
-        + drawBackground(ctx, mask, video, width, height)
-    }
-
-    class WebGLManager {
-        - gl: WebGL2RenderingContext
-        - programs: Map
-        - -
-        + init(canvas)
-        + createProgram(vs, fs)
-        + applyGaussianBlur(image, horizontal)
-        + drawTexture(image)
-    }
-
     class DrawingManager {
         - ctx: CanvasRenderingContext2D
-        - isMirrored: boolean
         - -
-        + drawSkeleton(landmarks)
+        + drawSkeleton(landmarks, errorJoints)
         + drawPath(path, color)
         + drawTrail(history)
         + drawFeedbackPanel(feedbacks)
-        + drawDebugOverlay(debugInfo)
-        + drawGhostSkeleton(landmarks)
-        + drawSilhouetteVideo(video, opacity)
-        + drawSilhouette(mask, color)
-        + drawGestureFeedback(feedback)
-        + drawCircularityIndicator(score)
-        + drawErrorHighlights(landmarks, errors)
+        + drawDebugOverlay(info)
+        + setMirror(enabled)
+    }
+
+    class DisplayController {
+        - options: object
+        - -
+        + init()
+        + toggleInstructor()
+        + toggleMirror()
+        + toggleSkeleton()
+        + setVirtualBackground(mode)
     }
     
     class GhostManager {
-        - isPlaying: boolean
-        - opacity: number
-        - silhouetteVideo: HTMLVideoElement
+        + loadReference(exercise)
+        + syncWithVideo(timestamp)
+        + drawGhostSkeleton(ctx)
+    }
+    
+    class BackgroundManager {
+        + setMode(mode)
+        + drawBackground(ctx)
+    }
+    
+    class WebGLManager {
+        + init(canvas)
+        + applyGaussianBlur()
+        + renderSegmentation()
+    }
+}
+
+package "UI Managers" <<UI>> {
+    class UIManager {
+        - currentLang: string
+        - currentTheme: string
+        - translations: object
         - -
-        + load(data)
-        + loadSilhouetteVideo(url)
-        + start()
-        + stop()
-        + update()
-        + getCurrentFrame()
-        + setSpeed(speed)
-        + setOpacity(opacity)
+        + init()
+        + toggleLanguage()
+        + toggleTheme()
+        + showNotification(msg)
+        + updateText()
+        + checkMobileDevice()
+    }
+
+    class AudioManager {
+        + speak(text)
+        + playSound(name)
+        + setLanguage(lang)
+    }
+
+    class TutorialManager {
+        + open()
+        + switchTab(index)
+    }
+
+    class ScorePopupManager {
+        + show(summaryData)
+    }
+
+    class RulesConfigManager {
+        + init()
+        + syncUIWithEngine()
+        + setRuleEnabled(rule, enabled)
     }
     
-    DrawingManager -[hidden]right- GhostManager
-    GhostManager -[hidden]right- BackgroundManager
-    BackgroundManager -[hidden]right- WebGLManager
+    class GestureManager {
+        + detect(landmarks)
+    }
+    
+    class Chatbot {
+        + toggleChat()
+        + sendMessage(text)
+    }
 }
 
 
-package "UI & Feedback" <<UI>> {
-    together {
-        class UIManager {
-            - currentLang: string
-            - currentTheme: string
-            - -
-            + toggleLanguage()
-            + toggleTheme()
-            + toggleLanguage()
-            + toggleTheme()
-            + showNotification(msg)
-            + closeAllMenus(exceptId)
-        }
-        
-        class WisdomManager {
-            - quotes: array
-            - currentQuote: string
-            - -
-            + show()
-            + hide()
-            + updateQuote()
-            + animateSilkReeling()
-        }
-        
-        class ShortcutsManager {
-            - popupId: string
-            - -
-            + init()
-            + toggle()
-            + getShortcutsData()
-        }
-        
-        class AudioManager {
-            - enabled: boolean
-            - cooldown: number
-            - -
-            + speak(message)
-            + speakFeedback(feedbacks)
-            + waitForIdle(timeout)
-            + getExerciseSpokenText(id, level)
-        }
-        
-        class TutorialManager {
-            - isOpen: boolean
-            - -
-            + open(lang)
-            + close()
-        }
-        
-        class ScorePopupManager {
-            - -
-            + show(summary, grade)
-            + close()
-        }
-        
-        class RulesConfigManager {
-            - -
-            + setRuleEnabled(key, enabled)
-            + resetToDefaults()
-        }
-        
-        class GestureManager {
-            - isReady: boolean
-            - -
-            + init()
-            + detectGestures(video)
-        }
-        
-        class FeedbackManager {
-            - formUrl: string
-            - -
-            + createButton()
-            + showPopup()
-            + createButton()
-            + showPopup()
-        }
-    }
-    
-    UIManager -[hidden]right- AudioManager
-    AudioManager -[hidden]right- TutorialManager
-    TutorialManager -[hidden]right- ScorePopupManager
-    ScorePopupManager -[hidden]right- RulesConfigManager
-    RulesConfigManager -[hidden]right- GestureManager
-    GestureManager -[hidden]right- FeedbackManager
-    FeedbackManager -[hidden]right- WisdomManager
-    WisdomManager -[hidden]right- ShortcutsManager
-}
+Script - -> CameraManager : controls
+Script - -> HeuristicsEngine : uses
+Script - -> CalibrationManager : manages
+Script - -> ScoringManager : manages
+Script - -> DrawingManager : renders
+Script - -> UIManager : events
+Script - -> PerformanceMonitor : updates
 
+HeuristicsEngine - -> CalibrationManager : reads attributes
+PerformanceMonitor - -> CameraManager : adjusts
 
-package "Utilities" <<Utility>> {
-    together {
-        class SessionManager <<Utility>> {
-            + getOrCreateUserId()
-            + generateSessionId()
-        }
-        
-        class PathGenerator <<Utility>> {
-            + generateDynamicPath(landmarks, exercise)
-        }
-        
-        class DataExporter <<Utility>> {
-            + exportJSON(data)
-            + exportCSV(data)
-        }
-    }
-    
-    SessionManager -[hidden]right- PathGenerator
-    PathGenerator -[hidden]right- DataExporter
-}
+DisplayController ..> DrawingManager : configures
+DisplayController ..> GhostManager : controls
+DisplayController ..> BackgroundManager : controls
+BackgroundManager ..> WebGLManager : uses
 
-
-Script - -> KeyboardController
-Script - -> DisplayController
-Script - -> HeuristicsEngine
-Script - -> CalibrationManager
-Script - -> DrawingManager
-Script - -> BackgroundManager
-Script - -> UIManager
-Script - -> AudioManager
-Script - -> TutorialManager
-Script - -> GestureManager
-Script - -> ShortcutsManager
-
-DisplayController - -> GhostManager
-DisplayController - -> BackgroundManager
-BackgroundManager - -> WebGLManager
-KeyboardController ..> DisplayController
-
-HeuristicsEngine ..> CalibrationManager
-ScoringManager <.. HeuristicsEngine
-DrawingManager <.. HeuristicsEngine
-
-UIManager - -> ScorePopupManager
-UIManager - -> WisdomManager
-ScoringManager .[norank].> ScorePopupManager
-Script - -> FeedbackManager
-RulesConfigManager - -> HeuristicsEngine
-
-Script ..> SessionManager
-Script ..> PathGenerator
-Script ..> DataExporter
-
-
-note as N1
-    **TaijiFlow AI Architecture**
-    
-    MVC-like Pattern (5 Packages):
-    - **Controllers**: script.js + Keyboard + Display
-    - **Core**: HeuristicsEngine, Calibration, Scoring
-    - **Display**: Drawing, Ghost, Background
-    - **UI**: UIManager + 8 more (Shortcuts added, Chatbot removed)
-    - **Utility**: Session, Path, Exporter
-    
-    Total: 21 Classes, 24 Modules (documented)
-end note
+UIManager ..> AudioManager : triggers
+UIManager ..> TutorialManager : controls
+UIManager ..> ScorePopupManager : shows
+Script - -> RulesConfigManager : configures
 
 @enduml
 

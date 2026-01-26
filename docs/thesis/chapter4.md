@@ -119,30 +119,33 @@ TaijiFlow AI ใช้สถาปัตยกรรมแบบ **Client-Side O
 
 ### 4.2.1 Module Overview
 
-ระบบประกอบด้วย **22 JavaScript Modules** แบ่งเป็น 6 กลุ่ม:
+ระบบประกอบด้วย **32 JavaScript Modules** แบ่งเป็น 6 กลุ่มหลัก (ตามโครงสร้างโฟลเดอร์):
 
 ![Module Dependencies](../../out/docs/diagrams/ModuleDependencies/ModuleDependencies.svg)
 
 *รูปที่ 4.3: Module Dependencies Diagram*
 
-| Category | Modules | Total Size | หน้าที่ |
-|----------|:-------:|:----------:|--------|
-| Main Controller | 1 | ~72 KB | ควบคุมการทำงานหลัก (Glue Code) |
-| Core Managers | 3 | ~77 KB | วิเคราะห์ท่า, Calibration, คะแนน |
-| Display Managers | 4 | ~45 KB | วาด Canvas, WebGL, Ghost, Background |
-| UI Managers | 9 | ~240 KB | จัดการ UI ทั้งหมด (Audio, Tutorial, Shortcuts) |
-| Controllers | 2 | ~17 KB | Keyboard, Display Options |
-| Utilities | 4 | ~41 KB | Export, Translation, Path |
-| Landing Page | 1 | ~7 KB | Landing Animation |
-| **Total** | **24** | **~480 KB** | - |
+| Category | Modules | Count | หน้าที่ |
+|----------|:-------:|:-----:|--------|
+| **Main Controller** | script.js | 1 | ควบคุมการทำงานหลัก (Glue Code) |
+| **Core Managers** | Camera, Heuristics, Calibration, Scoring, Performance | 5 | วิเคราะห์ท่า, จัดการ Input/Output หลัก |
+| **Display Managers** | Drawing, Ghost, Background, WebGL, SilkAnimation | 5 | วาด Canvas, WebGL, Ghost, Background |
+| **UI Managers** | UI, Audio, Chatbot, Tutorial, Score, Gesture, Shortcuts, Debug, Lighting, Wisdom, Feedback, RulesConfig | 12 | จัดการ UI Components ทั้งหมด |
+| **Controllers** | Keyboard, Display (Options) | 2 | รับ Input ควบคุมการแสดงผล |
+| **Utilities** | Session, Exporter, Path, Translations, Time, Math, I18n | 7 | เครื่องมือคำนวณและจัดการข้อมูล |
+| **Total** | | **32** | - |
 
 ### 4.2.2 Main Controller
 
 #### 4.2.2.1 Script (Entry Point)
 
-**ไฟล์:** `js/script.js` (~72 KB)
+**ไฟล์:** `js/script.js`
 
-**หน้าที่:** เป็นศูนย์กลางควบคุมการทำงาน (Glue Code) เชื่อมต่อทุก Module เข้าด้วยกัน และจัดการ Main Loop ของระบบ
+**หน้าที่:** เป็น Coordinator ระดับสูงสุด (High-level Coordinator) ทำหน้าที่เชื่อมต่อนำเข้า Modules ต่างๆ และบริหารวัฏจักรของระยย (Application Lifecycle):
+
+1. **Initialization:** สร้าง Instance ของ Manager ทั้งหมดในลำดับที่ถูกต้อง
+2. **Loop Management:** ขับเคลื่อน Main Loop (30 FPS) โดยรับเฟรมจาก `CameraManager`
+3. **Delegation:** ส่งต่อข้อมูลระหว่าง Core, UI, และ Display layers
 
 ```javascript
 // Main Application State
@@ -154,17 +157,81 @@ let state = {
 };
 
 // Key Functions
-function init() { ... }            // เริ่มต้นระบบ โหลด Model
-function loop() { ... }            // Main Loop (30fps) - update logic
-function render() { ... }          // Render Loop - วาดกราฟิก
-function onResults(results) { ... } // Callback รับค่าจาก MediaPipe
+async function init() {
+    // 1. Init Core Systems
+    await cameraManager.start();
+    await poseDetector.init();
+    
+    // 2. Bind Events
+    uiManager.init();
+    keyboardController.init();
+    
+    // 3. Start Loop
+    requestAnimationFrame(loop);
+}
+
+function loop(timestamp) {
+    // 1. Update Time & Performance
+    const deltaTime = timeUtils.update(timestamp);
+    performanceMonitor.begin();
+
+    // 2. Logic Update
+    if (state.isTraining) {
+        heuristicsEngine.update(deltaTime);
+    }
+
+    // 3. Render
+    drawingManager.render(state);
+    
+    performanceMonitor.end();
+    requestAnimationFrame(loop);
+}
 ```
 
 ### 4.2.3 Core Managers
 
+#### 4.2.3.4 CameraManager (v1.1)
+
+**ไฟล์:** `js/camera_manager.js`
+
+**หน้าที่:** จัดการ Video Input, WebRTC, และ Input Resolution Strategy
+
+```javascript
+class CameraManager {
+    + start(constraints)     // ขอสิทธิ์และเริ่มกล้อง
+    + stop()                 // ปิดกล้อง
+    + getVideoFrame()        // ดึงเฟรมปัจจุบัน (HTMLVideoElement)
+    + getResolution()        // คืนค่าความละเอียดจริง (width, height)
+    + flip(isMirrored)       // กลับด้านภาพ (CSS Transform)
+}
+```
+
+#### 4.2.3.5 PerformanceMonitor (v1.2) - **New**
+
+**ไฟล์:** `js/core/performance_monitor.js`
+
+**หน้าที่:** ตรวจสอบความลื่นไหลของระบบ (FPS) และปรับคุณภาพกราฟิกอัตโนมัติ (Adaptive Quality)
+
+```javascript
+class PerformanceMonitor {
+    // States
+    - fps: number           // Frame Rate ปัจจุบัน
+    - qualityLevel: string  // 'high', 'balanced', 'low'
+    
+    // Methods
+    + begin() / end()       // จับเวลาแต่ละเฟรม
+    + checkPerformance()    // วิเคราะห์ FPS เฉลี่ยทุก 2 วินาที
+    + adaptQuality()        // ลด/เพิ่มภาระงาน AI และ Visuals ตาม FPS
+    
+    // Adaptive Strategies:
+    // FPS < 20 -> Low Quality (Skip AI 2/3 frames, Disable Blur)
+    // FPS > 55 -> High Quality
+}
+```
+
 #### 4.2.3.1 HeuristicsEngine
 
-**ไฟล์:** `js/heuristics_engine.js` (~51 KB)
+**ไฟล์:** `js/heuristics_engine.js` (~63 KB)
 
 **หน้าที่:** วิเคราะห์ท่าทางตามหลักไท่จี๋ 9 กฎ โดยเปรียบเทียบ Landmarks ผู้ฝึกกับกฎทางฟิสิกส์และสัดส่วน
 
@@ -189,22 +256,24 @@ class HeuristicsEngine {
     - checkSmoothness()       // R-06: ความกระตุกของการเคลื่อนไหว
     - checkContinuity()       // R-07: ความเร็วไม่สม่ำเสมอ
     - checkWeightShift()      // R-08: การถ่ายน้ำหนักเท้าซ้าย/ขวา
+    - checkCoordination()     // R-09: ความสัมพันธ์มือ-เท้า (Upper-Lower Coordination)
 }
 ```
 
-**8 Heuristic Rules by Level:**
+**9 Heuristic Rules by Level:**
 
 | Rule | ชื่อกฎ | L1 (พื้นฐาน) | L2 (มาตรฐาน) | L3 (ขั้นสูง) |
 |:----:|--------|:---:|:---:|:---:|
 | R-01 | Path Shape | ✓ | ✓ | ✓ |
 | R-02 | Arm Rotation | | ✓ | ✓ |
 | R-03 | Elbow Sinking | ✓ | ✓ | ✓ |
-| R-04 | Waist Initiation | | | ✓ |
-| R-05 | Vertical Stability | ✓ | ✓ | ✓ |
+| R-04 | Waist Initiation | | ✓ | ✓ |
+| R-05 | Vertical Stability | | | ✓ |
 | R-06 | Smoothness | | ✓ | ✓ |
-| R-07 | Continuity | | ✓ | ✓ |
+| R-07 | Continuity | ✓ | ✓ | ✓ |
 | R-08 | Weight Shift | | | ✓ |
-| **Total** | | **3** | **5** | **8** |
+| R-09 | Coordination | | | ✓ |
+| **Total** | | **3** | **6** | **9** |
 
 #### 4.2.3.2 CalibrationManager
 
@@ -320,7 +389,7 @@ class BackgroundManager {
 
 **ไฟล์:** `js/webgl_manager.js` (~8 KB)
 
-**หน้าที่:** จัดการ Low-level Rendering ด้วย WebGL 2.0 เพื่อประสิทธิภาพสูงสุด (เช่น Gaussian Blur, Image Processing)
+**หน้าที่:** จัดการ Low-level Rendering ด้วย WebGL 2.0 เพื่อประสิทธิภาพสูงสุด และทำ Image Processing (Gaussian Blur, Selfie Segmentation)
 
 ```javascript
 class WebGLManager {
@@ -328,6 +397,7 @@ class WebGLManager {
     + createProgram(vs, fs) // Compile Shaders
     + applyGaussianBlur()   // ใช้ Fragment Shader เบลอภาพ (GPU)
     + drawTexture(image)    // วาดภาพลง Texture
+    + renderSegmentation(mask) // **New** วาด Mask ตัดฉากหลัง
 }
 ```
 
@@ -491,6 +561,35 @@ class ShortcutsManager {
 }
 ```
 
+#### 4.2.5.11 LightingManager (v1.1)
+
+**ไฟล์:** `js/ui/lighting_manager.js`
+
+**หน้าที่:** ตรวจสอบความสว่างของสภาพแวดล้อมเพื่อแจ้งเตือนผู้ใช้หากแสงน้อยเกินไป (ป้องกันการตรวจจับผิดพลาด)
+
+```javascript
+class LightingManager {
+    - checkInterval: 2000ms
+    + start()                 // เริ่ม Loop ตรวจสอบวัดค่า Luma เฉลี่ย
+    + checkLighting(frame)    // คำนวณความสว่างจาก Pixel Data
+    + showLowLightWarning()   // แสดง Toast เตือน "แสงน้อย"
+}
+```
+
+#### 4.2.5.12 DebugManager
+
+**ไฟล์:** `js/ui/debug_manager.js`
+
+**หน้าที่:** แสดงข้อมูลเชิงลึกสำหรับนักพัฒนา (FPS Graph, Landmark Confidence, Memory Usage)
+
+```javascript
+class DebugManager {
+    + toggle()                // เปิด/ปิด Panel
+    + update(stats)           // อัปเดตค่า Real-time
+    + drawLandmarksOverlay()  // แสดงเลข Index บนจุดต่างๆ
+}
+```
+
 **Rules Settings UI Structure:**
 
 หน้าต่าง Rules Settings จัดกลุ่มกฎตาม Level เพื่อให้ผู้ใช้เข้าใจได้ง่าย:
@@ -614,9 +713,15 @@ analyze(..., currentLevel) {
 
 ### 4.2.7 Utilities
 
-กลุ่มเครื่องมือช่วยทำงานเบื้องหลัง (Support Modules)
+#### 4.2.7.1 Utilities Core
 
-#### 4.2.7.1 SessionManager
+กลุ่มเครื่องมือพื้นฐานเพื่อลดความซ้ำซ้อนของโค้ด:
+
+1.  **TimeUtils (`js/utils/time_utils.js`):** จัดการ Delta Time และ Timestamp เพื่อให้ Animation ลื่นไหลไม่ขึ้นกับ Frame Rate
+2.  **MathUtils (`js/utils/math_utils.js`):** ฟังก์ชันคำนวณทางคณิตศาสตร์ (Angle between points, Distance, Normalization)
+3.  **I18nManager (`js/utils/i18n_manager.js`):** (มาแทน translations.js เดิม) ระบบจัดการภาษาที่รองรับ Dynamic Loading
+
+#### 4.2.7.2 SessionManager
 
 **ไฟล์:** `js/session_manager.js` (~5 KB)
 
@@ -629,7 +734,7 @@ generateSessionId()    // สร้าง Session ID ใหม่ทุกคร
 getPlatformInfo()      // เก็บข้อมูล Browser/Device เพื่อ Analytics
 ```
 
-#### 4.2.7.2 DataExporter
+#### 4.2.7.3 DataExporter
 
 **ไฟล์:** `js/data_exporter.js` (~8 KB)
 
@@ -642,7 +747,7 @@ class DataExporter {
 }
 ```
 
-#### 4.2.7.3 PathGenerator
+#### 4.2.7.4 PathGenerator
 
 **ไฟล์:** `js/path_generator.js` (~5 KB)
 
@@ -654,27 +759,6 @@ generateDynamicPath(landmarks, exerciseType) {
     // 1. คำนวณ Center Point จากตำแหน่งไหล่และสะโพก
     // 2. คำนวณ Radius จากความยาวแขน
     // 3. สร้าง Array จุด x,y จำนวน 72 จุด (วงกลม)
-}
-```
-
-#### 4.2.7.4 Translations
-
-**ไฟล์:** `js/translations.js` (~23 KB)
-
-**หน้าที่:** เก็บฐานข้อมูลคำศัพท์ 2 ภาษา (TH/EN)
-
-```javascript
-const TRANSLATIONS = {
-    th: {
-        app_title: "TaijiFlow AI: ผู้ช่วยฝึกท่าม้วนไหม",
-        start: "เริ่มการฝึก",
-        feedback_elbow: "ศอกสูงเกินไป - ลดศอกลง",
-        // ... (กว่า 200 keys)
-    },
-    en: {
-        app_title: "TaijiFlow AI: Silk Reeling Assistant",
-        // ...
-    }
 }
 ```
 
@@ -697,21 +781,23 @@ class SilkReelingAnimation {
 
 ## 4.3 Class Diagram
 
+
+
 ### 4.3.1 Class Diagram Overview
 
 ![Class Diagram](../../out/docs/diagrams/ClassDiagram/TaijiFlow_Class_Diagram.svg)
 
 *รูปที่ 4.4: Class Diagram ของระบบ TaijiFlow AI*
 
-ระบบประกอบด้วย **18 Classes** แบ่งเป็น **5 Packages:**
+ระบบประกอบด้วย **30+ Classes** แบ่งเป็น **6 Packages:**
 
 | Package | Classes | Description |
 |---------|:-------:|-------------|
 | Controllers | 3 | script.js, KeyboardController, DisplayController |
-| Core Managers | 3 | HeuristicsEngine, CalibrationManager, ScoringManager |
+| Core Managers | 5 | HeuristicsEngine, CalibrationManager, ScoringManager, CameraManager, PerformanceMonitor |
 | Display Managers | 4 | DrawingManager, GhostManager, BackgroundManager, WebGLManager |
-| UI & Feedback | 8 | UIManager, AudioManager, TutorialManager, ScorePopupManager, GestureManager, FeedbackManager, RulesConfigManager, WisdomManager |
-| Utilities | 3 | SessionManager, PathGenerator, DataExporter |
+| UI & Feedback | 11 | UIManager, AudioManager, TutorialManager, ScorePopupManager, GestureManager, FeedbackManager, RulesConfigManager, WisdomManager, LightingManager, DebugManager, ShortcutsManager |
+| Utilities | 7 | SessionManager, PathGenerator, DataExporter, TimeUtils, MathUtils, I18nManager, etc. |
 
 ### 4.3.2 Key Class Relationships
 
@@ -1118,4 +1204,4 @@ this.RULES_CONFIG = {
 
 ---
 
-*Document updated: 2026-01-11*
+*Document updated: 2026-01-26 (v1.2.0)*

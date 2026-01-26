@@ -1,19 +1,17 @@
 @startuml TaijiFlow_Class_Diagram
 ' ============================================================================
-' TaijiFlow AI - Class Diagram v1.3 (Updated: 2026-01-25)
+' TaijiFlow AI - Class Diagram (Detailed)
 ' ============================================================================
-' จัดกลุ่มด้วย Packages เพื่อความชัดเจน
-' อ้างอิง: 21 JavaScript Modules (Chatbot removed, ShortcutsManager added)
+' Focus: Architectural Components, Managers & Public Interfaces
+' Note: Internal helpers and private methods are partially omitted for clarity.
 ' ============================================================================
 
-skinparam defaultFontName "sarabun"
+skinparam defaultFontName "Sarabun"
 skinparam packageStyle rectangle
-
-' === Line Style Settings (ลดเส้นซ้อนทับ) ===
 left to right direction
 skinparam linetype ortho
-skinparam nodesep 50
-skinparam ranksep 40
+skinparam nodesep 60
+skinparam ranksep 60
 
 skinparam class {
     BackgroundColor White
@@ -25,341 +23,208 @@ skinparam package {
     BackgroundColor<<Core>> #FFF3E0
     BackgroundColor<<Display>> #E0F7FA
     BackgroundColor<<UI>> #E8F5E9
-    BackgroundColor<<Utility>> #F3E5F5
 }
 
 ' ============================================================================
-' CONTROLLERS PACKAGE
+' 1. MAIN CONTROLLER
 ' ============================================================================
-
 package "Controllers" <<Controller>> {
     class "script.js" as Script <<Main>> {
-        - isTrainingMode: boolean
-        - currentPerformanceMode: string
-        --
-        + startTrainingFlow()
-        + endTrainingSession()
-        + onResults(results)
-        + loadReferenceData()
-        + setPerformanceMode(mode)
-        + selectPerformanceMode(mode)
-    }
-    
-    class KeyboardController {
-        - deps: object
-        --
-        + handleKeydown(event)
-        + showShortcutsHelp()
-    }
-    
-    class DisplayController {
-        - showGhostOverlay: boolean
-        - showPath: boolean
-        - showSkeleton: boolean
-        - showSilhouette: boolean
-        - showTrail: boolean
-        - showBlurBackground: boolean
-        - showSideBySide: boolean
-        - showErrorHighlights: boolean
-        - trailHistory: array
+        - state: object
         --
         + init()
-        + toggleInstructor(show)
-        + resetToDefaults()
-        + addTrailPoint(x, y)
-        + clearTrail()
-        + clearTrail()
-        + initBlurBackgroundCheckbox()
-        + autoDisableHighCostEffects()
+        + loop(timestamp)
+        + toggleTraining()
+        + onPoseResults(results)
     }
-    
-    note as NC
-        **จัดการ Application Flow**
-        Script = Main Controller
-        Keyboard = 15 Shortcuts (เพิ่ม K)
-        Display = 7 Options (เพิ่ม Blur)
-    end note
 }
 
 ' ============================================================================
-' CORE MANAGERS PACKAGE
+' 2. CORE LOGIC (The Brains)
 ' ============================================================================
-
 package "Core Managers" <<Core>> {
+
     class HeuristicsEngine {
-        - config: object
+        - CONFIG: object
         - calibrationData: object
+        - RULES_CONFIG: object
         --
-        + analyze(landmarks): Feedback[]
+        + analyze(landmarks, timestamp, refPath, exercise): Feedback[]
         + setCalibration(data)
+        + updateRuleConfig(level)
+        + setDebugMode(enabled)
         - checkPathShape()
-        - checkElbowSinking()
-        - checkContinuity()
-        - checkContinuity()
         - checkArmRotation()
-        .. +4 more rules ..
+        - checkElbowSinking()
+        - checkWaistInitiation()
+        - checkVerticalStability()
+        - checkSmoothness()
+        - checkContinuity()
+        - checkWeightShift()
+        - checkCoordination()
     }
     
     class CalibrationManager {
         - isActive: boolean
         - calibrationData: object
-        - level: string
         --
         + start()
         + stop()
-        + cancel()
-        + process(landmarks)
-        + setLevel(level)
-        + drawOverlay(ctx)
+        + process(landmarks): object
+        + saveToStorage()
+        + loadFromStorage()
+        - calculateMetrics(landmarks)
     }
     
     class ScoringManager {
-        - totalFrames: int
-        - correctFrames: int
+        - errorCounts: object
+        - totalFrames: number
         --
         + start()
+        + stop(): object
         + recordFrame(feedbacks)
+        + getCurrentScore(): number
         + getSummary(): object
+    }
+    
+    class CameraManager {
+        - pose: Pose
+        - camera: Camera
+        - currentPerformanceMode: string
+        --
+        + start(onResultsCallback)
+        + stop()
+        + setPerformanceMode(mode)
+        + getTargetResolution()
+    }
+    
+    class PerformanceMonitor {
+        - fps: number
+        - qualityLevel: string
+        --
+        + check(currentFps)
+        + reset()
     }
 }
 
 ' ============================================================================
-' DISPLAY MANAGERS PACKAGE (แยกจาก Core เพราะเป็น View/Render)
+' 3. VISUALIZATION (The Eyes)
 ' ============================================================================
-
 package "Display Managers" <<Display>> {
-    class BackgroundManager {
-        - mode: string
-        - blurAmount: number
-        - backgroundImage: Image
-        --
-        + setMode(mode)
-        + setBlurAmount(amount)
-        + drawBackground(ctx, mask, video, width, height)
-    }
-
-    class WebGLManager {
-        - gl: WebGL2RenderingContext
-        - programs: Map
-        --
-        + init(canvas)
-        + createProgram(vs, fs)
-        + applyGaussianBlur(image, horizontal)
-        + drawTexture(image)
-    }
-
     class DrawingManager {
         - ctx: CanvasRenderingContext2D
-        - isMirrored: boolean
         --
-        + drawSkeleton(landmarks)
+        + drawSkeleton(landmarks, errorJoints)
         + drawPath(path, color)
         + drawTrail(history)
         + drawFeedbackPanel(feedbacks)
-        + drawDebugOverlay(debugInfo)
-        + drawGhostSkeleton(landmarks)
-        + drawSilhouetteVideo(video, opacity)
-        + drawSilhouette(mask, color)
-        + drawGestureFeedback(feedback)
-        + drawCircularityIndicator(score)
-        + drawErrorHighlights(landmarks, errors)
+        + drawDebugOverlay(info)
+        + setMirror(enabled)
+    }
+
+    class DisplayController {
+        - options: object
+        --
+        + init()
+        + toggleInstructor()
+        + toggleMirror()
+        + toggleSkeleton()
+        + setVirtualBackground(mode)
     }
     
     class GhostManager {
-        - isPlaying: boolean
-        - opacity: number
-        - silhouetteVideo: HTMLVideoElement
+        + loadReference(exercise)
+        + syncWithVideo(timestamp)
+        + drawGhostSkeleton(ctx)
+    }
+    
+    class BackgroundManager {
+        + setMode(mode)
+        + drawBackground(ctx)
+    }
+    
+    class WebGLManager {
+        + init(canvas)
+        + applyGaussianBlur()
+        + renderSegmentation()
+    }
+}
+
+' ============================================================================
+' 4. INTERACTION (The Interface)
+' ============================================================================
+package "UI Managers" <<UI>> {
+    class UIManager {
+        - currentLang: string
+        - currentTheme: string
+        - translations: object
         --
-        + load(data)
-        + loadSilhouetteVideo(url)
-        + start()
-        + stop()
-        + update()
-        + getCurrentFrame()
-        + setSpeed(speed)
-        + setOpacity(opacity)
+        + init()
+        + toggleLanguage()
+        + toggleTheme()
+        + showNotification(msg)
+        + updateText()
+        + checkMobileDevice()
+    }
+
+    class AudioManager {
+        + speak(text)
+        + playSound(name)
+        + setLanguage(lang)
+    }
+
+    class TutorialManager {
+        + open()
+        + switchTab(index)
+    }
+
+    class ScorePopupManager {
+        + show(summaryData)
+    }
+
+    class RulesConfigManager {
+        + init()
+        + syncUIWithEngine()
+        + setRuleEnabled(rule, enabled)
     }
     
-    ' Force horizontal layout
-    DrawingManager -[hidden]right- GhostManager
-    GhostManager -[hidden]right- BackgroundManager
-    BackgroundManager -[hidden]right- WebGLManager
+    class GestureManager {
+        + detect(landmarks)
+    }
+    
+    class Chatbot {
+        + toggleChat()
+        + sendMessage(text)
+    }
 }
 
 ' ============================================================================
-' UI MANAGERS PACKAGE
+' RELATIONSHIPS
 ' ============================================================================
 
-package "UI & Feedback" <<UI>> {
-    together {
-        class UIManager {
-            - currentLang: string
-            - currentTheme: string
-            --
-            + toggleLanguage()
-            + toggleTheme()
-            + toggleLanguage()
-            + toggleTheme()
-            + showNotification(msg)
-            + closeAllMenus(exceptId)
-        }
-        
-        class WisdomManager {
-            - quotes: array
-            - currentQuote: string
-            --
-            + show()
-            + hide()
-            + updateQuote()
-            + animateSilkReeling()
-        }
-        
-        class ShortcutsManager {
-            - popupId: string
-            --
-            + init()
-            + toggle()
-            + getShortcutsData()
-        }
-        
-        class AudioManager {
-            - enabled: boolean
-            - cooldown: number
-            --
-            + speak(message)
-            + speakFeedback(feedbacks)
-            + waitForIdle(timeout)
-            + getExerciseSpokenText(id, level)
-        }
-        
-        class TutorialManager {
-            - isOpen: boolean
-            --
-            + open(lang)
-            + close()
-        }
-        
-        class ScorePopupManager {
-            --
-            + show(summary, grade)
-            + close()
-        }
-        
-        class RulesConfigManager {
-            --
-            + setRuleEnabled(key, enabled)
-            + resetToDefaults()
-        }
-        
-        class GestureManager {
-            - isReady: boolean
-            --
-            + init()
-            + detectGestures(video)
-        }
-        
-        class FeedbackManager {
-            - formUrl: string
-            --
-            + createButton()
-            + showPopup()
-            + createButton()
-            + showPopup()
-        }
-    }
-    
-    ' Force horizontal layout
-    UIManager -[hidden]right- AudioManager
-    AudioManager -[hidden]right- TutorialManager
-    TutorialManager -[hidden]right- ScorePopupManager
-    ScorePopupManager -[hidden]right- RulesConfigManager
-    RulesConfigManager -[hidden]right- GestureManager
-    GestureManager -[hidden]right- FeedbackManager
-    FeedbackManager -[hidden]right- WisdomManager
-    WisdomManager -[hidden]right- ShortcutsManager
-}
+' Main relationships
+Script --> CameraManager : controls
+Script --> HeuristicsEngine : uses
+Script --> CalibrationManager : manages
+Script --> ScoringManager : manages
+Script --> DrawingManager : renders
+Script --> UIManager : events
+Script --> PerformanceMonitor : updates
 
-' ============================================================================
-' UTILITIES PACKAGE
-' ============================================================================
+' Core Dependencies
+HeuristicsEngine --> CalibrationManager : reads attributes
+PerformanceMonitor --> CameraManager : adjusts
 
-package "Utilities" <<Utility>> {
-    together {
-        class SessionManager <<Utility>> {
-            + getOrCreateUserId()
-            + generateSessionId()
-        }
-        
-        class PathGenerator <<Utility>> {
-            + generateDynamicPath(landmarks, exercise)
-        }
-        
-        class DataExporter <<Utility>> {
-            + exportJSON(data)
-            + exportCSV(data)
-        }
-    }
-    
-    ' Force horizontal layout
-    SessionManager -[hidden]right- PathGenerator
-    PathGenerator -[hidden]right- DataExporter
-}
+' Display Dependencies
+DisplayController ..> DrawingManager : configures
+DisplayController ..> GhostManager : controls
+DisplayController ..> BackgroundManager : controls
+BackgroundManager ..> WebGLManager : uses
 
-' ============================================================================
-' RELATIONSHIPS (Simplified - ไม่มี label เพื่อความสะอาด)
-' ============================================================================
-
-' Controller relationships
-Script --> KeyboardController
-Script --> DisplayController
-Script --> HeuristicsEngine
-Script --> CalibrationManager
-Script --> DrawingManager
-Script --> BackgroundManager
-Script --> UIManager
-Script --> AudioManager
-Script --> TutorialManager
-Script --> GestureManager
-Script --> ShortcutsManager
-
-' Display Controller
-DisplayController --> GhostManager
-DisplayController --> BackgroundManager
-BackgroundManager --> WebGLManager
-KeyboardController ..> DisplayController
-
-' Core relationships
-HeuristicsEngine ..> CalibrationManager
-ScoringManager <.. HeuristicsEngine
-DrawingManager <.. HeuristicsEngine
-
-' UI relationships
-UIManager --> ScorePopupManager
-UIManager --> WisdomManager
-ScoringManager .[norank].> ScorePopupManager
-Script --> FeedbackManager
-RulesConfigManager --> HeuristicsEngine
-
-' Utilities (เส้นประ = indirect)
-Script ..> SessionManager
-Script ..> PathGenerator
-Script ..> DataExporter
-
-' ============================================================================
-' ARCHITECTURE NOTE
-' ============================================================================
-
-note as N1
-    **TaijiFlow AI Architecture**
-    
-    MVC-like Pattern (5 Packages):
-    - **Controllers**: script.js + Keyboard + Display
-    - **Core**: HeuristicsEngine, Calibration, Scoring
-    - **Display**: Drawing, Ghost, Background
-    - **UI**: UIManager + 8 more (Shortcuts added, Chatbot removed)
-    - **Utility**: Session, Path, Exporter
-    
-    Total: 21 Classes, 24 Modules (documented)
-end note
+' UI Dependencies
+UIManager ..> AudioManager : triggers
+UIManager ..> TutorialManager : controls
+UIManager ..> ScorePopupManager : shows
+Script --> RulesConfigManager : configures
 
 @enduml

@@ -1,70 +1,96 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="856px" preserveAspectRatio="none" style="width:1863px;height:856px;background:#00000000;" version="1.1" viewBox="0 0 1863 856" width="1863px" zoomAndPan="magnify"><defs><filter height="300%" id="f19g6p169el04c" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[8eb0b4a53948eeff94f1831843950cca]
-cluster Layer 1: Entry Point--><rect fill="#E3F2FD" filter="url(#f19g6p169el04c)" height="109.2" style="stroke:#000000;stroke-width:1.5;" width="142" x="1276" y="7"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="45" x="1324.5" y="23.952">«entry»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="126" x="1284" y="42.152">Layer 1: Entry Point</text><!--MD5=[17420b9ccd472b42e7d64e769642f4d4]
-cluster Layer 2: Controllers--><rect fill="#E1BEE7" filter="url(#f19g6p169el04c)" height="109.2" style="stroke:#000000;stroke-width:1.5;" width="331" x="1343" y="149.2"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="75" x="1471" y="166.152">«controller»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="127" x="1445" y="184.352">Layer 2: Controllers</text><!--MD5=[faa6a985210441f31e8635d55d12ea70]
-cluster Layer 3: Display Managers--><rect fill="#E0F7FA" filter="url(#f19g6p169el04c)" height="109.2" style="stroke:#000000;stroke-width:1.5;" width="480" x="1369" y="291.4"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="57" x="1580.5" y="308.352">«display»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="163" x="1527.5" y="326.552">Layer 3: Display Managers</text><!--MD5=[67d33d8fbb42aeb8249854b3d30d3b60]
-cluster Layer 3: Core Managers--><rect fill="#FFF3E0" filter="url(#f19g6p169el04c)" height="109.2" style="stroke:#000000;stroke-width:1.5;" width="482" x="1369" y="450.6"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="41" x="1589.5" y="467.552">«core»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="149" x="1535.5" y="485.752">Layer 3: Core Managers</text><!--MD5=[fe9150dec71669d97f46cdf051ab416f]
-cluster Layer 3: UI Managers--><rect fill="#E8F5E9" filter="url(#f19g6p169el04c)" height="268.4" style="stroke:#000000;stroke-width:1.5;" width="1086" x="259" y="291.4"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="25" x="789.5" y="308.352">«ui»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="132" x="736" y="326.552">Layer 3: UI Managers</text><!--MD5=[6fb68d6dba5a186f931e730fd8683cee]
-cluster Layer 4: Utilities--><rect fill="#F3E5F5" filter="url(#f19g6p169el04c)" height="109.2" style="stroke:#000000;stroke-width:1.5;" width="569" x="7" y="592.8"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="48" x="267.5" y="609.752">«utility»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="105" x="239" y="627.952">Layer 4: Utilities</text><!--MD5=[1744e1fcaca07fad4013df6e5a4d34ad]
-cluster Layer 4: Landing Page--><rect fill="#F3E5F5" filter="url(#f19g6p169el04c)" height="109.2" style="stroke:#000000;stroke-width:1.5;" width="155" x="418" y="735"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="48" x="471.5" y="751.952">«utility»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="139" x="426" y="770.152">Layer 4: Landing Page</text><!--MD5=[8725f40aaed825a0aea1b37f2e1deaab]
-cluster Layer 5: External APIs--><rect fill="#FFEBEE" filter="url(#f19g6p169el04c)" height="109.2" style="stroke:#000000;stroke-width:1.5;" width="585" x="597" y="735"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="64" x="857.5" y="751.952">«external»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="139" x="820" y="770.152">Layer 5: External APIs</text><!--MD5=[d2c3bb4e3bf44be22fe413c310a84ccc]
-entity Script--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="67" x="1313.5" y="62"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="47" x="1323.5" y="86.952">script.js</text><!--MD5=[0be722fa590d9fef4a915e3e5e2e778f]
-entity DisplayCtrl--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="125" x="1533.5" y="204.2"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="105" x="1543.5" y="229.152">DisplayController</text><!--MD5=[4000c3a29c8f2ba618e1bf7c6fc9adda]
-entity KeyboardCtrl--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="139" x="1359.5" y="204.2"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="119" x="1369.5" y="229.152">KeyboardController</text><!--MD5=[8119ed2a79c4fe48d4f1d5e003961a3b]
-entity Drawing--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="122" x="1385" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="102" x="1395" y="371.352">DrawingManager</text><!--MD5=[020180a62a6ba8fbfa28c81325ba8aae]
-entity Ghost--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="109" x="1541.5" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="89" x="1551.5" y="371.352">GhostManager</text><!--MD5=[6ea072e0c76ff0b2d52306a521e21ff5]
-entity Background--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="147" x="1685.5" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="127" x="1695.5" y="371.352">BackgroundManager</text><!--MD5=[ed4857f8eaf740408a3e23246f050753]
-entity Heuristics--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="121" x="1385.5" y="505.6"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="101" x="1395.5" y="530.552">HeuristicsEngine</text><!--MD5=[ab4d02a5ae885086a6874c8053cbe896]
-entity Calibration--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="139" x="1541.5" y="505.6"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="119" x="1551.5" y="530.552">CalibrationManager</text><!--MD5=[0e8aaa35e1d7378bac8692a5c3e9af2f]
-entity Scoring--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="119" x="1715.5" y="505.6"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="99" x="1725.5" y="530.552">ScoringManager</text><!--MD5=[c42ed81cef7fdd2e33758127945b9a5b]
-entity UI--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="86" x="284" y="505.6"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="66" x="294" y="530.552">UIManager</text><!--MD5=[9bf38e2b6fa784581ad2b7a500786e52]
-entity Audio--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="108" x="780" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="88" x="790" y="371.352">AudioManager</text><!--MD5=[0e98fb2cf4384dd54966e0f70c39677c]
-entity Gesture--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="120" x="625" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="100" x="635" y="371.352">GestureManager</text><!--MD5=[13b78e0465d0724dd360060cf842e6a1]
-entity ScorePopup--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="147" x="442.5" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="127" x="452.5" y="371.352">ScorePopupManager</text><!--MD5=[0a26018977a3ae7642c71cc487128584]
-entity Tutorial--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="121" x="923.5" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="101" x="933.5" y="371.352">TutorialManager</text><!--MD5=[be414fe22c77bcc5aeb04e611aaa28ac]
-entity RulesConfig--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="146" x="1183" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="126" x="1193" y="371.352">RulesConfigManager</text><!--MD5=[6c1038c56275e06a0f9aecf03cf54920]
-entity Chatbot--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="69" x="1079.5" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="49" x="1089.5" y="371.352">Chatbot</text><!--MD5=[d1565773b0cf8f2d27eb366b6f473ba2]
-entity Feedback--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="132" x="275" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="112" x="285" y="371.352">FeedbackManager</text><!--MD5=[edcdcc4a1bbe04bafa0ded76de3de705]
-entity Exporter--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="100" x="460" y="647.8"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="80" x="470" y="672.752">DataExporter</text><!--MD5=[b6715f68abc5ceb99b5a1d5d1c8cd4fd]
-entity PathGen--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="109" x="23.5" y="647.8"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="89" x="33.5" y="672.752">PathGenerator</text><!--MD5=[ec12e68d482471526d41adfe4cff0e6f]
-entity Session--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="118" x="168" y="647.8"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="98" x="178" y="672.752">SessionManager</text><!--MD5=[a15921272b0ba6be1c0e0fbbb47c631e]
-entity Translations--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="105" x="320.5" y="647.8"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="85" x="330.5" y="672.752">translations.js</text><!--MD5=[628c2e449127a12df8cb9b0eddf59bc8]
-entity SilkAnim--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="119" x="437.5" y="790"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="99" x="447.5" y="814.952">silk-animation.js</text><!--MD5=[e86360a2a0b2b59313154159dd50eceb]
-entity MPPose--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="114" x="780" y="790"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="94" x="790" y="814.952">MediaPipe Pose</text><!--MD5=[26fe4ee09733cd8b05f5dc198f526905]
-entity MPGesture--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="132" x="613" y="790"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="112" x="623" y="814.952">MediaPipe Gesture</text><!--MD5=[8ce744e8092058499958f6e5d5e77a38]
-entity WebSpeech--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="117" x="928.5" y="790"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="97" x="938.5" y="814.952">Web Speech API</text><!--MD5=[7a37ba3f7713e16f7df05a1c781e9ab7]
-entity Gemini--><rect fill="#FEFECE" filter="url(#f19g6p169el04c)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="85" x="1080.5" y="790"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="65" x="1090.5" y="814.952">Gemini API</text><!--MD5=[d7191039cd95b8ea4db27fbf880548bd]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="854px" preserveAspectRatio="none" style="width:3024px;height:854px;background:#00000000;" version="1.1" viewBox="0 0 3024 854" width="3024px" zoomAndPan="magnify"><defs><filter height="300%" id="f1n0ux6an3s95p" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[8eb0b4a53948eeff94f1831843950cca]
+cluster Layer 1: Entry Point--><rect fill="#E3F2FD" filter="url(#f1n0ux6an3s95p)" height="109.2" style="stroke:#000000;stroke-width:1.5;" width="142" x="1730" y="7"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="45" x="1778.5" y="23.952">«entry»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="126" x="1738" y="42.152">Layer 1: Entry Point</text><!--MD5=[17420b9ccd472b42e7d64e769642f4d4]
+cluster Layer 2: Controllers--><rect fill="#E1BEE7" filter="url(#f1n0ux6an3s95p)" height="109.2" style="stroke:#000000;stroke-width:1.5;" width="331" x="1768" y="149.2"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="75" x="1896" y="166.152">«controller»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="127" x="1870" y="184.352">Layer 2: Controllers</text><!--MD5=[faa6a985210441f31e8635d55d12ea70]
+cluster Layer 3: Display Managers--><rect fill="#E0F7FA" filter="url(#f1n0ux6an3s95p)" height="109.2" style="stroke:#000000;stroke-width:1.5;" width="632" x="1891" y="291.4"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="57" x="2178.5" y="308.352">«display»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="163" x="2125.5" y="326.552">Layer 3: Display Managers</text><!--MD5=[67d33d8fbb42aeb8249854b3d30d3b60]
+cluster Layer 3: Core Managers--><rect fill="#FFF3E0" filter="url(#f1n0ux6an3s95p)" height="109.2" style="stroke:#000000;stroke-width:1.5;" width="818" x="1433" y="450.6"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="41" x="1821.5" y="467.552">«core»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="149" x="1767.5" y="485.752">Layer 3: Core Managers</text><!--MD5=[fe9150dec71669d97f46cdf051ab416f]
+cluster Layer 3: UI Managers--><rect fill="#E8F5E9" filter="url(#f1n0ux6an3s95p)" height="550.8" style="stroke:#000000;stroke-width:1.5;" width="1352" x="7" y="291.4"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="25" x="670.5" y="308.352">«ui»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="132" x="617" y="326.552">Layer 3: UI Managers</text><!--MD5=[6fb68d6dba5a186f931e730fd8683cee]
+cluster Layer 4: Utilities--><rect fill="#F3E5F5" filter="url(#f1n0ux6an3s95p)" height="249.4" style="stroke:#000000;stroke-width:1.5;" width="841" x="2171" y="592.8"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="48" x="2567.5" y="609.752">«utility»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="105" x="2539" y="627.952">Layer 4: Utilities</text><!--MD5=[1744e1fcaca07fad4013df6e5a4d34ad]
+cluster Layer 4: Landing Page--><rect fill="#F3E5F5" filter="url(#f1n0ux6an3s95p)" height="109.2" style="stroke:#000000;stroke-width:1.5;" width="155" x="1992" y="733"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="48" x="2045.5" y="749.952">«utility»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="139" x="2000" y="768.152">Layer 4: Landing Page</text><!--MD5=[8725f40aaed825a0aea1b37f2e1deaab]
+cluster Layer 5: External APIs--><rect fill="#FFEBEE" filter="url(#f1n0ux6an3s95p)" height="109.2" style="stroke:#000000;stroke-width:1.5;" width="585" x="1383" y="733"/><text fill="#000000" font-family="Sarabun" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="64" x="1643.5" y="749.952">«external»</text><text fill="#000000" font-family="Sarabun" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="139" x="1606" y="768.152">Layer 5: External APIs</text><!--MD5=[d2c3bb4e3bf44be22fe413c310a84ccc]
+entity Script--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="67" x="1767.5" y="62"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="47" x="1777.5" y="86.952">script.js</text><!--MD5=[0be722fa590d9fef4a915e3e5e2e778f]
+entity DisplayCtrl--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="125" x="1958.5" y="204.2"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="105" x="1968.5" y="229.152">DisplayController</text><!--MD5=[4000c3a29c8f2ba618e1bf7c6fc9adda]
+entity KeyboardCtrl--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="139" x="1784.5" y="204.2"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="119" x="1794.5" y="229.152">KeyboardController</text><!--MD5=[8119ed2a79c4fe48d4f1d5e003961a3b]
+entity Drawing--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="122" x="2385" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="102" x="2395" y="371.352">DrawingManager</text><!--MD5=[020180a62a6ba8fbfa28c81325ba8aae]
+entity Ghost--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="109" x="2089.5" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="89" x="2099.5" y="371.352">GhostManager</text><!--MD5=[6ea072e0c76ff0b2d52306a521e21ff5]
+entity Background--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="147" x="1907.5" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="127" x="1917.5" y="371.352">BackgroundManager</text><!--MD5=[f4c6b9373aad896f395bb97ffc7eb56b]
+entity WebGL--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="117" x="2233.5" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="97" x="2243.5" y="371.352">WebGLManager</text><!--MD5=[ed4857f8eaf740408a3e23246f050753]
+entity Heuristics--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="121" x="2113.5" y="505.6"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="101" x="2123.5" y="530.552">HeuristicsEngine</text><!--MD5=[ab4d02a5ae885086a6874c8053cbe896]
+entity Calibration--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="139" x="1631.5" y="505.6"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="119" x="1641.5" y="530.552">CalibrationManager</text><!--MD5=[0e8aaa35e1d7378bac8692a5c3e9af2f]
+entity Scoring--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="119" x="1959.5" y="505.6"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="99" x="1969.5" y="530.552">ScoringManager</text><!--MD5=[c8f729b8e352a0860913e8756c4779b6]
+entity Camera--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="119" x="1805.5" y="505.6"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="99" x="1815.5" y="530.552">CameraManager</text><!--MD5=[08975c3eef56000ff826e606cf2a3b15]
+entity PerfMon--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="147" x="1449.5" y="505.6"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="127" x="1459.5" y="530.552">PerformanceMonitor</text><!--MD5=[c42ed81cef7fdd2e33758127945b9a5b]
+entity UI--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="86" x="855" y="505.6"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="66" x="865" y="530.552">UIManager</text><!--MD5=[0d5ea8baa95befbce1a737de2e377b90]
+entity Shortcuts--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="132" x="1054" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="112" x="1064" y="371.352">ShortcutsManager</text><!--MD5=[0e98fb2cf4384dd54966e0f70c39677c]
+entity Gesture--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="120" x="182" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="100" x="192" y="371.352">GestureManager</text><!--MD5=[9bf38e2b6fa784581ad2b7a500786e52]
+entity Audio--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="108" x="504" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="88" x="514" y="371.352">AudioManager</text><!--MD5=[13b78e0465d0724dd360060cf842e6a1]
+entity ScorePopup--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="147" x="824.5" y="647.8"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="127" x="834.5" y="672.752">ScorePopupManager</text><!--MD5=[0a26018977a3ae7642c71cc487128584]
+entity Tutorial--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="121" x="1221.5" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="101" x="1231.5" y="371.352">TutorialManager</text><!--MD5=[d1565773b0cf8f2d27eb366b6f473ba2]
+entity Feedback--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="132" x="337" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="112" x="347" y="371.352">FeedbackManager</text><!--MD5=[e0bcaa670aa5036c3461a3803b9f3f9b]
+entity Wisdom--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="122" x="750" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="102" x="760" y="371.352">WisdomManager</text><!--MD5=[be414fe22c77bcc5aeb04e611aaa28ac]
+entity RulesConfig--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="146" x="1062" y="788"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="126" x="1072" y="812.952">RulesConfigManager</text><!--MD5=[30b7b1562c85ecbe9a0361db8e7a0d98]
+entity Lighting--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="124" x="23" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="104" x="33" y="371.352">LightingManager</text><!--MD5=[3d57eac3cac8e23720822365a9577388]
+entity Debug--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="113" x="906.5" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="93" x="916.5" y="371.352">DebugManager</text><!--MD5=[6c1038c56275e06a0f9aecf03cf54920]
+entity Chatbot--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="69" x="646.5" y="346.4"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="49" x="656.5" y="371.352">Chatbot</text><!--MD5=[edcdcc4a1bbe04bafa0ded76de3de705]
+entity Exporter--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="100" x="2616" y="647.8"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="80" x="2626" y="672.752">DataExporter</text><!--MD5=[b6715f68abc5ceb99b5a1d5d1c8cd4fd]
+entity PathGen--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="109" x="2341.5" y="647.8"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="89" x="2351.5" y="672.752">PathGenerator</text><!--MD5=[ec12e68d482471526d41adfe4cff0e6f]
+entity Session--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="118" x="2751" y="647.8"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="98" x="2761" y="672.752">SessionManager</text><!--MD5=[a15921272b0ba6be1c0e0fbbb47c631e]
+entity Translations--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="105" x="2194.5" y="788"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="85" x="2204.5" y="812.952">translations.js</text><!--MD5=[0c2df79a1e499e1b07578ac3e3431e29]
+entity TimeUtils--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="91" x="2904.5" y="647.8"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="71" x="2914.5" y="672.752">time_utils.js</text><!--MD5=[785622be957bd52ba17895f5076f61cc]
+entity I18n--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="119" x="2187.5" y="647.8"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="99" x="2197.5" y="672.752">i18n_manager.js</text><!--MD5=[8f771eac260c65a718c3a25459f8bd44]
+entity MathUtils--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="96" x="2485" y="647.8"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="76" x="2495" y="672.752">math_utils.js</text><!--MD5=[628c2e449127a12df8cb9b0eddf59bc8]
+entity SilkAnim--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="119" x="2011.5" y="788"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="99" x="2021.5" y="812.952">silk-animation.js</text><!--MD5=[e86360a2a0b2b59313154159dd50eceb]
+entity MPPose--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="114" x="1838" y="788"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="94" x="1848" y="812.952">MediaPipe Pose</text><!--MD5=[26fe4ee09733cd8b05f5dc198f526905]
+entity MPGesture--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="132" x="1399" y="788"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="112" x="1409" y="812.952">MediaPipe Gesture</text><!--MD5=[8ce744e8092058499958f6e5d5e77a38]
+entity WebSpeech--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="117" x="1565.5" y="788"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="97" x="1575.5" y="812.952">Web Speech API</text><!--MD5=[7a37ba3f7713e16f7df05a1c781e9ab7]
+entity Gemini--><rect fill="#FEFECE" filter="url(#f1n0ux6an3s95p)" height="38.2" style="stroke:#000000;stroke-width:1.5;" width="85" x="1717.5" y="788"/><text fill="#000000" font-family="Sarabun" font-size="14" lengthAdjust="spacing" textLength="65" x="1727.5" y="812.952">Gemini API</text><!--MD5=[25cfa294ef7f86d056191ad989ff1335]
+link UI to ScorePopup--><!--MD5=[526f855e68220de4f777e1b30b8dac83]
+link ScorePopup to RulesConfig--><!--MD5=[d7191039cd95b8ea4db27fbf880548bd]
 link Script to DisplayCtrl--><!--MD5=[d7191039cd95b8ea4db27fbf880548bd]
-link Script to DisplayCtrl--><path d="M1380.9,77.2 C1453.37,77.2 1616.83,77.2 1616.83,77.2 C1616.83,77.2 1616.83,197.39 1616.83,197.39 " fill="none" id="Script-to-DisplayCtrl-1" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1616.83,202.39,1620.83,193.39,1616.83,197.39,1612.83,193.39,1616.83,202.39" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[c9a440a07df6d8afe68b766667da87e5]
+link Script to DisplayCtrl--><path d="M1834.99,93.2 C1901.38,93.2 2041.83,93.2 2041.83,93.2 C2041.83,93.2 2041.83,197.31 2041.83,197.31 " fill="none" id="Script-to-DisplayCtrl-1" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2041.83,202.31,2045.83,193.31,2041.83,197.31,2037.83,193.31,2041.83,202.31" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[c9a440a07df6d8afe68b766667da87e5]
 link DisplayCtrl to Heuristics--><!--MD5=[9831459d3839155dba8b8d1e08131e80]
 link Heuristics to Exporter--><!--MD5=[1ea94a2473a910935b75aa95410ced4a]
 link Exporter to MPPose--><!--MD5=[fc48254c2482732163a86460378c06ca]
 link Drawing to Heuristics--><!--MD5=[3438851c9f5f82abe281bc48da691428]
 link Heuristics to UI--><!--MD5=[3e852802c00d1f6eeb0b2a710b5eeae3]
 link Exporter to SilkAnim--><!--MD5=[f5286bfc4d8bea6d8683c4958ed8dafe]
-link Script to KeyboardCtrl--><path d="M1370,100.57 C1370,100.57 1370,197.55 1370,197.55 " fill="none" id="Script-to-KeyboardCtrl" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1370,202.55,1374,193.55,1370,197.55,1366,193.55,1370,202.55" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[e1545ed3ba3b07e3012e7d25c9fa60bc]
-link Script to Heuristics--><path d="M1344.25,100.64 C1344.25,185.3 1344.25,516.2 1344.25,516.2 C1344.25,516.2 1378.54,516.2 1378.54,516.2 " fill="none" id="Script-to-Heuristics" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1383.54,516.2,1374.54,512.2,1378.54,516.2,1374.54,520.2,1383.54,516.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[5ee62b36886971867acfe45d13844bfd]
-link Script to Calibration--><path d="M1380.9,69.2 C1463.7,69.2 1669.5,69.2 1669.5,69.2 C1669.5,69.2 1669.5,498.61 1669.5,498.61 " fill="none" id="Script-to-Calibration" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1669.5,503.61,1673.5,494.61,1669.5,498.61,1665.5,494.61,1669.5,503.61" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[b8232004eeb18c477ad3e7d11fd376b9]
-link Script to Scoring--><path d="M1349.33,100.68 C1349.33,176.3 1349.33,445.2 1349.33,445.2 C1349.33,445.2 1774,445.2 1774,445.2 C1774,445.2 1774,498.94 1774,498.94 " fill="none" id="Script-to-Scoring" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1774,503.94,1778,494.94,1774,498.94,1770,494.94,1774,503.94" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[72f9911a158d5fd6eaca15a30ba5ca85]
-link Script to Drawing--><path d="M1354.42,100.63 C1354.42,164.81 1354.42,365.2 1354.42,365.2 C1354.42,365.2 1378.14,365.2 1378.14,365.2 " fill="none" id="Script-to-Drawing" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1383.14,365.2,1374.14,361.2,1378.14,365.2,1374.14,369.2,1383.14,365.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[5c0354e057ac8abaa96212d5bbec1386]
-link Script to Ghost--><path d="M1380.82,92.2 C1431.23,92.2 1520.25,92.2 1520.25,92.2 C1520.25,92.2 1520.25,365.2 1520.25,365.2 C1520.25,365.2 1534.84,365.2 1534.84,365.2 " fill="none" id="Script-to-Ghost" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1539.84,365.2,1530.84,361.2,1534.84,365.2,1530.84,369.2,1539.84,365.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[211f02de95125c81c4e438896e784718]
-link Script to UI--><path d="M1334.08,100.7 C1334.08,184.84 1334.08,511.2 1334.08,511.2 C1334.08,511.2 376.79,511.2 376.79,511.2 " fill="none" id="Script-to-UI" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="371.79,511.2,380.79,515.2,376.79,511.2,380.79,507.2,371.79,511.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[9fd97801d6b83f1f673f048a48616888]
-link Script to Audio--><path d="M1313.34,92.2 C1199.21,92.2 834,92.2 834,92.2 C834,92.2 834,339.77 834,339.77 " fill="none" id="Script-to-Audio" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="834,344.77,838,335.77,834,339.77,830,335.77,834,344.77" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[9b79967d345ce9c26470d70a33d07e87]
-link Script to Gesture--><path d="M1313.26,85.2 C1178.36,85.2 685,85.2 685,85.2 C685,85.2 685,339.72 685,339.72 " fill="none" id="Script-to-Gesture" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="685,344.72,689,335.72,685,339.72,681,335.72,685,344.72" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[1ccc242dbb115e28c3cb596311903a95]
-link DisplayCtrl to Ghost--><path d="M1596,242.77 C1596,242.77 1596,339.75 1596,339.75 " fill="none" id="DisplayCtrl-to-Ghost" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1596,344.75,1600,335.75,1596,339.75,1592,335.75,1596,344.75" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[6ec7400df383af58e8f695710b4b1bd0]
-link DisplayCtrl to Background--><path d="M1654.5,242.73 C1654.5,281.6 1654.5,365.2 1654.5,365.2 C1654.5,365.2 1678.49,365.2 1678.49,365.2 " fill="none" id="DisplayCtrl-to-Background" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1683.49,365.2,1674.49,361.2,1678.49,365.2,1674.49,369.2,1683.49,365.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[935beb6320473c26f2ff6fb0ff99c9eb]
-link KeyboardCtrl to Tutorial--><path d="M1359.47,223.2 C1234.31,223.2 984,223.2 984,223.2 C984,223.2 984,339.5 984,339.5 " fill="none" id="KeyboardCtrl-to-Tutorial" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="984,344.5,988,335.5,984,339.5,980,335.5,984,344.5" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[ccb1a771420d4e1e6765246ebaf27923]
-link RulesConfig to Heuristics--><path d="M1256,385.03 C1256,427.04 1256,522.2 1256,522.2 C1256,522.2 1378.59,522.2 1378.59,522.2 " fill="none" id="RulesConfig-to-Heuristics" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1383.59,522.2,1374.59,518.2,1378.59,522.2,1374.59,526.2,1383.59,522.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[5b73fa4b65b01648447be545ceee584c]
-link UI to Translations--><path d="M345.25,544.17 C345.25,544.17 345.25,641.15 345.25,641.15 " fill="none" id="UI-to-Translations" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="345.25,646.15,349.25,637.15,345.25,641.15,341.25,637.15,345.25,646.15" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[62303a5bc9366d96e550fb5983d6b968]
-link Feedback to UI--><path d="M327,385.02 C327,385.02 327,499 327,499 " fill="none" id="Feedback-to-UI" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="327,504,331,495,327,499,323,495,327,504" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="123" x="311" y="431.484">Reads State (Window)</text><!--MD5=[4d4b06ca09e931edeaae5d322dbbd455]
-link Feedback to Translations--><path d="M388.5,384.81 C388.5,384.81 388.5,640.84 388.5,640.84 " fill="none" id="Feedback-to-Translations" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="388.5,645.84,392.5,636.84,388.5,640.84,384.5,636.84,388.5,645.84" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[ed021e1999beb45e9c028e8ee97c3fa2]
-link ScorePopup to Translations--><path d="M451.25,384.83 C451.25,451.42 451.25,667.2 451.25,667.2 C451.25,667.2 432.14,667.2 432.14,667.2 " fill="none" id="ScorePopup-to-Translations" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="427.14,667.2,436.14,671.2,432.14,667.2,436.14,663.2,427.14,667.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[946961918582c617df6d290e0c1a01ba]
-link Heuristics to MPPose--><path d="M1385.22,538.2 C1233.83,538.2 852,538.2 852,538.2 C852,538.2 852,783.1 852,783.1 " fill="none" id="Heuristics-to-MPPose" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="852,788.1,856,779.1,852,783.1,848,779.1,852,788.1" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[36278df54b849fb29fb533014afc69dc]
-link Gesture to MPGesture--><path d="M685,384.85 C685,384.85 685,783.14 685,783.14 " fill="none" id="Gesture-to-MPGesture" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="685,788.14,689,779.14,685,783.14,681,779.14,685,788.14" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[5d2968167655c2a7f41e07f4dbeeaf82]
-link Audio to WebSpeech--><path d="M888.32,365.2 C899.92,365.2 908.75,365.2 908.75,365.2 C908.75,365.2 908.75,809.2 908.75,809.2 C908.75,809.2 921.58,809.2 921.58,809.2 " fill="none" id="Audio-to-WebSpeech" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="926.58,809.2,917.58,805.2,921.58,809.2,917.58,813.2,926.58,809.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[fa2bf33665ed016c01ebce86b27bf280]
-link Chatbot to Gemini--><path d="M1114.5,384.85 C1114.5,384.85 1114.5,783.14 1114.5,783.14 " fill="none" id="Chatbot-to-Gemini" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1114.5,788.14,1118.5,779.14,1114.5,783.14,1110.5,779.14,1114.5,788.14" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[e423245bf529dda2ca0d392dbadbe4d7]
-link Script to Exporter--><path d="M1339.17,100.7 C1339.17,201.86 1339.17,660.2 1339.17,660.2 C1339.17,660.2 566.82,660.2 566.82,660.2 " fill="none" id="Script-to-Exporter" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="561.82,660.2,570.82,664.2,566.82,660.2,570.82,656.2,561.82,660.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[05b4aa5e4a30750a603c2dd2ad4a0c96]
-link Script to PathGen--><path d="M1313.06,69.2 C1111.25,69.2 78,69.2 78,69.2 C78,69.2 78,640.84 78,640.84 " fill="none" id="Script-to-PathGen" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="78,645.84,82,636.84,78,640.84,74,636.84,78,645.84" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[d496892f9e6690f6ee7590dbb1fb8031]
-link Script to Session--><path d="M1313.01,77.2 C1125.06,77.2 221.5,77.2 221.5,77.2 C221.5,77.2 221.5,641.1 221.5,641.1 " fill="none" id="Script-to-Session" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="221.5,646.1,225.5,637.1,221.5,641.1,217.5,637.1,221.5,646.1" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[249adf4b898cd79f750be7327cec438f]
+link Script to KeyboardCtrl--><path d="M1809.5,100.57 C1809.5,100.57 1809.5,197.55 1809.5,197.55 " fill="none" id="Script-to-KeyboardCtrl" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1809.5,202.55,1813.5,193.55,1809.5,197.55,1805.5,193.55,1809.5,202.55" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[e1545ed3ba3b07e3012e7d25c9fa60bc]
+link Script to Heuristics--><path d="M1834.73,86.2 C1934.59,86.2 2221.83,86.2 2221.83,86.2 C2221.83,86.2 2221.83,498.78 2221.83,498.78 " fill="none" id="Script-to-Heuristics" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2221.83,503.78,2225.83,494.78,2221.83,498.78,2217.83,494.78,2221.83,503.78" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[5ee62b36886971867acfe45d13844bfd]
+link Script to Calibration--><path d="M1774,100.45 C1774,185.04 1774,518.2 1774,518.2 C1774,518.2 1773.69,518.2 1773.69,518.2 " fill="none" id="Script-to-Calibration" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1772.38,518.2,1781.38,522.2,1777.38,518.2,1781.38,514.2,1772.38,518.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[b8232004eeb18c477ad3e7d11fd376b9]
+link Script to Scoring--><path d="M1781,100.68 C1781,178.95 1781,465.2 1781,465.2 C1781,465.2 2007,465.2 2007,465.2 C2007,465.2 2007,498.7 2007,498.7 " fill="none" id="Script-to-Scoring" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2007,503.7,2011,494.7,2007,498.7,2003,494.7,2007,503.7" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[fe9eec8f154055226d1a62126841409e]
+link Script to Camera--><path d="M1777.5,100.44 C1777.5,186.59 1777.5,531.2 1777.5,531.2 C1777.5,531.2 1798.67,531.2 1798.67,531.2 " fill="none" id="Script-to-Camera" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1803.67,531.2,1794.67,527.2,1798.67,531.2,1794.67,535.2,1803.67,531.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[b915dc73952632ff28c59e9b0ee2f0e3]
+link Script to PerfMon--><path d="M1767.19,95.2 C1693.1,95.2 1523,95.2 1523,95.2 C1523,95.2 1523,498.62 1523,498.62 " fill="none" id="Script-to-PerfMon" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1523,503.62,1527,494.62,1523,498.62,1519,494.62,1523,503.62" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[72f9911a158d5fd6eaca15a30ba5ca85]
+link Script to Drawing--><path d="M1834.77,76.2 C1967.48,76.2 2446,76.2 2446,76.2 C2446,76.2 2446,339.56 2446,339.56 " fill="none" id="Script-to-Drawing" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2446,344.56,2450,335.56,2446,339.56,2442,335.56,2446,344.56" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[5c0354e057ac8abaa96212d5bbec1386]
+link Script to Ghost--><path d="M1834.83,90.2 C1921.36,90.2 2144,90.2 2144,90.2 C2144,90.2 2144,339.63 2144,339.63 " fill="none" id="Script-to-Ghost" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2144,344.63,2148,335.63,2144,339.63,2140,335.63,2144,344.63" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[7362dd07e6e8363329d23405f7975f72]
+link Script to WebGL--><path d="M1834.75,83.2 C1945.68,83.2 2292,83.2 2292,83.2 C2292,83.2 2292,339.58 2292,339.58 " fill="none" id="Script-to-WebGL" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2292,344.58,2296,335.58,2292,339.58,2288,335.58,2292,344.58" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[211f02de95125c81c4e438896e784718]
+link Script to UI--><path d="M1767.2,81.2 C1602.19,81.2 889.25,81.2 889.25,81.2 C889.25,81.2 889.25,498.84 889.25,498.84 " fill="none" id="Script-to-UI" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="889.25,503.84,893.25,494.84,889.25,498.84,885.25,494.84,889.25,503.84" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[9fd97801d6b83f1f673f048a48616888]
+link Script to Audio--><path d="M1767.11,76.2 C1567.89,76.2 558,76.2 558,76.2 C558,76.2 558,339.56 558,339.56 " fill="none" id="Script-to-Audio" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="558,344.56,562,335.56,558,339.56,554,335.56,558,344.56" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[9b79967d345ce9c26470d70a33d07e87]
+link Script to Gesture--><path d="M1767.35,71.2 C1540.39,71.2 242,71.2 242,71.2 C242,71.2 242,339.68 242,339.68 " fill="none" id="Script-to-Gesture" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="242,344.68,246,335.68,242,339.68,238,335.68,242,344.68" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[d6a086324598d427722dacd583d6b81e]
+link Script to Lighting--><path d="M1767.11,67.2 C1526.4,67.2 85,67.2 85,67.2 C85,67.2 85,339.41 85,339.41 " fill="none" id="Script-to-Lighting" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="85,344.41,89,335.41,85,339.41,81,335.41,85,344.41" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[b2f34066b148642b49d247292b349394]
+link Script to Debug--><path d="M1767.11,86.2 C1610.34,86.2 963,86.2 963,86.2 C963,86.2 963,339.79 963,339.79 " fill="none" id="Script-to-Debug" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="963,344.79,967,335.79,963,339.79,959,335.79,963,344.79" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[c45448d14dbe07461349ad26e6644a9d]
+link Script to Shortcuts--><path d="M1767.09,90.2 C1626.67,90.2 1098,90.2 1098,90.2 C1098,90.2 1098,339.63 1098,339.63 " fill="none" id="Script-to-Shortcuts" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1098,344.63,1102,335.63,1098,339.63,1094,335.63,1098,344.63" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[1ccc242dbb115e28c3cb596311903a95]
+link DisplayCtrl to Ghost--><path d="M2066.5,242.73 C2066.5,281.6 2066.5,365.2 2066.5,365.2 C2066.5,365.2 2082.82,365.2 2082.82,365.2 " fill="none" id="DisplayCtrl-to-Ghost" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2087.82,365.2,2078.82,361.2,2082.82,365.2,2078.82,369.2,2087.82,365.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[6ec7400df383af58e8f695710b4b1bd0]
+link DisplayCtrl to Background--><path d="M2006.5,242.77 C2006.5,242.77 2006.5,339.75 2006.5,339.75 " fill="none" id="DisplayCtrl-to-Background" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2006.5,344.75,2010.5,335.75,2006.5,339.75,2002.5,335.75,2006.5,344.75" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[935beb6320473c26f2ff6fb0ff99c9eb]
+link KeyboardCtrl to Tutorial--><path d="M1793.5,242.73 C1793.5,281.6 1793.5,365.2 1793.5,365.2 C1793.5,365.2 1349.45,365.2 1349.45,365.2 " fill="none" id="KeyboardCtrl-to-Tutorial" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1344.45,365.2,1353.45,369.2,1349.45,365.2,1353.45,361.2,1344.45,365.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[f491120dc49564237d49c441f8a0c56d]
+link KeyboardCtrl to Shortcuts--><path d="M1784.11,223.2 C1604.72,223.2 1142,223.2 1142,223.2 C1142,223.2 1142,339.5 1142,339.5 " fill="none" id="KeyboardCtrl-to-Shortcuts" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1142,344.5,1146,335.5,1142,339.5,1138,335.5,1142,344.5" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[ccb1a771420d4e1e6765246ebaf27923]
+link RulesConfig to Heuristics--><path d="M1197,787.69 C1197,759.67 1197,711.2 1197,711.2 C1197,711.2 2127.1,711.2 2127.1,711.2 C2127.1,711.2 2127.1,550.47 2127.1,550.47 " fill="none" id="RulesConfig-to-Heuristics" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2127.1,545.47,2123.1,554.47,2127.1,550.47,2131.1,554.47,2127.1,545.47" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[fbf6b356166ee65eda4bb25e33e67bee]
+link UI to I18n--><path d="M941.38,531.2 C1028.13,531.2 1214.75,531.2 1214.75,531.2 C1214.75,531.2 1214.75,657.2 1214.75,657.2 C1214.75,657.2 2180.53,657.2 2180.53,657.2 " fill="none" id="UI-to-I18n" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2185.53,657.2,2176.53,653.2,2180.53,657.2,2176.53,661.2,2185.53,657.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[bae71f71109d51234a5e44f50311443d]
+link I18n to Translations--><path d="M2247,686.39 C2247,686.39 2247,781.26 2247,781.26 " fill="none" id="I18n-to-Translations" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2247,786.26,2251,777.26,2247,781.26,2243,777.26,2247,786.26" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[62303a5bc9366d96e550fb5983d6b968]
+link Feedback to UI--><path d="M425,384.96 C425,427.34 425,524.2 425,524.2 C425,524.2 848.26,524.2 848.26,524.2 " fill="none" id="Feedback-to-UI" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="853.26,524.2,844.26,520.2,848.26,524.2,844.26,528.2,853.26,524.2" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="123" x="641" y="431.484">Reads State (Window)</text><!--MD5=[878bffd876cf301cba50e8e70660ff58]
+link Feedback to I18n--><path d="M381,384.77 C381,440.22 381,596.2 381,596.2 C381,596.2 2203.17,596.2 2203.17,596.2 C2203.17,596.2 2203.17,641.07 2203.17,641.07 " fill="none" id="Feedback-to-I18n" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2203.17,646.07,2207.17,637.07,2203.17,641.07,2199.17,637.07,2203.17,646.07" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[7540ab37581f09beb97264abe27d5de2]
+link ScorePopup to I18n--><path d="M971.97,667.2 C971.97,667.2 2180.8,667.2 2180.8,667.2 " fill="none" id="ScorePopup-to-I18n" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2185.8,667.2,2176.8,663.2,2180.8,667.2,2176.8,671.2,2185.8,667.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[3c394c54c7a59740d4970467c05a0c12]
+link Debug to PerfMon--><path d="M995.5,384.84 C995.5,425.93 995.5,518.2 995.5,518.2 C995.5,518.2 1442.58,518.2 1442.58,518.2 " fill="none" id="Debug-to-PerfMon" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1447.58,518.2,1438.58,514.2,1442.58,518.2,1438.58,522.2,1447.58,518.2" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Sarabun" font-size="13" lengthAdjust="spacing" textLength="58" x="1455" y="431.484">Reads FPS</text><!--MD5=[153028c76f31db5c26b8c71930f11ec3]
+link Wisdom to I18n--><path d="M839.75,384.82 C839.75,438.1 839.75,583.2 839.75,583.2 C839.75,583.2 2218.83,583.2 2218.83,583.2 C2218.83,583.2 2218.83,640.97 2218.83,640.97 " fill="none" id="Wisdom-to-I18n" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2218.83,645.97,2222.83,636.97,2218.83,640.97,2214.83,636.97,2218.83,645.97" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[a70bdb2693558c27d835ed4747e352fe]
+link Heuristics to MathUtils--><path d="M2234.87,534.2 C2329.13,534.2 2499.67,534.2 2499.67,534.2 C2499.67,534.2 2499.67,640.81 2499.67,640.81 " fill="none" id="Heuristics-to-MathUtils" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2499.67,645.81,2503.67,636.81,2499.67,640.81,2495.67,636.81,2499.67,645.81" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[353ed86adf3eb8c0fabb5988217eae4d]
+link Scoring to MathUtils--><path d="M2045,544.26 C2045,556.59 2045,570.2 2045,570.2 C2045,570.2 2492.33,570.2 2492.33,570.2 C2492.33,570.2 2492.33,640.82 2492.33,640.82 " fill="none" id="Scoring-to-MathUtils" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="2492.33,645.82,2496.33,636.82,2492.33,640.82,2488.33,636.82,2492.33,645.82" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[946961918582c617df6d290e0c1a01ba]
+link Heuristics to MPPose--><path d="M2123.7,544.2 C2123.7,575.92 2123.7,635.2 2123.7,635.2 C2123.7,635.2 1933.67,635.2 1933.67,635.2 C1933.67,635.2 1933.67,781.2 1933.67,781.2 " fill="none" id="Heuristics-to-MPPose" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1933.67,786.2,1937.67,777.2,1933.67,781.2,1929.67,777.2,1933.67,786.2" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[1ac1e897ae7ee0060b2418b4b3413d1c]
+link Camera to MPPose--><path d="M1881.25,544.11 C1881.25,544.11 1881.25,781.04 1881.25,781.04 " fill="none" id="Camera-to-MPPose" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1881.25,786.04,1885.25,777.04,1881.25,781.04,1877.25,777.04,1881.25,786.04" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[36278df54b849fb29fb533014afc69dc]
+link Gesture to MPGesture--><path d="M242,385.05 C242,402.46 242,425.2 242,425.2 C242,425.2 1424.25,425.2 1424.25,425.2 C1424.25,425.2 1424.25,781.12 1424.25,781.12 " fill="none" id="Gesture-to-MPGesture" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1424.25,786.12,1428.25,777.12,1424.25,781.12,1420.25,777.12,1424.25,786.12" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[5d2968167655c2a7f41e07f4dbeeaf82]
+link Audio to WebSpeech--><path d="M558,384.79 C558,444.49 558,622.2 558,622.2 C558,622.2 1581,622.2 1581,622.2 C1581,622.2 1581,781.15 1581,781.15 " fill="none" id="Audio-to-WebSpeech" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1581,786.15,1585,777.15,1581,781.15,1577,777.15,1581,786.15" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[fa2bf33665ed016c01ebce86b27bf280]
+link Chatbot to Gemini--><path d="M681,385.03 C681,442.86 681,609.2 681,609.2 C681,609.2 1744,609.2 1744,609.2 C1744,609.2 1744,781.25 1744,781.25 " fill="none" id="Chatbot-to-Gemini" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1744,786.25,1748,777.25,1744,781.25,1740,777.25,1744,786.25" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[e423245bf529dda2ca0d392dbadbe4d7]
+link Script to Exporter--><path d="M1834.75,72.2 C1996.29,72.2 2682.67,72.2 2682.67,72.2 C2682.67,72.2 2682.67,640.94 2682.67,640.94 " fill="none" id="Script-to-Exporter" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="2682.67,645.94,2686.67,636.94,2682.67,640.94,2678.67,636.94,2682.67,645.94" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[05b4aa5e4a30750a603c2dd2ad4a0c96]
+link Script to PathGen--><path d="M1834.76,79.2 C1956.77,79.2 2367.75,79.2 2367.75,79.2 C2367.75,79.2 2367.75,640.83 2367.75,640.83 " fill="none" id="Script-to-PathGen" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="2367.75,645.83,2371.75,636.83,2367.75,640.83,2363.75,636.83,2367.75,645.83" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[d496892f9e6690f6ee7590dbb1fb8031]
+link Script to Session--><path d="M1834.86,69.2 C2010.53,69.2 2810,69.2 2810,69.2 C2810,69.2 2810,640.84 2810,640.84 " fill="none" id="Script-to-Session" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="2810,645.84,2814,636.84,2810,640.84,2806,636.84,2810,645.84" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[033720cbb9d468b7d2021f47974a014c]
+link Script to TimeUtils--><path d="M1834.77,65.2 C2024.55,65.2 2950,65.2 2950,65.2 C2950,65.2 2950,641.05 2950,641.05 " fill="none" id="Script-to-TimeUtils" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="2950,646.05,2954,637.05,2950,641.05,2946,637.05,2950,646.05" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[f28f58bf187129d646afacb35ed14481]
 @startuml ModuleDependencies
 ' ============================================================================
 ' TaijiFlow AI - Module Dependencies Diagram (Top-Down Layers)
@@ -120,23 +146,39 @@ package "Layer 3: Display Managers" <<display>> {
     [DrawingManager] as Drawing
     [GhostManager] as Ghost
     [BackgroundManager] as Background
+    [WebGLManager] as WebGL
 }
 
 package "Layer 3: Core Managers" <<core>> {
     [HeuristicsEngine] as Heuristics
     [CalibrationManager] as Calibration
     [ScoringManager] as Scoring
+    [CameraManager] as Camera
+    [PerformanceMonitor] as PerfMon
 }
 
 package "Layer 3: UI Managers" <<ui>> {
+    ' Row 1: Core UI & Interaction
     [UIManager] as UI
-    [AudioManager] as Audio
+    [ShortcutsManager] as Shortcuts
     [GestureManager] as Gesture
+    [AudioManager] as Audio
+
+    ' Row 2: Popups & Overlays
     [ScorePopupManager] as ScorePopup
     [TutorialManager] as Tutorial
-    [RulesConfigManager] as RulesConfig
-    [Chatbot] as Chatbot
     [FeedbackManager] as Feedback
+    [WisdomManager] as Wisdom
+
+    ' Row 3: Tools & Settings
+    [RulesConfigManager] as RulesConfig
+    [LightingManager] as Lighting
+    [DebugManager] as Debug
+    [Chatbot] as Chatbot
+
+    ' Force 3 rows layout
+    UI -[hidden]-> ScorePopup
+    ScorePopup -[hidden]-> RulesConfig
 }
 
 ' ============================================================================
@@ -148,6 +190,9 @@ package "Layer 4: Utilities" <<utility>> {
     [PathGenerator] as PathGen
     [SessionManager] as Session
     [translations.js] as Translations
+    [time_utils.js] as TimeUtils
+    [i18n_manager.js] as I18n
+    [math_utils.js] as MathUtils
 }
 
 package "Layer 4: Landing Page" <<utility>> {
@@ -193,38 +238,55 @@ Script - -> KeyboardCtrl
 Script - -> Heuristics
 Script - -> Calibration
 Script - -> Scoring
+Script - -> Camera
+Script - -> PerfMon
 
 ' Layer 1 → Layer 3 (Display)
 Script - -> Drawing
 Script - -> Ghost
+Script - -> WebGL
 
 ' Layer 1 → Layer 3 (UI)
 Script - -> UI
 Script - -> Audio
 Script - -> Gesture
+Script - -> Lighting
+Script - -> Debug
+Script - -> Shortcuts
 
 ' Layer 2 → Layer 3
 DisplayCtrl - -> Ghost
 DisplayCtrl - -> Background
 KeyboardCtrl - -> Tutorial
+KeyboardCtrl - -> Shortcuts
 
 ' Layer 3 Internal
 RulesConfig - -> Heuristics
-UI - -> Translations
+UI - -> I18n
+I18n - -> Translations
 Feedback - -> UI : Reads State (Window)
-Feedback - -> Translations
-ScorePopup - -> Translations
+Feedback - -> I18n
+ScorePopup - -> I18n
+Debug - -> PerfMon : Reads FPS
+Wisdom - -> I18n
+
+' Core → Utilities
+Heuristics - -> MathUtils
+Scoring - -> MathUtils
 
 ' Layer 3 → Layer 5 (External)
 Heuristics - -> MPPose
+Camera - -> MPPose
 Gesture - -> MPGesture
 Audio - -> WebSpeech
 Chatbot - -> Gemini
+
 
 ' Layer 1 → Layer 4 (Utilities)
 Script ..> Exporter
 Script ..> PathGen
 Script ..> Session
+Script ..> TimeUtils
 
 @enduml
 
@@ -266,23 +328,35 @@ package "Layer 3: Display Managers" <<display>> {
     [DrawingManager] as Drawing
     [GhostManager] as Ghost
     [BackgroundManager] as Background
+    [WebGLManager] as WebGL
 }
 
 package "Layer 3: Core Managers" <<core>> {
     [HeuristicsEngine] as Heuristics
     [CalibrationManager] as Calibration
     [ScoringManager] as Scoring
+    [CameraManager] as Camera
+    [PerformanceMonitor] as PerfMon
 }
 
 package "Layer 3: UI Managers" <<ui>> {
     [UIManager] as UI
-    [AudioManager] as Audio
+    [ShortcutsManager] as Shortcuts
     [GestureManager] as Gesture
+    [AudioManager] as Audio
+
     [ScorePopupManager] as ScorePopup
     [TutorialManager] as Tutorial
-    [RulesConfigManager] as RulesConfig
-    [Chatbot] as Chatbot
     [FeedbackManager] as Feedback
+    [WisdomManager] as Wisdom
+
+    [RulesConfigManager] as RulesConfig
+    [LightingManager] as Lighting
+    [DebugManager] as Debug
+    [Chatbot] as Chatbot
+
+    UI -[hidden]-> ScorePopup
+    ScorePopup -[hidden]-> RulesConfig
 }
 
 
@@ -291,6 +365,9 @@ package "Layer 4: Utilities" <<utility>> {
     [PathGenerator] as PathGen
     [SessionManager] as Session
     [translations.js] as Translations
+    [time_utils.js] as TimeUtils
+    [i18n_manager.js] as I18n
+    [math_utils.js] as MathUtils
 }
 
 package "Layer 4: Landing Page" <<utility>> {
@@ -322,32 +399,48 @@ Script - -> KeyboardCtrl
 Script - -> Heuristics
 Script - -> Calibration
 Script - -> Scoring
+Script - -> Camera
+Script - -> PerfMon
 
 Script - -> Drawing
 Script - -> Ghost
+Script - -> WebGL
 
 Script - -> UI
 Script - -> Audio
 Script - -> Gesture
+Script - -> Lighting
+Script - -> Debug
+Script - -> Shortcuts
 
 DisplayCtrl - -> Ghost
 DisplayCtrl - -> Background
 KeyboardCtrl - -> Tutorial
+KeyboardCtrl - -> Shortcuts
 
 RulesConfig - -> Heuristics
-UI - -> Translations
+UI - -> I18n
+I18n - -> Translations
 Feedback - -> UI : Reads State (Window)
-Feedback - -> Translations
-ScorePopup - -> Translations
+Feedback - -> I18n
+ScorePopup - -> I18n
+Debug - -> PerfMon : Reads FPS
+Wisdom - -> I18n
+
+Heuristics - -> MathUtils
+Scoring - -> MathUtils
 
 Heuristics - -> MPPose
+Camera - -> MPPose
 Gesture - -> MPGesture
 Audio - -> WebSpeech
 Chatbot - -> Gemini
 
+
 Script ..> Exporter
 Script ..> PathGen
 Script ..> Session
+Script ..> TimeUtils
 
 @enduml
 

@@ -72,16 +72,24 @@ TaijiFlow/
 ├── index.html                # Main application
 ├── data_collector.html       # Reference data recorder (Developer tool)
 ├── js/                       # JavaScript modules
-│   ├── script.js             # Main controller
+│   ├── script.js             # Main controller (Orchestrator)
 │   ├── heuristics_engine.js  # Pose analysis & 9 feedback rules
 │   ├── calibration_manager.js # Body proportion calibration
-│   ├── gesture_manager.js    # Hand gesture control (MediaPipe)
-│   ├── drawing_manager.js    # Canvas rendering
 │   ├── scoring_manager.js    # Session scoring system
-│   ├── audio_manager.js      # Voice feedback (TTS)
+│   ├── camera_manager.js     # Camera & MediaPipe handling
+│   ├── performance_monitor.js # FPS monitoring & quality control
+│   ├── drawing_manager.js    # Canvas rendering
+│   ├── ghost_manager.js      # Reference ghost overlay
+│   ├── background_manager.js # Virtual background handling
+│   ├── webgl_manager.js      # WebGL-based visual effects
 │   ├── ui_manager.js         # UI, theme, language management
+│   ├── lighting_manager.js   # Auto-brightness & low light detection
+│   ├── debug_manager.js      # Debug overlay & stats
+│   ├── shortcuts_manager.js  # Keyboard shortcuts popup
+│   ├── audio_manager.js      # Voice feedback (TTS)
+│   ├── tutorial_manager.js   # Interactive tutorial
 │   ├── chatbot.js            # AI Chatbot (Gemini API)
-│   └── data_exporter.js      # JSON data export
+│   └── ... (UTILS: i18n_manager, time_utils, math_utils, etc.)
 ├── css/
 │   ├── styles.css            # Custom styles (purple theme)
 │   └── chatbot.css           # Chatbot popup styles

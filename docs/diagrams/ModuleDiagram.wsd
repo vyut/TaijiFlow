@@ -51,6 +51,8 @@ together {
         card "heuristics_\nengine.js"
         card "scoring_\nmanager.js"
         card "calibration_\nmanager.js"
+        card "camera_\nmanager.js"
+        card "performance_\nmonitor.js"
     }
 
     rectangle "UI & Display" as UI {
@@ -60,6 +62,10 @@ together {
         card "tutorial_manager"
         card "feedback_manager"
         card "audio_manager"
+        card "lighting_manager"
+        card "debug_manager"
+        card "shortcuts_manager"
+        card "webgl_manager"
     }
 
     rectangle "Utilities" as Utils {
@@ -67,6 +73,9 @@ together {
         card "path_generator"
         card "translations.js"
         card "data_exporter"
+        card "time_utils.js"
+        card "i18n_manager.js"
+        card "math_utils.js"
     }
 }
 

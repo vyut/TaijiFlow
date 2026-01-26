@@ -53,10 +53,10 @@ TaijiFlow AI เป็นแอปพลิเคชันฝึกท่าม�
                                 ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │                          script.js                                   │
-│                     (Main Controller / Glue Code)                    │
-│  ┌──────────────┬──────────────┬──────────────┬──────────────┐      │
-│  │ DOM Events   │ Training Flow│ MediaPipe    │ State Mgmt   │      │
-│  └──────────────┴──────────────┴──────────────┴──────────────┘      │
+│                 (Main Orchestrator / Glue Code)                      │
+│  ┌──────────────────────┬──────────────────────┬─────────────────┐  │
+│  │     Game Loop        │    State Machine     │   Event Bus     │  │
+│  └──────────────────────┴──────────────────────┴─────────────────┘  │
 └───────────────────────────────┬─────────────────────────────────────┘
                                 │
         ┌───────────────────────┼───────────────────────┐
@@ -64,12 +64,16 @@ TaijiFlow AI เป็นแอปพลิเคชันฝึกท่าม�
 ┌───────────────┐   ┌───────────────────┐   ┌───────────────────┐
 │  Core Logic   │   │   UI & Display    │   │   Utilities       │
 ├───────────────┤   ├───────────────────┤   ├───────────────────┤
-│ heuristics_   │   │ ui_manager.js     │   │ session_manager   │
+│ heuristics_   │   │ ui_manager (Main) │   │ session_manager   │
 │ engine.js     │   │ drawing_manager   │   │ path_generator    │
 │ scoring_      │   │ ghost_manager     │   │ translations.js   │
 │ manager.js    │   │ tutorial_manager  │   │ data_exporter     │
-│ calibration_  │   │ feedback_manager  │   │                   │
+│ calibration_  │   │ feedback_manager  │   │ time_utils.js     │
 │ manager.js    │   │ audio_manager     │   │                   │
+│ camera_       │   │ lighting_manager  │   │                   │
+│ manager.js    │   │ debug_manager     │   │                   │
+│ performance_  │   │ background_mn.    │   │                   │
+│ monitor.js    │   │                   │   │                   │
 └───────────────┘   └───────────────────┘   └───────────────────┘
 ```
 ![Module Diagram](../../out/docs/diagrams/ModuleDiagram/ModuleDiagram.svg)
@@ -77,16 +81,15 @@ TaijiFlow AI เป็นแอปพลิเคชันฝึกท่าม�
 ### Data Flow
 
 ```
-Camera → MediaPipe → Landmarks → Heuristics Engine → Feedbacks
-                         │                               │
-                         ▼                               ▼
-                  Drawing Manager              Audio Manager
-                  (วาด Skeleton)               (พูด Feedback)
-                         │                               │
-                         └───────────┬───────────────────┘
-                                     ▼
-                              Scoring Manager
-                              (คำนวณคะแนน)
+Camera → CameraManager → MediaPipe → Landmarks → Heuristics
+                                        │             │
+                                        ▼             ▼
+                                  DrawingMgr      AudioMgr
+                                  (Visuals)       (Feedback)
+                                        │             │
+                                        ▼             ▼
+                                   ScoringMgr     UIManager
+                                   (Score)        (Display)
 ```
 
 ![Simple Data Flow Diagram](../../out/docs/diagrams/TaijiFlow_SimpleDataFlow/TaijiFlow_SimpleDataFlow.svg)
@@ -108,61 +111,50 @@ TaijiFlow/
 │   ├── feedback.css     # Feedback Box Styles
 │   └── base.css         # Base/Reset Styles
 ├── js/
-│   ├── script.js              # Main Entry Point
-│   ├── heuristics_engine.js   # Pose Analysis Core
-│   ├── ui_manager.js          # Main UI Manager
-│   ├── audio_manager.js       # Audio Feedback
-│   ├── drawing_manager.js     # Canvas Drawing
-│   ├── calibration_manager.js # Calibration Logic
-│   ├── scoring_manager.js     # Scoring System
-│   ├── ghost_manager.js       # Ghost Overlay
-│   ├── silhouette_manager.js  # Silhouette Overlay
-│   ├── path_generator.js      # Dynamic Path Logic
-│   ├── session_manager.js     # Session/User ID
-│   ├── data_exporter.js       # Data Export Logic
-│   ├── translations.js        # i18n Data
-│   ├── chatbot.js             # Gemini AI Chatbot
-│   ├── display_controller.js  # Display Settings
-│   ├── keyboard_controller.js # Shortcuts
-│   ├── rules_config_manager.js# Rules Settings
-│   ├── gesture_manager.js     # Hand Gestures
-│   ├── tutorial_manager.js    # Tutorial System
-│   ├── score_popup_manager.js # Result Popup
-│   ├── feedback_manager.js    # Feedback UI
-│   └── silk-animation.js      # Landing Animation
-├── data/
-│   └── *.json           # Reference Data
-├── audio/
-│   └── *.mp3            # Sound Effects
+│   ├── script.js              # Main Orchestrator
+│   ├── core/                  # [Planned] Core Logic 
+│   │   ├── heuristics_engine.js
+│   │   ├── scoring_manager.js
+│   │   ├── calibration_manager.js
+│   │   ├── camera_manager.js  # [NEW] Camera Control
+│   │   └── performance_monitor.js # [NEW] FPS Control
+│   ├── ui/                    # [Planned] UI Logic
+│   │   ├── ui_manager.js
+│   │   ├── lighting_manager.js # [NEW] Auto-Brightness
+│   │   ├── debug_manager.js    # [NEW] Debug Overlay
+│   │   ├── audio_manager.js
+│   │   ├── tutorial_manager.js
+│   │   └── ...
+│   ├── display/               # [Planned] Visuals
+│   │   ├── drawing_manager.js
+│   │   ├── ghost_manager.js
+│   │   └── background_manager.js
+│   └── utils/                 # [Planned] Utilities
+│       ├── time_utils.js      # [NEW] Time Helpers
+│       ├── session_manager.js
+│       └── ...
 └── docs/
-    └── *.md             # Documentation
+    └── ...
 ```
 
 ### 📊 File Roles
 
 | ไฟล์ | บทบาท | Dependencies |
 |------|-------|--------------|
-| `script.js` | Main Entry Point / Glue Code | All Modules |
+| `script.js` | **Main Orchestrator** - คุม Flow หลัก เชื่อมต่อ modules | All Modules |
 | `heuristics_engine.js` | วิเคราะห์ท่า (Core Logic) | - |
 | `calibration_manager.js` | ปรับเทียบสัดส่วน (T-Pose) | - |
 | `scoring_manager.js` | คำนวณคะแนนและเกรด | - |
+| `camera_manager.js` | **[NEW]** จัดการกล้อง & MediaPipe Loop | MediaPipe |
+| `performance_monitor.js`| **[NEW]** คุม Performance (Lite Mode) | - |
 | `ui_manager.js` | จัดการ UI หน้าจอหลัก | translations.js |
+| `lighting_manager.js` | **[NEW]** Auto-Brightness (CSS) | - |
+| `debug_manager.js` | **[NEW]** แสดงค่า Debug Stats | PerformanceMonitor |
 | `audio_manager.js` | จัดการเสียงพูด (TTS) | - |
 | `drawing_manager.js` | วาด Canvas (Skeleton, Path) | - |
 | `ghost_manager.js` | วาดเงาครูฝึก (Instructor) | - |
-| `silhouette_manager.js` | วาดเงาผู้เล่น (User Silhouette) | - |
-| `path_generator.js` | สร้าง Dynamic Path | - |
-| `session_manager.js` | จัดการ Session User | - |
-| `data_exporter.js` | Export ข้อมูลการฝึก | - |
-| `display_controller.js` | จัดการเมนูแสดงผล | - |
-| `keyboard_controller.js` | จัดการคีย์ลัด | - |
-| `chatbot.js` | AI Chatbot (Gemini) | - |
-| `rules_config_manager.js` | จัดการตั้งค่า Rules | - |
-| `gesture_manager.js` | สั่งงานด้วยมือ (Gesture) | - |
-| `tutorial_manager.js` | ระบบสอนใช้งาน | - |
-| `score_popup_manager.js` | หน้าต่างสรุปผลคะแนน | - |
-| `feedback_manager.js` | แสดง Feedback UI | - |
-| `silk-animation.js` | Animation หน้า Landing | - |
+| `background_manager.js` | จัดการพื้นหลัง (Virtual/Blur) | - |
+| `time_utils.js` | **[NEW]** ฟังก์ชันแปลงเวลา & Countdown | - |
 
 ---
 

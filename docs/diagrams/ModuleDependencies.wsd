@@ -53,23 +53,39 @@ package "Layer 3: Display Managers" <<display>> {
     [DrawingManager] as Drawing
     [GhostManager] as Ghost
     [BackgroundManager] as Background
+    [WebGLManager] as WebGL
 }
 
 package "Layer 3: Core Managers" <<core>> {
     [HeuristicsEngine] as Heuristics
     [CalibrationManager] as Calibration
     [ScoringManager] as Scoring
+    [CameraManager] as Camera
+    [PerformanceMonitor] as PerfMon
 }
 
 package "Layer 3: UI Managers" <<ui>> {
+    ' Row 1: Core UI & Interaction
     [UIManager] as UI
-    [AudioManager] as Audio
+    [ShortcutsManager] as Shortcuts
     [GestureManager] as Gesture
+    [AudioManager] as Audio
+
+    ' Row 2: Popups & Overlays
     [ScorePopupManager] as ScorePopup
     [TutorialManager] as Tutorial
-    [RulesConfigManager] as RulesConfig
-    [Chatbot] as Chatbot
     [FeedbackManager] as Feedback
+    [WisdomManager] as Wisdom
+
+    ' Row 3: Tools & Settings
+    [RulesConfigManager] as RulesConfig
+    [LightingManager] as Lighting
+    [DebugManager] as Debug
+    [Chatbot] as Chatbot
+
+    ' Force 3 rows layout
+    UI -[hidden]-> ScorePopup
+    ScorePopup -[hidden]-> RulesConfig
 }
 
 ' ============================================================================
@@ -77,10 +93,19 @@ package "Layer 3: UI Managers" <<ui>> {
 ' ============================================================================
 
 package "Layer 4: Utilities" <<utility>> {
-    [DataExporter] as Exporter
-    [PathGenerator] as PathGen
+    ' Row 1: Data & Session
     [SessionManager] as Session
+    [DataExporter] as Exporter
+    [I18nManager] as I18n
     [translations.js] as Translations
+
+    ' Row 2: Logic & Helpers
+    [PathGenerator] as PathGen
+    [TimeUtils] as TimeUtils
+    [MathUtils] as MathUtils
+
+    ' Force Layout
+    Session -[hidden]-> PathGen
 }
 
 package "Layer 4: Landing Page" <<utility>> {
@@ -126,37 +151,54 @@ Script --> KeyboardCtrl
 Script --> Heuristics
 Script --> Calibration
 Script --> Scoring
+Script --> Camera
+Script --> PerfMon
 
 ' Layer 1 → Layer 3 (Display)
 Script --> Drawing
 Script --> Ghost
+Script --> WebGL
 
 ' Layer 1 → Layer 3 (UI)
 Script --> UI
 Script --> Audio
 Script --> Gesture
+Script --> Lighting
+Script --> Debug
+Script --> Shortcuts
 
 ' Layer 2 → Layer 3
 DisplayCtrl --> Ghost
 DisplayCtrl --> Background
 KeyboardCtrl --> Tutorial
+KeyboardCtrl --> Shortcuts
 
 ' Layer 3 Internal
 RulesConfig --> Heuristics
-UI --> Translations
+UI --> I18n
+I18n --> Translations
 Feedback --> UI : Reads State (Window)
-Feedback --> Translations
-ScorePopup --> Translations
+Feedback --> I18n
+ScorePopup --> I18n
+Debug --> PerfMon : Reads FPS
+Wisdom --> I18n
+
+' Core → Utilities
+Heuristics --> MathUtils
+Scoring --> MathUtils
 
 ' Layer 3 → Layer 5 (External)
 Heuristics --> MPPose
+Camera --> MPPose
 Gesture --> MPGesture
 Audio --> WebSpeech
 Chatbot --> Gemini
+
 
 ' Layer 1 → Layer 4 (Utilities)
 Script ..> Exporter
 Script ..> PathGen
 Script ..> Session
+Script ..> TimeUtils
 
 @enduml

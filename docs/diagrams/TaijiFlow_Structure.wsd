@@ -41,6 +41,8 @@ rectangle "script.js\n(Main Controller)" as MainContainer {
         component "HeuristicsEngine\n(8 Rules)" as Heuristics
         component "CalibrationManager\n(T-Pose)" as Calibration
         component "ScoringManager\n(Score)" as Scoring
+        component "CameraManager\n(MediaPipe)" as Camera
+        component "PerformanceMonitor\n(FPS Control)" as PerfMon
     }
 
     ' -- 2. Display Managers --
@@ -48,6 +50,8 @@ rectangle "script.js\n(Main Controller)" as MainContainer {
         component "DrawingManager\n(Canvas)" as Drawing
         component "GhostManager\n(Instructor)" as Ghost
         component "SilhouetteManager\n(User Mask)" as Silhouette
+        component "BackgroundManager\n(Virtual BG)" as Background
+        component "WebGLManager\n(Renderer)" as WebGL
     }
 
     ' -- 3. UI Managers --
@@ -60,6 +64,10 @@ rectangle "script.js\n(Main Controller)" as MainContainer {
         component "FeedbackManager\n(Bug Report)" as Feedback
         component "Chatbot\n(Gemini AI)" as ChatbotBean
         component "RulesConfigManager\n(Settings UI)" as RulesConfig
+        component "LightingManager\n(Brightness)" as Lighting
+        component "DebugManager\n(Stats Overlay)" as Debug
+        component "WisdomManager\n(Quotes)" as Wisdom
+        component "ShortcutsManager\n(Key Grid)" as Shortcuts
     }
 
     ' -- 4. Controllers --
@@ -74,6 +82,9 @@ rectangle "script.js\n(Main Controller)" as MainContainer {
         component "PathGenerator\n(Dynamic Path)" as PathGen
         component "SessionManager\n(User ID)" as Session
         component "translations\n(i18n Data)" as Translations
+        component "time_utils.js" as TimeUtils
+        component "i18n_manager.js" as I18n
+        component "math_utils.js" as MathUtils
     }
 }
 

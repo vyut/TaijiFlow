@@ -66,7 +66,6 @@ Version: 0.9.9 (2026-01-17)
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/chatbot.css" />
     <link rel="stylesheet" href="css/feedback.css" />
 
     <!-- MediaPipe -->
@@ -134,8 +133,7 @@ Version: 0.9.9 (2026-01-17)
     <!-- จัดการ UI State -->
     <script src="js/ui/tutorial_manager.js" defer></script>
     <!-- Popup Tutorial -->
-    <script src="js/ui/chatbot.js" defer></script>
-    <!-- Gemini Chatbot -->
+    <!-- Gemini Chatbot Removed (Moved to index.html) -->
     <script src="js/ui/feedback_manager.js" defer></script>
     <!-- Feedback Popup (includes shared Survey Section) -->
 
@@ -177,6 +175,15 @@ Version: 0.9.9 (2026-01-17)
   <body
     class="flex flex-col items-center justify-center min-h-screen p-2 md:p-4"
   >
+    <!-- Floating Help Button (Bottom Right) -->
+    <button
+      id="tutorial-btn"
+      class="fixed bottom-5 right-5 w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg flex items-center justify-center text-3xl z-50 hover:scale-110 transition-transform border-2 border-white/20"
+      title="คู่มือการฝึก (H) - Help"
+      style="box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);"
+    >
+      ❓
+    </button>
     <!-- Mobile Warning Modal (แสดงเมื่อใช้งานบนมือถือ) -->
     <div
       id="mobile-modal"
@@ -1318,15 +1325,7 @@ Version: 0.9.9 (2026-01-17)
             </div>
           </div>
 
-          <!-- Shortcuts Button (New) -->
-          <button
-            id="shortcuts-btn"
-            class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
-            title="คีย์ลัด (Shortcuts)"
-            onclick="window.shortcutsManager.toggle()"
-          >
-            🎹
-          </button>
+
 
         </div>
 
@@ -1357,13 +1356,14 @@ Version: 0.9.9 (2026-01-17)
           >
             🌙
           </button>
-          <!-- Tutorial/Help Button -->
+          <!-- Shortcuts Button (Moved from Left) -->
           <button
-            id="tutorial-btn"
+            id="shortcuts-btn"
             class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
-            title="คู่มือการฝึก (H)"
+            title="คีย์ลัด (Shortcuts)"
+            onclick="window.shortcutsManager.toggle()"
           >
-            ❓
+            🎹
           </button>
         </div>
       </div>

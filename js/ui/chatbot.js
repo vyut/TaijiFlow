@@ -40,7 +40,6 @@
 
 class TaijiChatbot {
   constructor() {
-    this.apiKey = localStorage.getItem("taijiflow_gemini_key") || "";
     this.isOpen = false;
     this.messages = [];
     this.isLoading = false;
@@ -245,12 +244,15 @@ class TaijiChatbot {
 
   // สร้าง UI elements ทั้งหมด (toggle button, chat container, input area)
   createUI() {
-    // Chat Toggle Button
-    const toggleBtn = document.createElement("button");
-    toggleBtn.id = "chat-toggle-btn";
-    toggleBtn.innerHTML = "☯️";
-    toggleBtn.title = "ถามครูไท้เก๊ก";
-    document.body.appendChild(toggleBtn);
+    // Chat Toggle Button (Create only if not exists)
+    let toggleBtn = document.getElementById("chat-toggle-btn");
+    if (!toggleBtn) {
+      toggleBtn = document.createElement("button");
+      toggleBtn.id = "chat-toggle-btn";
+      toggleBtn.innerHTML = "☯️";
+      toggleBtn.title = "ถามครูไท้เก๊ก";
+      document.body.appendChild(toggleBtn);
+    }
 
     // Chat Container
     const chatContainer = document.createElement("div");
@@ -276,12 +278,6 @@ class TaijiChatbot {
         <input type="text" id="chat-input" placeholder="พิมพ์คำถาม..." />
         <button id="chat-send-btn">➤</button>
       </div>
-      <div class="chat-api-setup ${this.apiKey ? "hidden" : ""}" id="api-setup">
-        <p>⚠️ กรุณาใส่ Gemini API Key</p>
-        <input type="password" id="api-key-input" placeholder="API Key..." />
-        <button id="save-api-key-btn">บันทึก</button>
-        <a href="https://aistudio.google.com/app/apikey" target="_blank">ขอ API Key ฟรี</a>
-      </div>
     `;
     document.body.appendChild(chatContainer);
   }
@@ -289,9 +285,12 @@ class TaijiChatbot {
   // ผูก Event Listeners สำหรับปุ่มต่างๆ
   bindEvents() {
     // Toggle chat
-    document.getElementById("chat-toggle-btn").addEventListener("click", () => {
-      this.toggleChat();
-    });
+    const toggleBtn = document.getElementById("chat-toggle-btn");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        this.toggleChat();
+      });
+    }
 
     // Close chat
     document.getElementById("chat-close-btn").addEventListener("click", () => {
@@ -309,13 +308,6 @@ class TaijiChatbot {
         this.sendMessage();
       }
     });
-
-    // Save API Key
-    document
-      .getElementById("save-api-key-btn")
-      .addEventListener("click", () => {
-        this.saveApiKey();
-      });
   }
 
   // เปิด/ปิด Chat Panel
@@ -334,29 +326,12 @@ class TaijiChatbot {
     }
   }
 
-  // บันทึก API Key ลง localStorage
-  saveApiKey() {
-    const keyInput = document.getElementById("api-key-input");
-    const key = keyInput.value.trim();
-    if (key) {
-      this.apiKey = key;
-      localStorage.setItem("taijiflow_gemini_key", key);
-      document.getElementById("api-setup").classList.add("hidden");
-      this.addMessage("system", "✅ บันทึก API Key เรียบร้อยแล้ว!");
-    }
-  }
-
-  // ส่งข้อความไปยัง Gemini API และแสดงคำตอบ
+  // ส่งข้อความไปยัง API และแสดงคำตอบ
   async sendMessage() {
     const input = document.getElementById("chat-input");
     const message = input.value.trim();
 
     if (!message || this.isLoading) return;
-
-    if (!this.apiKey) {
-      this.addMessage("system", "⚠️ กรุณาใส่ API Key ก่อน");
-      return;
-    }
 
     // Add user message
     this.addMessage("user", message);
@@ -367,20 +342,30 @@ class TaijiChatbot {
     const loadingId = this.addMessage("bot", "กำลังคิด...");
 
     try {
-      const response = await this.callGeminiAPI(message);
+      const response = await this.callProxyAPI(message);
       this.updateMessage(loadingId, response);
     } catch (error) {
       console.error("Chatbot error:", error);
-      this.updateMessage(loadingId, `❌ เกิดข้อผิดพลาด: ${error.message}`);
+      let errorMsg = `❌ เกิดข้อผิดพลาด: ${error.message}`;
+
+      // กรณี Localhost และไม่มี API
+      if (
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1"
+      ) {
+        errorMsg +=
+          "<br><br><small>⚠️ หากรันบน Localhost คุณต้องใช้ <code>vercel dev</code> เพื่อให้ API ทำงานได้ หรือ Deploy ขึ้น Vercel</small>";
+      }
+
+      this.updateMessage(loadingId, errorMsg);
     }
 
     this.isLoading = false;
   }
 
-  // เรียก Gemini API พร้อม context และ system prompt
-  async callGeminiAPI(userMessage) {
-    // ใช้ gemini-2.0-flash-exp (ฟรี, ล่าสุด)
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${this.apiKey}`;
+  // เรียก Backend Proxy API (/api/chat)
+  async callProxyAPI(userMessage) {
+    const url = `/api/chat`; // Call local serverless function
 
     // Build conversation history
     const contents = [
@@ -420,12 +405,13 @@ class TaijiChatbot {
       body: JSON.stringify({ contents }),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error?.message || "API Error");
+      throw new Error(data.error?.message || "API Error");
     }
 
-    const data = await response.json();
+    // Adjust for structure returned by proxy (same as Gemini API)
     return data.candidates[0].content.parts[0].text;
   }
 
@@ -457,7 +443,7 @@ class TaijiChatbot {
 
       // Update in messages array
       const lastBotMsgIndex = this.messages.findLastIndex(
-        (m) => m.role === "bot"
+        (m) => m.role === "bot",
       );
       if (lastBotMsgIndex >= 0) {
         this.messages[lastBotMsgIndex].content = content;

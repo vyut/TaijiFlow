@@ -33,9 +33,14 @@ class DisplayController {
     this.showTrail = true;
     this.showBlurBackground = false;
     this.showGrid = false; // 🆕 Grid Overlay
-    this.showGrid = false; // 🆕 Grid Overlay
+    this.gridSize = 100; // Default Medium
+    this.gridColor = "150, 150, 150"; // Default Gray
+    this.gridOpacity = 0.2; // Default 20%
     this.showErrorHighlights = true; // 🆕 Error Highlights (Red Dots)
     this.isSideBySide = false; // 🆕 Side-by-Side Mode
+    this.gridSize = 100; // Default Medium
+    this.gridColor = "150, 150, 150"; // Default Gray
+    this.gridOpacity = 0.2; // Default 20%
 
     // Trail Visualization
     this.TRAIL_LENGTH = 60;
@@ -171,20 +176,94 @@ class DisplayController {
   /**
    * Initialize Grid Overlay toggle
    */
+  /**
+   * Initialize Grid Overlay toggle + Settings
+   */
   initGridCheckbox() {
     const checkGrid = document.getElementById("check-grid");
+    const gridSettings = document.getElementById("grid-settings");
+
+    // Inputs
+    const sizeSelect = document.getElementById("grid-size");
+    const colorBtns = document.querySelectorAll(".grid-color-btn");
+    const opacitySlider = document.getElementById("grid-opacity");
+    const opacityLabel = document.getElementById("grid-opacity-val");
 
     if (checkGrid) {
-      // 1. Default: OFF (not persistent)
-      checkGrid.checked = false;
-      this.showGrid = false;
+      // 1. Initialize UI with current state
+      checkGrid.checked = this.showGrid;
+      if (gridSettings) {
+        if (this.showGrid) {
+          gridSettings.classList.remove("hidden");
+        } else {
+          gridSettings.classList.add("hidden");
+        }
+      }
 
-      // 2. Handle change
+      if (sizeSelect) {
+        sizeSelect.value = this.gridSize;
+      }
+      if (colorBtns.length > 0) {
+        colorBtns.forEach((btn) => {
+          if (btn.dataset.color === this.gridColor) {
+            btn.classList.add("active", "ring-2", "ring-blue-500");
+          } else {
+            btn.classList.remove("active", "ring-2", "ring-blue-500");
+          }
+        });
+      }
+      if (opacitySlider) {
+        const val = Math.round(this.gridOpacity * 100);
+        opacitySlider.value = val;
+        if (opacityLabel) opacityLabel.textContent = `${val}%`;
+      }
+
+      // 2. Handle Checkbox
       checkGrid.addEventListener("change", (e) => {
         this.showGrid = e.target.checked;
 
-        // No notification as requested (Consistent with other options)
+        // Toggle Settings Panel visibility
+        if (gridSettings) {
+          if (this.showGrid) {
+            gridSettings.classList.remove("hidden");
+          } else {
+            gridSettings.classList.add("hidden");
+          }
+        }
       });
+
+      // 3. Handle Size Change
+      if (sizeSelect) {
+        sizeSelect.addEventListener("change", (e) => {
+          this.gridSize = parseInt(e.target.value, 10);
+        });
+      }
+
+      // 4. Handle Color Change
+      if (colorBtns.length > 0) {
+        colorBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            // Remove active ring from all
+            colorBtns.forEach((b) =>
+              b.classList.remove("active", "ring-2", "ring-blue-500"),
+            );
+            // Add to current
+            btn.classList.add("active", "ring-2", "ring-blue-500");
+
+            // Update State
+            this.gridColor = btn.dataset.color;
+          });
+        });
+      }
+
+      // 5. Handle Opacity Change (Real-time)
+      if (opacitySlider) {
+        opacitySlider.addEventListener("input", (e) => {
+          const val = e.target.value;
+          this.gridOpacity = val / 100;
+          if (opacityLabel) opacityLabel.textContent = `${val}%`;
+        });
+      }
     } else {
       console.warn("⚠️ Grid Checkbox not found in initGridCheckbox");
     }

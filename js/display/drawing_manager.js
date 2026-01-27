@@ -54,28 +54,30 @@ class DrawingManager {
   // ===========================================================================
 
   /**
-   * วาดตาราง Grid Overlay เพื่อช่วยวัดตำแหน่ง
-   * @param {string} color - สีเส้นตาราง (default: 'rgba(255, 255, 255, 0.2)')
-   * @param {number} gridSize - ขนาดช่องตาราง (default: 80 - ปรับตามความกว้างจอ)
+   * วาดตาราง Grid Overlay เพื่อช่วยวัดตำแหน่ง (Enhanced v2)
+   * @param {string} color - สีเส้นตาราง (format: 'R, G, B')
+   * @param {number} opacity - ความโปร่งใส (0.0 - 1.0)
+   * @param {number} gridSize - ขนาดช่องตาราง (pixel)
    */
-  drawGrid(color = "rgba(255, 255, 255, 0.2)", gridSize = 100) {
-    const width = this.canvasWidth;
-    const height = this.canvasHeight;
+  drawGrid(color = "255, 255, 255", opacity = 0.2, gridSize = 100) {
+    const width = this.ctx.canvas.width;
+    const height = this.ctx.canvas.height;
 
     // Save context
     this.ctx.save();
     this.ctx.lineWidth = 1;
-    this.ctx.strokeStyle = color;
+    this.ctx.strokeStyle = `rgba(${color}, ${opacity})`;
 
-    // ----- เส้นแนวตั้ง -----
+    // ----- เส้นแนวตั้ง (Vertical) -----
     for (let x = 0; x <= width; x += gridSize) {
+      if (Math.abs(x - width / 2) < 2) continue; // Skip near center (will draw separately)
       this.ctx.beginPath();
       this.ctx.moveTo(x, 0);
       this.ctx.lineTo(x, height);
       this.ctx.stroke();
     }
 
-    // ----- เส้นแนวนอน -----
+    // ----- เส้นแนวนอน (Horizontal) -----
     for (let y = 0; y <= height; y += gridSize) {
       this.ctx.beginPath();
       this.ctx.moveTo(0, y);
@@ -83,8 +85,10 @@ class DrawingManager {
       this.ctx.stroke();
     }
 
-    // ----- Center Line (แกนกลาง) - เน้นสีแดง -----
-    this.ctx.strokeStyle = "rgba(255, 50, 50, 0.4)";
+    // ----- Center Line (แกนกลาง) - เน้นสีแดงเสมอ -----
+    // ปรับความทึบของแกนกลางให้เห็นชัดกว่าเส้นปกติเล็กน้อย
+    const centerOpacity = Math.min(opacity + 0.3, 0.8);
+    this.ctx.strokeStyle = `rgba(255, 50, 50, ${centerOpacity})`;
     this.ctx.lineWidth = 2;
     this.ctx.beginPath();
     this.ctx.moveTo(width / 2, 0);

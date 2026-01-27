@@ -270,6 +270,16 @@ const instructorThumbnail = document.getElementById("instructor-thumbnail");
 const instructorCtx = instructorThumbnail
   ? instructorThumbnail.getContext("2d")
   : null;
+const checkDebug = document.getElementById("check-debug"); // 🆕 Debug Checkbox
+
+// 🆕 Debug Toggle Listener
+if (checkDebug) {
+  checkDebug.addEventListener("change", (e) => {
+    const isDebug = e.target.checked;
+    if (engine) engine.debugMode = isDebug;
+    if (debugManager) debugManager.toggle(isDebug);
+  });
+}
 
 // -----------------------------------------------------------------------------
 // New UX Flow Elements - ปุ่มและ Overlay สำหรับ Training Flow ใหม่
@@ -1125,20 +1135,6 @@ async function loadReferenceData() {
 //   5. ถ้ากำลัง Recording → เก็บข้อมูลลง recordedSessionData
 // =============================================================================
 
-// =============================================================================
-
-// =============================================================================
-// SECTION 4: MEDIAPIPE POSE PROCESSING
-// =============================================================================
-//
-// Flow ภายใน onResults:
-//   1. Gesture Detection (ควบคุมด้วยท่ามือ)
-//   2. วาด Video Frame ลง Canvas
-//   3. ถ้ากำลัง Calibrate → วาด Skeleton + Calibration Overlay
-//   4. ถ้า Normal Mode → วาด Path + Skeleton + วิเคราะห์ท่าทาง
-//   5. ถ้ากำลัง Recording → เก็บข้อมูลลง recordedSessionData
-// =============================================================================
-
 /**
  * MediaPipe onResults Callback
  *
@@ -1267,11 +1263,14 @@ async function onResults(results) {
       }
 
       // 🆕 0.5 วาด Grid Overlay (ถ้าเปิดใช้งาน)
+      // 🆕 0.5 วาด Grid Overlay (ถ้าเปิดใช้งาน)
       if (displayController.showGrid) {
-        // console.log("📐 Drawing Grid..."); // Debug log (uncomment to check loop)
-        // ขนาด grid ปรับตามความละเอียดจอ (640=80, 1280=100)
-        const gridSize = drawer.canvasWidth > 1000 ? 120 : 80;
-        drawer.drawGrid("rgba(255, 255, 255, 0.3)", gridSize); // เพิ่ม opacity นิดนึง
+        // ใช้ค่าจาก Settings (Size, Color, Opacity)
+        drawer.drawGrid(
+          displayController.gridColor,
+          displayController.gridOpacity,
+          displayController.gridSize,
+        );
       }
 
       // 1. วาด Ghost (เงาคนสอน) ถ้าเปิดใช้งาน (วาดก่อน Grid หรือหลังก็ได้ แต่วาดหลัง Grid จะเห็นชัดกว่า)

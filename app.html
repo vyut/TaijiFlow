@@ -51,6 +51,12 @@ Version: 0.9.9 (2026-01-17)
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TaijiFlow AI</title>
 
+    <!-- Performance Optimization: Preconnect & Prefetch -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com" />
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png" />
 
@@ -106,11 +112,15 @@ Version: 0.9.9 (2026-01-17)
     <!-- 1. Core Managers - ไม่พึ่งพาไฟล์อื่น -->
     <!-- T-Pose Calibration -->
     <script src="js/core/calibration_manager.js" defer></script>
-    <!-- Core Logic -->
+    <!-- Math Utils -->
     <script src="js/utils/math_utils.js"></script>
+    <!-- Time Utils -->
     <script src="js/utils/time_utils.js"></script>
+    <!-- Heuristics Engine -->
     <script src="js/core/heuristics_engine.js"></script>
+    <!-- Camera Manager -->
     <script src="js/core/camera_manager.js"></script>
+    <!-- Performance Monitor -->
     <script src="js/core/performance_monitor.js"></script>
     <!-- Rules Settings UI -->
     <script src="js/ui/rules_config_manager.js" defer></script>
@@ -132,39 +142,40 @@ Version: 0.9.9 (2026-01-17)
     <script src="js/ui/ui_manager.js" defer></script>
     <!-- Score Popup (แยกจาก ui_manager) -->
     <script src="js/ui/score_popup_manager.js" defer></script>
+    <!-- Debug Popup -->
     <script src="js/ui/debug_manager.js" defer></script>
+    <!-- Lighting Popup -->
     <script src="js/ui/lighting_manager.js" defer></script>
-    <!-- จัดการ UI State -->
+    <!-- Gesture Popup -->
     <script src="js/ui/gesture_manager.js" defer></script>
-    <!-- จัดการ UI State -->
+    <!-- Tutorial Popup -->
     <script src="js/ui/tutorial_manager.js" defer></script>
-    <!-- Popup Tutorial -->
-    <script src="js/ui/feedback_manager.js" defer></script>
     <!-- Feedback Popup (includes shared Survey Section) -->
-
-    <!-- Taiji Wisdom Popup -->
-    <script src="js/display/silk-animation.js" defer></script>
-    <script src="js/ui/wisdom_manager.js" defer></script>
-
+    <script src="js/ui/feedback_manager.js" defer></script>
     <!-- Shortcuts Popup (New) -->
     <script src="js/ui/shortcuts_manager.js" defer></script>
+    <!-- Silk Animation -->
+    <script src="js/display/silk-animation.js" defer></script>
+    <!-- Taiji Wisdom Popup -->
+    <script src="js/ui/wisdom_manager.js" defer></script>
 
     <!-- 3. Utility Modules (Refactored from script.js) -->
-    <script src="js/utils/session_manager.js" defer></script>
     <!-- Session/User ID management -->
-    <script src="js/utils/path_generator.js" defer></script>
+    <script src="js/utils/session_manager.js" defer></script>
     <!-- Dynamic Path Generator -->
+    <script src="js/utils/path_generator.js" defer></script>
 
     <!-- 4. Main Controller - พึ่งพาทั้งหมดข้างบน -->
-    <script src="js/controllers/display_controller.js" defer></script>
     <!-- Display Options Controller -->
+    <script src="js/controllers/display_controller.js" defer></script>
+    <!-- WebGL Manager -->
     <script src="js/display/webgl_manager.js"></script>
-    <script src="js/display/background_manager.js"></script>
     <!-- Background Manager (Virtual Backgrounds) -->
-    <script src="js/controllers/keyboard_controller.js" defer></script>
+    <script src="js/display/background_manager.js"></script>
     <!-- Keyboard Shortcuts Controller -->
+    <script src="js/controllers/keyboard_controller.js" defer></script>
+    <!-- Entry Point -->
     <script src="js/controllers/script.js" defer></script>
-    <!-- Entry Point หลัก -->
 
     <!-- MediaPipe Tasks Vision for Gesture Recognition (loaded as module) -->
     <script type="module">
@@ -185,9 +196,11 @@ Version: 0.9.9 (2026-01-17)
       id="tutorial-btn"
       class="fixed bottom-5 right-5 w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-[0_4px_20px_rgba(139,92,246,0.4)] flex items-center justify-center text-3xl z-50 hover:scale-110 transition-transform border-2 border-white/20"
       title="คู่มือการฝึก (H) - Help"
+      aria-label="Help and Tutorial"
     >
       ❓
     </button>
+
     <!-- Mobile Warning Modal (แสดงเมื่อใช้งานบนมือถือ) -->
     <div
       id="mobile-modal"
@@ -403,6 +416,7 @@ Version: 0.9.9 (2026-01-17)
               id="display-btn"
               class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
               title="Display Options - ตั้งค่าการแสดงผล"
+              aria-label="Display Options"
             >
               👁️
             </button>
@@ -492,6 +506,72 @@ Version: 0.9.9 (2026-01-17)
                   G
                 </span>
               </label>
+
+              <!-- Grid Settings (Hidden by default, shown when Grid is checked) -->
+              <div
+                id="grid-settings"
+                class="hidden px-4 py-2 bg-gray-800/50 border-b border-gray-700/30 space-y-2"
+              >
+                <!-- 1. Grid Size -->
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-gray-400">Size</span>
+                  <select
+                    id="grid-size"
+                    class="bg-gray-700 text-white text-xs rounded border border-gray-600 px-1 py-0.5"
+                  >
+                    <option value="60">Small</option>
+                    <option value="100" selected>Medium</option>
+                    <option value="140">Large</option>
+                  </select>
+                </div>
+
+                <!-- 2. Grid Color -->
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-gray-400">Color</span>
+                  <div class="flex gap-2">
+                    <!-- White -->
+                    <button
+                      class="w-4 h-4 rounded-full border border-gray-500 bg-white hover:scale-110 transition-transform grid-color-btn active ring-2 ring-blue-500 relative"
+                      data-color="255, 255, 255"
+                      title="White"
+                      aria-label="White Grid"
+                    ></button>
+                    <!-- Gray -->
+                    <button
+                      class="w-4 h-4 rounded-full border border-gray-500 bg-gray-400 hover:scale-110 transition-transform grid-color-btn relative"
+                      data-color="150, 150, 150"
+                      title="Gray"
+                      aria-label="Gray Grid"
+                    ></button>
+                    <!-- Red -->
+                    <button
+                      class="w-4 h-4 rounded-full border border-gray-500 bg-red-500 hover:scale-110 transition-transform grid-color-btn relative"
+                      data-color="255, 50, 50"
+                      title="Red"
+                      aria-label="Red Grid"
+                    ></button>
+                  </div>
+                </div>
+
+                <!-- 3. Grid Opacity -->
+                <div class="flex flex-col gap-1">
+                  <div class="flex justify-between">
+                    <span class="text-xs text-gray-400">Opacity</span>
+                    <span id="grid-opacity-val" class="text-xs text-gray-300"
+                      >20%</span
+                    >
+                  </div>
+                  <input
+                    type="range"
+                    id="grid-opacity"
+                    min="10"
+                    max="80"
+                    value="20"
+                    step="10"
+                    class="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer"
+                  />
+                </div>
+              </div>
 
               <!-- ===== 👤 Trainee/You Section ===== -->
               <div
@@ -675,6 +755,7 @@ Version: 0.9.9 (2026-01-17)
               id="rules-btn"
               class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
               title="Rules Settings - ปรับค่ากฎการตรวจจับ"
+              aria-label="Rules Settings"
             >
               🔧
             </button>
@@ -1320,9 +1401,6 @@ Version: 0.9.9 (2026-01-17)
               </div>
             </div>
           </div>
-
-
-
         </div>
 
         <!-- Right: Settings Buttons -->

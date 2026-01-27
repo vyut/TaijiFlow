@@ -36,6 +36,7 @@ class DisplayController {
     this.showTrail = true;
     this.instructorSize = "medium"; // Small/Medium/Large
     this.instructorPos = "tr"; // TR/TL/BR/BL
+    this.isMirrored = true; // 🆕 Track Mirror State explicitly
     this.showBlurBackground = false;
     this.showGrid = false; // 🆕 Grid Overlay
     this.showErrorHighlights = true; // 🆕 Error Highlights (Red Dots)
@@ -70,6 +71,7 @@ class DisplayController {
     this.initTrailCheckbox(); // Init Checkbox & Settings
     this.initAutoAdjustLightCheckbox(); // Auto-Adjust Light
     this.initVirtualBackgrounds(); // Virtual Backgrounds
+    this.initZoomControls(); // 🆕 Zoom/Pan Controls
     this.initSideBySideCheckbox(); // 🆕 Side-by-Side Mode
     this.initErrorHighlightsCheckbox(); // 🆕 Error Highlights
   }
@@ -225,14 +227,20 @@ class DisplayController {
    * @param {boolean} enabled
    */
   setMirrorMode(enabled) {
+    this.isMirrored = enabled; // Update State
     const container = document.querySelector(".canvas-container");
-    if (!container) return;
 
-    if (enabled) {
-      container.classList.remove("normal-view"); // Mirror (Default CSS)
-    } else {
-      container.classList.add("normal-view"); // Normal View
+    // We still toggle class for potential CSS fallback/other uses
+    if (container) {
+      if (enabled) {
+        container.classList.remove("normal-view");
+      } else {
+        container.classList.add("normal-view");
+      }
     }
+
+    // Force Transform Update
+    this.updateTransform();
   }
 
   /**
@@ -568,6 +576,127 @@ class DisplayController {
     }
     if (checkInstructor) {
       checkInstructor.checked = show;
+    }
+  }
+
+  /**
+   * Zoom & Pan Controls
+   */
+  initZoomControls() {
+    this.zoomLevel = 1.0;
+    this.panX = 0;
+    this.panY = 0;
+    this.zoomStep = 0.1;
+    this.panStep = 20;
+
+    const btnZoomIn = document.getElementById("btn-zoom-in");
+    const btnZoomOut = document.getElementById("btn-zoom-out");
+    const btnZoomReset = document.getElementById("btn-zoom-reset");
+    const btnPanUp = document.getElementById("btn-pan-up");
+    const btnPanDown = document.getElementById("btn-pan-down");
+    const btnPanLeft = document.getElementById("btn-pan-left");
+    const btnPanRight = document.getElementById("btn-pan-right");
+
+    if (btnZoomIn) {
+      btnZoomIn.addEventListener("click", () => this.adjustZoom(1));
+    }
+    if (btnZoomOut) {
+      btnZoomOut.addEventListener("click", () => this.adjustZoom(-1));
+    }
+    if (btnZoomReset) {
+      btnZoomReset.addEventListener("click", () => this.resetZoom());
+    }
+
+    // Pan Buttons
+    if (btnPanUp)
+      btnPanUp.addEventListener("click", () => this.adjustPan(0, 1));
+    if (btnPanDown)
+      btnPanDown.addEventListener("click", () => this.adjustPan(0, -1));
+    if (btnPanLeft)
+      btnPanLeft.addEventListener("click", () => this.adjustPan(1, 0));
+    if (btnPanRight)
+      btnPanRight.addEventListener("click", () => this.adjustPan(-1, 0));
+  }
+
+  adjustZoom(direction) {
+    const newZoom = this.zoomLevel + direction * this.zoomStep;
+    // Limit zoom: 1.0x to 3.0x
+    if (newZoom >= 1.0 && newZoom <= 3.0) {
+      this.zoomLevel = newZoom;
+      this.updateTransform();
+    }
+  }
+
+  /**
+   * Adjust Pan with constraints
+   * ป้องกันการเลื่อนหลุดขอบจอ (Black borders)
+   */
+  adjustPan(dx, dy) {
+    if (this.zoomLevel <= 1.0) return;
+
+    // 1. Calculate Max Pan (in unscaled pixels)
+    // Formula: MaxTranslate = (1 - 1/Zoom) * (Dimension/2)
+    // Assumption: Base resolution 1280x720 or use offsetWidth
+    const container = document.querySelector(".canvas-container");
+    const W = container ? container.offsetWidth : 1280;
+    const H = container ? container.offsetHeight : 720;
+
+    const maxPanX = (1 - 1 / this.zoomLevel) * (W / 2);
+    const maxPanY = (1 - 1 / this.zoomLevel) * (H / 2);
+
+    // 2. Apply Step
+    // Note: mirrorScale affects DIRECTION, not limit magnitude
+    let nextX = this.panX + dx * this.panStep;
+    let nextY = this.panY + dy * this.panStep;
+
+    // 3. Clamp
+    // Math.abs(nextX) must be <= maxPanX
+    if (nextX > maxPanX) nextX = maxPanX;
+    if (nextX < -maxPanX) nextX = -maxPanX;
+
+    if (nextY > maxPanY) nextY = maxPanY;
+    if (nextY < -maxPanY) nextY = -maxPanY;
+
+    this.panX = nextX;
+    this.panY = nextY;
+    this.updateTransform();
+  }
+
+  resetZoom() {
+    this.zoomLevel = 1.0;
+    this.panX = 0;
+    this.panY = 0;
+    this.updateTransform();
+  }
+
+  updateTransform() {
+    const canvas = document.getElementById("output_canvas");
+    const video = document.getElementById("input_video");
+
+    // Mirror Logic:
+    // If Mirrored: ScaleX should be NEGATIVE
+    // If Normal: ScaleX should be POSITIVE
+    const mirrorScale = this.isMirrored ? -1 : 1;
+
+    // Zoom Logic:
+    const finalScaleX = this.zoomLevel * mirrorScale;
+    const finalScaleY = this.zoomLevel;
+
+    // Pan Logic:
+    // When ScaleX is -1 (Mirrored), Translate X directions are inverted visually.
+    // If we want Pan Right (+panX) to move Image Right, we must Invert X translation when mirrored.
+    const finalPanX = this.panX * mirrorScale;
+    const finalPanY = this.panY;
+
+    const transform = `scale(${finalScaleX}, ${finalScaleY}) translate(${finalPanX}px, ${finalPanY}px)`;
+
+    if (canvas) {
+      canvas.style.transform = transform;
+      canvas.style.transition = "transform 0.1s ease-out";
+    }
+    if (video) {
+      video.style.transform = transform;
+      video.style.transition = "transform 0.1s ease-out";
     }
   }
 

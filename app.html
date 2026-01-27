@@ -445,22 +445,43 @@ Version: 0.9.9 (2026-01-17)
                     Trainee/You
                   </div>
                   <!-- Skeleton -->
-                  <label
-                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
-                    title="Show your skeleton overlay"
-                  >
-                    <input
-                      type="checkbox"
-                      id="check-skeleton"
-                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                      checked
-                    />
-                    <div class="flex flex-col flex-1">
-                      <span class="text-sm font-bold text-white leading-tight">🦴 Skeleton</span>
-                      <span class="text-xs text-gray-400 mt-1">Track your joints in real-time</span>
-                    </div>
+                  <div class="flex items-start px-4 py-2 hover:bg-gray-700 border-b border-gray-700/30 transition-colors">
+                    <label class="flex-1 flex items-start cursor-pointer">
+                      <input
+                        type="checkbox"
+                        id="check-skeleton"
+                        class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                        checked
+                      />
+                      <div class="flex flex-col flex-1">
+                        <span class="text-sm font-bold text-white leading-tight">🦴 Skeleton</span>
+                        <span class="text-xs text-gray-400 mt-1">Track your joints in real-time</span>
+                      </div>
+                    </label>
                     <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">K</span>
-                  </label>
+                    <button id="btn-skeleton-settings" class="ml-2 p-1 w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-600 text-gray-400 transition-transform duration-200" title="Toggle Settings">▼</button>
+                  </div>
+                  
+                  <!-- Skeleton Settings -->
+                  <div
+                    id="skeleton-settings"
+                    class="hidden px-4 py-2 bg-gray-800/50 border-b border-gray-700/30 space-y-2"
+                  >
+                    <!-- Color -->
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs text-gray-400">Color</span>
+                      <div class="flex gap-2">
+                        <!-- White (Default) -->
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-white hover:scale-110 skeleton-color-btn active ring-2 ring-blue-500 relative transition-transform" data-color="255, 255, 255" title="White"></button>
+                        <!-- Cyan (Vivid) -->
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-cyan-400 hover:scale-110 skeleton-color-btn relative transition-transform" data-color="0, 255, 255" title="Cyan"></button>
+                        <!-- Yellow (Accessibility) -->
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-yellow-400 hover:scale-110 skeleton-color-btn relative transition-transform" data-color="255, 255, 0" title="Yellow"></button>
+                        <!-- Magenta (Vivid) -->
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-fuchsia-500 hover:scale-110 skeleton-color-btn relative transition-transform" data-color="255, 0, 255" title="Magenta"></button>
+                      </div>
+                    </div>
+                  </div>
                   <!-- Error Highlights -->
                   <label
                     class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
@@ -479,23 +500,22 @@ Version: 0.9.9 (2026-01-17)
                     <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">E</span>
                   </label>
                   <!-- Trail -->
-                  <label
-                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
-                    title="Show wrist movement trail"
-                  >
-                    <input
-                      type="checkbox"
-                      id="check-trail"
-                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                      checked
-                    />
-                    <div class="flex flex-col flex-1">
-                      <span class="text-sm font-bold text-white leading-tight">☄️ Motion Trail</span>
-                      <span class="text-xs text-gray-400 mt-1">Track hand movement history</span>
-                    </div>
+                  <div class="flex items-start px-4 py-2 hover:bg-gray-700 border-b border-gray-700/30 transition-colors">
+                    <label class="flex-1 flex items-start cursor-pointer">
+                      <input
+                        type="checkbox"
+                        id="check-trail"
+                        class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                        checked
+                      />
+                      <div class="flex flex-col flex-1">
+                        <span class="text-sm font-bold text-white leading-tight">☄️ Motion Trail</span>
+                        <span class="text-xs text-gray-400 mt-1">Track hand movement history</span>
+                      </div>
+                    </label>
                     <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">R</span>
                     <button id="btn-trail-settings" class="ml-2 p-1 w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-600 text-gray-400 transition-transform duration-200" title="Toggle Settings">▼</button>
-                  </label>
+                  </div>
                   
                   <!-- Trail Settings -->
                   <div
@@ -549,23 +569,22 @@ Version: 0.9.9 (2026-01-17)
                     <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">M</span>
                   </label>
                   <!-- Path -->
-                  <label
-                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
-                    title="Show dynamic path guide"
-                  >
-                    <input
-                      type="checkbox"
-                      id="check-path"
-                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                      checked
-                    />
-                    <div class="flex flex-col flex-1">
-                      <span class="text-sm font-bold text-white leading-tight">🛣️ Path Guide</span>
-                      <span class="text-xs text-gray-400 mt-1">Dynamic movement guide</span>
-                    </div>
+                  <div class="flex items-start px-4 py-2 hover:bg-gray-700 border-b border-gray-700/30 transition-colors">
+                    <label class="flex-1 flex items-start cursor-pointer">
+                      <input
+                        type="checkbox"
+                        id="check-path"
+                        class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                        checked
+                      />
+                      <div class="flex flex-col flex-1">
+                        <span class="text-sm font-bold text-white leading-tight">🛣️ Path Guide</span>
+                        <span class="text-xs text-gray-400 mt-1">Dynamic movement guide</span>
+                      </div>
+                    </label>
                     <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">P</span>
                     <button id="btn-path-settings" class="ml-2 p-1 w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-600 text-gray-400 transition-transform duration-200" title="Toggle Settings">▼</button>
-                  </label>
+                  </div>
                   
                   <!-- Path Settings -->
                   <div
@@ -594,22 +613,21 @@ Version: 0.9.9 (2026-01-17)
                     </div>
                   </div>
                   <!-- Grid Overlay -->
-                  <label
-                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
-                    title="Show grid lines for reference"
-                  >
-                    <input
-                      type="checkbox"
-                      id="check-grid"
-                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                    />
-                    <div class="flex flex-col flex-1">
-                      <span class="text-sm font-bold text-white leading-tight">📐 Grid Overlay</span>
-                      <span class="text-xs text-gray-400 mt-1">Position reference lines</span>
-                    </div>
+                  <div class="flex items-start px-4 py-2 hover:bg-gray-700 border-b border-gray-700/30 transition-colors">
+                    <label class="flex-1 flex items-start cursor-pointer">
+                      <input
+                        type="checkbox"
+                        id="check-grid"
+                        class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                      />
+                      <div class="flex flex-col flex-1">
+                        <span class="text-sm font-bold text-white leading-tight">📐 Grid Overlay</span>
+                        <span class="text-xs text-gray-400 mt-1">Position reference lines</span>
+                      </div>
+                    </label>
                     <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">G</span>
                     <button id="btn-grid-settings" class="ml-2 p-1 w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-600 text-gray-400 transition-transform duration-200" title="Toggle Settings">▼</button>
-                  </label>
+                  </div>
                   
                   <!-- Grid Settings -->
                   <div
@@ -688,22 +706,21 @@ Version: 0.9.9 (2026-01-17)
                     <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">S</span>
                   </label>
                   <!-- Ghost Overlay -->
-                  <label
-                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
-                    title="Show instructor shadow on main video"
-                  >
-                    <input
-                      type="checkbox"
-                      id="check-ghost"
-                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                    />
-                    <div class="flex flex-col flex-1">
-                      <span class="text-sm font-bold text-white leading-tight">👻 Ghost Overlay</span>
-                      <span class="text-xs text-gray-400 mt-1">Full body reference shadow</span>
-                    </div>
+                  <div class="flex items-start px-4 py-2 hover:bg-gray-700 border-b border-gray-700/30 transition-colors">
+                    <label class="flex-1 flex items-start cursor-pointer">
+                      <input
+                        type="checkbox"
+                        id="check-ghost"
+                        class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                      />
+                      <div class="flex flex-col flex-1">
+                        <span class="text-sm font-bold text-white leading-tight">👻 Ghost Overlay</span>
+                        <span class="text-xs text-gray-400 mt-1">Full body reference shadow</span>
+                      </div>
+                    </label>
                     <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">O</span>
                     <button id="btn-ghost-settings" class="ml-2 p-1 w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-600 text-gray-400 transition-transform duration-200" title="Toggle Settings">▼</button>
-                  </label>
+                  </div>
                   
                   <!-- Ghost Settings -->
                   <div

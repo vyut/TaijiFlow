@@ -32,6 +32,7 @@ class DisplayController {
     this.pathWidth = 4; // Default Thin
     this.pathColor = "0, 255, 0"; // Default Green
     this.showSkeleton = true;
+    this.skeletonColor = "255, 255, 255"; // Default White
     this.showTrail = true;
     this.showBlurBackground = false;
     this.showGrid = false; // 🆕 Grid Overlay
@@ -64,9 +65,7 @@ class DisplayController {
     this.initInstructorCheckbox();
     this.initPathCheckbox();
     this.initSkeletonCheckbox();
-    this.initSkeletonCheckbox();
     this.initTrailCheckbox(); // Init Checkbox & Settings
-    this.initAutoAdjustLightCheckbox(); // Auto-Adjust Light
     this.initAutoAdjustLightCheckbox(); // Auto-Adjust Light
     this.initVirtualBackgrounds(); // Virtual Backgrounds
     this.initSideBySideCheckbox(); // 🆕 Side-by-Side Mode
@@ -174,12 +173,14 @@ class DisplayController {
       "path-settings",
       "grid-settings",
       "ghost-settings",
+      "skeleton-settings",
     ];
     const allBtns = [
       "btn-trail-settings",
       "btn-path-settings",
       "btn-grid-settings",
       "btn-ghost-settings",
+      "btn-skeleton-settings",
     ];
 
     allSettings.forEach((id) => {
@@ -529,13 +530,52 @@ class DisplayController {
    * Skeleton checkbox (โครงผู้ฝึก)
    */
   initSkeletonCheckbox() {
-    const { checkSkeleton } = this.deps;
+    const checkSkeleton = document.getElementById("check-skeleton");
+    const colorBtns = document.querySelectorAll(".skeleton-color-btn");
 
     if (checkSkeleton) {
       checkSkeleton.checked = this.showSkeleton;
+
+      // Setup Toggle Logic (Auto-Collapse & Chevron)
+      this.setupSettingsToggle(
+        "skeleton-settings",
+        "btn-skeleton-settings",
+        "check-skeleton",
+      );
+
+      // Init Color Buttons
+      if (colorBtns.length > 0) {
+        colorBtns.forEach((btn) => {
+          if (btn.dataset.color === this.skeletonColor) {
+            btn.classList.add("active", "ring-2", "ring-blue-500");
+          } else {
+            btn.classList.remove("active", "ring-2", "ring-blue-500");
+          }
+        });
+      }
+
+      // 1. Handle Checkbox
       checkSkeleton.addEventListener("change", () => {
         this.showSkeleton = checkSkeleton.checked;
+        // Settings toggle handled by setupSettingsToggle
       });
+
+      // 2. Handle Color Change
+      if (colorBtns.length > 0) {
+        colorBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            // Remove active ring
+            colorBtns.forEach((b) =>
+              b.classList.remove("active", "ring-2", "ring-blue-500"),
+            );
+            // Add active ring
+            btn.classList.add("active", "ring-2", "ring-blue-500");
+
+            // Update State
+            this.skeletonColor = btn.dataset.color;
+          });
+        });
+      }
     }
   }
 

@@ -1381,7 +1381,11 @@ async function onResults(results) {
         const jointsToHighlight = displayController.showErrorHighlights
           ? lastErrorJoints
           : [];
-        drawer.drawSkeleton(results.poseLandmarks, jointsToHighlight);
+        drawer.drawSkeleton(
+          results.poseLandmarks,
+          jointsToHighlight,
+          displayController.skeletonColor,
+        );
       } else if (displayController.showErrorHighlights) {
         // กรณีปิด Skeleton แต่เปิด Highlights: วาดเฉพาะจุดแดง
         drawer.drawErrorHighlights(results.poseLandmarks, lastErrorJoints);

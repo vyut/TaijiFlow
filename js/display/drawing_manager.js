@@ -118,7 +118,7 @@ class DrawingManager {
    * @param {Object[]} landmarks - 33 จุดจาก MediaPipe Pose
    * @param {number[]} errorJoints - Array of joint indices to highlight (default: [])
    */
-  drawSkeleton(landmarks, errorJoints = []) {
+  drawSkeleton(landmarks, errorJoints = [], color = "255, 255, 255") {
     this.ctx.save();
 
     // ----- Mirror Logic -----
@@ -131,9 +131,9 @@ class DrawingManager {
       this.ctx.translate(-this.canvasWidth, 0); // ย้ายกลับมา
     }
 
-    // ----- วาดเส้นเชื่อมข้อต่อ (White, slightly transparent) -----
+    // ----- วาดเส้นเชื่อมข้อต่อ -----
     drawConnectors(this.ctx, landmarks, POSE_CONNECTIONS, {
-      color: "rgba(255, 255, 255, 0.7)",
+      color: `rgba(${color}, 0.7)`,
       lineWidth: 4,
     });
 
@@ -155,9 +155,9 @@ class DrawingManager {
         this.ctx.fillStyle = "#FF0000";
         this.ctx.arc(x, y, 8, 0, 2 * Math.PI); // Radius 8
       } else {
-        // ⚪ Normal: White
+        // ⚪ Normal: Custom Color
         this.ctx.shadowBlur = 0;
-        this.ctx.fillStyle = "#FFFFFF";
+        this.ctx.fillStyle = `rgb(${color})`;
         this.ctx.arc(x, y, 4, 0, 2 * Math.PI); // Radius 4
       }
 

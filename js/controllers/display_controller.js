@@ -84,11 +84,19 @@ class DisplayController {
         e.stopPropagation();
         if (window.uiManager) window.uiManager.closeAllMenus("display-menu");
         displayMenu.classList.toggle("hidden");
+
+        // Auto-Collapse when closing
+        if (displayMenu.classList.contains("hidden")) {
+          this.collapseAllSettings();
+        }
       });
 
       document.addEventListener("click", (e) => {
         if (!displayMenu.contains(e.target) && e.target !== displayBtn) {
-          displayMenu.classList.add("hidden");
+          if (!displayMenu.classList.contains("hidden")) {
+            displayMenu.classList.add("hidden");
+            this.collapseAllSettings();
+          }
         }
       });
     }
@@ -114,6 +122,75 @@ class DisplayController {
         }
       });
     }
+  }
+
+  /**
+   * Helper: Setup Toggle Button for Settings Panels
+   * @param {string} settingsId - ID of the settings div
+   * @param {string} btnId - ID of the toggle button (chevron)
+   * @param {string} checkboxId - ID of the feature checkbox
+   */
+  setupSettingsToggle(settingsId, btnId, checkboxId) {
+    const settings = document.getElementById(settingsId);
+    const btn = document.getElementById(btnId);
+    const checkbox = document.getElementById(checkboxId);
+
+    if (!settings || !btn || !checkbox) return;
+
+    // 1. Initial State: Hidden by default (Auto-Collapse rule)
+    settings.classList.add("hidden");
+    btn.style.transform = "rotate(0deg)";
+
+    // 2. Toggle Click
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent label click
+      e.preventDefault();
+
+      const isHidden = settings.classList.contains("hidden");
+      if (isHidden) {
+        settings.classList.remove("hidden");
+        btn.style.transform = "rotate(180deg)"; // Arrow Up
+      } else {
+        settings.classList.add("hidden");
+        btn.style.transform = "rotate(0deg)"; // Arrow Down
+      }
+    });
+
+    // 3. Link with Checkbox (Uncheck -> Hide)
+    checkbox.addEventListener("change", () => {
+      if (!checkbox.checked) {
+        settings.classList.add("hidden");
+        btn.style.transform = "rotate(0deg)";
+      }
+    });
+  }
+
+  /**
+   * Helper: Collapse all settings panels
+   */
+  collapseAllSettings() {
+    const allSettings = [
+      "trail-settings",
+      "path-settings",
+      "grid-settings",
+      "ghost-settings",
+    ];
+    const allBtns = [
+      "btn-trail-settings",
+      "btn-path-settings",
+      "btn-grid-settings",
+      "btn-ghost-settings",
+    ];
+
+    allSettings.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add("hidden");
+    });
+
+    allBtns.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.style.transform = "rotate(0deg)"; // Reset rotation
+    });
   }
 
   /**
@@ -196,13 +273,13 @@ class DisplayController {
     if (checkGrid) {
       // 1. Initialize UI with current state
       checkGrid.checked = this.showGrid;
-      if (gridSettings) {
-        if (this.showGrid) {
-          gridSettings.classList.remove("hidden");
-        } else {
-          gridSettings.classList.add("hidden");
-        }
-      }
+
+      // Setup Toggle Logic (Auto-Collapse & Chevron)
+      this.setupSettingsToggle(
+        "grid-settings",
+        "btn-grid-settings",
+        "check-grid",
+      );
 
       if (sizeSelect) {
         sizeSelect.value = this.gridSize;
@@ -225,15 +302,7 @@ class DisplayController {
       // 2. Handle Checkbox
       checkGrid.addEventListener("change", (e) => {
         this.showGrid = e.target.checked;
-
-        // Toggle Settings Panel visibility
-        if (gridSettings) {
-          if (this.showGrid) {
-            gridSettings.classList.remove("hidden");
-          } else {
-            gridSettings.classList.add("hidden");
-          }
-        }
+        // Settings toggle handled by setupSettingsToggle
       });
 
       // 3. Handle Size Change
@@ -289,14 +358,12 @@ class DisplayController {
       // 1. Initialize UI
       checkGhost.checked = this.showGhostOverlay;
 
-      // Settings visibility
-      if (ghostSettings) {
-        if (this.showGhostOverlay) {
-          ghostSettings.classList.remove("hidden");
-        } else {
-          ghostSettings.classList.add("hidden");
-        }
-      }
+      // Setup Toggle Logic (Auto-Collapse & Chevron)
+      this.setupSettingsToggle(
+        "ghost-settings",
+        "btn-ghost-settings",
+        "check-ghost",
+      );
 
       // Initialize Opacity Slider
       if (opacitySlider) {
@@ -321,10 +388,10 @@ class DisplayController {
         this.showGhostOverlay = checkGhost.checked;
         if (this.showGhostOverlay) {
           ghostManager.start();
-          if (ghostSettings) ghostSettings.classList.remove("hidden");
+          // Settings toggle handled by setupSettingsToggle (Manual open required)
         } else {
           ghostManager.stop();
-          if (ghostSettings) ghostSettings.classList.add("hidden");
+          // Settings auto-close handled by setupSettingsToggle
         }
       });
 
@@ -403,21 +470,19 @@ class DisplayController {
     if (checkPath) {
       checkPath.checked = this.showPath;
 
-      // 1. Init Settings Visibility
-      if (pathSettings) {
-        if (this.showPath) {
-          pathSettings.classList.remove("hidden");
-        } else {
-          pathSettings.classList.add("hidden");
-        }
-      }
+      // Setup Toggle Logic (Auto-Collapse & Chevron)
+      this.setupSettingsToggle(
+        "path-settings",
+        "btn-path-settings",
+        "check-path",
+      );
 
-      // 2. Init Width Select
+      // 1. Init Width Select
       if (widthSelect) {
         widthSelect.value = this.pathWidth.toString();
       }
 
-      // 3. Init Color Buttons
+      // 2. Init Color Buttons
       if (colorBtns.length > 0) {
         colorBtns.forEach((btn) => {
           if (btn.dataset.color === this.pathColor) {
@@ -428,17 +493,10 @@ class DisplayController {
         });
       }
 
-      // 4. Handle Checkbox Change
+      // 3. Handle Checkbox Change
       checkPath.addEventListener("change", () => {
         this.showPath = checkPath.checked;
-
-        if (pathSettings) {
-          if (this.showPath) {
-            pathSettings.classList.remove("hidden");
-          } else {
-            pathSettings.classList.add("hidden");
-          }
-        }
+        // Settings toggle handled by setupSettingsToggle
       });
 
       // 5. Handle Width Change
@@ -493,21 +551,19 @@ class DisplayController {
     if (checkTrail) {
       checkTrail.checked = this.showTrail;
 
-      // 1. Init Settings Visibility
-      if (trailSettings) {
-        if (this.showTrail) {
-          trailSettings.classList.remove("hidden");
-        } else {
-          trailSettings.classList.add("hidden");
-        }
-      }
+      // Setup Toggle Logic (Auto-Collapse & Chevron)
+      this.setupSettingsToggle(
+        "trail-settings",
+        "btn-trail-settings",
+        "check-trail",
+      );
 
-      // 2. Init Length Select
+      // 1. Init Length Select
       if (lengthSelect) {
         lengthSelect.value = this.trailLength.toString();
       }
 
-      // 3. Init Color Buttons
+      // 2. Init Color Buttons
       if (colorBtns.length > 0) {
         colorBtns.forEach((btn) => {
           if (btn.dataset.color === this.trailColor) {
@@ -518,17 +574,10 @@ class DisplayController {
         });
       }
 
-      // 4. Handle Checkbox Change
+      // 3. Handle Checkbox Change
       checkTrail.addEventListener("change", () => {
         this.showTrail = checkTrail.checked;
-
-        if (trailSettings) {
-          if (this.showTrail) {
-            trailSettings.classList.remove("hidden");
-          } else {
-            trailSettings.classList.add("hidden");
-          }
-        }
+        // Settings toggle handled by setupSettingsToggle
 
         if (!this.showTrail) {
           this.trailHistory = [];

@@ -1219,9 +1219,18 @@ class DisplayController {
       // 2. Clear Left Container (Video removed from DOM, but GhostManager keeps ref)
       if (container) {
         container.innerHTML = "";
+        container.style.width = ""; // Reset Width
       }
 
-      // 3. Restore Ghost State
+      // 3. Reset Canvas Styles
+      const canvas = document.getElementById("output_canvas");
+      if (canvas) {
+        canvas.style.width = "";
+        canvas.style.objectFit = "";
+        canvas.style.objectPosition = "";
+      }
+
+      // 4. Restore Ghost State
       if (checkGhost) {
         console.log(
           `   🔄 Restoring Ghost. Previous: ${this.ghostWasEnabledBeforeSideBySide}, Current: ${checkGhost.checked}`,

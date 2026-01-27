@@ -55,15 +55,16 @@ class DebugManager {
    * อัปเดตข้อมูลบนหน้าจอ Debug และวาดกราฟ
    * @param {Object} info - ข้อมูลที่จะแสดง (FPS, AI Rate, AI Time, Res)
    * @param {Object} engine - HeuristicsEngine instance (optional)
+   * @param {Object} config - { showGraph, showDetail }
    */
-  update(info, engine) {
+  update(info, engine, config = { showGraph: true, showDetail: true }) {
     if (!this.visible || !this.content) return;
 
     // --- 1. Update Text Info ---
     let html = "";
 
-    // A. Engine Debug Info
-    if (engine) {
+    // A. Engine Debug Info (Only if Detail is ON)
+    if (config.showDetail && engine) {
       const engineInfo = engine.getDebugInfo();
       if (engineInfo.pathDistance) {
         html += `<div class="mb-1"><span class="text-orange-400">Path Dist:</span> ${engineInfo.pathDistance} / ${engineInfo.pathThreshold}</div>`;
@@ -78,8 +79,16 @@ class DebugManager {
       }
     }
 
-    // B. Generic Info
+    // B. Generic Info (Always Show: FPS, AI Rate, AI Time, Res)
+    // Filter out "Light", "Frame", "Score" if Detail is OFF?
+    // User asked for "Heuristics Detail" to be toggleable. FPS is basic.
+
     for (const [key, value] of Object.entries(info)) {
+      let isBasic = ["FPS", "AI Rate", "AI Time", "Light", "Res"].includes(key);
+
+      // If NOT detailed mode, skip non-basic keys
+      if (!config.showDetail && !isBasic) continue;
+
       let colorClass = "text-gray-400";
       if (key === "FPS") colorClass = "text-green-400 font-bold";
       if (key === "AI Rate") colorClass = "text-cyan-400 font-bold";
@@ -99,8 +108,14 @@ class DebugManager {
     this.pushHistory(this.history.aiFps, aiFps);
     this.pushHistory(this.history.latency, latency);
 
-    // --- 3. Draw Graph ---
-    this.drawGraph();
+    // Draw Graph (Only if Graph is ON)
+    if (config.showGraph) {
+      this.drawGraph();
+      if (this.canvas.style.display === "none")
+        this.canvas.style.display = "block";
+    } else {
+      this.canvas.style.display = "none";
+    }
   }
 
   pushHistory(arr, val) {

@@ -117,9 +117,20 @@ class DrawingManager {
    *
    * @param {Object[]} landmarks - 33 จุดจาก MediaPipe Pose
    * @param {number[]} errorJoints - Array of joint indices to highlight (default: [])
+   * @param {string} color - RGB String (e.g. "255, 255, 255")
+   * @param {boolean} showIndices - Show joint numbers 0-32
+   * @param {boolean} isMirrored - Is display mirrored (needs text flip?)
    */
-  drawSkeleton(landmarks, errorJoints = [], color = "255, 255, 255") {
+  drawSkeleton(
+    landmarks,
+    errorJoints = [],
+    color = "255, 255, 255",
+    showIndices = false,
+    isMirrored = false,
+  ) {
     this.ctx.save();
+
+    // ... (Existing Mirror Logic matches File) ...
 
     // ----- Mirror Logic -----
     // หมายเหตุ: CSS scaleX(-1) บน canvas ทำ mirror อยู่แล้ว
@@ -162,6 +173,24 @@ class DrawingManager {
       }
 
       this.ctx.fill();
+
+      // ----- Draw Joint Indices -----
+      if (showIndices) {
+        this.ctx.save();
+        this.ctx.translate(x, y);
+
+        // Un-Flip text if Mirrored (either by CSS or Canvas)
+        if (isMirrored || shouldMirror) {
+          this.ctx.scale(-1, 1);
+        }
+
+        this.ctx.font = "bold 12px monospace";
+        this.ctx.fillStyle = "cyan";
+        this.ctx.shadowColor = "black";
+        this.ctx.shadowBlur = 2;
+        this.ctx.fillText(i, 6, 4); // Offset slightly right
+        this.ctx.restore();
+      }
     }
 
     // Reset shadow

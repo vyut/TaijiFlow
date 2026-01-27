@@ -32,7 +32,12 @@ class DisplayController {
     this.pathWidth = 4; // Default Thin
     this.pathColor = "0, 255, 0"; // Default Green
     this.showSkeleton = true;
-    this.skeletonColor = "255, 255, 255"; // Default White
+    this.skeletonColor = "255, 255, 255"; // Debug Config
+    this.showDebugGraph = true;
+    this.showDebugDetail = true;
+    this.showDebugIndices = false; // Joint Numbers
+
+    // Core Display Config
     this.showTrail = true;
     this.instructorSize = "medium"; // Small/Medium/Large
     this.instructorPos = "tr"; // TR/TL/BR/BL
@@ -64,20 +69,27 @@ class DisplayController {
     this.init();
   }
   init() {
-    this.initDropdown();
-    this.initSettingsDropdown(); // Settings dropdown (Performance + Effects + Backgrounds)
-    this.initMirrorCheckbox(); // 🆕 Mirror Mode
-    this.initGridCheckbox(); // 🆕 Grid Overlay
-    this.initGhostCheckbox();
-    this.initInstructorCheckbox();
-    this.initPathCheckbox();
-    this.initSkeletonCheckbox();
-    this.initTrailCheckbox(); // Init Checkbox & Settings
-    this.initAutoAdjustLightCheckbox(); // Auto-Adjust Light
-    this.initVirtualBackgrounds(); // Virtual Backgrounds
-    this.initZoomControls(); // 🆕 Zoom/Pan Controls
-    this.initSideBySideCheckbox(); // 🆕 Side-by-Side Mode
-    this.initErrorHighlightsCheckbox(); // 🆕 Error Highlights
+    console.log("🚀 DisplayController.init() START");
+    try {
+      this.initDropdown();
+      this.initSettingsDropdown();
+      this.initMirrorCheckbox();
+      this.initGridCheckbox();
+      this.initGhostCheckbox();
+      this.initInstructorCheckbox();
+      this.initPathCheckbox();
+      this.initSkeletonCheckbox();
+      this.initTrailCheckbox();
+      this.initAutoAdjustLightCheckbox();
+      this.initVirtualBackgrounds();
+      this.initZoomControls();
+      this.initSideBySideCheckbox();
+      this.initErrorHighlightsCheckbox();
+      this.initDebugCheckbox();
+      console.log("✅ DisplayController.init() FINISHED");
+    } catch (err) {
+      console.error("❌ DisplayController.init() CRASHED:", err);
+    }
   }
 
   /**
@@ -184,6 +196,7 @@ class DisplayController {
       "skeleton-settings",
       "instructor-settings",
       "mirror-settings",
+      "debug-settings",
     ];
     const allBtns = [
       "btn-trail-settings",
@@ -193,6 +206,7 @@ class DisplayController {
       "btn-skeleton-settings",
       "btn-instructor-settings",
       "btn-mirror-settings",
+      "btn-debug-settings",
     ];
 
     allSettings.forEach((id) => {
@@ -304,6 +318,46 @@ class DisplayController {
 
     // Force Transform Update
     this.updateTransform();
+  }
+
+  /**
+   * Initialize Debug settings
+   */
+  initDebugCheckbox() {
+    const checkDebug = document.getElementById("check-debug");
+    const checkGraph = document.getElementById("check-debug-graph");
+    const checkDetail = document.getElementById("check-debug-detail");
+    const checkIndices = document.getElementById("check-debug-indices");
+
+    if (checkDebug) {
+      this.setupSettingsToggle(
+        "debug-settings",
+        "btn-debug-settings",
+        "check-debug",
+      );
+    }
+
+    if (checkGraph) {
+      checkGraph.checked = this.showDebugGraph;
+      checkGraph.addEventListener(
+        "change",
+        (e) => (this.showDebugGraph = e.target.checked),
+      );
+    }
+    if (checkDetail) {
+      checkDetail.checked = this.showDebugDetail;
+      checkDetail.addEventListener(
+        "change",
+        (e) => (this.showDebugDetail = e.target.checked),
+      );
+    }
+    if (checkIndices) {
+      checkIndices.checked = this.showDebugIndices;
+      checkIndices.addEventListener(
+        "change",
+        (e) => (this.showDebugIndices = e.target.checked),
+      );
+    }
   }
 
   /**

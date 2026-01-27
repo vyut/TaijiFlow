@@ -1385,6 +1385,8 @@ async function onResults(results) {
           results.poseLandmarks,
           jointsToHighlight,
           displayController.skeletonColor,
+          displayController.showDebugIndices, // 🆕 Joint Numbers
+          displayController.isMirrored, // 🆕 For text flipping
         );
       } else if (displayController.showErrorHighlights) {
         // กรณีปิด Skeleton แต่เปิด Highlights: วาดเฉพาะจุดแดง
@@ -1539,7 +1541,7 @@ async function onResults(results) {
           }
 
           fpsFrameCount++; // Increment counter for AI Rate calculation
-          debugManager.update(debugInfo); // Use debugManager to update debug overlay
+          // Use debugManager to update debug overlay
         }
 
         // 2. *** เก็บข้อมูล (Data Logging) - เก็บทุก 3 frames เพื่อลดขนาดไฟล์ ***
@@ -1649,9 +1651,15 @@ async function onResults(results) {
     fpsFrameCount++;
 
     // Call Manager
+    const debugConfig = {
+      showGraph: displayController.showDebugGraph,
+      showDetail: displayController.showDebugDetail,
+    };
+
     debugManager.update(
       debugInfo,
       isRecording && results.poseLandmarks ? engine : null,
+      debugConfig,
     );
   }
 

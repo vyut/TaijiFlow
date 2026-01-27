@@ -673,22 +673,46 @@ Version: 0.9.9 (2026-01-17)
                     Reference/Instructor
                   </div>
                   <!-- Instructor PiP -->
-                  <label
-                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
-                    title="Show instructor shadow in corner thumbnail"
-                  >
-                    <input
-                      type="checkbox"
-                      id="check-instructor"
-                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                      checked
-                    />
-                    <div class="flex flex-col flex-1">
-                      <span class="text-sm font-bold text-white leading-tight">🎓 Instructor PiP</span>
-                      <span class="text-xs text-gray-400 mt-1">Corner video overlay</span>
-                    </div>
+                  <!-- Instructor PiP -->
+                  <div class="flex items-start px-4 py-2 hover:bg-gray-700 border-b border-gray-700/30 transition-colors">
+                    <label class="flex-1 flex items-start cursor-pointer">
+                      <input
+                        type="checkbox"
+                        id="check-instructor"
+                        class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                        checked
+                      />
+                      <div class="flex flex-col flex-1">
+                        <span class="text-sm font-bold text-white leading-tight">🎓 Instructor PiP</span>
+                        <span class="text-xs text-gray-400 mt-1">Corner video overlay</span>
+                      </div>
+                    </label>
                     <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">I</span>
-                  </label>
+                    <button id="btn-instructor-settings" class="ml-2 p-1 w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-600 text-gray-400 transition-transform duration-200" title="Toggle Settings">▼</button>
+                  </div>
+                  
+                  <!-- Instructor Settings -->
+                  <div id="instructor-settings" class="hidden px-4 py-2 bg-gray-800/50 border-b border-gray-700/30 space-y-3">
+                    <!-- Size -->
+                    <div class="flex flex-col gap-1">
+                      <span class="text-xs text-gray-400">Size</span>
+                      <div class="flex gap-2">
+                         <button class="instructor-size-btn flex-1 py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 text-xs hover:bg-gray-600" data-size="small">S</button>
+                         <button class="instructor-size-btn flex-1 py-1 rounded border border-gray-600 bg-blue-600 text-white text-xs hover:bg-blue-500" data-size="medium">M</button>
+                         <button class="instructor-size-btn flex-1 py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 text-xs hover:bg-gray-600" data-size="large">L</button>
+                      </div>
+                    </div>
+                    <!-- Position -->
+                    <div class="flex flex-col gap-1">
+                      <span class="text-xs text-gray-400">Position</span>
+                      <div class="grid grid-cols-2 gap-2">
+                        <button class="instructor-pos-btn py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 text-xs hover:bg-gray-600" data-pos="tl">Top-Left</button>
+                        <button class="instructor-pos-btn py-1 rounded border border-gray-600 bg-blue-600 text-white text-xs hover:bg-blue-500" data-pos="tr">Top-Right</button>
+                        <button class="instructor-pos-btn py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 text-xs hover:bg-gray-600" data-pos="bl">Btm-Left</button>
+                        <button class="instructor-pos-btn py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 text-xs hover:bg-gray-600" data-pos="br">Btm-Right</button>
+                      </div>
+                    </div>
+                  </div>
                   <!-- Side-by-Side Mode -->
                   <label
                     class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"

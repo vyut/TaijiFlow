@@ -34,6 +34,8 @@ class DisplayController {
     this.showSkeleton = true;
     this.skeletonColor = "255, 255, 255"; // Default White
     this.showTrail = true;
+    this.instructorSize = "medium"; // Small/Medium/Large
+    this.instructorPos = "tr"; // TR/TL/BR/BL
     this.showBlurBackground = false;
     this.showGrid = false; // 🆕 Grid Overlay
     this.showErrorHighlights = true; // 🆕 Error Highlights (Red Dots)
@@ -174,6 +176,7 @@ class DisplayController {
       "grid-settings",
       "ghost-settings",
       "skeleton-settings",
+      "instructor-settings",
     ];
     const allBtns = [
       "btn-trail-settings",
@@ -181,6 +184,7 @@ class DisplayController {
       "btn-grid-settings",
       "btn-ghost-settings",
       "btn-skeleton-settings",
+      "btn-instructor-settings",
     ];
 
     allSettings.forEach((id) => {
@@ -431,16 +435,122 @@ class DisplayController {
   }
 
   /**
+  /**
    * Instructor checkbox (เงาครูฝึกมุมขวาบน)
    */
   initInstructorCheckbox() {
     const { checkInstructor } = this.deps;
+    const sizeBtns = document.querySelectorAll(".instructor-size-btn");
+    const posBtns = document.querySelectorAll(".instructor-pos-btn");
 
     if (checkInstructor) {
       checkInstructor.checked = this.showInstructor;
+
+      // Setup Toggle Logic
+      this.setupSettingsToggle(
+        "instructor-settings",
+        "btn-instructor-settings",
+        "check-instructor",
+      );
+
+      // Init Size & Pos Buttons
+      this.updateInstructorUI(sizeBtns, posBtns);
+
       checkInstructor.addEventListener("change", () => {
         this.toggleInstructor(checkInstructor.checked);
+        // Settings toggle handled by setupSettingsToggle
       });
+
+      // Handle Size Change
+      sizeBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          this.instructorSize = btn.dataset.size;
+          this.updateInstructorStyle();
+          this.updateInstructorUI(sizeBtns, posBtns);
+        });
+      });
+
+      // Handle Position Change
+      posBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          this.instructorPos = btn.dataset.pos;
+          this.updateInstructorStyle();
+          this.updateInstructorUI(sizeBtns, posBtns);
+        });
+      });
+    }
+  }
+
+  updateInstructorUI(sizeBtns, posBtns) {
+    if (sizeBtns) {
+      sizeBtns.forEach((btn) => {
+        if (btn.dataset.size === this.instructorSize) {
+          btn.classList.add("bg-blue-600", "text-white");
+          btn.classList.remove("bg-gray-700", "text-gray-300");
+        } else {
+          btn.classList.remove("bg-blue-600", "text-white");
+          btn.classList.add("bg-gray-700", "text-gray-300");
+        }
+      });
+    }
+    if (posBtns) {
+      posBtns.forEach((btn) => {
+        if (btn.dataset.pos === this.instructorPos) {
+          btn.classList.add("bg-blue-600", "text-white");
+          btn.classList.remove("bg-gray-700", "text-gray-300");
+        } else {
+          btn.classList.remove("bg-blue-600", "text-white");
+          btn.classList.add("bg-gray-700", "text-gray-300");
+        }
+      });
+    }
+  }
+
+  updateInstructorStyle() {
+    const { instructorThumbnail } = this.deps;
+    if (!instructorThumbnail) return;
+
+    // Reset basics
+    instructorThumbnail.style.top = "auto";
+    instructorThumbnail.style.bottom = "auto";
+    instructorThumbnail.style.left = "auto";
+    instructorThumbnail.style.right = "auto";
+    instructorThumbnail.style.width = "auto";
+
+    // Apply Position
+    switch (this.instructorPos) {
+      case "tr":
+        instructorThumbnail.style.top = "10px";
+        instructorThumbnail.style.right = "10px";
+        break;
+      case "tl":
+        instructorThumbnail.style.top = "10px";
+        instructorThumbnail.style.left = "10px";
+        break;
+      case "br":
+        instructorThumbnail.style.bottom = "10px";
+        instructorThumbnail.style.right = "10px";
+        break;
+      case "bl":
+        instructorThumbnail.style.bottom = "10px";
+        instructorThumbnail.style.left = "10px";
+        break;
+    }
+
+    // Apply Size (Width) - Height auto via CSS aspect-ratio
+    switch (this.instructorSize) {
+      case "small":
+        instructorThumbnail.style.width = "30%";
+        instructorThumbnail.style.minWidth = "300px";
+        break;
+      case "medium":
+        instructorThumbnail.style.width = "45%";
+        instructorThumbnail.style.minWidth = "450px";
+        break;
+      case "large":
+        instructorThumbnail.style.width = "60%";
+        instructorThumbnail.style.minWidth = "600px";
+        break;
     }
   }
 
@@ -453,6 +563,8 @@ class DisplayController {
     this.showInstructor = show;
     if (instructorThumbnail) {
       instructorThumbnail.classList.toggle("hidden", !show);
+      // Ensure style is applied when showing
+      if (show) this.updateInstructorStyle();
     }
     if (checkInstructor) {
       checkInstructor.checked = show;

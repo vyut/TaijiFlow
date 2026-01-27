@@ -476,21 +476,47 @@ Version: 0.9.9 (2026-01-17)
                     </div>
                   </div>
                   <!-- Error Highlights -->
-                  <label
-                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
-                    title="Show red highlights on incorrect joints"
-                  >
-                    <input
-                      type="checkbox"
-                      id="check-error-highlights"
-                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                      checked
-                    />
-                    <div class="flex flex-col flex-1">
-                      <span class="text-sm font-bold text-white leading-tight">🎯 Error Highlight (E)</span>
-                      <span class="text-xs text-gray-400 mt-1">Show red dots on mistakes</span>
+                  <div class="flex items-start px-4 py-2 hover:bg-gray-700 border-b border-gray-700/30 transition-colors">
+                    <label class="flex-1 flex items-start cursor-pointer" title="Show red highlights on incorrect joints">
+                      <input
+                        type="checkbox"
+                        id="check-error-highlights"
+                        class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                        checked
+                      />
+                      <div class="flex flex-col flex-1">
+                        <span class="text-sm font-bold text-white leading-tight">🎯 Error Highlight (E)</span>
+                        <span class="text-xs text-gray-400 mt-1">Show red dots on mistakes</span>
+                      </div>
+                    </label>
+                    <button id="btn-highlight-settings" class="ml-2 p-1 w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-600 text-gray-400 transition-transform duration-200" title="Toggle Settings">▼</button>
+                  </div>
+                  
+                  <!-- Highlight Settings -->
+                  <div id="highlight-settings" class="hidden px-4 py-2 bg-gray-800/50 border-b border-gray-700/30 space-y-2">
+                    <!-- Style Mode -->
+                    <div class="flex flex-col gap-1">
+                      <span class="text-xs text-gray-400">Style Mode</span>
+                      <select id="highlight-style" class="w-full bg-gray-700 border border-gray-600 text-xs text-white rounded p-1 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="vivid">✨ Vivid (Glow+Pulse)</option>
+                        <option value="minimal">⚫ Minimal (Dot)</option>
+                        <option value="outline">⭕ Outline (Ring)</option>
+                      </select>
                     </div>
-                  </label>
+                    <!-- Scope (Detail Level) -->
+                    <label class="flex items-center space-x-2 cursor-pointer mt-1">
+                       <input type="checkbox" id="check-highlight-scope" checked class="w-3.5 h-3.5 rounded border-gray-600 bg-gray-700 text-blue-500 focus:ring-blue-500">
+                       <span class="text-xs text-gray-300">Show Details (Connectors)</span>
+                    </label>
+                    <!-- Opacity -->
+                    <div class="flex flex-col gap-1 mt-1">
+                      <div class="flex justify-between">
+                        <span class="text-xs text-gray-400">Opacity</span>
+                        <span id="highlight-opacity-val" class="text-xs text-gray-300">100%</span>
+                      </div>
+                      <input type="range" id="highlight-opacity" min="0.2" max="1.0" value="1.0" step="0.1" class="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer" />
+                    </div>
+                  </div>
                   <!-- Trail -->
                   <div class="flex items-start px-4 py-2 hover:bg-gray-700 border-b border-gray-700/30 transition-colors">
                     <label class="flex-1 flex items-start cursor-pointer">
@@ -842,7 +868,7 @@ Version: 0.9.9 (2026-01-17)
                     <!-- Indices -->
                     <label class="flex items-center space-x-2 cursor-pointer">
                        <input type="checkbox" id="check-debug-indices" class="w-3.5 h-3.5 rounded border-gray-600 bg-gray-700 text-blue-500 focus:ring-blue-500">
-                       <span class="text-xs text-gray-300">🔢 Show Joint Numbers <span class="bg-gray-700 text-gray-400 px-1 rounded text-[10px] ml-1">New</span></span>
+                       <span class="text-xs text-gray-300">🔢 Show Joint Numbers</span>
                     </label>
                   </div>
                 </div>

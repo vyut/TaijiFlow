@@ -54,7 +54,11 @@ class DisplayController {
     this.gridColor = "150, 150, 150"; // Default Gray
     this.gridOpacity = 0.4; // Default 40%
     this.ghostOpacity = 0.4; // 🆕 Ghost Opacity (Default 40%)
+    this.ghostOpacity = 0.4; // 🆕 Ghost Opacity (Default 40%)
     this.ghostColor = "100, 200, 255"; // 🆕 Ghost Color (Default Cyan)
+    this.highlightStyle = "vivid"; // 🆕 vivid/minimal/outline
+    this.highlightScope = true; // 🆕 true=detail, false=simple
+    this.highlightOpacity = 1.0; // 🆕 0.2-1.0
 
     // Trail Visualization
     this.TRAIL_LENGTH = 60; // Max History Length (will be updated by settings)
@@ -380,6 +384,52 @@ class DisplayController {
         } else {
           // Notification handled in KeyboardController
         }
+      });
+    }
+
+    // Toggle Settings Panel
+    const btnHighlightSettings = document.getElementById(
+      "btn-highlight-settings",
+    );
+    const highlightSettings = document.getElementById("highlight-settings");
+
+    if (btnHighlightSettings && highlightSettings) {
+      this.setupSettingsToggle(
+        "highlight-settings",
+        "btn-highlight-settings",
+        "check-error-highlights",
+      );
+    }
+
+    // UI Elements
+    const styleSelect = document.getElementById("highlight-style");
+    const scopeCheck = document.getElementById("check-highlight-scope");
+    const opacityInput = document.getElementById("highlight-opacity");
+    const opacityVal = document.getElementById("highlight-opacity-val");
+
+    // Style Mode
+    if (styleSelect) {
+      styleSelect.value = this.highlightStyle;
+      styleSelect.addEventListener("change", (e) => {
+        this.highlightStyle = e.target.value;
+      });
+    }
+
+    // Scope
+    if (scopeCheck) {
+      scopeCheck.checked = this.highlightScope;
+      scopeCheck.addEventListener("change", (e) => {
+        this.highlightScope = e.target.checked;
+      });
+    }
+
+    // Opacity
+    if (opacityInput && opacityVal) {
+      opacityInput.value = this.highlightOpacity;
+      opacityVal.textContent = Math.round(this.highlightOpacity * 100) + "%";
+      opacityInput.addEventListener("input", (e) => {
+        this.highlightOpacity = parseFloat(e.target.value);
+        opacityVal.textContent = Math.round(this.highlightOpacity * 100) + "%";
       });
     }
   }

@@ -120,6 +120,7 @@ class DrawingManager {
    * @param {string} color - RGB String (e.g. "255, 255, 255")
    * @param {boolean} showIndices - Show joint numbers 0-32
    * @param {boolean} isMirrored - Is display mirrored (needs text flip?)
+   * @param {Object} config - { style, scope, opacity }
    */
   drawSkeleton(
     landmarks,
@@ -127,19 +128,20 @@ class DrawingManager {
     color = "255, 255, 255",
     showIndices = false,
     isMirrored = false,
+    activeRule = null,
+    config = {},
   ) {
     this.ctx.save();
 
-    // ... (Existing Mirror Logic matches File) ...
+    // Config Defaults
+    const { style = "vivid", scope = true, opacity = 1.0 } = config;
+    this.ctx.globalAlpha = opacity;
 
     // ----- Mirror Logic -----
-    // หมายเหตุ: CSS scaleX(-1) บน canvas ทำ mirror อยู่แล้ว
-    // ใน Fullscreen (canvas-container) CSS นี้ยังคงทำงาน
-    // ดังนั้น DrawingManager ไม่ต้อง mirror เพิ่ม
     const shouldMirror = this.mirrorDisplay;
     if (shouldMirror) {
-      this.ctx.scale(-1, 1); // พลิกแนวนอน
-      this.ctx.translate(-this.canvasWidth, 0); // ย้ายกลับมา
+      this.ctx.scale(-1, 1);
+      this.ctx.translate(-this.canvasWidth, 0);
     }
 
     // ----- วาดเส้นเชื่อมข้อต่อ -----
@@ -148,55 +150,61 @@ class DrawingManager {
       lineWidth: 4,
     });
 
-    // ----- วาดจุดข้อต่อ (Custom Loop for Highlighting) -----
+    // ----- วาดจุดข้อต่อ -----
     for (let i = 0; i < landmarks.length; i++) {
       const landmark = landmarks[i];
-      // MediaPipe landmarks are normalized (0-1)
       const x = landmark.x * this.canvasWidth;
       const y = landmark.y * this.canvasHeight;
 
-      const isError = errorJoints && errorJoints.includes(i);
+      // Scope Logic: If scope=false (Standard), only highlight the first joint in exception list?
+      // But we are iterating i (0..32). We need to know if 'i' should be highlighted.
+      // If scope=false, we strictly check if i is the FIRST element of errorJoints?
+      // Or filter errorJoints list before loop?
+      // Better: Filter before loop.
+    }
+
+    // Filter Joints based on Scope
+    // Standard (scope=false) -> Show only first joint (Primary)
+    // All (scope=true) -> Show all
+    const activeErrorJoints =
+      scope || !errorJoints || errorJoints.length <= 1
+        ? errorJoints
+        : [errorJoints[0]];
+
+    for (let i = 0; i < landmarks.length; i++) {
+      const landmark = landmarks[i];
+      const x = landmark.x * this.canvasWidth;
+      const y = landmark.y * this.canvasHeight;
+      const isError = activeErrorJoints && activeErrorJoints.includes(i);
 
       this.ctx.beginPath();
 
       if (isError) {
-        // 🔴 Error: Red, Bigger, Glow
-        this.ctx.shadowBlur = 20;
-        this.ctx.shadowColor = "rgba(255, 0, 0, 0.8)";
-        this.ctx.fillStyle = "#FF0000";
-        this.ctx.arc(x, y, 8, 0, 2 * Math.PI); // Radius 8
+        this.ctx.save();
+        this._drawErrorPoint(this.ctx, x, y, activeRule, style);
+        this.ctx.restore();
       } else {
-        // ⚪ Normal: Custom Color
+        // ⚪ Normal Joint
         this.ctx.shadowBlur = 0;
         this.ctx.fillStyle = `rgb(${color})`;
-        this.ctx.arc(x, y, 4, 0, 2 * Math.PI); // Radius 4
+        this.ctx.arc(x, y, 4, 0, 2 * Math.PI);
+        this.ctx.fill();
       }
-
-      this.ctx.fill();
 
       // ----- Draw Joint Indices -----
       if (showIndices) {
         this.ctx.save();
         this.ctx.translate(x, y);
-
-        // Un-Flip text if Mirrored (either by CSS or Canvas)
-        if (isMirrored || shouldMirror) {
-          this.ctx.scale(-1, 1);
-        }
-
+        if (isMirrored || shouldMirror) this.ctx.scale(-1, 1);
         this.ctx.font = "bold 12px monospace";
         this.ctx.fillStyle = "cyan";
         this.ctx.shadowColor = "black";
         this.ctx.shadowBlur = 2;
-        this.ctx.fillText(i, 6, 4); // Offset slightly right
+        this.ctx.fillText(i, 6, 4);
         this.ctx.restore();
       }
     }
 
-    // Reset shadow
-    this.ctx.shadowBlur = 0;
-
-    this.ctx.restore();
     this.ctx.restore();
   }
 
@@ -207,10 +215,14 @@ class DrawingManager {
    * @param {Object[]} landmarks - 33 จุดจาก MediaPipe Pose
    * @param {number[]} errorJoints - Array of joint indices to highlight
    */
-  drawErrorHighlights(landmarks, errorJoints) {
+  drawErrorHighlights(landmarks, errorJoints, config = {}) {
     if (!errorJoints || errorJoints.length === 0) return;
 
+    // Config Defaults
+    const { style = "vivid", scope = true, opacity = 1.0 } = config;
+
     this.ctx.save();
+    this.ctx.globalAlpha = opacity;
 
     // ----- Mirror Logic -----
     const shouldMirror = this.mirrorDisplay;
@@ -220,24 +232,117 @@ class DrawingManager {
     }
 
     // ----- วาดเฉพาะจุด Error -----
-    this.ctx.shadowBlur = 20;
-    this.ctx.shadowColor = "rgba(255, 0, 0, 0.8)";
-    this.ctx.fillStyle = "#FF0000";
+    // Scope Logic
+    const activeErrorJoints =
+      scope || errorJoints.length <= 1 ? errorJoints : [errorJoints[0]];
 
-    errorJoints.forEach((index) => {
+    activeErrorJoints.forEach((index) => {
       const landmark = landmarks[index];
       if (landmark) {
         const x = landmark.x * this.canvasWidth;
         const y = landmark.y * this.canvasHeight;
-
-        this.ctx.beginPath();
-        this.ctx.arc(x, y, 8, 0, 2 * Math.PI); // Radius 8
-        this.ctx.fill();
+        // Pass null for ruleName to use default red style
+        if (this._drawErrorPoint) {
+          this._drawErrorPoint(this.ctx, x, y, null, style);
+        } else {
+          // Fallback if helper missing
+          this.ctx.beginPath();
+          this.ctx.fillStyle = "#FF0000";
+          this.ctx.arc(x, y, 8, 0, 2 * Math.PI);
+          this.ctx.fill();
+        }
       }
     });
 
-    this.ctx.shadowBlur = 0;
     this.ctx.restore();
+  }
+
+  /**
+   * Helper: Draw Error Point based on Style
+   * @param {CanvasRenderingContext2D} ctx
+   * @param {number} x
+   * @param {number} y
+   * @param {string} ruleName
+   * @param {string} styleMode 'vivid' | 'minimal' | 'outline'
+   */
+  _drawErrorPoint(ctx, x, y, ruleName, styleMode) {
+    // Style Map
+    const STYLE_MAP = {
+      "Path Accuracy": { color: "#FF0000", effect: "circle" }, // R1: Red
+      "Arm Rotation": { color: "#FFA500", effect: "glow" }, // R2: Orange
+      "Elbow Sinking": { color: "#FF0000", effect: "pulse" }, // R3: Red Pulse
+      "Waist Initiation": { color: "#FFD700", effect: "glow" }, // R4: Gold
+      "Vertical Stability": { color: "#00FFFF", effect: "glow" }, // R5: Cyan
+      Smoothness: { color: "#800080", effect: "glow" }, // R6: Purple
+      Continuity: { color: "#8B4513", effect: "glow" }, // R7: Brown
+      "Weight Shift": { color: "#FF00FF", effect: "pulse" }, // R8: Magenta
+      "Upper-Lower Coordination": { color: "#FFA500", effect: "glow" }, // R9: Orange
+    };
+
+    // Default Style
+    const styleData = (ruleName && STYLE_MAP[ruleName]) || {
+      color: "#FF0000",
+      effect: "glow",
+    };
+    const colorRGB = this.hexToRgb(styleData.color);
+
+    ctx.beginPath();
+
+    if (styleMode === "minimal") {
+      // ⚫ Minimal: Solid Dot
+      ctx.fillStyle = styleData.color;
+      ctx.shadowBlur = 0;
+      ctx.arc(x, y, 6, 0, 2 * Math.PI);
+      ctx.fill();
+    } else if (styleMode === "outline") {
+      // ⭕ Outline: Stroke Only
+      ctx.strokeStyle = styleData.color;
+      ctx.lineWidth = 3;
+      ctx.shadowBlur = 0;
+      ctx.arc(x, y, 8, 0, 2 * Math.PI);
+      ctx.stroke();
+    } else {
+      // ✨ Vivid (Default): Glow / Pulse / Ring
+      ctx.fillStyle = styleData.color;
+
+      if (styleData.effect === "pulse") {
+        // Pulse Logic
+        const t = (Date.now() % 1500) / 1500;
+        const scale = 1 + Math.sin(t * Math.PI) * 0.5;
+
+        ctx.shadowBlur = 20 * scale;
+        ctx.shadowColor = `rgba(${colorRGB}, 0.8)`;
+        ctx.arc(x, y, 8 * scale, 0, 2 * Math.PI);
+        ctx.fill();
+      } else if (styleData.effect === "circle") {
+        // Outer Ring
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = styleData.color;
+        ctx.arc(x, y, 8, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.strokeStyle = styleData.color;
+        ctx.lineWidth = 2;
+        ctx.arc(x, y, 14, 0, 2 * Math.PI);
+        ctx.stroke();
+      } else {
+        // Default Glow
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = `rgba(${colorRGB}, 0.8)`;
+        ctx.arc(x, y, 8, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+
+      // Special: Big Head Circle for Stability (R5)
+      if (ruleName === "Vertical Stability") {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(${colorRGB}, 0.5)`;
+        ctx.lineWidth = 2;
+        ctx.arc(x, y, 40, 0, 2 * Math.PI); // Big Head Circle
+        ctx.stroke();
+      }
+    }
   }
 
   // ===========================================================================
@@ -827,5 +932,32 @@ class DrawingManager {
     // console.log(`Circularity: variance=${variance.toFixed(4)}, avgRadius=${avgRadius.toFixed(4)}, normalized=${normalizedVariance.toFixed(4)}, score=${score.toFixed(1)}`);
 
     return Math.round(score);
+  }
+
+  /**
+   * Helper: Convert Hex to RGB string ("255, 0, 0")
+   */
+  hexToRgb(hex) {
+    // Remove # if present
+    hex = hex.replace(/^#/, "");
+
+    // Parse values
+    let r = 0,
+      g = 0,
+      b = 0;
+
+    if (hex.length === 3) {
+      // 3 digits
+      r = parseInt(hex[0] + hex[0], 16);
+      g = parseInt(hex[1] + hex[1], 16);
+      b = parseInt(hex[2] + hex[2], 16);
+    } else if (hex.length === 6) {
+      // 6 digits
+      r = parseInt(hex.substring(0, 2), 16);
+      g = parseInt(hex.substring(2, 4), 16);
+      b = parseInt(hex.substring(4, 6), 16);
+    }
+
+    return `${r}, ${g}, ${b}`;
   }
 }

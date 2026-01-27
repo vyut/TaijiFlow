@@ -149,6 +149,7 @@ let throttleFrameCounter = 0; // สำหรับ Throttling Check (increment 
 const FEEDBACK_DISPLAY_COOLDOWN_MS = 3000; // 3 วินาที
 let lastDisplayedFeedbacks = []; // feedback ล่าสุดที่แสดง
 let lastErrorJoints = []; // 🆕 ข้อต่อที่ผิดพลาดล่าสุด (Highlight)
+let lastActiveRule = null; // 🆕 กฎที่ผิดพลาดลาสุด (สำหรับเลือกสี Highlight)
 let lastFeedbackDisplayTime = 0; // เวลาที่แสดง feedback ล่าสุด
 
 // -----------------------------------------------------------------------------
@@ -1381,16 +1382,35 @@ async function onResults(results) {
         const jointsToHighlight = displayController.showErrorHighlights
           ? lastErrorJoints
           : [];
+
+        // 🆕 Customization Config
+        const highlightConfig = {
+          style: displayController.highlightStyle,
+          scope: displayController.highlightScope,
+          opacity: displayController.highlightOpacity,
+        };
+
         drawer.drawSkeleton(
           results.poseLandmarks,
           jointsToHighlight,
           displayController.skeletonColor,
-          displayController.showDebugIndices, // 🆕 Joint Numbers
-          displayController.isMirrored, // 🆕 For text flipping
+          displayController.showDebugIndices,
+          displayController.isMirrored,
+          lastActiveRule,
+          highlightConfig, // 🆕 Pass Config
         );
       } else if (displayController.showErrorHighlights) {
         // กรณีปิด Skeleton แต่เปิด Highlights: วาดเฉพาะจุดแดง
-        drawer.drawErrorHighlights(results.poseLandmarks, lastErrorJoints);
+        const highlightConfig = {
+          style: displayController.highlightStyle,
+          scope: displayController.highlightScope,
+          opacity: displayController.highlightOpacity,
+        };
+        drawer.drawErrorHighlights(
+          results.poseLandmarks,
+          lastErrorJoints,
+          highlightConfig,
+        );
       }
 
       // 4. Trail Visualization (ถ้าเปิด)
@@ -1485,6 +1505,7 @@ async function onResults(results) {
               // ครบ cooldown แล้ว - อัพเดท feedback ใหม่
               lastDisplayedFeedbacks = feedbacks;
               lastErrorJoints = currentErrorJoints; // 🆕 Sync Joints
+              lastActiveRule = analysisResult.rule || null; // 🆕 Sync Rule
               lastFeedbackDisplayTime = now;
             }
             // ถ้ายังไม่ครบ cooldown จะใช้ lastDisplayedFeedbacks ที่มีอยู่
@@ -1493,6 +1514,7 @@ async function onResults(results) {
             // ถ้า Engine ส่ง empty array มา แปลว่า Sticky Logic ของ Engine (1วินาที) หมดเวลาแล้ว
             lastDisplayedFeedbacks = [];
             lastErrorJoints = []; // 🆕 Clear Joints
+            lastActiveRule = null; // 🆕 Clear Rule
           }
 
           // แสดง feedback (ใช้ค่าล่าสุดที่ไม่เปลี่ยนถี่เกินไป) - ใช้ HTML overlay

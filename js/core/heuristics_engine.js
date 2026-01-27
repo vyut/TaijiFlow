@@ -538,6 +538,7 @@ class HeuristicsEngine {
       // อัปเดต Sticky Logic - จำข้อความและเวลา และ Joints
       this.lastFeedbackMsg = topError.msg;
       this.lastFeedbackJoints = topError.joints || [];
+      this.lastFeedbackRule = topError.rule; // 🆕 Remember Rule
       this.lastFeedbackTime = Date.now();
 
       // Aggregate all error joints for visualization (Optional: show only top priority joints)
@@ -552,6 +553,7 @@ class HeuristicsEngine {
       return {
         feedback: [topError.msg],
         errorJoints: uniqueJoints,
+        rule: topError.rule, // 🆕 Return Rule Name
       };
     }
 
@@ -566,6 +568,7 @@ class HeuristicsEngine {
         return {
           feedback: this.lastFeedbackMsg ? [this.lastFeedbackMsg] : [],
           errorJoints: this.lastFeedbackJoints || [],
+          rule: this.lastFeedbackRule, // 🆕 Return Sticky Rule
         };
       } else {
         // Hold Time หมดแล้ว -> เคลียร์ (แสดงว่าถูกต้องแล้ว! 😊)
@@ -691,13 +694,15 @@ class HeuristicsEngine {
 
     // ถ้า total = 0 แปลว่าเคลื่อนที่เป็นเส้นตรง → แจ้งเตือน
     if (total === 0) {
-      // Determine active wrist based on currentExercise
+      // Determine active joints based on currentExercise
       const isRightHand = currentExercise.includes("rh");
-      const activeWristIndex = isRightHand ? 16 : 15;
+      const activeJoints = isRightHand
+        ? [12, 14, 16] // Right: Shoulder, Elbow, Wrist
+        : [11, 13, 15]; // Left: Shoulder, Elbow, Wrist
 
       return {
         msg: this.getMessage("moveInCircle"),
-        joints: [activeWristIndex], // Highlight Only Active Wrist
+        joints: activeJoints,
       };
     }
 
@@ -719,28 +724,31 @@ class HeuristicsEngine {
     // ตรวจทิศทางเมื่อมี turn ชัดเจน (dominance > 60%)
     const dominance = Math.max(clockwiseTurns, counterClockwiseTurns) / total;
     if (dominance >= 0.6 && expectedCW !== actualCW) {
-      // Determine active wrist based on currentExercise
+      // Determine active joints based on currentExercise
       const isRightHand = currentExercise.includes("rh");
-      const activeWristIndex = isRightHand ? 16 : 15;
+      const activeJoints = isRightHand
+        ? [12, 14, 16] // Right: Shoulder, Elbow, Wrist
+        : [11, 13, 15]; // Left: Shoulder, Elbow, Wrist
 
       return {
         msg: this.getMessage("wrongDirection"),
-        joints: [activeWristIndex], // Highlight Only Active Wrist
+        joints: activeJoints,
       };
     }
 
     // ถ้า consistency ต่ำกว่า threshold = ไม่เป็นวงโค้ง
     if (consistency < threshold) {
-      // Determine active wrist based on currentExercise
+      // Determine active joints based on currentExercise
       const isRightHand = currentExercise.includes("rh");
-      const activeWristIndex = isRightHand ? 16 : 15;
+      const activeJoints = isRightHand
+        ? [12, 14, 16] // Right: Shoulder, Elbow, Wrist
+        : [11, 13, 15]; // Left: Shoulder, Elbow, Wrist
 
       return {
         msg: this.getMessage("moveInCircle"),
-        joints: [activeWristIndex], // Highlight Only Active Wrist
+        joints: activeJoints,
       };
     }
-
     return null;
   }
 
@@ -867,7 +875,10 @@ class HeuristicsEngine {
     // Step 3: เปรียบเทียบและส่ง Feedback
     if (isSupinationExpected !== isActuallySupinated) {
       // Determine side for joints
-      const joints = isRightHand ? [16, 18, 20, 22] : [15, 17, 19, 21];
+      // Include Wrist (16/15) with fingers
+      const joints = isRightHand
+        ? [16, 18, 20, 22] // Right: Wrist, Pinky, Index, Thumb
+        : [15, 17, 19, 21]; // Left: Wrist, Pinky, Index, Thumb
       return {
         msg: this.getMessage("incorrectRotation"),
         joints: joints,
@@ -984,7 +995,7 @@ class HeuristicsEngine {
     if (hipVel > MIN_HIP_VELOCITY && shoulderVel > hipVel * RATIO_THRESHOLD) {
       return {
         msg: this.getMessage("startWithWaist"),
-        joints: [23, 24], // Hips
+        joints: [11, 12, 23, 24], // 🆕 Highlight Shoulders + Hips
       };
     }
     return null;
@@ -997,17 +1008,17 @@ class HeuristicsEngine {
    * ตรวจสอบว่าศีรษะนิ่ง ไม่กระดกขึ้นลงมากเกินไป
    * หลัก "虚领顶劲" (ซวี่หลิงติ่งจิ้น) - โปรงกระหม่อมเบา ศีรษะตั้งตรง
    *
-   * v0.9.11: เปลี่ยนเป็น Time-Based แทน Frame-Based เพื่อไม่ขึ้นกับ Skip Frame Logic
+   * ตรวจสอบว่าศีรษะนิ่ง ไม่กระดกขึ้นลงมากเกินไป
+   * Logic: เช็คความแปรปรวนของตำแหน่ง Y จมูก ในช่วงเวลาหนึ่ง
    */
   checkVerticalStability(nose) {
     if (!nose) return null;
 
     const now = Date.now();
 
-    // เก็บประวัติตำแหน่ง Y พร้อม timestamp
+    // 1. เก็บประวัติ Y
     this.headYHistory.push({ y: nose.y, t: now });
 
-    // ลบ data points ที่เก่ากว่า window
     const windowStart = now - this.CONFIG.STABILITY_WINDOW_MS;
     this.headYHistory = this.headYHistory.filter((p) => p.t >= windowStart);
 

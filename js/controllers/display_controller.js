@@ -38,6 +38,8 @@ class DisplayController {
     this.instructorPos = "tr"; // TR/TL/BR/BL
     this.isMirrored = true; // 🆕 Track Mirror State explicitly
     this.showBlurBackground = false;
+    this.sbsMode = "cover"; // 'fit' (contain) or 'cover' (focus zoom)
+    this.sbsRatio = "50"; // '50' (50/50), '60' (60/40), '40' (40/60)
     this.showGrid = false; // 🆕 Grid Overlay
     this.showErrorHighlights = true; // 🆕 Error Highlights (Red Dots)
     this.isSideBySide = false; // 🆕 Side-by-Side Mode
@@ -1083,14 +1085,76 @@ class DisplayController {
    */
   initSideBySideCheckbox() {
     const checkSideBySide = document.getElementById("check-side-by-side");
+    const modeBtns = document.querySelectorAll(".sbs-mode-btn");
+    const ratioBtns = document.querySelectorAll(".sbs-ratio-btn");
 
     if (checkSideBySide) {
       checkSideBySide.checked = this.isSideBySide;
 
+      // 1. Toggle Switch
       checkSideBySide.addEventListener("change", (e) => {
         this.toggleSideBySide(e.target.checked);
       });
+
+      // Setup Settings Toggle
+      this.setupSettingsToggle(
+        "sbs-settings",
+        "btn-sbs-settings",
+        "check-side-by-side",
+      );
     }
+
+    // 2. View Mode Buttons (Fit vs Cover)
+    if (modeBtns.length > 0) {
+      modeBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          this.sbsMode = btn.dataset.mode;
+          this.updateSideBySideStyle();
+          this.updateSideBySideUI();
+        });
+      });
+    }
+
+    // 3. Ratio Buttons (50/60/40)
+    if (ratioBtns.length > 0) {
+      ratioBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          this.sbsRatio = btn.dataset.ratio; // "50", "60", "40"
+          this.updateSideBySideStyle();
+          this.updateSideBySideUI();
+        });
+      });
+    }
+
+    // Init UI State
+    this.updateSideBySideUI();
+  }
+
+  updateSideBySideUI() {
+    const modeBtns = document.querySelectorAll(".sbs-mode-btn");
+    const ratioBtns = document.querySelectorAll(".sbs-ratio-btn");
+
+    // Mode Buttons
+    modeBtns.forEach((btn) => {
+      if (btn.dataset.mode === this.sbsMode) {
+        btn.classList.add("bg-blue-600", "text-white", "border-blue-500");
+        btn.classList.remove("bg-gray-700", "text-gray-300", "border-gray-600");
+      } else {
+        btn.classList.remove("bg-blue-600", "text-white", "border-blue-500");
+        btn.classList.add("bg-gray-700", "text-gray-300", "border-gray-600");
+      }
+    });
+
+    // Ratio Buttons
+    ratioBtns.forEach((btn) => {
+      if (btn.dataset.ratio === this.sbsRatio) {
+        btn.classList.add("bg-blue-600", "text-white", "border-blue-500");
+        btn.classList.remove("bg-gray-700", "text-gray-300", "border-gray-600");
+      } else {
+        btn.classList.remove("bg-blue-600", "text-white", "border-blue-500");
+        btn.classList.add("bg-gray-700", "text-gray-300", "border-gray-600");
+      }
+    });
   }
 
   /**
@@ -1146,6 +1210,8 @@ class DisplayController {
           if (video.paused) video.play().catch(() => {});
         }
       }
+
+      this.updateSideBySideStyle(); // 🆕 Apply Styles
     } else {
       // 1. Disable CSS Mode
       body.classList.remove("side-by-side-mode");
@@ -1169,6 +1235,63 @@ class DisplayController {
         }
       }
     }
+  }
+
+  /**
+   * Update Side-by-Side Layout/Styles
+   */
+  updateSideBySideStyle() {
+    if (!this.isSideBySide) return;
+
+    const container = document.getElementById("instructor-video-container");
+    const video = container ? container.querySelector("video") : null;
+    const canvas = document.getElementById("output_canvas");
+
+    if (!container || !canvas) return;
+
+    // 1. Calculate Widths
+    let leftWidth = "50%";
+    let rightWidth = "50%";
+
+    switch (this.sbsRatio) {
+      case "60": // Instructor 60%
+        leftWidth = "60%";
+        rightWidth = "40%";
+        break;
+      case "40": // Instructor 40%
+        leftWidth = "40%";
+        rightWidth = "60%";
+        break;
+      case "50":
+      default:
+        leftWidth = "50%";
+        rightWidth = "50%";
+        break;
+    }
+
+    // 2. Apply Widths
+    container.style.setProperty("width", leftWidth, "important");
+    canvas.style.setProperty("width", rightWidth, "important");
+
+    // 3. Apply View Mode (Fit vs Cover)
+    const fitMode = this.sbsMode === "cover" ? "cover" : "contain";
+
+    // Video (Left)
+    if (video) {
+      video.style.objectFit = fitMode;
+      if (fitMode === "cover") {
+        video.style.objectPosition = "center center"; // Focus Center
+      }
+    }
+
+    // Canvas (Right)
+    canvas.style.objectFit = fitMode;
+    if (fitMode === "cover") {
+      canvas.style.objectPosition = "center center";
+    }
+
+    // Note: Canvas Mirror (-1 scale) is handled by updateTransform/CSS
+    // But object-fit applies to the element box content.
   }
 
   /**

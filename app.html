@@ -423,382 +423,280 @@ Version: 0.9.9 (2026-01-17)
             <!-- Dropdown Menu -->
             <div
               id="display-menu"
-              class="hidden absolute right-0 mt-2 w-56 bg-gray-900/90 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
-              style="max-height: 78vh; overflow-y: auto"
+              class="hidden absolute right-0 mt-2 w-[500px] bg-gray-900/95 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-xl z-50 overflow-hidden"
+              style="max-height: 85vh; overflow-y: auto"
             >
               <div
-                class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900"
+                class="p-2 text-xs text-center text-gray-400 border-b border-gray-700 bg-gray-900 font-bold tracking-wider"
               >
-                Display Options
+                DISPLAY OPTIONS
               </div>
 
-              <!-- ===== 👁️ View Section ===== -->
-              <div
-                class="px-4 py-1 text-xs text-blue-300 bg-blue-900/50 uppercase font-bold tracking-wider mt-1"
-              >
-                View
-              </div>
-              <!-- Mirror Mode -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Toggle mirror mode (flip horizontally)"
-              >
-                <input
-                  type="checkbox"
-                  id="check-mirror"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                  checked
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white"
-                    >🪞 Mirror Mode</span
+              <!-- 2-Column Grid Wrapper -->
+              <div class="grid grid-cols-2 gap-0 items-start">
+                
+                <!-- ==================== LEFT COLUMN ==================== -->
+                <div class="flex flex-col border-r border-gray-700/50 min-h-full">
+                  
+                  <!-- ===== 👤 Trainee/You Section ===== -->
+                  <div
+                    class="px-4 py-1.5 text-xs text-purple-300 bg-purple-900/50 uppercase font-bold tracking-wider"
                   >
-                  <span class="text-xs text-gray-400">Flip horizontally</span>
-                </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >M</span
-                >
-              </label>
-              <!-- Path -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Show dynamic path guide"
-              >
-                <input
-                  type="checkbox"
-                  id="check-path"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                  checked
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white"
-                    >🛣️ Path Guide</span
+                    Trainee/You
+                  </div>
+                  <!-- Skeleton -->
+                  <label
+                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
+                    title="Show your skeleton overlay"
                   >
-                  <span class="text-xs text-gray-400"
-                    >Dynamic movement guide</span
+                    <input
+                      type="checkbox"
+                      id="check-skeleton"
+                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                      checked
+                    />
+                    <div class="flex flex-col flex-1">
+                      <span class="text-sm font-bold text-white leading-tight">🦴 Skeleton</span>
+                      <span class="text-xs text-gray-400 mt-1">Track your joints in real-time</span>
+                    </div>
+                    <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">K</span>
+                  </label>
+                  <!-- Error Highlights -->
+                  <label
+                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
+                    title="Show red highlights on incorrect joints"
                   >
-                </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >P</span
-                >
-              </label>
-              <!-- Grid Overlay -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Show grid lines for reference"
-              >
-                <input
-                  type="checkbox"
-                  id="check-grid"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white"
-                    >📐 Grid Overlay</span
+                    <input
+                      type="checkbox"
+                      id="check-error-highlights"
+                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                      checked
+                    />
+                    <div class="flex flex-col flex-1">
+                      <span class="text-sm font-bold text-white leading-tight">🎯 Err. Highlight</span>
+                      <span class="text-xs text-gray-400 mt-1">Show red dots on mistakes</span>
+                    </div>
+                    <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">E</span>
+                  </label>
+                  <!-- Trail -->
+                  <label
+                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
+                    title="Show wrist movement trail"
                   >
-                  <span class="text-xs text-gray-400">Position reference</span>
-                </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                >
-                  G
-                </span>
-              </label>
+                    <input
+                      type="checkbox"
+                      id="check-trail"
+                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                      checked
+                    />
+                    <div class="flex flex-col flex-1">
+                      <span class="text-sm font-bold text-white leading-tight">☄️ Motion Trail</span>
+                      <span class="text-xs text-gray-400 mt-1">Track hand movement history</span>
+                    </div>
+                    <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">R</span>
+                  </label>
 
-              <!-- Grid Settings (Hidden by default, shown when Grid is checked) -->
-              <div
-                id="grid-settings"
-                class="hidden px-4 py-2 bg-gray-800/50 border-b border-gray-700/30 space-y-2"
-              >
-                <!-- 1. Grid Size -->
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-gray-400">Size</span>
-                  <select
-                    id="grid-size"
-                    class="bg-gray-700 text-white text-xs rounded border border-gray-600 px-1 py-0.5"
+                  <!-- ===== 👁️ View Section ===== -->
+                  <div
+                    class="px-4 py-1.5 text-xs text-blue-300 bg-blue-900/50 uppercase font-bold tracking-wider mt-0"
                   >
-                    <option value="60">Small</option>
-                    <option value="100" selected>Medium</option>
-                    <option value="140">Large</option>
-                  </select>
-                </div>
-
-                <!-- 2. Grid Color -->
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-gray-400">Color</span>
-                  <div class="flex gap-2">
-                    <!-- White -->
-                    <button
-                      class="w-4 h-4 rounded-full border border-gray-500 bg-white hover:scale-110 transition-transform grid-color-btn active ring-2 ring-blue-500 relative"
-                      data-color="255, 255, 255"
-                      title="White"
-                      aria-label="White Grid"
-                    ></button>
-                    <!-- Gray -->
-                    <button
-                      class="w-4 h-4 rounded-full border border-gray-500 bg-gray-400 hover:scale-110 transition-transform grid-color-btn relative"
-                      data-color="150, 150, 150"
-                      title="Gray"
-                      aria-label="Gray Grid"
-                    ></button>
-                    <!-- Red -->
-                    <button
-                      class="w-4 h-4 rounded-full border border-gray-500 bg-red-500 hover:scale-110 transition-transform grid-color-btn relative"
-                      data-color="255, 50, 50"
-                      title="Red"
-                      aria-label="Red Grid"
-                    ></button>
+                    View
+                  </div>
+                  <!-- Mirror Mode -->
+                  <label
+                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
+                    title="Toggle mirror mode (flip horizontally)"
+                  >
+                    <input
+                      type="checkbox"
+                      id="check-mirror"
+                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                      checked
+                    />
+                    <div class="flex flex-col flex-1">
+                      <span class="text-sm font-bold text-white leading-tight">🪞 Mirror Mode</span>
+                      <span class="text-xs text-gray-400 mt-1">Flip display horizontally</span>
+                    </div>
+                    <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">M</span>
+                  </label>
+                  <!-- Path -->
+                  <label
+                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
+                    title="Show dynamic path guide"
+                  >
+                    <input
+                      type="checkbox"
+                      id="check-path"
+                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                      checked
+                    />
+                    <div class="flex flex-col flex-1">
+                      <span class="text-sm font-bold text-white leading-tight">🛣️ Path Guide</span>
+                      <span class="text-xs text-gray-400 mt-1">Dynamic movement guide</span>
+                    </div>
+                    <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">P</span>
+                  </label>
+                  <!-- Grid Overlay -->
+                  <label
+                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
+                    title="Show grid lines for reference"
+                  >
+                    <input
+                      type="checkbox"
+                      id="check-grid"
+                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                    />
+                    <div class="flex flex-col flex-1">
+                      <span class="text-sm font-bold text-white leading-tight">📐 Grid Overlay</span>
+                      <span class="text-xs text-gray-400 mt-1">Position reference lines</span>
+                    </div>
+                    <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">G</span>
+                  </label>
+                  
+                  <!-- Grid Settings -->
+                  <div
+                    id="grid-settings"
+                    class="hidden px-4 py-2 bg-gray-800/50 border-b border-gray-700/30 space-y-2"
+                  >
+                    <!-- Size -->
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs text-gray-400">Size</span>
+                      <select id="grid-size" class="bg-gray-700 text-white text-xs rounded border border-gray-600 px-1 py-0.5">
+                        <option value="60">Small</option>
+                        <option value="100" selected>Medium</option>
+                        <option value="140">Large</option>
+                      </select>
+                    </div>
+                    <!-- Color -->
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs text-gray-400">Color</span>
+                      <div class="flex gap-2">
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-white grid-color-btn active ring-2 ring-blue-500" data-color="255, 255, 255" title="White"></button>
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-gray-400 grid-color-btn" data-color="150, 150, 150" title="Gray"></button>
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-red-500 grid-color-btn" data-color="255, 50, 50" title="Red"></button>
+                      </div>
+                    </div>
+                    <!-- Opacity -->
+                    <div class="flex flex-col gap-1">
+                      <div class="flex justify-between">
+                        <span class="text-xs text-gray-400">Opacity</span>
+                        <span id="grid-opacity-val" class="text-xs text-gray-300">40%</span>
+                      </div>
+                      <input type="range" id="grid-opacity" min="20" max="80" value="40" step="10" class="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer" />
+                    </div>
                   </div>
                 </div>
 
-                <!-- 3. Grid Opacity -->
-                <div class="flex flex-col gap-1">
-                  <div class="flex justify-between">
-                    <span class="text-xs text-gray-400">Opacity</span>
-                    <span id="grid-opacity-val" class="text-xs text-gray-300"
-                      >20%</span
-                    >
+                <!-- ==================== RIGHT COLUMN ==================== -->
+                <div class="flex flex-col min-h-full">
+                  
+                  <!-- ===== 📚 Reference Section ===== -->
+                  <div
+                    class="px-4 py-1.5 text-xs text-indigo-300 bg-indigo-900/50 uppercase font-bold tracking-wider"
+                  >
+                    Reference/Instructor
                   </div>
-                  <input
-                    type="range"
-                    id="grid-opacity"
-                    min="20"
-                    max="80"
-                    value="40"
-                    step="10"
-                    class="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer"
-                  />
-                </div>
-              </div>
-
-              <!-- ===== 👤 Trainee/You Section ===== -->
-              <div
-                class="px-4 py-1 text-xs text-purple-300 bg-purple-900/50 uppercase font-bold tracking-wider mt-2"
-              >
-                Trainee/You
-              </div>
-              <!-- Skeleton -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Show your skeleton overlay"
-              >
-                <input
-                  type="checkbox"
-                  id="check-skeleton"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                  checked
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white">🦴 Skeleton</span>
-                  <span class="text-xs text-gray-400">Track your joints</span>
-                </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >K</span
-                >
-              </label>
-              <!-- Error Highlights -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Show red highlights on incorrect joints"
-              >
-                <input
-                  type="checkbox"
-                  id="check-error-highlights"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                  checked
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white"
-                    >🎯 Error Highlights</span
+                  <!-- Instructor PiP -->
+                  <label
+                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
+                    title="Show instructor shadow in corner thumbnail"
                   >
-                  <span class="text-xs text-gray-400"
-                    >Show red dots on mistakes</span
+                    <input
+                      type="checkbox"
+                      id="check-instructor"
+                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                      checked
+                    />
+                    <div class="flex flex-col flex-1">
+                      <span class="text-sm font-bold text-white leading-tight">🎓 Instructor PiP</span>
+                      <span class="text-xs text-gray-400 mt-1">Corner video overlay</span>
+                    </div>
+                    <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">I</span>
+                  </label>
+                  <!-- Side-by-Side Mode -->
+                  <label
+                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
+                    title="Split screen: Instructor (Left) vs You (Right)"
                   >
-                </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >E</span
-                >
-              </label>
-              <!-- Trail -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Show wrist movement trail"
-              >
-                <input
-                  type="checkbox"
-                  id="check-trail"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                  checked
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white"
-                    >☄️ Motion Trail</span
+                    <input
+                      type="checkbox"
+                      id="check-side-by-side"
+                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                    />
+                    <div class="flex flex-col flex-1">
+                      <span class="text-sm font-bold text-white leading-tight">👯 Side-by-Side</span>
+                      <span class="text-xs text-gray-400 mt-1">Split screen comparison</span>
+                    </div>
+                    <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">S</span>
+                  </label>
+                  <!-- Ghost Overlay -->
+                  <label
+                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
+                    title="Show instructor shadow on main video"
                   >
-                  <span class="text-xs text-gray-400">Track hand history</span>
-                </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >R</span
-                >
-              </label>
-
-              <!-- ===== 📚 Reference Section ===== -->
-              <div
-                class="px-4 py-1 text-xs text-purple-300 bg-purple-900/50 uppercase font-bold tracking-wider mt-2"
-              >
-                Expert/Instructor
-              </div>
-              <!-- Instructor PiP -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Show instructor shadow in corner thumbnail"
-              >
-                <input
-                  type="checkbox"
-                  id="check-instructor"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                  checked
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white"
-                    >🎓 Instructor PiP</span
+                    <input
+                      type="checkbox"
+                      id="check-ghost"
+                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                    />
+                    <div class="flex flex-col flex-1">
+                      <span class="text-sm font-bold text-white leading-tight">👻 Ghost Overlay</span>
+                      <span class="text-xs text-gray-400 mt-1">Full body reference shadow</span>
+                    </div>
+                    <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">O</span>
+                  </label>
+                  
+                  <!-- Ghost Settings -->
+                  <div
+                    id="ghost-settings"
+                    class="hidden px-4 py-2 bg-gray-800/50 border-b border-gray-700/30 space-y-2"
                   >
-                  <span class="text-xs text-gray-400"
-                    >Corner video overlay</span
-                  >
-                </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >I</span
-                >
-              </label>
-              <!-- Side-by-Side Mode -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Split screen: Instructor (Left) vs You (Right)"
-              >
-                <input
-                  type="checkbox"
-                  id="check-side-by-side"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white"
-                    >👯 Side-by-Side</span
-                  >
-                  <span class="text-xs text-gray-400">Split screen view</span>
-                </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >S</span
-                >
-              </label>
-              <!-- Ghost -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Show instructor shadow on main video"
-              >
-                <input
-                  type="checkbox"
-                  id="check-ghost"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white"
-                    >👻 Ghost Overlay</span
-                  >
-                  <span class="text-xs text-gray-400">Full body reference</span>
-                </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >O</span
-                >
-              </label>
-
-              <!-- Ghost Settings (Hidden by default) -->
-              <div
-                id="ghost-settings"
-                class="hidden px-4 py-2 bg-gray-800/50 border-b border-gray-700/30 space-y-2"
-              >
-                <!-- 1. Ghost Opacity -->
-                <div class="flex flex-col gap-1">
-                  <div class="flex justify-between">
-                    <span class="text-xs text-gray-400">Opacity</span>
-                    <span id="ghost-opacity-val" class="text-xs text-gray-300"
-                      >40%</span
-                    >
+                    <!-- Opacity -->
+                    <div class="flex flex-col gap-1">
+                      <div class="flex justify-between">
+                        <span class="text-xs text-gray-400">Opacity</span>
+                        <span id="ghost-opacity-val" class="text-xs text-gray-300">60%</span>
+                      </div>
+                      <input type="range" id="ghost-opacity" min="20" max="80" value="60" step="10" class="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer" />
+                    </div>
+                    <!-- Tint -->
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs text-gray-400">Tint</span>
+                      <div class="flex gap-2">
+                        <!-- Cyan -->
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-cyan-400 hover:scale-110 ghost-color-btn active ring-2 ring-blue-500 relative" data-color="100, 200, 255" title="Cyan"></button>
+                        <!-- Gold -->
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-yellow-400 hover:scale-110 ghost-color-btn relative" data-color="255, 215, 0" title="Gold"></button>
+                        <!-- Red -->
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-red-500 hover:scale-110 ghost-color-btn relative" data-color="255, 40, 40" title="Red"></button>
+                      </div>
+                    </div>
                   </div>
-                  <input
-                    type="range"
-                    id="ghost-opacity"
-                    min="20"
-                    max="80"
-                    value="60"
-                    step="10"
-                    class="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer"
-                  />
-                </div>
 
-                <!-- 2. Ghost Color Tint -->
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-gray-400">Tint</span>
-                  <div class="flex gap-2">
-                    <!-- Blue (Default) -->
-                    <button
-                      class="w-4 h-4 rounded-full border border-gray-500 bg-cyan-400 hover:scale-110 transition-transform ghost-color-btn active ring-2 ring-blue-500 relative"
-                      data-color="100, 200, 255"
-                      title="Cyan"
-                      aria-label="Cyan Ghost"
-                    ></button>
-                    <!-- Gold -->
-                    <button
-                      class="w-4 h-4 rounded-full border border-gray-500 bg-yellow-400 hover:scale-110 transition-transform ghost-color-btn relative"
-                      data-color="255, 215, 0"
-                      title="Gold"
-                      aria-label="Gold Ghost"
-                    ></button>
-                    <!-- Red (High Contrast) -->
-                    <button
-                      class="w-4 h-4 rounded-full border border-gray-500 bg-red-500 hover:scale-110 transition-transform ghost-color-btn relative"
-                      data-color="255, 40, 40"
-                      title="Red"
-                      aria-label="Red Ghost"
-                    ></button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- ===== 🛠️ Developer Section ===== -->
-              <div
-                class="px-4 py-1 text-xs text-red-300 bg-red-900/50 uppercase font-bold tracking-wider mt-2"
-              >
-                Developer
-              </div>
-              <!-- Debug Mode -->
-              <label
-                class="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer border-b border-gray-700/50 transition-colors"
-                title="Show debug information (threshold values)"
-              >
-                <input
-                  type="checkbox"
-                  id="check-debug"
-                  class="mr-2 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
-                />
-                <div class="flex flex-col flex-1">
-                  <span class="text-sm font-bold text-white"
-                    >🐞 Debug Info</span
+                  <!-- ===== 🛠️ Developer Section ===== -->
+                  <div
+                    class="px-4 py-1.5 text-xs text-red-300 bg-red-900/50 uppercase font-bold tracking-wider mt-2"
                   >
-                  <span class="text-xs text-gray-400">System metrics</span>
+                    Developer
+                  </div>
+                  <!-- Debug Mode -->
+                  <label
+                    class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"
+                    title="Show debug information (threshold values)"
+                  >
+                    <input
+                      type="checkbox"
+                      id="check-debug"
+                      class="mr-3 mt-1 w-4 h-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                    />
+                    <div class="flex flex-col flex-1">
+                      <span class="text-sm font-bold text-white leading-tight">🐞 Debug Info</span>
+                      <span class="text-xs text-gray-400 mt-1">Show system performance</span>
+                    </div>
+                    <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">D</span>
+                  </label>
                 </div>
-                <span
-                  class="text-xs text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2"
-                  >D</span
-                >
-              </label>
+              </div>
             </div>
           </div>
 

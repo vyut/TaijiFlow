@@ -415,38 +415,47 @@ class DrawingManager {
    * @param {number} opacity - ความโปร่งใส (0-1), default 0.4
    * @param {string} color - สีเส้น (RGB string e.g. "100, 200, 255")
    */
-  drawGhostSkeleton(landmarks, opacity = 0.4, color = "100, 200, 255") {
+  drawGhostSkeleton(
+    landmarks,
+    opacity = 0.4,
+    color = "100, 200, 255",
+    targetCtx = null,
+  ) {
     if (!landmarks || landmarks.length < 33) return;
 
-    this.ctx.save();
+    const ctx = targetCtx || this.ctx;
+    ctx.save();
+    const width = ctx.canvas.width;
 
     // ----- Mirror Logic (เหมือน drawSkeleton) -----
+    // If targetCtx (SbS Canvas) is used, we might rely on CSS mirror or manual flip.
+    // For consistency, let's apply flip if mirrorDisplay is on.
     const shouldMirror = this.mirrorDisplay;
     if (shouldMirror) {
-      this.ctx.scale(-1, 1);
-      this.ctx.translate(-this.canvasWidth, 0);
+      ctx.scale(-1, 1);
+      ctx.translate(-width, 0); // Use Context Width
     }
 
     // ----- Global Opacity -----
-    this.ctx.globalAlpha = opacity;
+    ctx.globalAlpha = opacity;
 
     // MediaPipe drawConnectors/drawLandmarks ใช้ normalized coords (0-1)
     // ไม่ต้องแปลงเป็น pixel (เหมือน drawSkeleton)
 
     // ----- วาดเส้นเชื่อมข้อต่อ (ใช้สีที่เลือก) -----
-    drawConnectors(this.ctx, landmarks, POSE_CONNECTIONS, {
+    drawConnectors(ctx, landmarks, POSE_CONNECTIONS, {
       color: `rgba(${color}, 1)`, // Tint Color
       lineWidth: 2, // บางกว่า user skeleton
     });
 
     // ----- วาดจุดข้อต่อ (สีขาวเสมอ เพื่อให้เห็นตำแหน่งชัด) -----
-    drawLandmarks(this.ctx, landmarks, {
+    drawLandmarks(ctx, landmarks, {
       color: "rgba(255, 255, 255, 1)", // White
       lineWidth: 1,
       radius: 3, // เล็กกว่า user skeleton
     });
 
-    this.ctx.restore();
+    ctx.restore();
   }
 
   // ===========================================================================
@@ -466,19 +475,23 @@ class DrawingManager {
    * @param {number} opacity - ความโปร่งใส (0-1)
    * @param {string} color - สี tint (RGB string e.g. "100, 200, 255") - ถ้า null/undefined จะใช้สีเดิม
    */
-  drawSilhouetteVideo(video, opacity = 0.4, color = null) {
+  drawSilhouetteVideo(video, opacity = 0.4, color = null, targetCtx = null) {
     if (!video || video.readyState < 2) return; // ยังโหลดไม่เสร็จ
 
-    const width = this.ctx.canvas.width;
-    const height = this.ctx.canvas.height;
+    const ctx = targetCtx || this.ctx;
+    const width = ctx.canvas.width;
+    const height = ctx.canvas.height;
 
-    this.ctx.save();
+    ctx.save();
 
     // ----- Mirror Logic (เหมือน drawSkeleton) -----
     // Note: เราจะ flip ตอนวาดลง Main Canvas สุดท้าย
 
     // ----- Global Opacity -----
     this.ctx.globalAlpha = opacity;
+
+    // Default Color if null/undefined (Fix iPad Red Issue)
+    if (!color) color = "100, 200, 255"; // Cyan Fallback
 
     if (color) {
       // 🟢 กรณีมี Tint Color: ต้องใช้ Off-screen Canvas
@@ -515,25 +528,25 @@ class DrawingManager {
 
       // 4. วาด Temp ลง Main (Apply Mirror + Blend Mode)
       if (this.mirrorDisplay) {
-        this.ctx.scale(-1, 1);
-        this.ctx.translate(-width, 0);
+        ctx.scale(-1, 1);
+        ctx.translate(-width, 0);
       }
 
       // Blend Mode: Lighter (Add) เพื่อให้สว่างจ้า
-      this.ctx.globalCompositeOperation = "lighter";
-      this.ctx.drawImage(this.tempGhostCanvas, 0, 0, width, height);
+      ctx.globalCompositeOperation = "lighter";
+      ctx.drawImage(this.tempGhostCanvas, 0, 0, width, height);
     } else {
       // ⚪ กรณีไม่มี Tint (Original Logic)
       if (this.mirrorDisplay) {
-        this.ctx.scale(-1, 1);
-        this.ctx.translate(-width, 0);
+        ctx.scale(-1, 1);
+        ctx.translate(-width, 0);
       }
 
-      this.ctx.globalCompositeOperation = "lighter";
-      this.ctx.drawImage(video, 0, 0, width, height);
+      ctx.globalCompositeOperation = "lighter";
+      ctx.drawImage(video, 0, 0, width, height);
     }
 
-    this.ctx.restore();
+    ctx.restore();
   }
 
   // ===========================================================================

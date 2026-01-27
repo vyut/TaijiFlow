@@ -201,6 +201,8 @@ class DisplayController {
       "instructor-settings",
       "mirror-settings",
       "debug-settings",
+      "sbs-settings",
+      "highlight-settings", // Fix missing highlight settings too
     ];
     const allBtns = [
       "btn-trail-settings",
@@ -211,6 +213,8 @@ class DisplayController {
       "btn-instructor-settings",
       "btn-mirror-settings",
       "btn-debug-settings",
+      "btn-sbs-settings",
+      "btn-highlight-settings",
     ];
 
     allSettings.forEach((id) => {
@@ -1373,17 +1377,16 @@ class DisplayController {
         }
       }
 
-      // 3. Move Instructor Video to Left Container
-      if (ghostManager && container) {
-        // Try to get video from manager (even if not playing yet, accessible via property)
-        // We know ghostManager stores it in this.silhouetteVideo
-        const video = ghostManager.silhouetteVideo;
-
-        if (video) {
-          container.appendChild(video);
-          video.style.display = "block";
-          if (video.paused) video.play().catch(() => {});
-        }
+      // 3. Move Instructor View to Left Container
+      // Use Canvas to support Tinting & Fallback
+      if (container) {
+        container.innerHTML = ""; // Clear
+        const sbsCanvas = document.createElement("canvas");
+        sbsCanvas.id = "sbs-instructor-canvas";
+        sbsCanvas.style.width = "100%";
+        sbsCanvas.style.height = "100%";
+        sbsCanvas.style.objectFit = "contain";
+        container.appendChild(sbsCanvas);
       }
 
       this.updateSideBySideStyle(); // 🆕 Apply Styles
@@ -1391,7 +1394,7 @@ class DisplayController {
       // 1. Disable CSS Mode
       body.classList.remove("side-by-side-mode");
 
-      // 2. Clear Left Container (Video removed from DOM, but GhostManager keeps ref)
+      // 2. Clear Left Container
       if (container) {
         container.innerHTML = "";
         container.style.width = ""; // Reset Width

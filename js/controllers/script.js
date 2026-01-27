@@ -1301,6 +1301,45 @@ async function onResults(results) {
               );
             }
           }
+        } else {
+          // 🆕 Side-by-Side Mode Logic (Active when isSideBySide = true)
+          const sbsCanvas = document.getElementById("sbs-instructor-canvas");
+          if (sbsCanvas) {
+            const sbsCtx = sbsCanvas.getContext("2d");
+            // Ensure canvas resolution matches display size
+            const rect = sbsCanvas.getBoundingClientRect();
+            if (
+              sbsCanvas.width !== rect.width ||
+              sbsCanvas.height !== rect.height
+            ) {
+              sbsCanvas.width = rect.width;
+              sbsCanvas.height = rect.height;
+            }
+
+            // Clear previous frame
+            sbsCtx.clearRect(0, 0, sbsCanvas.width, sbsCanvas.height);
+
+            // Reuse standard drawing logic but target sbsCtx
+            const silhouetteVideo = ghostManager.getSilhouetteVideo();
+            if (silhouetteVideo) {
+              drawer.drawSilhouetteVideo(
+                silhouetteVideo,
+                ghostManager.opacity,
+                displayController.ghostColor,
+                sbsCtx, // Target SbS Canvas
+              );
+            } else {
+              const ghostLandmarks = ghostManager.getCurrentFrame();
+              if (ghostLandmarks) {
+                drawer.drawGhostSkeleton(
+                  ghostLandmarks,
+                  ghostManager.opacity,
+                  displayController.ghostColor,
+                  sbsCtx, // Target SbS Canvas
+                );
+              }
+            }
+          }
         } // End of Side-by-Side check
       } // End of showGhostOverlay check
 

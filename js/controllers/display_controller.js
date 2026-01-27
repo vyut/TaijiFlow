@@ -37,6 +37,8 @@ class DisplayController {
     this.instructorSize = "medium"; // Small/Medium/Large
     this.instructorPos = "tr"; // TR/TL/BR/BL
     this.isMirrored = true; // 🆕 Track Mirror State explicitly
+    this.mirrorRotation = 0; // 🆕 0, 90, 180, 270
+    this.mirrorFlipAxis = "horizontal"; // 🆕 'horizontal' or 'vertical'
     this.showBlurBackground = false;
     this.sbsMode = "cover"; // 'fit' (contain) or 'cover' (focus zoom)
     this.sbsRatio = "50"; // '50' (50/50), '60' (60/40), '40' (40/60)
@@ -181,6 +183,7 @@ class DisplayController {
       "ghost-settings",
       "skeleton-settings",
       "instructor-settings",
+      "mirror-settings",
     ];
     const allBtns = [
       "btn-trail-settings",
@@ -189,6 +192,7 @@ class DisplayController {
       "btn-ghost-settings",
       "btn-skeleton-settings",
       "btn-instructor-settings",
+      "btn-mirror-settings",
     ];
 
     allSettings.forEach((id) => {
@@ -207,21 +211,78 @@ class DisplayController {
    */
   initMirrorCheckbox() {
     const checkMirror = document.getElementById("check-mirror");
+    const rotBtns = document.querySelectorAll(".mirror-rot-btn");
+    const flipBtns = document.querySelectorAll(".mirror-flip-btn");
 
     if (checkMirror) {
-      // 1. Default state: Always Mirror (true) on load
-      const isMirror = true;
-
-      checkMirror.checked = isMirror;
-      this.setMirrorMode(isMirror);
+      // 1. Default state
+      checkMirror.checked = this.isMirrored;
+      this.setMirrorMode(this.isMirrored);
 
       // 2. Handle change
       checkMirror.addEventListener("change", (e) => {
-        const enabled = e.target.checked;
-        this.setMirrorMode(enabled);
-        // No notification for consistency
+        this.setMirrorMode(e.target.checked);
+      });
+
+      // 3. Settings Toggle
+      this.setupSettingsToggle(
+        "mirror-settings",
+        "btn-mirror-settings",
+        "check-mirror",
+      );
+    }
+
+    // 4. Rotation Buttons
+    if (rotBtns.length > 0) {
+      rotBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          this.mirrorRotation = parseInt(btn.dataset.rot);
+          this.updateTransform();
+          this.updateMirrorUI();
+        });
       });
     }
+
+    // 5. Flip Buttons
+    if (flipBtns.length > 0) {
+      flipBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          this.mirrorFlipAxis = btn.dataset.flip;
+          this.updateTransform();
+          this.updateMirrorUI();
+        });
+      });
+    }
+
+    this.updateMirrorUI();
+  }
+
+  updateMirrorUI() {
+    const rotBtns = document.querySelectorAll(".mirror-rot-btn");
+    const flipBtns = document.querySelectorAll(".mirror-flip-btn");
+
+    // Rotation
+    rotBtns.forEach((btn) => {
+      const rot = parseInt(btn.dataset.rot);
+      if (rot === this.mirrorRotation) {
+        btn.classList.add("bg-blue-600", "text-white", "border-blue-500");
+        btn.classList.remove("bg-gray-700", "text-gray-300", "border-gray-600");
+      } else {
+        btn.classList.remove("bg-blue-600", "text-white", "border-blue-500");
+        btn.classList.add("bg-gray-700", "text-gray-300", "border-gray-600");
+      }
+    });
+
+    // Flip Axis
+    flipBtns.forEach((btn) => {
+      if (btn.dataset.flip === this.mirrorFlipAxis) {
+        btn.classList.add("bg-blue-600", "text-white", "border-blue-500");
+        btn.classList.remove("bg-gray-700", "text-gray-300", "border-gray-600");
+      } else {
+        btn.classList.remove("bg-blue-600", "text-white", "border-blue-500");
+        btn.classList.add("bg-gray-700", "text-gray-300", "border-gray-600");
+      }
+    });
   }
 
   /**
@@ -676,21 +737,31 @@ class DisplayController {
     const video = document.getElementById("input_video");
 
     // Mirror Logic:
-    // If Mirrored: ScaleX should be NEGATIVE
-    // If Normal: ScaleX should be POSITIVE
-    const mirrorScale = this.isMirrored ? -1 : 1;
+    let mirrorScaleX = 1;
+    let mirrorScaleY = 1;
 
-    // Zoom Logic:
-    const finalScaleX = this.zoomLevel * mirrorScale;
-    const finalScaleY = this.zoomLevel;
+    if (this.isMirrored) {
+      if (this.mirrorFlipAxis === "horizontal") {
+        mirrorScaleX = -1;
+      } else if (this.mirrorFlipAxis === "vertical") {
+        mirrorScaleY = -1;
+      }
+    }
 
-    // Pan Logic:
-    // When ScaleX is -1 (Mirrored), Translate X directions are inverted visually.
-    // If we want Pan Right (+panX) to move Image Right, we must Invert X translation when mirrored.
-    const finalPanX = this.panX * mirrorScale;
-    const finalPanY = this.panY;
+    // Transform Composition:
+    // 1. Zoom (Uniform) & Pan (Screen Relative)
+    // 2. Rotation (Orientation Correction)
+    // 3. Mirror (Flip Source)
 
-    const transform = `scale(${finalScaleX}, ${finalScaleY}) translate(${finalPanX}px, ${finalPanY}px)`;
+    // Note: CSS Transform Functions are applied from Left to Right.
+    // translate(tx) rotate(deg) -> Translate first, then Rotate axes?
+    // Actually, visually: Translate moves object. Rotate rotates object.
+
+    const transform = `scale(${this.zoomLevel}) translate(${this.panX}px, ${this.panY}px) rotate(${this.mirrorRotation}deg) scale(${mirrorScaleX}, ${mirrorScaleY})`;
+
+    // Note: Pan logic in adjustPan needs to account for bounds.
+    // Currently adjustPan clamps based on (1-1/Z)*W/2. This assumes unrotated box.
+    // If rotated, W and H might swap. But simple clamping is enough for MVP.
 
     if (canvas) {
       canvas.style.transform = transform;

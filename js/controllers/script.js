@@ -1368,7 +1368,11 @@ async function onResults(results) {
 
       // 2.5. วาด Reference Path (ถ้าเปิด)
       if (displayController.showPath && referencePath.length > 0) {
-        drawer.drawPath(referencePath, "rgba(0, 255, 0, 0.5)", 4);
+        drawer.drawPath(
+          referencePath,
+          displayController.pathColor,
+          displayController.pathWidth,
+        );
       }
 
       // 3. วาด User Skeleton (ถ้าเปิด) OR วาด Error Highlights (ถ้าเปิดแต่ปิด Skeleton)
@@ -1426,7 +1430,10 @@ async function onResults(results) {
             }
 
             // วาด Trail (Fading Dots)
-            drawer.drawTrail(displayController.trailHistory);
+            drawer.drawTrail(
+              displayController.trailHistory,
+              displayController.trailColor,
+            );
           }
         } catch (err) {
           console.error("Trail error:", err);

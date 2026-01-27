@@ -220,7 +220,7 @@ class DrawingManager {
    * แปลง normalized coords (0-1) เป็น pixel coords
    *
    * @param {Object[]} path - Array ของจุด {x, y} (หน่วย normalized 0-1)
-   * @param {string} color - สีของเส้น (CSS color)
+   * @param {string} color - สีของเส้น (CSS color or RGB string "r, g, b")
    * @param {number} width - ความหนาของเส้น (pixel)
    */
   drawPath(path, color, width) {
@@ -233,9 +233,21 @@ class DrawingManager {
       this.ctx.translate(-this.canvasWidth, 0);
     }
 
+    // ----- Determine Stroke Style -----
+    // ถ้า color เป็น "r, g, b" ให้แปลงเป็น rgba(r, g, b, 0.5)
+    // ถ้าเป็น hex หรือ named color ให้ใช้เลย
+    let strokeStyle = color;
+    if (
+      color.includes(",") &&
+      !color.startsWith("rgba") &&
+      !color.startsWith("rgb")
+    ) {
+      strokeStyle = `rgba(${color}, 0.5)`;
+    }
+
     // ----- วาดเส้นทาง -----
     this.ctx.beginPath();
-    this.ctx.strokeStyle = color;
+    this.ctx.strokeStyle = strokeStyle;
     this.ctx.lineWidth = width;
 
     if (path.length > 0) {
@@ -611,14 +623,16 @@ class DrawingManager {
    * แสดง Trail เส้นเดียว + Glow ที่ปลาย
    *
    * @param {Object[]} trailHistory - Array ของ {x, y, timestamp}
+   * @param {string} color - สีของเส้น (RGB string e.g. "100, 200, 255") - Default Cyan
    */
-  drawTrail(trailHistory) {
+  drawTrail(trailHistory, color = "100, 200, 255") {
     if (!trailHistory || trailHistory.length < 2) return;
 
     this.ctx.save();
 
-    // ----- สี Trail (Cyan - สีพลังงาน) -----
-    const baseColor = { r: 100, g: 200, b: 255 };
+    // ----- Parse Color -----
+    const [r, g, b] = color.split(",").map((c) => parseInt(c.trim()));
+    const baseColor = { r, g, b };
 
     // ----- วาดเส้น Trail เดียว (Fading Line) -----
     this.ctx.lineCap = "round";

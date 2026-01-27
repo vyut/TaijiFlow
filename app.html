@@ -495,6 +495,34 @@ Version: 0.9.9 (2026-01-17)
                     </div>
                     <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">R</span>
                   </label>
+                  
+                  <!-- Trail Settings -->
+                  <div
+                    id="trail-settings"
+                    class="hidden px-4 py-2 bg-gray-800/50 border-b border-gray-700/30 space-y-2"
+                  >
+                    <!-- Length -->
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs text-gray-400">Length</span>
+                      <select id="trail-length" class="bg-gray-700 text-white text-xs rounded border border-gray-600 px-1 py-0.5" title="Length of the trail">
+                        <option value="30">Short</option>
+                        <option value="60" selected>Medium</option>
+                        <option value="90">Long</option>
+                      </select>
+                    </div>
+                    <!-- Color -->
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs text-gray-400">Color</span>
+                      <div class="flex gap-2">
+                        <!-- Cyan (Default) -->
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-cyan-400 hover:scale-110 trail-color-btn active ring-2 ring-blue-500 relative transition-transform" data-color="100, 200, 255" title="Cyan"></button>
+                        <!-- Green (Match Path - Distinct) -->
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-green-400 hover:scale-110 trail-color-btn relative transition-transform" data-color="50, 255, 100" title="Green"></button>
+                        <!-- Yellow (Contrast) -->
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-yellow-400 hover:scale-110 trail-color-btn relative transition-transform" data-color="255, 215, 0" title="Yellow"></button>
+                      </div>
+                    </div>
+                  </div>
 
                   <!-- ===== 👁️ View Section ===== -->
                   <div
@@ -536,6 +564,33 @@ Version: 0.9.9 (2026-01-17)
                     </div>
                     <span class="text-[16px] text-gray-400 bg-gray-700 px-1.5 py-0.5 rounded ml-2 h-fit">P</span>
                   </label>
+                  
+                  <!-- Path Settings -->
+                  <div
+                    id="path-settings"
+                    class="hidden px-4 py-2 bg-gray-800/50 border-b border-gray-700/30 space-y-2"
+                  >
+                    <!-- Thickness -->
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs text-gray-400">Thickness</span>
+                      <select id="path-width" class="bg-gray-700 text-white text-xs rounded border border-gray-600 px-1 py-0.5">
+                        <option value="4" selected>Thin</option>
+                        <option value="8">Thick</option>
+                      </select>
+                    </div>
+                    <!-- Color -->
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs text-gray-400">Color</span>
+                      <div class="flex gap-2">
+                        <!-- Green (Default) -->
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-green-500 hover:scale-110 path-color-btn active ring-2 ring-blue-500 relative transition-transform" data-color="0, 255, 0" title="Green"></button>
+                        <!-- Yellow -->
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-yellow-400 hover:scale-110 path-color-btn relative transition-transform" data-color="255, 255, 0" title="Yellow"></button>
+                        <!-- Magenta -->
+                        <button class="w-4 h-4 rounded-full border border-gray-500 bg-fuchsia-500 hover:scale-110 path-color-btn relative transition-transform" data-color="255, 0, 255" title="Magenta"></button>
+                      </div>
+                    </div>
+                  </div>
                   <!-- Grid Overlay -->
                   <label
                     class="flex items-start px-4 py-2 hover:bg-gray-700 cursor-pointer border-b border-gray-700/30 transition-colors"

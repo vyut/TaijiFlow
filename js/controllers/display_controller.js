@@ -29,6 +29,8 @@ class DisplayController {
     this.showGhostOverlay = false;
     this.showInstructor = true;
     this.showPath = true;
+    this.pathWidth = 4; // Default Thin
+    this.pathColor = "0, 255, 0"; // Default Green
     this.showSkeleton = true;
     this.showTrail = true;
     this.showBlurBackground = false;
@@ -42,7 +44,9 @@ class DisplayController {
     this.ghostColor = "100, 200, 255"; // 🆕 Ghost Color (Default Cyan)
 
     // Trail Visualization
-    this.TRAIL_LENGTH = 60;
+    this.TRAIL_LENGTH = 60; // Max History Length (will be updated by settings)
+    this.trailLength = 60; // Default Medium
+    this.trailColor = "100, 200, 255"; // Default Cyan
     this.trailHistory = [];
     this.circularityScore = null;
 
@@ -60,7 +64,8 @@ class DisplayController {
     this.initInstructorCheckbox();
     this.initPathCheckbox();
     this.initSkeletonCheckbox();
-    this.initTrailCheckbox();
+    this.initSkeletonCheckbox();
+    this.initTrailCheckbox(); // Init Checkbox & Settings
     this.initAutoAdjustLightCheckbox(); // Auto-Adjust Light
     this.initAutoAdjustLightCheckbox(); // Auto-Adjust Light
     this.initVirtualBackgrounds(); // Virtual Backgrounds
@@ -390,13 +395,75 @@ class DisplayController {
    * Path checkbox (เส้นทางต้นแบบ)
    */
   initPathCheckbox() {
-    const { checkPath } = this.deps;
+    const checkPath = document.getElementById("check-path");
+    const pathSettings = document.getElementById("path-settings");
+    const widthSelect = document.getElementById("path-width");
+    const colorBtns = document.querySelectorAll(".path-color-btn");
 
     if (checkPath) {
       checkPath.checked = this.showPath;
+
+      // 1. Init Settings Visibility
+      if (pathSettings) {
+        if (this.showPath) {
+          pathSettings.classList.remove("hidden");
+        } else {
+          pathSettings.classList.add("hidden");
+        }
+      }
+
+      // 2. Init Width Select
+      if (widthSelect) {
+        widthSelect.value = this.pathWidth.toString();
+      }
+
+      // 3. Init Color Buttons
+      if (colorBtns.length > 0) {
+        colorBtns.forEach((btn) => {
+          if (btn.dataset.color === this.pathColor) {
+            btn.classList.add("active", "ring-2", "ring-blue-500");
+          } else {
+            btn.classList.remove("active", "ring-2", "ring-blue-500");
+          }
+        });
+      }
+
+      // 4. Handle Checkbox Change
       checkPath.addEventListener("change", () => {
         this.showPath = checkPath.checked;
+
+        if (pathSettings) {
+          if (this.showPath) {
+            pathSettings.classList.remove("hidden");
+          } else {
+            pathSettings.classList.add("hidden");
+          }
+        }
       });
+
+      // 5. Handle Width Change
+      if (widthSelect) {
+        widthSelect.addEventListener("change", (e) => {
+          this.pathWidth = parseInt(e.target.value, 10);
+        });
+      }
+
+      // 6. Handle Color Change (Delegation or Loop)
+      if (colorBtns.length > 0) {
+        colorBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            // Remove active ring
+            colorBtns.forEach((b) =>
+              b.classList.remove("active", "ring-2", "ring-blue-500"),
+            );
+            // Add active ring
+            btn.classList.add("active", "ring-2", "ring-blue-500");
+
+            // Update State
+            this.pathColor = btn.dataset.color;
+          });
+        });
+      }
     }
   }
 
@@ -419,18 +486,84 @@ class DisplayController {
    */
   initTrailCheckbox() {
     const checkTrail = document.getElementById("check-trail");
+    const trailSettings = document.getElementById("trail-settings");
+    const lengthSelect = document.getElementById("trail-length");
+    const colorBtns = document.querySelectorAll(".trail-color-btn");
 
     if (checkTrail) {
       checkTrail.checked = this.showTrail;
+
+      // 1. Init Settings Visibility
+      if (trailSettings) {
+        if (this.showTrail) {
+          trailSettings.classList.remove("hidden");
+        } else {
+          trailSettings.classList.add("hidden");
+        }
+      }
+
+      // 2. Init Length Select
+      if (lengthSelect) {
+        lengthSelect.value = this.trailLength.toString();
+      }
+
+      // 3. Init Color Buttons
+      if (colorBtns.length > 0) {
+        colorBtns.forEach((btn) => {
+          if (btn.dataset.color === this.trailColor) {
+            btn.classList.add("active", "ring-2", "ring-blue-500");
+          } else {
+            btn.classList.remove("active", "ring-2", "ring-blue-500");
+          }
+        });
+      }
+
+      // 4. Handle Checkbox Change
       checkTrail.addEventListener("change", () => {
         this.showTrail = checkTrail.checked;
+
+        if (trailSettings) {
+          if (this.showTrail) {
+            trailSettings.classList.remove("hidden");
+          } else {
+            trailSettings.classList.add("hidden");
+          }
+        }
 
         if (!this.showTrail) {
           this.trailHistory = [];
           this.circularityScore = null;
         }
-        console.log(`🔵 Trail: ${this.showTrail ? "enabled" : "disabled"}`);
       });
+
+      // 5. Handle Length Change
+      if (lengthSelect) {
+        lengthSelect.addEventListener("change", (e) => {
+          this.trailLength = parseInt(e.target.value, 10);
+          this.TRAIL_LENGTH = this.trailLength; // Sync legacy var
+          // Trim history immediately if shortened
+          while (this.trailHistory.length > this.trailLength) {
+            this.trailHistory.shift();
+          }
+        });
+      }
+
+      // 6. Handle Color Change
+      if (colorBtns.length > 0) {
+        colorBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            // Remove active ring
+            colorBtns.forEach((b) =>
+              b.classList.remove("active", "ring-2", "ring-blue-500"),
+            );
+            // Add active ring
+            btn.classList.add("active", "ring-2", "ring-blue-500");
+
+            // Update State
+            this.trailColor = btn.dataset.color;
+          });
+        });
+      }
     }
   }
 

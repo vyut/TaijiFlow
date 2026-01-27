@@ -1480,50 +1480,23 @@ Version: 0.9.9 (2026-01-17)
                     <span class="text-[10px] text-gray-400 mt-1">Dojo</span>
                   </button>
 
-                  <!-- Minimalist -->
+                  <!-- Custom Upload -->
                   <button
-                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
-                    data-bg="minimalist"
-                    data-vbg-key="minimalist"
-                    title="Modern Minimalist"
+                    id="btn-bg-upload"
+                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-dashed border-gray-500 hover:border-blue-500 hover:bg-gray-700/50 transition-colors"
+                    title="Upload Custom Image"
                   >
-                    <img
-                      src="assets/backgrounds/thumbnails/modern_minimalist_thumb.jpg"
-                      class="w-full h-12 rounded object-cover"
-                      alt="Minimalist"
-                    />
-                    <span class="text-[10px] text-gray-400 mt-1">Minimal</span>
+                    <div
+                      class="w-full h-12 bg-gray-800 rounded flex items-center justify-center text-xs text-gray-300"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                      </svg>
+                    </div>
+                    <span class="text-[10px] text-gray-400 mt-1">Upload</span>
                   </button>
-
-                  <!-- Gradient -->
-                  <button
-                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
-                    data-bg="gradient"
-                    data-vbg-key="gradient"
-                    title="Soft Gradient"
-                  >
-                    <img
-                      src="assets/backgrounds/thumbnails/soft_gradient_thumb.jpg"
-                      class="w-full h-12 rounded object-cover"
-                      alt="Gradient"
-                    />
-                    <span class="text-[10px] text-gray-400 mt-1">Gradient</span>
-                  </button>
-
-                  <!-- Clouds -->
-                  <button
-                    class="bg-option flex flex-col items-center p-2 rounded border-2 border-transparent hover:border-blue-500 transition-colors"
-                    data-bg="clouds"
-                    data-vbg-key="clouds"
-                    title="Yin Yang Clouds"
-                  >
-                    <img
-                      src="assets/backgrounds/thumbnails/yin_yang_clouds_thumb.jpg"
-                      class="w-full h-12 rounded object-cover"
-                      alt="Clouds"
-                    />
-                    <span class="text-[10px] text-gray-400 mt-1">Clouds</span>
-                  </button>
+                  <!-- Hidden File Input -->
+                  <input type="file" id="bg-upload-input" accept="image/png, image/jpeg, image/webp" class="hidden" />
                 </div>
               </div>
             </div>

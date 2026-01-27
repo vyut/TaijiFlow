@@ -1114,9 +1114,28 @@ class DisplayController {
     bgButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
         const bgKey = btn.dataset.bg;
-        this.setVirtualBackground(bgKey);
+        if (bgKey) {
+          // Skip if data-bg is missing (e.g. Upload button)
+          this.setVirtualBackground(bgKey);
+        }
       });
     });
+
+    // 🆕 Upload Button Logic
+    const btnUpload = document.getElementById("btn-bg-upload");
+    const inputUpload = document.getElementById("bg-upload-input");
+
+    if (btnUpload && inputUpload) {
+      btnUpload.addEventListener("click", () => {
+        inputUpload.click();
+      });
+
+      inputUpload.addEventListener("change", (e) => {
+        if (e.target.files && e.target.files[0]) {
+          this.handleImageUpload(e.target.files[0]);
+        }
+      });
+    }
 
     console.log(
       `✅ Virtual Backgrounds UI initialized (${bgButtons.length} options)`,
@@ -1129,22 +1148,37 @@ class DisplayController {
    */
   setVirtualBackground(bgKey) {
     // 1. Update Manager
-    if (window.backgroundManager) {
+    // 1. Update Manager
+    if (window.backgroundManager && bgKey !== "custom") {
       window.backgroundManager.setBackground(bgKey);
       console.log(`🖼️ Background changed to: ${bgKey}`);
     }
 
     // 2. Update UI Buttons
     const bgButtons = document.querySelectorAll(".bg-option");
+    const btnUpload = document.getElementById("btn-bg-upload");
+
     bgButtons.forEach((b) => {
       if (b.dataset.bg === bgKey) {
         b.classList.remove("border-transparent");
         b.classList.add("active", "border-green-500");
       } else {
         b.classList.remove("active", "border-green-500");
-        b.classList.add("border-transparent");
+        // Maintain dashed border for upload button if inactive
+        if (b.id === "btn-bg-upload") {
+          b.classList.remove("border-solid");
+          b.classList.add("border-gray-500", "border-dashed");
+        } else {
+          b.classList.add("border-transparent");
+        }
       }
     });
+
+    // Special handling for Custom Upload Button
+    if (bgKey === "custom" && btnUpload) {
+      btnUpload.classList.remove("border-gray-500", "border-dashed");
+      btnUpload.classList.add("active", "border-green-500", "border-solid");
+    }
 
     // 3. Update Pose Options (Segmentation)
     if (window.pose) {
@@ -1166,6 +1200,49 @@ class DisplayController {
         }
       }
     }
+  }
+
+  /**
+   * Handle Custom Image Upload
+   * @param {File} file - Uploaded image file
+   */
+  handleImageUpload(file) {
+    if (!file.type.startsWith("image/")) {
+      alert("Please upload an image file (JPG, PNG, WebP).");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        // Resize Logic (Performance Optimization)
+        const maxDim = 1920;
+        let w = img.width;
+        let h = img.height;
+
+        // Only resize if significantly larger
+        if (w > maxDim || h > maxDim) {
+          const scale = maxDim / Math.max(w, h);
+          w = Math.floor(w * scale);
+          h = Math.floor(h * scale);
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, w, h);
+
+        // Set Custom BG
+        if (window.backgroundManager) {
+          window.backgroundManager.setCustomBackground(canvas);
+          this.setVirtualBackground("custom");
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
   }
 
   /**

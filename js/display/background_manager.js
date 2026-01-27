@@ -206,6 +206,25 @@ class BackgroundManager {
   }
 
   /**
+   * Set Custom Background (from Upload)
+   * @param {HTMLImageElement|HTMLCanvasElement} image - Resized custom image
+   */
+  setCustomBackground(image) {
+    if (!image) return;
+
+    this.currentMode = "virtual";
+    this.currentBackgroundKey = "custom";
+    this.currentBackgroundImage = image;
+
+    // Update WebGL
+    if (this.webglManager.initialized) {
+      this.webglManager.updateBackgroundTexture(this.currentBackgroundImage);
+    }
+
+    console.log("🖼️ Custom Background set");
+  }
+
+  /**
    * Ensure temp canvases are initialized and resized
    * Now also handles WebGL initialization
    */

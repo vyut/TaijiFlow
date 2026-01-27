@@ -564,9 +564,9 @@ Version: 0.9.9 (2026-01-17)
                   <input
                     type="range"
                     id="grid-opacity"
-                    min="10"
+                    min="20"
                     max="80"
-                    value="20"
+                    value="40"
                     step="10"
                     class="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer"
                   />
@@ -718,6 +718,59 @@ Version: 0.9.9 (2026-01-17)
                   >O</span
                 >
               </label>
+
+              <!-- Ghost Settings (Hidden by default) -->
+              <div
+                id="ghost-settings"
+                class="hidden px-4 py-2 bg-gray-800/50 border-b border-gray-700/30 space-y-2"
+              >
+                <!-- 1. Ghost Opacity -->
+                <div class="flex flex-col gap-1">
+                  <div class="flex justify-between">
+                    <span class="text-xs text-gray-400">Opacity</span>
+                    <span id="ghost-opacity-val" class="text-xs text-gray-300"
+                      >40%</span
+                    >
+                  </div>
+                  <input
+                    type="range"
+                    id="ghost-opacity"
+                    min="20"
+                    max="80"
+                    value="60"
+                    step="10"
+                    class="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer"
+                  />
+                </div>
+
+                <!-- 2. Ghost Color Tint -->
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-gray-400">Tint</span>
+                  <div class="flex gap-2">
+                    <!-- Blue (Default) -->
+                    <button
+                      class="w-4 h-4 rounded-full border border-gray-500 bg-cyan-400 hover:scale-110 transition-transform ghost-color-btn active ring-2 ring-blue-500 relative"
+                      data-color="100, 200, 255"
+                      title="Cyan"
+                      aria-label="Cyan Ghost"
+                    ></button>
+                    <!-- Gold -->
+                    <button
+                      class="w-4 h-4 rounded-full border border-gray-500 bg-yellow-400 hover:scale-110 transition-transform ghost-color-btn relative"
+                      data-color="255, 215, 0"
+                      title="Gold"
+                      aria-label="Gold Ghost"
+                    ></button>
+                    <!-- Red (High Contrast) -->
+                    <button
+                      class="w-4 h-4 rounded-full border border-gray-500 bg-red-500 hover:scale-110 transition-transform ghost-color-btn relative"
+                      data-color="255, 40, 40"
+                      title="Red"
+                      aria-label="Red Ghost"
+                    ></button>
+                  </div>
+                </div>
+              </div>
 
               <!-- ===== 🛠️ Developer Section ===== -->
               <div

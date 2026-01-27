@@ -1284,12 +1284,20 @@ async function onResults(results) {
           const silhouetteVideo = ghostManager.getSilhouetteVideo();
           if (silhouetteVideo) {
             // มี silhouette video - วาดเงา
-            drawer.drawSilhouetteVideo(silhouetteVideo, ghostManager.opacity);
+            drawer.drawSilhouetteVideo(
+              silhouetteVideo,
+              ghostManager.opacity,
+              displayController.ghostColor,
+            );
           } else {
             // ไม่มี silhouette video - ใช้ skeleton แทน
             const ghostLandmarks = ghostManager.getCurrentFrame();
             if (ghostLandmarks) {
-              drawer.drawGhostSkeleton(ghostLandmarks, ghostManager.opacity);
+              drawer.drawGhostSkeleton(
+                ghostLandmarks,
+                ghostManager.opacity,
+                displayController.ghostColor,
+              );
             }
           }
         } // End of Side-by-Side check

@@ -267,8 +267,9 @@ class DrawingManager {
    *
    * @param {Object[]} landmarks - 33 จุดจาก reference data
    * @param {number} opacity - ความโปร่งใส (0-1), default 0.4
+   * @param {string} color - สีเส้น (RGB string e.g. "100, 200, 255")
    */
-  drawGhostSkeleton(landmarks, opacity = 0.4) {
+  drawGhostSkeleton(landmarks, opacity = 0.4, color = "100, 200, 255") {
     if (!landmarks || landmarks.length < 33) return;
 
     this.ctx.save();
@@ -286,13 +287,13 @@ class DrawingManager {
     // MediaPipe drawConnectors/drawLandmarks ใช้ normalized coords (0-1)
     // ไม่ต้องแปลงเป็น pixel (เหมือน drawSkeleton)
 
-    // ----- วาดเส้นเชื่อมข้อต่อ (สีฟ้าอ่อน) -----
+    // ----- วาดเส้นเชื่อมข้อต่อ (ใช้สีที่เลือก) -----
     drawConnectors(this.ctx, landmarks, POSE_CONNECTIONS, {
-      color: "rgba(100, 200, 255, 1)", // Light blue
+      color: `rgba(${color}, 1)`, // Tint Color
       lineWidth: 2, // บางกว่า user skeleton
     });
 
-    // ----- วาดจุดข้อต่อ (สีขาว) -----
+    // ----- วาดจุดข้อต่อ (สีขาวเสมอ เพื่อให้เห็นตำแหน่งชัด) -----
     drawLandmarks(this.ctx, landmarks, {
       color: "rgba(255, 255, 255, 1)", // White
       lineWidth: 1,
@@ -312,26 +313,79 @@ class DrawingManager {
    * @param {HTMLVideoElement} video - Video element ที่มี silhouette
    * @param {number} opacity - ความโปร่งใส (0-1)
    */
-  drawSilhouetteVideo(video, opacity = 0.4) {
+  /**
+   * วาดเงาคนสอนจาก silhouette video
+   *
+   * @param {HTMLVideoElement} video - Video element ที่มี silhouette
+   * @param {number} opacity - ความโปร่งใส (0-1)
+   * @param {string} color - สี tint (RGB string e.g. "100, 200, 255") - ถ้า null/undefined จะใช้สีเดิม
+   */
+  drawSilhouetteVideo(video, opacity = 0.4, color = null) {
     if (!video || video.readyState < 2) return; // ยังโหลดไม่เสร็จ
+
+    const width = this.ctx.canvas.width;
+    const height = this.ctx.canvas.height;
 
     this.ctx.save();
 
     // ----- Mirror Logic (เหมือน drawSkeleton) -----
-    const shouldMirror = this.mirrorDisplay;
-    if (shouldMirror) {
-      this.ctx.scale(-1, 1);
-      this.ctx.translate(-this.canvasWidth, 0);
-    }
+    // Note: เราจะ flip ตอนวาดลง Main Canvas สุดท้าย
 
     // ----- Global Opacity -----
     this.ctx.globalAlpha = opacity;
 
-    // ----- วาด video ลง canvas -----
-    // Silhouette video เป็นขาวบนพื้นดำ
-    // ใช้ globalCompositeOperation = 'lighter' เพื่อให้เงาดูโดดเด่น
-    this.ctx.globalCompositeOperation = "lighter";
-    this.ctx.drawImage(video, 0, 0, this.canvasWidth, this.canvasHeight);
+    if (color) {
+      // 🟢 กรณีมี Tint Color: ต้องใช้ Off-screen Canvas
+      // 1. Prepare Temp Canvas
+      if (!this.tempGhostCanvas) {
+        this.tempGhostCanvas = document.createElement("canvas");
+      }
+
+      // Update dimensions
+      if (
+        this.tempGhostCanvas.width !== width ||
+        this.tempGhostCanvas.height !== height
+      ) {
+        this.tempGhostCanvas.width = width;
+        this.tempGhostCanvas.height = height;
+      }
+
+      const tempCtx = this.tempGhostCanvas.getContext("2d");
+      tempCtx.clearRect(0, 0, width, height);
+
+      // 2. วาด Video ลง Temp (Normal) -> แปลงเป็น Grayscale เพื่อให้ Tint สีได้ถูกต้อง
+      tempCtx.save();
+      // Boost Brightness & Contrast to make it solid white
+      tempCtx.filter = "grayscale(100%) brightness(500%) contrast(500%)";
+      tempCtx.globalCompositeOperation = "source-over";
+      tempCtx.drawImage(video, 0, 0, width, height);
+      tempCtx.filter = "none"; // Reset filter
+
+      // 3. Apply Tint (Multiply: White -> Color, Black -> Black)
+      tempCtx.globalCompositeOperation = "multiply";
+      tempCtx.fillStyle = `rgb(${color})`;
+      tempCtx.fillRect(0, 0, width, height);
+      tempCtx.restore();
+
+      // 4. วาด Temp ลง Main (Apply Mirror + Blend Mode)
+      if (this.mirrorDisplay) {
+        this.ctx.scale(-1, 1);
+        this.ctx.translate(-width, 0);
+      }
+
+      // Blend Mode: Lighter (Add) เพื่อให้สว่างจ้า
+      this.ctx.globalCompositeOperation = "lighter";
+      this.ctx.drawImage(this.tempGhostCanvas, 0, 0, width, height);
+    } else {
+      // ⚪ กรณีไม่มี Tint (Original Logic)
+      if (this.mirrorDisplay) {
+        this.ctx.scale(-1, 1);
+        this.ctx.translate(-width, 0);
+      }
+
+      this.ctx.globalCompositeOperation = "lighter";
+      this.ctx.drawImage(video, 0, 0, width, height);
+    }
 
     this.ctx.restore();
   }

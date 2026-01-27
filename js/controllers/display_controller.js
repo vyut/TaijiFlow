@@ -33,14 +33,13 @@ class DisplayController {
     this.showTrail = true;
     this.showBlurBackground = false;
     this.showGrid = false; // 🆕 Grid Overlay
-    this.gridSize = 100; // Default Medium
-    this.gridColor = "150, 150, 150"; // Default Gray
-    this.gridOpacity = 0.2; // Default 20%
     this.showErrorHighlights = true; // 🆕 Error Highlights (Red Dots)
     this.isSideBySide = false; // 🆕 Side-by-Side Mode
     this.gridSize = 100; // Default Medium
     this.gridColor = "150, 150, 150"; // Default Gray
-    this.gridOpacity = 0.2; // Default 20%
+    this.gridOpacity = 0.4; // Default 40%
+    this.ghostOpacity = 0.4; // 🆕 Ghost Opacity (Default 40%)
+    this.ghostColor = "100, 200, 255"; // 🆕 Ghost Color (Default Cyan)
 
     // Trail Visualization
     this.TRAIL_LENGTH = 60;
@@ -274,17 +273,87 @@ class DisplayController {
    */
   initGhostCheckbox() {
     const { checkGhost, ghostManager } = this.deps;
+    const ghostSettings = document.getElementById("ghost-settings");
+
+    // Inputs
+    const opacitySlider = document.getElementById("ghost-opacity");
+    const opacityLabel = document.getElementById("ghost-opacity-val");
+    const colorBtns = document.querySelectorAll(".ghost-color-btn");
 
     if (checkGhost) {
+      // 1. Initialize UI
       checkGhost.checked = this.showGhostOverlay;
+
+      // Settings visibility
+      if (ghostSettings) {
+        if (this.showGhostOverlay) {
+          ghostSettings.classList.remove("hidden");
+        } else {
+          ghostSettings.classList.add("hidden");
+        }
+      }
+
+      // Initialize Opacity Slider
+      if (opacitySlider) {
+        const val = Math.round(this.ghostOpacity * 100);
+        opacitySlider.value = val;
+        if (opacityLabel) opacityLabel.textContent = `${val}%`;
+      }
+
+      // Initialize Color Buttons
+      if (colorBtns.length > 0) {
+        colorBtns.forEach((btn) => {
+          if (btn.dataset.color === this.ghostColor) {
+            btn.classList.add("active", "ring-2", "ring-blue-500");
+          } else {
+            btn.classList.remove("active", "ring-2", "ring-blue-500");
+          }
+        });
+      }
+
+      // 2. Handle Checkbox Change
       checkGhost.addEventListener("change", () => {
         this.showGhostOverlay = checkGhost.checked;
         if (this.showGhostOverlay) {
           ghostManager.start();
+          if (ghostSettings) ghostSettings.classList.remove("hidden");
         } else {
           ghostManager.stop();
+          if (ghostSettings) ghostSettings.classList.add("hidden");
         }
       });
+
+      // 3. Handle Opacity Change
+      if (opacitySlider) {
+        opacitySlider.addEventListener("input", (e) => {
+          const val = e.target.value;
+          this.ghostOpacity = val / 100;
+          if (opacityLabel) opacityLabel.textContent = `${val}%`;
+
+          // Update Manager immediately
+          if (ghostManager) ghostManager.setOpacity(this.ghostOpacity);
+        });
+      }
+
+      // 4. Handle Color Change
+      if (colorBtns.length > 0) {
+        colorBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            // Remove active ring
+            colorBtns.forEach((b) =>
+              b.classList.remove("active", "ring-2", "ring-blue-500"),
+            );
+            // Add active ring
+            btn.classList.add("active", "ring-2", "ring-blue-500");
+
+            // Update State
+            this.ghostColor = btn.dataset.color;
+            // Note: ghostManager doesn't handle color directly yet,
+            // we will pass this.ghostColor to drawing_manager via script.js or directly here if we refactor.
+            // For now, we rely on script.js reading displayController.ghostColor.
+          });
+        });
+      }
     }
   }
 

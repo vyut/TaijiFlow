@@ -129,14 +129,11 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       case "KeyP":
         e.preventDefault();
-        if (checkPath) {
-          checkPath.checked = !checkPath.checked;
-          checkPath.dispatchEvent(new Event("change"));
-          uiManager.showNotification(
-            `Path Guide: ${checkPath.checked ? "ON" : "OFF"}`,
-            "info",
-          );
-        }
+        displayController.togglePath();
+        uiManager.showNotification(
+          `Path Guide: ${displayController.showPath ? "ON" : "OFF"}`,
+          "info",
+        );
         break;
 
       // -----------------------------------------------------------------------
@@ -164,31 +161,23 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       case "KeyM":
         e.preventDefault();
-        const checkMirror = document.getElementById("check-mirror");
-        if (checkMirror) {
-          checkMirror.checked = !checkMirror.checked;
-          checkMirror.dispatchEvent(new Event("change")); // Manually Trigger change
-          uiManager.showNotification(
-            `Mirror Mode: ${checkMirror.checked ? "ON" : "OFF"}`,
-            "info",
-          );
-        }
+        displayController.toggleMirror();
+        uiManager.showNotification(
+          `Mirror Mode: ${displayController.isMirrored ? "ON" : "OFF"}`,
+          "info",
+        );
         break;
 
       // -----------------------------------------------------------------------
-      // O = Ghost (O)verlay Toggle (Changed from G to avoid conflict with Grid)
+      // O = Ghost (O)verlay Toggle
       // -----------------------------------------------------------------------
       case "KeyO":
         e.preventDefault();
-        const checkGhost = document.getElementById("check-ghost");
-        if (checkGhost) {
-          checkGhost.checked = !checkGhost.checked;
-          checkGhost.dispatchEvent(new Event("change"));
-          uiManager.showNotification(
-            `Ghost Overlay: ${checkGhost.checked ? "ON" : "OFF"}`,
-            "info",
-          );
-        }
+        displayController.toggleGhost();
+        uiManager.showNotification(
+          `Ghost Overlay: ${displayController.showGhostOverlay ? "ON" : "OFF"}`,
+          "info",
+        );
         break;
 
       // -----------------------------------------------------------------------
@@ -196,15 +185,11 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       case "KeyG":
         e.preventDefault();
-        const checkGrid = document.getElementById("check-grid");
-        if (checkGrid) {
-          checkGrid.checked = !checkGrid.checked;
-          checkGrid.dispatchEvent(new Event("change"));
-          uiManager.showNotification(
-            `Grid Overlay: ${checkGrid.checked ? "ON" : "OFF"}`,
-            "info",
-          );
-        }
+        displayController.toggleGrid();
+        uiManager.showNotification(
+          `Grid Overlay: ${displayController.showGrid ? "ON" : "OFF"}`,
+          "info",
+        );
         break;
 
       // -----------------------------------------------------------------------
@@ -212,14 +197,11 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       case "KeyK":
         e.preventDefault();
-        if (checkSkeleton) {
-          checkSkeleton.checked = !checkSkeleton.checked;
-          checkSkeleton.dispatchEvent(new Event("change"));
-          uiManager.showNotification(
-            `Skeleton: ${checkSkeleton.checked ? "ON" : "OFF"}`,
-            "info",
-          );
-        }
+        displayController.toggleSkeleton();
+        uiManager.showNotification(
+          `Skeleton: ${displayController.showSkeleton ? "ON" : "OFF"}`,
+          "info",
+        );
         break;
 
       // -----------------------------------------------------------------------
@@ -227,15 +209,11 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       case "KeyE":
         e.preventDefault();
-        const checkError = document.getElementById("check-error-highlights");
-        if (checkError) {
-          checkError.checked = !checkError.checked;
-          checkError.dispatchEvent(new Event("change"));
-          uiManager.showNotification(
-            `Error Highlights: ${checkError.checked ? "ON" : "OFF"}`,
-            "info",
-          );
-        }
+        displayController.toggleErrorHighlights();
+        uiManager.showNotification(
+          `Error Highlights: ${displayController.showErrorHighlights ? "ON" : "OFF"}`,
+          "info",
+        );
         break;
 
       // -----------------------------------------------------------------------
@@ -258,17 +236,16 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       // R = Trail Visualization Toggle
       // -----------------------------------------------------------------------
+      // -----------------------------------------------------------------------
+      // R = Trail Visualization Toggle
+      // -----------------------------------------------------------------------
       case "KeyR":
         e.preventDefault();
-        const checkTrail = document.getElementById("check-trail");
-        if (checkTrail) {
-          checkTrail.checked = !checkTrail.checked;
-          checkTrail.dispatchEvent(new Event("change"));
-          uiManager.showNotification(
-            `Motion Trail: ${checkTrail.checked ? "ON" : "OFF"}`,
-            "info",
-          );
-        }
+        displayController.toggleTrail();
+        uiManager.showNotification(
+          `Motion Trail: ${displayController.showTrail ? "ON" : "OFF"}`,
+          "info",
+        );
         break;
 
       // =======================================================================
@@ -304,12 +281,9 @@ class KeyboardController {
       // -----------------------------------------------------------------------
       case "KeyD":
         e.preventDefault();
-        this.deps.engine.setDebugMode(!this.deps.engine.debugMode);
-        debugManager.toggle(this.deps.engine.debugMode);
-        const debugCheckbox = document.getElementById("check-debug");
-        if (debugCheckbox) debugCheckbox.checked = this.deps.engine.debugMode;
+        const newDebugState = displayController.toggleDebug();
         uiManager.showNotification(
-          `Debug Mode: ${this.deps.engine.debugMode ? "ON" : "OFF"}`,
+          `Debug Mode: ${newDebugState ? "ON" : "OFF"}`,
           "info",
           1500,
         );

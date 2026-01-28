@@ -396,8 +396,11 @@ const displayController = new DisplayController({
   ghostManager,
   uiManager, // 🆕 สำหรับ Safari Warning
   translations: TRANSLATIONS, // 🆕 สำหรับข้อความ Warning
+  engine, // 🆕 For Debug Toggle
+  debugManager, // 🆕 For Debug Toggle
   // Note: pose จะถูก access ผ่าน window.pose ใน display_controller.js
 });
+window.displayController = displayController; // Expose globally for Popup Manager
 
 // Helper: ให้ส่วนอื่นเข้าถึง display state ผ่าน displayController
 // ใช้ displayController.showGhostOverlay, displayController.showPath, etc.
@@ -1276,73 +1279,99 @@ async function onResults(results) {
       }
 
       // 1. วาด Ghost (เงาคนสอน) ถ้าเปิดใช้งาน (วาดก่อน Grid หรือหลังก็ได้ แต่วาดหลัง Grid จะเห็นชัดกว่า)
-      if (displayController.showGhostOverlay && ghostManager.isPlaying) {
+      // 1. วาด Ghost (เงาคนสอน) -- MAIN OVERLAY
+      // ถ้าเปิดโหมด Side-by-Side เราจะไม่วาด Ghost ทับวิดีโอหลัก (ให้ดูจอแยกแทน)
+      if (
+        displayController.showGhostOverlay &&
+        ghostManager.isPlaying &&
+        !displayController.isSideBySide
+      ) {
         ghostManager.update(); // อัปเดต frame
 
-        // 🆕 Side-by-Side Mode: ถ้าเปิดโหมดนี้อยู่ *ไม่ต้อง* วาด Overlay ทับ (เพราะมีจอแยกแล้ว)
-        // แต่ยังต้อง update() เพื่อให้วิดีโอเล่นต่อเนื่อง
-        if (!displayController.isSideBySide) {
-          // Priority: Silhouette Video > Ghost Skeleton
-          const silhouetteVideo = ghostManager.getSilhouetteVideo();
-          if (silhouetteVideo) {
-            // มี silhouette video - วาดเงา
-            drawer.drawSilhouetteVideo(
-              silhouetteVideo,
+        // Priority: Silhouette Video > Ghost Skeleton
+        const silhouetteVideo = ghostManager.getSilhouetteVideo();
+        if (silhouetteVideo) {
+          // มี silhouette video - วาดเงา
+          drawer.drawSilhouetteVideo(
+            silhouetteVideo,
+            ghostManager.opacity,
+            displayController.ghostColor,
+          );
+        } else {
+          // ไม่มี silhouette video - ใช้ skeleton แทน
+          const ghostLandmarks = ghostManager.getCurrentFrame();
+          if (ghostLandmarks) {
+            drawer.drawGhostSkeleton(
+              ghostLandmarks,
               ghostManager.opacity,
               displayController.ghostColor,
             );
+          }
+        }
+      }
+
+      // 🆕 1.1 Side-by-Side Mode Rendering (แยกออกมาจาก loop ปกติ)
+      // ทำงานเมื่อเปิด SBS mode (ไม่ขึ้นกับ showGhostOverlay)
+      if (displayController.isSideBySide) {
+        // ต้อง ensure ว่า ghostManager update แล้ว (ถ้ายังไม่ได้ทำข้างบน)
+        if (
+          !displayController.showGhostOverlay ||
+          !ghostManager.isPlaying // กรณี ghost overlay ปิดอยู่ เราต้อง update เอง
+        ) {
+          ghostManager.update();
+        }
+
+        const sbsCanvas = document.getElementById("sbs-instructor-canvas");
+        if (sbsCanvas) {
+          const sbsCtx = sbsCanvas.getContext("2d");
+
+          // 🆕 Resolution Fix: Set Canvas Resolution to match Source Video (Intrinsic Size)
+          const sourceVideo =
+            ghostManager.getSilhouetteVideo() || ghostManager.silhouetteVideo;
+
+          let targetWidth = 1920;
+          let targetHeight = 1080;
+
+          if (sourceVideo && sourceVideo.readyState >= 1) {
+            targetWidth = sourceVideo.videoWidth;
+            targetHeight = sourceVideo.videoHeight;
           } else {
-            // ไม่มี silhouette video - ใช้ skeleton แทน
+            targetWidth = canvasElement.width;
+            targetHeight = canvasElement.height;
+          }
+
+          if (
+            sbsCanvas.width !== targetWidth ||
+            sbsCanvas.height !== targetHeight
+          ) {
+            sbsCanvas.width = targetWidth;
+            sbsCanvas.height = targetHeight;
+          }
+
+          // Clear previous frame
+          sbsCtx.clearRect(0, 0, sbsCanvas.width, sbsCanvas.height);
+
+          // Render
+          if (sourceVideo && sourceVideo.readyState >= 2) {
+            drawer.drawSilhouetteVideo(
+              sourceVideo,
+              ghostManager.opacity, // Use Manager Opacity
+              displayController.ghostColor, // Use Controller Color
+              sbsCtx, // Target SbS Canvas
+            );
+          } else {
             const ghostLandmarks = ghostManager.getCurrentFrame();
             if (ghostLandmarks) {
               drawer.drawGhostSkeleton(
                 ghostLandmarks,
                 ghostManager.opacity,
                 displayController.ghostColor,
-              );
-            }
-          }
-        } else {
-          // 🆕 Side-by-Side Mode Logic (Active when isSideBySide = true)
-          const sbsCanvas = document.getElementById("sbs-instructor-canvas");
-          if (sbsCanvas) {
-            const sbsCtx = sbsCanvas.getContext("2d");
-            // Ensure canvas resolution matches display size
-            const rect = sbsCanvas.getBoundingClientRect();
-            if (
-              sbsCanvas.width !== rect.width ||
-              sbsCanvas.height !== rect.height
-            ) {
-              sbsCanvas.width = rect.width;
-              sbsCanvas.height = rect.height;
-            }
-
-            // Clear previous frame
-            sbsCtx.clearRect(0, 0, sbsCanvas.width, sbsCanvas.height);
-
-            // Reuse standard drawing logic but target sbsCtx
-            const silhouetteVideo = ghostManager.getSilhouetteVideo();
-            if (silhouetteVideo) {
-              drawer.drawSilhouetteVideo(
-                silhouetteVideo,
-                ghostManager.opacity,
-                displayController.ghostColor,
                 sbsCtx, // Target SbS Canvas
               );
-            } else {
-              const ghostLandmarks = ghostManager.getCurrentFrame();
-              if (ghostLandmarks) {
-                drawer.drawGhostSkeleton(
-                  ghostLandmarks,
-                  ghostManager.opacity,
-                  displayController.ghostColor,
-                  sbsCtx, // Target SbS Canvas
-                );
-              }
             }
           }
-        } // End of Side-by-Side check
-      } // End of showGhostOverlay check
+        }
+      }
 
       // 1.5. วาด Instructor Thumbnail (มุมขวาบน) ถ้าเปิดใช้งาน
       if (displayController.showInstructor && instructorCtx && isTrainingMode) {
@@ -1434,7 +1463,7 @@ async function onResults(results) {
           results.poseLandmarks,
           jointsToHighlight,
           displayController.skeletonColor,
-          displayController.showDebugIndices,
+          displayController.showSkeletonIndices,
           displayController.isMirrored,
           lastActiveRule,
           highlightConfig, // 🆕 Pass Config

@@ -33,9 +33,9 @@ class DisplayController {
     this.pathColor = "0, 255, 0"; // Default Green
     this.showSkeleton = true;
     this.skeletonColor = "255, 255, 255"; // Debug Config
-    this.showDebugGraph = true;
-    this.showDebugDetail = true;
-    this.showDebugIndices = false; // Joint Numbers
+    this.showDebugGraph = true; // Default: ON
+    this.showDebugDetail = true; // Default: ON
+    this.showSkeletonIndices = false; // Default: OFF (Moved from Debug)
 
     // Core Display Config
     this.showTrail = true;
@@ -75,25 +75,37 @@ class DisplayController {
   init() {
     console.log("🚀 DisplayController.init() START");
     try {
+      // Legacy Dropdown Init (Keep for fallback if needed, or remove later)
       this.initDropdown();
       this.initSettingsDropdown();
-      this.initMirrorCheckbox();
-      this.initGridCheckbox();
-      this.initGhostCheckbox();
-      this.initInstructorCheckbox();
-      this.initPathCheckbox();
-      this.initSkeletonCheckbox();
-      this.initTrailCheckbox();
-      this.initAutoAdjustLightCheckbox();
-      this.initVirtualBackgrounds();
-      this.initZoomControls();
-      this.initSideBySideCheckbox();
-      this.initErrorHighlightsCheckbox();
-      this.initDebugCheckbox();
+
+      // Bind Controls (Can be called repeatedly for Popup)
+      this.reBind();
+
       console.log("✅ DisplayController.init() FINISHED");
     } catch (err) {
       console.error("❌ DisplayController.init() CRASHED:", err);
     }
+  }
+
+  /**
+   * Re-Bind Events (Called by DisplayPopupManager when modal opens)
+   */
+  reBind() {
+    // console.log("🔄 DisplayController.reBind() - Re-attaching listeners...");
+    this.initMirrorCheckbox();
+    this.initGridCheckbox();
+    this.initGhostCheckbox();
+    this.initInstructorCheckbox();
+    this.initPathCheckbox();
+    this.initSkeletonCheckbox();
+    this.initTrailCheckbox();
+    this.initAutoAdjustLightCheckbox();
+    this.initVirtualBackgrounds();
+    this.initZoomControls();
+    this.initSideBySideCheckbox();
+    this.initErrorHighlightsCheckbox();
+    this.initDebugCheckbox();
   }
 
   /**
@@ -258,7 +270,7 @@ class DisplayController {
     if (rotBtns.length > 0) {
       rotBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
-          this.mirrorRotation = parseInt(btn.dataset.rot);
+          this.mirrorRotation = parseInt(btn.dataset.val); // Fixed: use .val
           this.updateTransform();
           this.updateMirrorUI();
         });
@@ -269,7 +281,7 @@ class DisplayController {
     if (flipBtns.length > 0) {
       flipBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
-          this.mirrorFlipAxis = btn.dataset.flip;
+          this.mirrorFlipAxis = btn.dataset.val; // Fixed: use .val
           this.updateTransform();
           this.updateMirrorUI();
         });
@@ -285,7 +297,7 @@ class DisplayController {
 
     // Rotation
     rotBtns.forEach((btn) => {
-      const rot = parseInt(btn.dataset.rot);
+      const rot = parseInt(btn.dataset.val); // Fixed: use .val
       if (rot === this.mirrorRotation) {
         btn.classList.add("bg-blue-600", "text-white", "border-blue-500");
         btn.classList.remove("bg-gray-700", "text-gray-300", "border-gray-600");
@@ -297,7 +309,8 @@ class DisplayController {
 
     // Flip Axis
     flipBtns.forEach((btn) => {
-      if (btn.dataset.flip === this.mirrorFlipAxis) {
+      if (btn.dataset.val === this.mirrorFlipAxis) {
+        // Fixed: use .val
         btn.classList.add("bg-blue-600", "text-white", "border-blue-500");
         btn.classList.remove("bg-gray-700", "text-gray-300", "border-gray-600");
       } else {
@@ -334,8 +347,8 @@ class DisplayController {
   initDebugCheckbox() {
     const checkDebug = document.getElementById("check-debug");
     const checkGraph = document.getElementById("check-debug-graph");
+
     const checkDetail = document.getElementById("check-debug-detail");
-    const checkIndices = document.getElementById("check-debug-indices");
 
     if (checkDebug) {
       this.setupSettingsToggle(
@@ -343,6 +356,13 @@ class DisplayController {
         "btn-debug-settings",
         "check-debug",
       );
+
+      // Add Listener for Checkbox (Fixed)
+      checkDebug.checked = this.deps.engine?.debugMode || false;
+      checkDebug.addEventListener("change", (e) => {
+        const enabled = e.target.checked;
+        this.toggleDebug(enabled);
+      });
     }
 
     if (checkGraph) {
@@ -359,11 +379,11 @@ class DisplayController {
         (e) => (this.showDebugDetail = e.target.checked),
       );
     }
-    if (checkIndices) {
-      checkIndices.checked = this.showDebugIndices;
-      checkIndices.addEventListener(
+    if (checkDetail) {
+      checkDetail.checked = this.showDebugDetail;
+      checkDetail.addEventListener(
         "change",
-        (e) => (this.showDebugIndices = e.target.checked),
+        (e) => (this.showDebugDetail = e.target.checked),
       );
     }
   }
@@ -530,7 +550,8 @@ class DisplayController {
    * Ghost checkbox (เงาครูฝึกบนวิดีโอหลัก)
    */
   initGhostCheckbox() {
-    const { checkGhost, ghostManager } = this.deps;
+    const { ghostManager } = this.deps;
+    const checkGhost = document.getElementById("check-ghost");
     const ghostSettings = document.getElementById("ghost-settings");
 
     // Inputs
@@ -618,7 +639,7 @@ class DisplayController {
    * Instructor checkbox (เงาครูฝึกมุมขวาบน)
    */
   initInstructorCheckbox() {
-    const { checkInstructor } = this.deps;
+    const checkInstructor = document.getElementById("check-instructor");
     const sizeBtns = document.querySelectorAll(".instructor-size-btn");
     const posBtns = document.querySelectorAll(".instructor-pos-btn");
 
@@ -643,7 +664,7 @@ class DisplayController {
       // Handle Size Change
       sizeBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
-          this.instructorSize = btn.dataset.size;
+          this.instructorSize = btn.dataset.val; // Fixed: use .val
           this.updateInstructorStyle();
           this.updateInstructorUI(sizeBtns, posBtns);
         });
@@ -652,7 +673,7 @@ class DisplayController {
       // Handle Position Change
       posBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
-          this.instructorPos = btn.dataset.pos;
+          this.instructorPos = btn.dataset.val; // Fixed: use .val
           this.updateInstructorStyle();
           this.updateInstructorUI(sizeBtns, posBtns);
         });
@@ -663,7 +684,8 @@ class DisplayController {
   updateInstructorUI(sizeBtns, posBtns) {
     if (sizeBtns) {
       sizeBtns.forEach((btn) => {
-        if (btn.dataset.size === this.instructorSize) {
+        if (btn.dataset.val === this.instructorSize) {
+          // Fixed: use .val
           btn.classList.add("bg-blue-600", "text-white");
           btn.classList.remove("bg-gray-700", "text-gray-300");
         } else {
@@ -674,7 +696,8 @@ class DisplayController {
     }
     if (posBtns) {
       posBtns.forEach((btn) => {
-        if (btn.dataset.pos === this.instructorPos) {
+        if (btn.dataset.val === this.instructorPos) {
+          // Fixed: use .val
           btn.classList.add("bg-blue-600", "text-white");
           btn.classList.remove("bg-gray-700", "text-gray-300");
         } else {
@@ -737,7 +760,8 @@ class DisplayController {
    * Toggle Instructor Thumbnail visibility
    */
   toggleInstructor(show) {
-    const { instructorThumbnail, checkInstructor } = this.deps;
+    const { instructorThumbnail } = this.deps;
+    const checkInstructor = document.getElementById("check-instructor");
 
     this.showInstructor = show;
     if (instructorThumbnail) {
@@ -951,8 +975,10 @@ class DisplayController {
   /**
    * Skeleton checkbox (โครงผู้ฝึก)
    */
+
   initSkeletonCheckbox() {
     const checkSkeleton = document.getElementById("check-skeleton");
+    const checkIndices = document.getElementById("check-skeleton-indices"); // 🆕 Moved here
     const colorBtns = document.querySelectorAll(".skeleton-color-btn");
 
     if (checkSkeleton) {
@@ -977,10 +1003,20 @@ class DisplayController {
       }
 
       // 1. Handle Checkbox
+
       checkSkeleton.addEventListener("change", () => {
         this.showSkeleton = checkSkeleton.checked;
         // Settings toggle handled by setupSettingsToggle
       });
+
+      // 1.1 Handle Indices Checkbox (New)
+      if (checkIndices) {
+        checkIndices.checked = this.showSkeletonIndices;
+        checkIndices.addEventListener(
+          "change",
+          (e) => (this.showSkeletonIndices = e.target.checked),
+        );
+      }
 
       // 2. Handle Color Change
       if (colorBtns.length > 0) {
@@ -1303,7 +1339,7 @@ class DisplayController {
    * Reset display options to defaults
    */
   resetToDefaults() {
-    const { checkGhost, checkInstructor, checkPath, checkSkeleton } = this.deps;
+    // const { checkGhost, checkInstructor, checkPath, checkSkeleton } = this.deps; // Legacy deps are null for popup
 
     this.showGhostOverlay = false;
     this.showInstructor = true;
@@ -1316,6 +1352,11 @@ class DisplayController {
     this.circularityScore = null;
 
     // Sync checkboxes
+    const checkGhost = document.getElementById("check-ghost");
+    const checkInstructor = document.getElementById("check-instructor");
+    const checkPath = document.getElementById("check-path");
+    const checkSkeleton = document.getElementById("check-skeleton");
+
     if (checkGhost) checkGhost.checked = false;
     if (checkInstructor) checkInstructor.checked = true;
     if (checkPath) checkPath.checked = true;
@@ -1364,7 +1405,7 @@ class DisplayController {
     if (modeBtns.length > 0) {
       modeBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
-          this.sbsMode = btn.dataset.mode;
+          this.sbsMode = btn.dataset.val; // Fixed: use .val
           this.updateSideBySideStyle();
           this.updateSideBySideUI();
         });
@@ -1375,7 +1416,7 @@ class DisplayController {
     if (ratioBtns.length > 0) {
       ratioBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
-          this.sbsRatio = btn.dataset.ratio; // "50", "60", "40"
+          this.sbsRatio = btn.dataset.val; // Fixed: use .val (note: DisplayPopupManager uses { val: "50", text: "50:50"})
           this.updateSideBySideStyle();
           this.updateSideBySideUI();
         });
@@ -1392,7 +1433,8 @@ class DisplayController {
 
     // Mode Buttons
     modeBtns.forEach((btn) => {
-      if (btn.dataset.mode === this.sbsMode) {
+      if (btn.dataset.val === this.sbsMode) {
+        // Fixed: use .val
         btn.classList.add("bg-blue-600", "text-white", "border-blue-500");
         btn.classList.remove("bg-gray-700", "text-gray-300", "border-gray-600");
       } else {
@@ -1403,7 +1445,8 @@ class DisplayController {
 
     // Ratio Buttons
     ratioBtns.forEach((btn) => {
-      if (btn.dataset.ratio === this.sbsRatio) {
+      if (btn.dataset.val === this.sbsRatio) {
+        // Fixed: use .val
         btn.classList.add("bg-blue-600", "text-white", "border-blue-500");
         btn.classList.remove("bg-gray-700", "text-gray-300", "border-gray-600");
       } else {
@@ -1420,42 +1463,39 @@ class DisplayController {
   toggleSideBySide(enabled) {
     if (this.isSideBySide === enabled) return;
 
-    console.log(`🌗 Toggle Side-by-Side: ${enabled}`);
-    console.log(`   Current Ghost Checkbox: ${this.deps.checkGhost?.checked}`);
-    console.log(
-      `   Saved Previous Ghost State: ${this.ghostWasEnabledBeforeSideBySide}`,
-    );
-
     this.isSideBySide = enabled;
     const body = document.body;
     const container = document.getElementById("instructor-video-container");
-    const { ghostManager, checkGhost } = this.deps;
+    const { ghostManager, checkGhost } = this.deps; // Note: checkGhost might be stale if popup re-rendered? No, reBind updates this.deps? No reBind doesn't update this.deps.
+    // Use document.getElementById for fresh reference
+    const checkGhostEl = document.getElementById("check-ghost");
 
     if (enabled) {
       // 1. Enable CSS Mode
       body.classList.add("side-by-side-mode");
 
-      // 2. Ensure Ghost is Active (so video plays)
-      if (checkGhost) {
-        // Save previous state BEFORE we change it
-        this.ghostWasEnabledBeforeSideBySide = checkGhost.checked;
-        console.log(
-          `   💾 Saving Ghost State: ${this.ghostWasEnabledBeforeSideBySide}`,
-        );
-
-        if (!checkGhost.checked) {
-          console.log("   🟢 Force enabling Ghost for Side-by-Side");
-          checkGhost.checked = true;
-          checkGhost.dispatchEvent(new Event("change")); // Force start ghostManager
-
-          if (window.uiManager) {
-            // Notification handled in KeyboardController (or suppressed for auto-actions)
-          }
-        }
+      // 2. Ensure Ghost Manager is Started (for video playback)
+      // Even if we don't show the overlay (handled by script.js decoupling), we need the manager running.
+      if (ghostManager && !ghostManager.isPlaying) {
+        console.log("   🟢 Auto-starting Ghost Manager for Side-by-Side");
+        ghostManager.start();
+        this.ghostWasAutoStarted = true; // Flag to auto-stop later
+      } else {
+        this.ghostWasAutoStarted = false;
       }
 
+      // Update Checkbox UI if present (just visual, logic is handled above)
+      if (checkGhostEl && !checkGhostEl.checked) {
+        checkGhostEl.checked = true;
+        // We don't dispatch event to avoid double-toggling if we just started manager manually
+        // But script.js listeners might rely on change event?
+        // Actually DisplayController handles change event by calling ghostManager.start/stop
+        // So if we manually start manager, we just sync UI.
+      }
+      // Update internal state
+      this.showGhostOverlay = true;
+
       // 3. Move Instructor View to Left Container
-      // Use Canvas to support Tinting & Fallback
       if (container) {
         container.innerHTML = ""; // Clear
         const sbsCanvas = document.createElement("canvas");
@@ -1466,7 +1506,7 @@ class DisplayController {
         container.appendChild(sbsCanvas);
       }
 
-      this.updateSideBySideStyle(); // 🆕 Apply Styles
+      this.updateSideBySideStyle();
     } else {
       // 1. Disable CSS Mode
       body.classList.remove("side-by-side-mode");
@@ -1474,7 +1514,7 @@ class DisplayController {
       // 2. Clear Left Container
       if (container) {
         container.innerHTML = "";
-        container.style.width = ""; // Reset Width
+        container.style.width = "";
       }
 
       // 3. Reset Canvas Styles
@@ -1485,18 +1525,17 @@ class DisplayController {
         canvas.style.objectPosition = "";
       }
 
-      // 4. Restore Ghost State
-      if (checkGhost) {
-        console.log(
-          `   🔄 Restoring Ghost. Previous: ${this.ghostWasEnabledBeforeSideBySide}, Current: ${checkGhost.checked}`,
-        );
+      // 4. Auto-Stop Ghost if we auto-started it
+      // AND if user hasn't interacted?
+      // User said: "Close SbS should close ghost together".
+      // So let's force close if it was auto-started OR just force close as requested?
+      // "ส่วนเวลาปิด side-by-side ก็ควรปิด ghost ไปพร้อมกัน" -> "When closing SbS, should close ghost too"
 
-        // Only turn off if it was OFF before Side-by-Side started
-        if (!this.ghostWasEnabledBeforeSideBySide && checkGhost.checked) {
-          console.log("   🔴 Force disabling Ghost (Restore)");
-          checkGhost.checked = false;
-          checkGhost.dispatchEvent(new Event("change")); // Stop ghostManager
-        }
+      if (this.ghostWasAutoStarted || this.showGhostOverlay) {
+        console.log("   🔴 Auto-stopping Ghost Manager (Side-by-Side closed)");
+        if (ghostManager) ghostManager.stop();
+        this.showGhostOverlay = false;
+        if (checkGhostEl) checkGhostEl.checked = false;
       }
     }
   }
@@ -1509,6 +1548,7 @@ class DisplayController {
 
     const container = document.getElementById("instructor-video-container");
     const video = container ? container.querySelector("video") : null;
+    const sbsCanvas = container ? container.querySelector("canvas") : null; // 🆕 Check for Canvas
     const canvas = document.getElementById("output_canvas");
 
     if (!container || !canvas) return;
@@ -1539,20 +1579,24 @@ class DisplayController {
 
     // 3. Apply View Mode (Fit vs Cover)
     const fitMode = this.sbsMode === "cover" ? "cover" : "contain";
+    const posMode =
+      this.sbsMode === "cover" ? "center center" : "center center"; // Always center for now, or "" to reset
 
-    // Video (Left)
+    // Video (Left) - Fallback
     if (video) {
       video.style.objectFit = fitMode;
-      if (fitMode === "cover") {
-        video.style.objectPosition = "center center"; // Focus Center
-      }
+      video.style.objectPosition = posMode;
+    }
+
+    // Canvas (Left) - Main
+    if (sbsCanvas) {
+      sbsCanvas.style.objectFit = fitMode;
+      sbsCanvas.style.objectPosition = posMode;
     }
 
     // Canvas (Right)
     canvas.style.objectFit = fitMode;
-    if (fitMode === "cover") {
-      canvas.style.objectPosition = "center center";
-    }
+    canvas.style.objectPosition = posMode;
 
     // Note: Canvas Mirror (-1 scale) is handled by updateTransform/CSS
     // But object-fit applies to the element box content.
@@ -1578,5 +1622,132 @@ class DisplayController {
   clearTrail() {
     this.trailHistory = [];
     this.circularityScore = null;
+  }
+  /**
+   * Toggle Path Overlay
+   * @param {boolean|null} forceState - Optional force state
+   */
+  togglePath(forceState = null) {
+    this.showPath = forceState !== null ? forceState : !this.showPath;
+    const checkPath = document.getElementById("check-path");
+    if (checkPath) {
+      checkPath.checked = this.showPath;
+      // No side effects usually, just state
+    }
+    return this.showPath;
+  }
+
+  /**
+   * Toggle Skeleton Overlay
+   * @param {boolean|null} forceState
+   */
+  toggleSkeleton(forceState = null) {
+    this.showSkeleton = forceState !== null ? forceState : !this.showSkeleton;
+    const checkSkeleton = document.getElementById("check-skeleton");
+    if (checkSkeleton) {
+      checkSkeleton.checked = this.showSkeleton;
+    }
+    return this.showSkeleton;
+  }
+
+  /**
+   * Toggle Grid Overlay
+   * @param {boolean|null} forceState
+   */
+  toggleGrid(forceState = null) {
+    this.showGrid = forceState !== null ? forceState : !this.showGrid;
+    const checkGrid = document.getElementById("check-grid");
+    if (checkGrid) {
+      checkGrid.checked = this.showGrid;
+    }
+    return this.showGrid;
+  }
+
+  /**
+   * Toggle Mirror Mode
+   * @param {boolean|null} forceState
+   */
+  toggleMirror(forceState = null) {
+    const newState = forceState !== null ? forceState : !this.isMirrored;
+    this.setMirrorMode(newState); // Existing method handles UI sync + Logic
+    // setMirrorMode updates checkbox and internal state
+    return this.isMirrored;
+  }
+
+  /**
+   * Toggle Ghost Overlay
+   * @param {boolean|null} forceState
+   */
+  toggleGhost(forceState = null) {
+    this.showGhostOverlay =
+      forceState !== null ? forceState : !this.showGhostOverlay;
+    const checkGhost = document.getElementById("check-ghost");
+    const { ghostManager } = this.deps;
+
+    if (checkGhost) {
+      checkGhost.checked = this.showGhostOverlay;
+    }
+
+    if (this.showGhostOverlay) {
+      if (ghostManager) ghostManager.start();
+    } else {
+      if (ghostManager) ghostManager.stop();
+    }
+    return this.showGhostOverlay;
+  }
+
+  /**
+   * Toggle Error Highlights
+   * @param {boolean|null} forceState
+   */
+  toggleErrorHighlights(forceState = null) {
+    this.showErrorHighlights =
+      forceState !== null ? forceState : !this.showErrorHighlights;
+    const checkError = document.getElementById("check-error-highlights");
+    if (checkError) {
+      checkError.checked = this.showErrorHighlights;
+    }
+    return this.showErrorHighlights;
+  }
+
+  /**
+   * Toggle Trail Visualization
+   * @param {boolean|null} forceState
+   */
+  toggleTrail(forceState = null) {
+    this.showTrail = forceState !== null ? forceState : !this.showTrail;
+    const checkTrail = document.getElementById("check-trail");
+    if (checkTrail) {
+      checkTrail.checked = this.showTrail;
+    }
+    return this.showTrail;
+  }
+
+  /**
+   * Toggle Debug Mode
+   * @param {boolean|null} forceState
+   */
+  toggleDebug(forceState = null) {
+    // Logic relies on Engine state primarily
+    const currentDebug = this.deps.engine ? this.deps.engine.debugMode : false;
+    const newState = forceState !== null ? forceState : !currentDebug;
+
+    if (this.deps.engine) {
+      this.deps.engine.setDebugMode(newState);
+    }
+
+    // Try deps or global
+    if (this.deps.debugManager) {
+      this.deps.debugManager.toggle(newState);
+    } else if (window.debugManager) {
+      window.debugManager.toggle(newState);
+    }
+
+    const checkDebug = document.getElementById("check-debug");
+    if (checkDebug) {
+      checkDebug.checked = newState;
+    }
+
+    return newState;
   }
 }

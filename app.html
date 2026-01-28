@@ -205,10 +205,10 @@ Version: 0.9.9 (2026-01-17)
     <!-- Mobile Warning Modal (แสดงเมื่อใช้งานบนมือถือ) -->
     <div
       id="mobile-modal"
-      class="fixed inset-0 bg-black bg-opacity-80 z-[110] hidden items-center justify-center p-4"
+      class="fixed inset-0 z-[70] hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity"
     >
       <div
-        class="bg-gray-800 rounded-xl p-6 max-w-md w-full shadow-2xl border border-blue-500/50"
+        class="bg-white/90 dark:bg-gray-900/50 backdrop-blur-xl rounded-2xl shadow-2xl p-6 max-w-md w-full text-center border border-white/20 dark:border-gray-700/50"
       >
         <h2
           id="mobile-title"
@@ -254,10 +254,10 @@ Version: 0.9.9 (2026-01-17)
     <!-- Privacy Popup Modal (แสดงทุกครั้งที่เปิดหน้า) -->
     <div
       id="privacy-modal"
-      class="fixed inset-0 bg-black bg-opacity-70 z-[100] flex items-center justify-center p-4"
+      class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity"
     >
       <div
-        class="bg-gray-800 rounded-xl p-6 max-w-md w-full shadow-2xl border border-purple-500/30"
+        class="relative bg-white/90 dark:bg-gray-900/50 backdrop-blur-xl rounded-2xl shadow-2xl p-6 md:p-8 max-w-md w-full border border-white/20 dark:border-gray-700/50 max-h-[90vh] overflow-y-auto custom-scrollbar transform transition-transform scale-100"
       >
         <!-- Main Title -->
         <h1
@@ -411,6 +411,19 @@ Version: 0.9.9 (2026-01-17)
             </select>
           </div>
 
+          <!-- Rules Settings Button (Popup) -->
+          <div class="relative">
+            <button
+              id="rules-btn"
+              class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
+              title="Rules Settings - ปรับค่ากฎการตรวจจับ"
+              aria-label="Rules Settings"
+              onclick="window.rulesPopupManager.toggle()"
+            >
+              🔧
+            </button>
+          </div>
+
           <!-- Display Options Popup (Managed by DisplayPopupManager) -->
           <div class="relative" id="display-dropdown-container">
             <button
@@ -421,24 +434,6 @@ Version: 0.9.9 (2026-01-17)
             >⚙️</button>
             
             <!-- Display Options Popup (Managed by DisplayPopupManager) -->
-          </div>
-
-            <!-- Rules Settings Button (Popup) -->
-            <div class="relative">
-              <button
-                id="rules-btn"
-                class="px-2 py-2 md:px-3 md:py-2 bg-gray-700 text-white border border-gray-600 rounded hover:bg-gray-600 transition-colors"
-                title="Rules Settings - ปรับค่ากฎการตรวจจับ"
-                aria-label="Rules Settings"
-                onclick="window.rulesPopupManager.toggle()"
-              >
-                🔧
-              </button>
-            </div>
-
-          <!-- Settings Menu Removed (Merged into Display Option) -->
-          <div class="relative inline-block">
-             <!-- Placeholder for spacing if needed -->
           </div>
         </div>
 
@@ -741,20 +736,7 @@ Version: 0.9.9 (2026-01-17)
           ⏹️ หยุดการฝึก
         </button>
       </div></div>
-        
         </div>
-
-      </div>
-
-
-      <!-- Instructions (Hidden for now - will add more useful tips later) -->
-      <div class="instructions-box p-4 rounded text-left hidden">
-        <h3 id="instr-title" class="font-bold mb-2">💡 คำแนะนำ:</h3>
-        <ul class="list-disc list-inside text-sm space-y-1">
-          <li id="instr-1">เลือกท่าฝึกและระดับ แล้วกด 'เริ่มการฝึก'</li>
-          <li id="instr-2">ยืนให้เห็นเต็มตัว ห่างจากกล้อง 2-3 เมตร</li>
-          <li id="instr-3">ปรับเทียบสัดส่วนอัตโนมัติทุกครั้งก่อนเริ่มฝึก</li>
-        </ul>
       </div>
     </div>
 

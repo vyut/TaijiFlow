@@ -85,13 +85,21 @@ class RulesPopupManager {
                         </span>
                      </div>
 
-                     <!-- Reset Button (Right) -->
-                     <button
-                        id="rules-reset-btn"
-                        class="px-4 py-2 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-white font-medium rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-all flex items-center gap-2 text-sm shadow-sm hover:shadow whitespace-nowrap"
-                      >
-                        🔄 Reset to Defaults
-                      </button>
+                     <!-- Actions (Right) -->
+                     <div class="flex items-center gap-2">
+                         <button
+                            id="rules-reset-btn"
+                            class="px-4 py-2 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-white font-medium rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-all flex items-center gap-2 text-sm shadow-sm hover:shadow whitespace-nowrap"
+                          >
+                            🔄 Reset to Defaults
+                          </button>
+                          <button
+                            onclick="window.rulesPopupManager.close()"
+                            class="px-6 py-2 bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 font-bold rounded-lg transition-colors text-sm shadow-md hover:shadow-lg"
+                          >
+                            Close
+                          </button>
+                     </div>
                 </div>
 
                 <style>
@@ -103,6 +111,70 @@ class RulesPopupManager {
                 </style>
             </div>
         `;
+  }
+
+  // =========================================================================
+  // Column Generators
+  // =========================================================================
+
+  reBindDebugEvents() {
+    const checkDebug = document.getElementById("check-debug");
+    const checkGraph = document.getElementById("check-debug-graph");
+    const checkDetail = document.getElementById("check-debug-detail");
+    const dc = window.displayController;
+    // Engine might only be attached to DC at this stage
+    const engine = dc?.deps?.engine || window.engine;
+
+    console.log("RulesPopup: reBindDebugEvents", {
+      checkDebug,
+      checkGraph,
+      dc,
+      engine,
+    });
+
+    if (checkDebug && dc) {
+      // Sync State (safe check)
+      checkDebug.checked = engine?.debugMode || false;
+
+      // Bind
+      checkDebug.addEventListener("change", (e) => {
+        console.log("RulesPopup: Debug Toggled", e.target.checked);
+        dc.toggleDebug(e.target.checked);
+
+        // Force sync subs
+        if (checkGraph) checkGraph.disabled = !e.target.checked;
+        if (checkDetail) checkDetail.disabled = !e.target.checked;
+      });
+    } else {
+      console.warn(
+        "RulesPopup: Failed to bind Debug events. Missing checkDebug or DC.",
+      );
+    }
+
+    if (checkGraph && dc) {
+      checkGraph.checked = dc.showDebugGraph;
+      if (checkDebug && !checkDebug.checked) checkGraph.disabled = true;
+      checkGraph.addEventListener("change", (e) => {
+        console.log("RulesPopup: Graph Toggled", e.target.checked);
+        dc.showDebugGraph = e.target.checked;
+      });
+    }
+
+    if (checkDetail && dc) {
+      checkDetail.checked = dc.showDebugDetail;
+      if (checkDebug && !checkDebug.checked) checkDetail.disabled = true;
+      checkDetail.addEventListener("change", (e) => {
+        console.log("RulesPopup: Detail Toggled", e.target.checked);
+        dc.showDebugDetail = e.target.checked;
+      });
+    }
+  }
+
+  close() {
+    const overlay = document.getElementById(this.overlayId);
+    if (overlay) {
+      overlay.classList.add("hidden");
+    }
   }
 
   // =========================================================================
@@ -170,16 +242,53 @@ class RulesPopupManager {
 
   _col4_L4() {
     return `
-            <div class="rounded-xl bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-500/20 p-4 opacity-75">
-                <h3 class="font-bold mb-4 text-yellow-600 dark:text-yellow-400 uppercase text-xs tracking-wider flex items-center gap-2">
-                    🟡 L4: Future Use
+            <div class="rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 p-4">
+                <h3 class="font-bold mb-4 text-gray-600 dark:text-gray-400 uppercase text-xs tracking-wider flex items-center gap-2">
+                    🛠️ Developer & Debug
                 </h3>
-                <div class="flex flex-col items-center justify-center p-4 text-center h-[200px] border border-dashed border-gray-300 dark:border-gray-700 rounded-lg">
-                    <span class="text-3xl mb-2">🚧</span>
-                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Future rules for<br>2-handed silk reeling</span>
+                <div class="space-y-4">
+                     ${this._renderMainToggle("Debug Overlay", "check-debug", "🐞", "D", "Show technical overlay with FPS, AI processing rate, and joint visibility status.")}
+                     <div class="ml-6 space-y-2">
+                          ${this._renderSubCheckbox("Show Graphs", "check-debug-graph", "Display real-time performance graphs for FPS and Score stability.")}
+                          ${this._renderSubCheckbox("Detailed Analysis", "check-debug-detail", "Show detailed heuristics analysis and confidence scores for each rule.")}
+                     </div>
+                     
+                     <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-xs text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-800/30">
+                        <span class="font-bold">Note:</span> Use strictly for development or system monitoring. Hidden in production view.
+                     </div>
                 </div>
             </div>
         `;
+  }
+
+  _renderMainToggle(title, id, emoji, shortcut, desc) {
+    const safeDesc = desc ? desc.replace(/'/g, "&apos;") : "";
+    const shortcutHtml = shortcut
+      ? `<span class="opacity-50 ml-1">(${shortcut})</span>`
+      : "";
+    // Re-use updateInfo logic
+    return `
+            <div class="group" onmouseenter="window.rulesPopupManager.updateInfo('${safeDesc}')" onmouseleave="window.rulesPopupManager.resetInfo()">
+                <label class="flex items-center cursor-pointer select-none">
+                    <input type="checkbox" id="${id}" class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-indigo-600 dark:text-indigo-500 focus:ring-offset-white dark:focus:ring-offset-gray-900">
+                    <span class="ml-2 text-sm font-bold text-gray-800 dark:text-gray-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                       ${title} ${shortcutHtml}
+                    </span>
+                </label>
+            </div>
+        `;
+  }
+
+  _renderSubCheckbox(title, id, desc) {
+    const safeDesc = desc ? desc.replace(/'/g, "&apos;") : "";
+    return `
+        <div class="group" onmouseenter="window.rulesPopupManager.updateInfo('${safeDesc}')" onmouseleave="window.rulesPopupManager.resetInfo()">
+            <label class="flex items-center cursor-pointer select-none">
+                <input type="checkbox" id="${id}" class="w-3.5 h-3.5 rounded border-gray-400 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-blue-500 focus:ring-blue-500">
+                <span class="ml-2 text-xs text-gray-600 dark:text-gray-300 group-hover:text-blue-500 transition-colors">${title}</span>
+            </label>
+        </div>
+      `;
   }
 
   _renderItem(
@@ -278,6 +387,9 @@ class RulesPopupManager {
     } else {
       console.warn("RulePopup: rulesConfigManager not found or no reBind()");
     }
+
+    // 3. Re-Bind Debug Events (New)
+    this.reBindDebugEvents();
   }
 
   close() {

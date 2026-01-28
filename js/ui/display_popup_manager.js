@@ -86,11 +86,17 @@ class DisplayPopupManager {
                         </span>
                      </div>
 
-                     <!-- Reset Button (Right) -->
-                     <button onclick="window.displayController.resetToDefaults()" 
-                             class="px-4 py-2 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-white font-medium rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-all flex items-center gap-2 text-sm shadow-sm hover:shadow whitespace-nowrap">
-                         <span>🔄</span> Reset to Defaults
-                     </button>
+                     <!-- Actions (Right) -->
+                     <div class="flex items-center gap-2">
+                         <button onclick="window.displayController.resetToDefaults()" 
+                                 class="px-4 py-2 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-white font-medium rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-all flex items-center gap-2 text-sm shadow-sm hover:shadow whitespace-nowrap">
+                             <span>🔄</span> Reset to Defaults
+                         </button>
+                         <button onclick="window.displayPopupManager.close()" 
+                                 class="px-6 py-2 bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 font-bold rounded-lg transition-colors text-sm shadow-md hover:shadow-lg">
+                             Close
+                         </button>
+                     </div>
                 </div>
 
                 <style>
@@ -374,15 +380,6 @@ class DisplayPopupManager {
                     <!-- Auto-Adjust Light -->
                     <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-2 mt-4">
                          ${this._renderMainToggle("Auto-Adjust Light", "check-auto-adjust-light", "🔆", "", "Automatically boosts brightness and contrast when low light is detected (Vis < 50%). Safe to leave on.")}
-                    </div>
-
-                    <!-- Debug Info (Bottom - Compact) -->
-                    <div class="pt-2 border-t border-gray-200 dark:border-gray-700/50 mt-2">
-                        ${this._renderMainToggle("Debug Info", "check-debug", "🐞", "D", "Show technical overlay with FPS, AI processing rate, and joint visibility status.")}
-                        <div class="ml-6 mt-1 flex gap-4">
-                             ${this._renderSubCheckbox("Graphs", "check-debug-graph", "Display real-time performance graphs for FPS and Score stability.")}
-                             ${this._renderSubCheckbox("Details", "check-debug-detail", "Show detailed heuristics analysis and confidence scores for each rule.")}
-                        </div>
                     </div>
                 </div>
             </div>

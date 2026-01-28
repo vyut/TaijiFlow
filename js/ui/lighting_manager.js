@@ -96,7 +96,7 @@ class LightingManager {
     let warningKey = "alert_low_light";
 
     if (this.isEnabled) {
-      threshold = 0.20;
+      threshold = 0.18;
       warningKey = "alert_low_light_critical";
     }
 

@@ -56,9 +56,9 @@ class DisplayPopupManager {
                 <!-- Header -->
                 <div class="flex justify-between items-center p-6 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-                        👁️ Display Options
+                        ⚙️ Display & Visuals
                         <span class="text-xs font-normal text-gray-500 dark:text-gray-400 px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded-full border border-gray-300 dark:border-gray-700">
-                           Configure your view
+                           System & Environment
                         </span>
                     </h2>
                     <button onclick="window.displayPopupManager.close()" class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
@@ -72,7 +72,7 @@ class DisplayPopupManager {
                         ${this._col1_Trainee()}
                         ${this._col2_Reference()}
                         ${this._col3_View()}
-                        ${this._col4_Developer()}
+                        ${this._col4_System()}
                     </div>
                 </div>
 
@@ -88,7 +88,7 @@ class DisplayPopupManager {
 
                      <!-- Reset Button (Right) -->
                      <button onclick="window.displayController.resetToDefaults()" 
-                             class="px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-800 transition-colors text-sm font-medium flex items-center gap-2">
+                             class="px-4 py-2 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-white font-medium rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-all flex items-center gap-2 text-sm shadow-sm hover:shadow whitespace-nowrap">
                          <span>🔄</span> Reset to Defaults
                      </button>
                 </div>
@@ -121,7 +121,7 @@ class DisplayPopupManager {
                 <div class="space-y-6">
                     <!-- Skeleton -->
                     <div>
-                        ${this._renderMainToggle("Skeleton", "check-skeleton", "🦴", "K", "Track your joints in real-time")}
+                        ${this._renderMainToggle("Skeleton", "check-skeleton", "🦴", "K", "Visualize your joints and limb segments in real-time to check your basic posture and alignment.")}
                         <div class="ml-6 mt-2 space-y-2">
                              ${this._renderColorPicker("skeleton-color", ["255, 255, 255", "0, 255, 255", "255, 255, 0", "255, 0, 255"], 0)}
                              ${this._renderSubCheckbox("Joint Numbers", "check-skeleton-indices", "Show index numbers on skeleton")}
@@ -132,7 +132,7 @@ class DisplayPopupManager {
 
                     <!-- Error Highlights -->
                     <div>
-                        ${this._renderMainToggle("Error Highlights", "check-error-highlights", "🎯", "E", "Show red dots on mistakes")}
+                        ${this._renderMainToggle("Error Highlights", "check-error-highlights", "🎯", "E", "Show visual feedback (red circles) on specific joints when your movement or posture deviates from the rule.")}
                         <div class="ml-6 mt-2 space-y-2">
                              ${this._renderSelect("highlight-style", [
                                { val: "vivid", text: "✨ Vivid" },
@@ -148,7 +148,7 @@ class DisplayPopupManager {
 
                     <!-- Motion Trail -->
                     <div>
-                        ${this._renderMainToggle("Motion Trail", "check-trail", "☄️", "R", "Track hand movement history")}
+                        ${this._renderMainToggle("Motion Trail", "check-trail", "☄️", "R", "Display a fading trail behind your hands to analyze movement smoothness, speed, and circularity.")}
                         <div class="ml-6 mt-2 space-y-2">
                              ${this._renderSelect("trail-length", [
                                { val: "30", text: "Short" },
@@ -173,7 +173,7 @@ class DisplayPopupManager {
                 <div class="space-y-6">
                     <!-- Instructor PiP -->
                     <div>
-                        ${this._renderMainToggle("Instructor PiP", "check-instructor", "🎓", "I", "Corner video overlay")}
+                        ${this._renderMainToggle("Instructor PiP", "check-instructor", "🎓", "I", "Show the instructor video in a floating picture-in-picture window for simultaneous viewing.")}
                         <div class="ml-6 mt-2 space-y-2">
                              ${this._renderButtonGroup(
                                "instructor-size",
@@ -183,6 +183,8 @@ class DisplayPopupManager {
                                  { val: "large", text: "L" },
                                ],
                                dc.instructorSize || "medium",
+                               "flex gap-1 w-full",
+                               "Adjust size of the instructor window.",
                              )}
                              ${this._renderButtonGroup(
                                "instructor-pos",
@@ -194,6 +196,7 @@ class DisplayPopupManager {
                                ],
                                dc.instructorPos || "tr",
                                "grid grid-cols-2 gap-2", // 2x2 Grid
+                               "Change position of the instructor window.",
                              )}
                         </div>
                     </div>
@@ -202,7 +205,7 @@ class DisplayPopupManager {
 
                     <!-- Side-by-Side -->
                     <div>
-                        ${this._renderMainToggle("Side-by-Side", "check-side-by-side", "🌗", "S", "Split screen comparison")}
+                        ${this._renderMainToggle("Side-by-Side", "check-side-by-side", "🌗", "S", "Switch to a split-screen layout to compare your form directly alongside the instructor video.")}
                         <div class="ml-6 mt-2 space-y-2">
                              ${this._renderButtonGroup(
                                "sbs-mode",
@@ -211,6 +214,8 @@ class DisplayPopupManager {
                                  { val: "cover", text: "🔍 Focus" },
                                ],
                                dc.sbsMode || "cover",
+                               "flex gap-1 w-full",
+                               "Fit: Show full video frame with bars. Focus: Crop to fill screen.",
                              )}
                              ${this._renderButtonGroup(
                                "sbs-ratio",
@@ -220,6 +225,8 @@ class DisplayPopupManager {
                                  { val: "40", text: "40:60" },
                                ],
                                dc.sbsRatio || "50",
+                               "flex gap-1 w-full",
+                               "Adjust the split ratio between you and the instructor.",
                              )}
                         </div>
                     </div>
@@ -228,10 +235,10 @@ class DisplayPopupManager {
 
                     <!-- Ghost Overlay -->
                     <div>
-                        ${this._renderMainToggle("Ghost Overlay", "check-ghost", "👻", "O", "Full body reference shadow")}
+                        ${this._renderMainToggle("Ghost Overlay", "check-ghost", "👻", "O", "Overlay a semi-transparent (ghost) of the instructor directly onto your feed for precise alignment.")}
                         <div class="ml-6 mt-2 space-y-2">
-                             ${this._renderSlider("Opacity", "ghost-opacity", 20, 80, dc.ghostOpacity || 60, 10)}
-                             ${this._renderColorPicker("ghost-color", ["100, 200, 255", "255, 215, 0", "255, 40, 40"], 1)}
+                             ${this._renderSlider("Opacity", "ghost-opacity", 20, 80, dc.ghostOpacity || 60, 10, "Adjust transparency of the ghost overlay.")}
+                             ${this._renderColorPicker("ghost-color", ["100, 200, 255", "255, 215, 0", "255, 40, 40"], 1, "Change color of the ghost overlay.")}
                         </div>
                     </div>
                 </div>
@@ -249,7 +256,7 @@ class DisplayPopupManager {
                 <div class="space-y-6">
                     <!-- Mirror Mode -->
                     <div>
-                        ${this._renderMainToggle("Mirror Mode", "check-mirror", "🪞", "M", "Flip display horizontally")}
+                        ${this._renderMainToggle("Mirror Mode", "check-mirror", "🪞", "M", "Flip your camera feed horizontally (like a mirror) to make following left/right instructions more intuitive.")}
                         <div class="ml-6 mt-2 space-y-2">
                              ${this._renderButtonGroup(
                                "mirror-rot",
@@ -260,6 +267,8 @@ class DisplayPopupManager {
                                  { val: "270", text: "270°" },
                                ],
                                (dc.mirrorRotation || 0).toString(),
+                               "flex gap-1 w-full",
+                               "Rotate camera feed 90 degrees.",
                              )}
                              ${this._renderButtonGroup(
                                "mirror-flip",
@@ -268,6 +277,8 @@ class DisplayPopupManager {
                                  { val: "vertical", text: "Vert" },
                                ],
                                dc.mirrorFlipAxis || "horizontal",
+                               "flex gap-1 w-full",
+                               "Choose axis to flip on.",
                              )}
                         </div>
                     </div>
@@ -276,13 +287,17 @@ class DisplayPopupManager {
 
                     <!-- Path Guide -->
                     <div>
-                         ${this._renderMainToggle("Path Guide", "check-path", "🛣️", "P", "Dynamic movement guide")}
+                         ${this._renderMainToggle("Path Guide", "check-path", "🛣️", "P", "Display the Golden Path trajectory overlay to guide your hands through the ideal movement arc.")}
                          <div class="ml-6 mt-2 space-y-2">
-                             ${this._renderSelect("path-width", [
-                               { val: "4", text: "Thin" },
-                               { val: "8", text: "Thick" },
-                             ])}
-                             ${this._renderColorPicker("path-color", ["0, 255, 0", "255, 255, 0", "255, 0, 255"], 0)}
+                             ${this._renderSelect(
+                               "path-width",
+                               [
+                                 { val: "4", text: "Thin" },
+                                 { val: "8", text: "Thick" },
+                               ],
+                               "Adjust thickness of the path line.",
+                             )}
+                             ${this._renderColorPicker("path-color", ["0, 255, 0", "255, 255, 0", "255, 0, 255"], 0, "Change color of the path line.")}
                          </div>
                     </div>
 
@@ -290,15 +305,19 @@ class DisplayPopupManager {
 
                     <!-- Grid Overlay -->
                     <div>
-                         ${this._renderMainToggle("Grid Overlay", "check-grid", "📏", "G", "Position reference lines")}
+                         ${this._renderMainToggle("Grid Overlay", "check-grid", "📏", "G", "Overlay a grid on the camera feed to help you judge vertical alignment, balance, and center of gravity.")}
                          <div class="ml-6 mt-2 space-y-2">
-                             ${this._renderSelect("grid-size", [
-                               { val: "60", text: "Small" },
-                               { val: "100", text: "Medium" },
-                               { val: "140", text: "Large" },
-                             ])}
-                             ${this._renderColorPicker("grid-color", ["255, 255, 255", "150, 150, 150", "255, 50, 50"], 0)}
-                             ${this._renderSlider("Opacity", "grid-opacity", 20, 80, 40, 10)}
+                             ${this._renderSelect(
+                               "grid-size",
+                               [
+                                 { val: "60", text: "Small" },
+                                 { val: "100", text: "Medium" },
+                                 { val: "140", text: "Large" },
+                               ],
+                               "Adjust size of the grid squares.",
+                             )}
+                             ${this._renderColorPicker("grid-color", ["255, 255, 255", "150, 150, 150", "255, 50, 50"], 0, "Change color of the grid lines.")}
+                             ${this._renderSlider("Opacity", "grid-opacity", 20, 80, 40, 10, "Adjust transparency of the grid.")}
                          </div>
                     </div>
                 </div>
@@ -306,24 +325,140 @@ class DisplayPopupManager {
         `;
   }
 
-  _col4_Developer() {
+  _col4_System() {
     return `
-            <div class="rounded-xl bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-500/20 p-4">
-                <h3 class="font-bold mb-4 text-red-600 dark:text-red-400 uppercase text-xs tracking-wider flex items-center gap-2">
-                    🛠️ Developer
+            <div class="rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 p-4">
+                <h3 class="font-bold mb-3 text-gray-600 dark:text-gray-400 uppercase text-xs tracking-wider flex items-center gap-2">
+                    🛠️ System & Visuals
                 </h3>
-                <div class="space-y-6">
-                    <!-- Debug Info -->
+                <div class="space-y-4">
+                    
+                    <!-- Performance -->
                     <div>
-                        ${this._renderMainToggle("Debug Info", "check-debug", "🐞", "D", "Show technical overlay")}
-                        <div class="ml-6 mt-2 space-y-2">
-                             ${this._renderSubCheckbox("Graphs", "check-debug-graph", "Show FPS/Heuristic graphs")}
-                             ${this._renderSubCheckbox("Details", "check-debug-detail", "Show detailed analysis")}
+                        <div class="flex items-end justify-between mb-2">
+                             <div class="text-sm font-bold text-gray-700 dark:text-gray-300">⚡ Performance</div>
+                        </div>
+                        <div class="flex gap-2">
+                            ${this._renderPerfOption("lite", "Lite", "⚡", "Lite Mode (480p): Uses basic model (Complexity 0). Prioritizes maximum FPS for older devices.")}
+                            ${this._renderPerfOption("balanced", "Balanced", "⚖️", "Balanced Mode (720p): Standard resolution. Uses accurate model (Complexity 1) with moderate frame skipping.")}
+                            ${this._renderPerfOption("quality", "Quality", "💎", "Quality Mode (720p): High accuracy. Uses complex model (Complexity 2) and minimizes frame skipping. Recommended for PC.")}
+                        </div>
+                    </div>
+
+                    <!-- Virtual Backgrounds -->
+                    <div class="pt-1">
+                        <div class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">🖼️ Backgrounds</div>
+                        <div class="grid grid-cols-3 gap-2">
+                            ${this._renderBgOption("none", "None", null, "None", false, "No background effect. Shows your real surrounding environment.")}
+                            ${this._renderBgOption("blur", "Blur", "linear-gradient(135deg, #6b7280 0%, #374151 100%)", "Blur", false, "Standard blur effect to remove distractions.")}
+                            ${this._renderBgOption("silhouette", "Silhouette", "#000", "Silhouette", false, "High contrast silhouette mode.")} 
+                            ${this._renderBgOption("mountain", "Mountain", "assets/backgrounds/thumbnails/mountain_mist_thumb.jpg", null, true)}
+                            ${this._renderBgOption("bamboo", "Bamboo", "assets/backgrounds/thumbnails/bamboo_forest_thumb.jpg", null, true)}
+                            ${this._renderBgOption("zen_garden", "Zen", "assets/backgrounds/thumbnails/zen_garden_thumb.jpg", null, true)}
+                            ${this._renderBgOption("lake", "Lake", "assets/backgrounds/thumbnails/sunrise_lake_thumb.jpg", null, true)}
+                            ${this._renderBgOption("temple", "Temple", "assets/backgrounds/thumbnails/temple_courtyard_thumb.jpg", null, true)}
+                            
+                            <!-- Upload Button (Special) -->
+                            <button id="btn-bg-upload" onclick="document.getElementById('bg-upload-input').click()"
+                                class="bg-option flex flex-col items-center p-1 rounded border border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors aspect-square justify-center"
+                                title="Upload Image"
+                                onmouseenter="window.displayPopupManager.updateInfo('Upload your own custom image to use as a virtual background. Supports PNG, JPG, WEBP.')"
+                                onmouseleave="window.displayPopupManager.resetInfo()">
+                                <span class="text-xl">⬆️</span>
+                                <span class="text-[10px] text-gray-500 dark:text-gray-400 mt-1">Upload</span>
+                            </button>
+                            <input type="file" id="bg-upload-input" accept="image/png, image/jpeg, image/webp" class="hidden"> 
+                        </div>
+                    </div>
+
+                    <!-- Auto-Adjust Light -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-2 mt-4">
+                         ${this._renderMainToggle("Auto-Adjust Light", "check-auto-adjust-light", "🔆", "", "Automatically boosts brightness and contrast when low light is detected (Vis < 50%). Safe to leave on.")}
+                    </div>
+
+                    <!-- Debug Info (Bottom - Compact) -->
+                    <div class="pt-2 border-t border-gray-200 dark:border-gray-700/50 mt-2">
+                        ${this._renderMainToggle("Debug Info", "check-debug", "🐞", "D", "Show technical overlay with FPS, AI processing rate, and joint visibility status.")}
+                        <div class="ml-6 mt-1 flex gap-4">
+                             ${this._renderSubCheckbox("Graphs", "check-debug-graph", "Display real-time performance graphs for FPS and Score stability.")}
+                             ${this._renderSubCheckbox("Details", "check-debug-detail", "Show detailed heuristics analysis and confidence scores for each rule.")}
                         </div>
                     </div>
                 </div>
             </div>
         `;
+  }
+
+  _renderPerfOption(val, title, icon, desc) {
+    // Check current mode to set initial active state
+    const currentMode = localStorage.getItem("performanceMode") || "balanced"; // Default logic matches script.js
+    const isActive = currentMode === val;
+
+    const activeClasses =
+      "bg-blue-600 text-white shadow-md ring-2 ring-blue-300 dark:ring-blue-500";
+    const inactiveClasses =
+      "hover:bg-gray-100 dark:hover:bg-gray-700 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200";
+
+    const titleColor = isActive
+      ? "text-white"
+      : "text-gray-800 dark:text-gray-200";
+    const safeDesc = desc.replace(/'/g, "&apos;");
+
+    return `
+        <button class="perf-option flex-1 flex flex-col items-center justify-center px-1 py-2 rounded-lg text-center transition-colors ${isActive ? activeClasses : inactiveClasses}" 
+                data-value="${val}" onclick="window.selectPerformanceMode('${val}')" 
+                onmouseenter="window.displayPopupManager.updateInfo('${safeDesc}')"
+                onmouseleave="window.displayPopupManager.resetInfo()">
+            <span class="text-lg mb-1">${icon}</span>
+            <span class="text-xs font-bold ${titleColor}">${title}</span>
+        </button>
+      `;
+  }
+
+  _renderBgOption(key, label, bg, iconContent, isImage = false, desc = "") {
+    let visual;
+    if (isImage) {
+      visual = `<img src="${bg}" class="w-full h-full object-cover" alt="${label}">`;
+    } else if (bg && bg.startsWith("#")) {
+      visual = `<div class="w-full h-full" style="background-color: ${bg}"></div>`;
+    } else if (bg) {
+      visual = `<div class="w-full h-full" style="background: ${bg}"></div>`;
+    } else {
+      visual = `<div class="w-full h-full bg-gray-200 dark:bg-gray-700"></div>`; // None
+    }
+
+    // Icon overlay for Silhouette (SVG) or specialized content
+    if (iconContent === "Silhouette") {
+      visual = `
+            <div class="w-full h-full bg-black flex items-center justify-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                 </svg>
+            </div>
+          `;
+    } else if (iconContent === "Blur") {
+      visual = `
+            <div class="w-full h-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white text-xs font-bold backdrop-blur-sm">
+                 Blur
+            </div>
+          `;
+    }
+
+    const safeDesc = desc
+      ? desc.replace(/'/g, "&apos;")
+      : `Select ${label} background`;
+
+    return `
+         <button class="bg-option relative w-full aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-indigo-500 transition-all group"
+                 data-bg="${key}" data-vbg-key="${key}"
+                 onmouseenter="window.displayPopupManager.updateInfo('${safeDesc}')"
+                 onmouseleave="window.displayPopupManager.resetInfo()">
+             ${visual}
+             <div class="absolute bottom-0 inset-x-0 bg-black/60 p-1 text-[10px] text-white text-center truncate">
+                 ${label}
+             </div>
+         </button>
+      `;
   }
 
   // =========================================================================
@@ -365,9 +500,13 @@ class DisplayPopupManager {
       `;
   }
 
-  _renderColorPicker(id, colors, defaultIdx) {
+  _renderColorPicker(id, colors, defaultIdx, desc = "") {
+    const safeDesc = desc.replace(/'/g, "&apos;");
+    const hoverAttr = desc
+      ? `onmouseenter="window.displayPopupManager.updateInfo('${safeDesc}')" onmouseleave="window.displayPopupManager.resetInfo()"`
+      : "";
     return `
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2" ${hoverAttr}>
             <span class="text-[10px] uppercase font-bold text-gray-400">Color</span>
             <div class="flex gap-2">
                 ${colors
@@ -385,9 +524,13 @@ class DisplayPopupManager {
     `;
   }
 
-  _renderSelect(id, options) {
+  _renderSelect(id, options, desc = "") {
+    const safeDesc = desc.replace(/'/g, "&apos;");
+    const hoverAttr = desc
+      ? `onmouseenter="window.displayPopupManager.updateInfo('${safeDesc}')" onmouseleave="window.displayPopupManager.resetInfo()"`
+      : "";
     return `
-         <div class="flex items-center justify-between gap-2">
+         <div class="flex items-center justify-between gap-2" ${hoverAttr}>
              <span class="text-[10px] uppercase font-bold text-gray-400">Mode</span>
              <select id="${id}" class="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs rounded border border-gray-300 dark:border-gray-600 px-1 py-0.5 focus:border-indigo-500 focus:outline-none">
                  ${options.map((opt) => `<option value="${opt.val}">${opt.text}</option>`).join("")}
@@ -396,9 +539,13 @@ class DisplayPopupManager {
       `;
   }
 
-  _renderSlider(label, id, min, max, val, step) {
+  _renderSlider(label, id, min, max, val, step, desc = "") {
+    const safeDesc = desc.replace(/'/g, "&apos;");
+    const hoverAttr = desc
+      ? `onmouseenter="window.displayPopupManager.updateInfo('${safeDesc}')" onmouseleave="window.displayPopupManager.resetInfo()"`
+      : "";
     return `
-        <div class="flex flex-col gap-0.5 w-full">
+        <div class="flex flex-col gap-0.5 w-full" ${hoverAttr}>
             <div class="flex justify-between">
                 <span class="text-[10px] uppercase font-bold text-gray-400">${label}</span>
                 <span id="${id}-val" class="text-[10px] text-gray-500 dark:text-gray-400">${val}</span>
@@ -414,9 +561,14 @@ class DisplayPopupManager {
     buttons,
     defaultVal,
     containerClass = "flex gap-1 w-full",
+    desc = "",
   ) {
+    const safeDesc = desc.replace(/'/g, "&apos;");
+    const hoverAttr = desc
+      ? `onmouseenter="window.displayPopupManager.updateInfo('${safeDesc}')" onmouseleave="window.displayPopupManager.resetInfo()"`
+      : "";
     return `
-        <div class="${containerClass}">
+        <div class="${containerClass}" ${hoverAttr}>
             ${buttons
               .map(
                 (btn) => `

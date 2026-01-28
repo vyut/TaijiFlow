@@ -1100,14 +1100,26 @@ class DisplayController {
         window.autoAdjustLightEnabled = saved === "true";
       }
 
-      // Sync UI with state (Default is TRUE in script.js)
+      // Sync UI with state
       checkAutoAdjust.checked = window.autoAdjustLightEnabled;
 
+      // 🆕 Sync Manager if available
+      if (this.deps.lightingManager) {
+        this.deps.lightingManager.setEnabled(window.autoAdjustLightEnabled);
+      }
+
       checkAutoAdjust.addEventListener("change", () => {
-        window.autoAdjustLightEnabled = checkAutoAdjust.checked;
-        localStorage.setItem("autoAdjustLight", checkAutoAdjust.checked);
+        const isEnabled = checkAutoAdjust.checked;
+        window.autoAdjustLightEnabled = isEnabled;
+        localStorage.setItem("autoAdjustLight", isEnabled);
+
+        // 🆕 Update Lighting Manager
+        if (this.deps.lightingManager) {
+          this.deps.lightingManager.setEnabled(isEnabled);
+        }
+
         console.log(
-          `🔆 Auto-Adjust Light: ${window.autoAdjustLightEnabled ? "enabled" : "disabled"}`,
+          `🔆 Auto-Adjust Light: ${isEnabled ? "enabled" : "disabled"}`,
         );
       });
     }

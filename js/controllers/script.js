@@ -398,6 +398,7 @@ const displayController = new DisplayController({
   translations: TRANSLATIONS, // 🆕 สำหรับข้อความ Warning
   engine, // 🆕 For Debug Toggle
   debugManager, // 🆕 For Debug Toggle
+  lightingManager, // 🆕 For Auto-Adjust Light Control
   // Note: pose จะถูก access ผ่าน window.pose ใน display_controller.js
 });
 window.displayController = displayController; // Expose globally for Popup Manager
@@ -1823,13 +1824,48 @@ window.selectPerformanceMode = function (mode) {
 
 function updatePerformanceMenuUI(mode) {
   document.querySelectorAll(".perf-option").forEach((btn) => {
-    const check = btn.querySelector(".check-icon");
+    // Legacy check icon logic removed
+
     if (btn.dataset.value === mode) {
-      check.classList.remove("opacity-0");
-      btn.classList.add("bg-gray-700"); // Active state background
+      // Active State
+      btn.classList.add(
+        "bg-blue-600",
+        "text-white",
+        "shadow-md",
+        "ring-2",
+        "ring-blue-300",
+        "dark:ring-blue-500",
+      );
+      btn.classList.remove(
+        "hover:bg-gray-100",
+        "dark:hover:bg-gray-700",
+        "text-gray-800",
+        "dark:text-gray-200",
+      );
+
+      // Update internal text colors if needed (icon/title)
+      const title = btn.querySelector("span.font-bold");
+      if (title) {
+        title.classList.remove("text-gray-800", "dark:text-gray-200");
+        title.classList.add("text-white");
+      }
     } else {
-      check.classList.add("opacity-0");
-      btn.classList.remove("bg-gray-700");
+      // Inactive State
+      btn.classList.remove(
+        "bg-blue-600",
+        "text-white",
+        "shadow-md",
+        "ring-2",
+        "ring-blue-300",
+        "dark:ring-blue-500",
+      );
+      btn.classList.add("hover:bg-gray-100", "dark:hover:bg-gray-700");
+
+      const title = btn.querySelector("span.font-bold");
+      if (title) {
+        title.classList.add("text-gray-800", "dark:text-gray-200");
+        title.classList.remove("text-white");
+      }
     }
   });
 }

@@ -102,6 +102,10 @@ class DisplayPopupManager {
   // Column Generators
   // =========================================================================
 
+  _getDC() {
+    return window.displayController || {};
+  }
+
   _col1_Trainee() {
     return `
             <div class="rounded-xl bg-purple-50 dark:bg-purple-900/10 border border-purple-200 dark:border-purple-500/20 p-4">
@@ -154,6 +158,7 @@ class DisplayPopupManager {
   }
 
   _col2_Reference() {
+    const dc = this._getDC();
     return `
             <div class="rounded-xl bg-indigo-50 dark:bg-indigo-900/10 border border-indigo-200 dark:border-indigo-500/20 p-4">
                 <h3 class="font-bold mb-4 text-indigo-600 dark:text-indigo-400 uppercase text-xs tracking-wider flex items-center gap-2">
@@ -171,7 +176,7 @@ class DisplayPopupManager {
                                  { val: "medium", text: "M" },
                                  { val: "large", text: "L" },
                                ],
-                               "medium",
+                               dc.instructorSize || "medium",
                              )}
                              ${this._renderButtonGroup(
                                "instructor-pos",
@@ -181,7 +186,7 @@ class DisplayPopupManager {
                                  { val: "bl", text: "Bottom-Left" },
                                  { val: "br", text: "Bottom-Right" },
                                ],
-                               "tr",
+                               dc.instructorPos || "tr",
                                "grid grid-cols-2 gap-2", // 2x2 Grid
                              )}
                         </div>
@@ -199,7 +204,7 @@ class DisplayPopupManager {
                                  { val: "contain", text: "🔲 Fit" },
                                  { val: "cover", text: "🔍 Focus" },
                                ],
-                               "cover",
+                               dc.sbsMode || "cover",
                              )}
                              ${this._renderButtonGroup(
                                "sbs-ratio",
@@ -208,7 +213,7 @@ class DisplayPopupManager {
                                  { val: "50", text: "50:50" },
                                  { val: "40", text: "40:60" },
                                ],
-                               "50",
+                               dc.sbsRatio || "50",
                              )}
                         </div>
                     </div>
@@ -219,7 +224,7 @@ class DisplayPopupManager {
                     <div>
                         ${this._renderMainToggle("Ghost Overlay", "check-ghost", "👻", "O", "Full body reference shadow")}
                         <div class="ml-6 mt-2 space-y-2">
-                             ${this._renderSlider("Opacity", "ghost-opacity", 20, 80, 60, 10)}
+                             ${this._renderSlider("Opacity", "ghost-opacity", 20, 80, dc.ghostOpacity || 60, 10)}
                              ${this._renderColorPicker("ghost-color", ["100, 200, 255", "255, 215, 0", "255, 40, 40"], 1)}
                         </div>
                     </div>
@@ -229,6 +234,7 @@ class DisplayPopupManager {
   }
 
   _col3_View() {
+    const dc = this._getDC();
     return `
             <div class="rounded-xl bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-500/20 p-4">
                 <h3 class="font-bold mb-4 text-blue-600 dark:text-blue-400 uppercase text-xs tracking-wider flex items-center gap-2">
@@ -237,8 +243,8 @@ class DisplayPopupManager {
                 <div class="space-y-6">
                     <!-- Mirror Mode -->
                     <div>
-                         ${this._renderMainToggle("Mirror Mode", "check-mirror", "🪞", "M", "Flip display horizontally")}
-                         <div class="ml-6 mt-2 space-y-2">
+                        ${this._renderMainToggle("Mirror Mode", "check-mirror", "🪞", "M", "Flip display horizontally")}
+                        <div class="ml-6 mt-2 space-y-2">
                              ${this._renderButtonGroup(
                                "mirror-rot",
                                [
@@ -247,7 +253,7 @@ class DisplayPopupManager {
                                  { val: "180", text: "180°" },
                                  { val: "270", text: "270°" },
                                ],
-                               "0",
+                               (dc.mirrorRotation || 0).toString(),
                              )}
                              ${this._renderButtonGroup(
                                "mirror-flip",
@@ -255,9 +261,9 @@ class DisplayPopupManager {
                                  { val: "horizontal", text: "Horz" },
                                  { val: "vertical", text: "Vert" },
                                ],
-                               "horizontal",
+                               dc.mirrorFlipAxis || "horizontal",
                              )}
-                         </div>
+                        </div>
                     </div>
 
                     ${this._renderDivider()}

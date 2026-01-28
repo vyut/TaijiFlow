@@ -298,25 +298,12 @@ class DisplayController {
     // Rotation
     rotBtns.forEach((btn) => {
       const rot = parseInt(btn.dataset.val); // Fixed: use .val
-      if (rot === this.mirrorRotation) {
-        btn.classList.add("bg-blue-600", "text-white", "border-blue-500");
-        btn.classList.remove("bg-gray-700", "text-gray-300", "border-gray-600");
-      } else {
-        btn.classList.remove("bg-blue-600", "text-white", "border-blue-500");
-        btn.classList.add("bg-gray-700", "text-gray-300", "border-gray-600");
-      }
+      this._setBtnActive(btn, rot === this.mirrorRotation);
     });
 
     // Flip Axis
     flipBtns.forEach((btn) => {
-      if (btn.dataset.val === this.mirrorFlipAxis) {
-        // Fixed: use .val
-        btn.classList.add("bg-blue-600", "text-white", "border-blue-500");
-        btn.classList.remove("bg-gray-700", "text-gray-300", "border-gray-600");
-      } else {
-        btn.classList.remove("bg-blue-600", "text-white", "border-blue-500");
-        btn.classList.add("bg-gray-700", "text-gray-300", "border-gray-600");
-      }
+      this._setBtnActive(btn, btn.dataset.val === this.mirrorFlipAxis);
     });
   }
 
@@ -682,28 +669,15 @@ class DisplayController {
   }
 
   updateInstructorUI(sizeBtns, posBtns) {
+    // Fixed: Use _setBtnActive helper
     if (sizeBtns) {
       sizeBtns.forEach((btn) => {
-        if (btn.dataset.val === this.instructorSize) {
-          // Fixed: use .val
-          btn.classList.add("bg-blue-600", "text-white");
-          btn.classList.remove("bg-gray-700", "text-gray-300");
-        } else {
-          btn.classList.remove("bg-blue-600", "text-white");
-          btn.classList.add("bg-gray-700", "text-gray-300");
-        }
+        this._setBtnActive(btn, btn.dataset.val === this.instructorSize);
       });
     }
     if (posBtns) {
       posBtns.forEach((btn) => {
-        if (btn.dataset.val === this.instructorPos) {
-          // Fixed: use .val
-          btn.classList.add("bg-blue-600", "text-white");
-          btn.classList.remove("bg-gray-700", "text-gray-300");
-        } else {
-          btn.classList.remove("bg-blue-600", "text-white");
-          btn.classList.add("bg-gray-700", "text-gray-300");
-        }
+        this._setBtnActive(btn, btn.dataset.val === this.instructorPos);
       });
     }
   }
@@ -1433,26 +1407,12 @@ class DisplayController {
 
     // Mode Buttons
     modeBtns.forEach((btn) => {
-      if (btn.dataset.val === this.sbsMode) {
-        // Fixed: use .val
-        btn.classList.add("bg-blue-600", "text-white", "border-blue-500");
-        btn.classList.remove("bg-gray-700", "text-gray-300", "border-gray-600");
-      } else {
-        btn.classList.remove("bg-blue-600", "text-white", "border-blue-500");
-        btn.classList.add("bg-gray-700", "text-gray-300", "border-gray-600");
-      }
+      this._setBtnActive(btn, btn.dataset.val === this.sbsMode);
     });
 
     // Ratio Buttons
     ratioBtns.forEach((btn) => {
-      if (btn.dataset.val === this.sbsRatio) {
-        // Fixed: use .val
-        btn.classList.add("bg-blue-600", "text-white", "border-blue-500");
-        btn.classList.remove("bg-gray-700", "text-gray-300", "border-gray-600");
-      } else {
-        btn.classList.remove("bg-blue-600", "text-white", "border-blue-500");
-        btn.classList.add("bg-gray-700", "text-gray-300", "border-gray-600");
-      }
+      this._setBtnActive(btn, btn.dataset.val === this.sbsRatio);
     });
   }
 
@@ -1749,5 +1709,55 @@ class DisplayController {
     }
 
     return newState;
+  }
+  /**
+   * Helper to set button active state (Matches DisplayPopupManager styles)
+   */
+  _setBtnActive(btn, isActive) {
+    if (isActive) {
+      // Active (Indigo Theme)
+      btn.classList.add(
+        "bg-indigo-100",
+        "dark:bg-indigo-900/50",
+        "text-indigo-700",
+        "dark:text-indigo-300",
+        "border-indigo-300",
+        "dark:border-indigo-500",
+      );
+      // Remove Inactive
+      btn.classList.remove(
+        "bg-white",
+        "dark:bg-gray-800",
+        "text-gray-600",
+        "dark:text-gray-300",
+        "border-gray-300",
+        "dark:border-gray-600",
+        // Legacy
+        "bg-gray-700",
+        "text-gray-300",
+      );
+    } else {
+      // Inactive (White/Dark Gray Theme)
+      btn.classList.add(
+        "bg-white",
+        "dark:bg-gray-800",
+        "text-gray-600",
+        "dark:text-gray-300",
+        "border-gray-300",
+        "dark:border-gray-600",
+      );
+      // Remove Active
+      btn.classList.remove(
+        "bg-indigo-100",
+        "dark:bg-indigo-900/50",
+        "text-indigo-700",
+        "dark:text-indigo-300",
+        "border-indigo-300",
+        "dark:border-indigo-500",
+        // Legacy
+        "bg-blue-600",
+        "text-white",
+      );
+    }
   }
 }

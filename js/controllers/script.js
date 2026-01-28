@@ -70,7 +70,8 @@ const startOverlay = document.getElementById("start-overlay"); // หน้า�
 // -----------------------------------------------------------------------------
 // แต่ละ Manager รับผิดชอบงานเฉพาะทาง (Single Responsibility Principle)
 const engine = new HeuristicsEngine(); // วิเคราะห์ท่าทางตามหลักไท่จี๋
-const rulesConfigManager = new RulesConfigManager(engine); // ปรับค่ากฎ (Rules Settings UI)
+// 🆕 Rule Config Manager (Renamed)
+window.rulesConfigManager = new RulesConfigManager(engine); // ปรับค่ากฎ (Rules Settings UI)
 const calibrator = new CalibrationManager(); // ปรับเทียบสัดส่วนร่างกาย
 const uiManager = new UIManager(); // จัดการ UI และภาษา
 window.uiManager = uiManager; // Expose globally for other managers (e.g. FeedbackManager)

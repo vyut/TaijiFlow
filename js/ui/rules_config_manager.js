@@ -155,35 +155,29 @@ class RulesConfigManager {
   // ===========================================================================
   // Initialization
   // ===========================================================================
+  // ===========================================================================
+  // Initialization
+  // ===========================================================================
   init() {
-    this.bindDropdownToggle();
-    this.bindRuleCheckboxes();
-    this.bindThresholdInputs();
-    // bindThresholdButtons removed - ปุ่ม ▲▼ ถูกลบออกแล้ว
-    this.bindResetButton();
-    this.bindDebugToggle();
-    this.syncUIWithEngine();
-    console.log("[RulesConfig] Initialized");
+    // Note: We do NOT bind UI here anymore because the Popup is generated dynamically.
+    // The RulePopupManager will call 'reBind()' after rendering the HTML.
+
+    // We can still try to sync if elements exist, but likely they don't yet.
+    // this.syncUIWithEngine();
+    console.log("[RuleConfigManager] Initialized (Waiting for Popup render)");
   }
 
-  // ===========================================================================
-  // Dropdown Toggle
-  // ===========================================================================
-  bindDropdownToggle() {
-    if (!this.rulesBtn || !this.rulesMenu) return;
-
-    this.rulesBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (window.uiManager) window.uiManager.closeAllMenus("rules-menu");
-      this.rulesMenu.classList.toggle("hidden");
-    });
-
-    // Close when clicking outside
-    document.addEventListener("click", (e) => {
-      if (!this.rulesMenu.contains(e.target) && e.target !== this.rulesBtn) {
-        this.rulesMenu.classList.add("hidden");
-      }
-    });
+  /**
+   * Called by RulePopupManager when the popup is opened and HTML is injected.
+   */
+  reBind() {
+    // Re-query DOM elements (since they were just created)
+    this.bindRuleCheckboxes();
+    this.bindThresholdInputs();
+    this.bindResetButton();
+    // Debug toggle is handled elsewhere or can be bound here if inside popup
+    this.syncUIWithEngine();
+    console.log("[RuleConfigManager] reBind completed");
   }
 
   // ===========================================================================
@@ -295,11 +289,15 @@ class RulesConfigManager {
   // Reset Button
   // ===========================================================================
   bindResetButton() {
-    if (!this.resetBtn) return;
+    const resetBtn = document.getElementById("rules-reset-btn");
+    if (!resetBtn) return;
 
-    this.resetBtn.addEventListener("click", () => {
+    // Remove old listener if needed (though new element implies no old listener on it)
+    // We just add new listener.
+    resetBtn.addEventListener("click", () => {
       this.resetToDefaults();
     });
+    console.log("[RuleConfig] Reset button bound");
   }
 
   // ===========================================================================

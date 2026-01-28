@@ -1313,42 +1313,84 @@ class DisplayController {
    * Reset display options to defaults
    */
   resetToDefaults() {
-    // const { checkGhost, checkInstructor, checkPath, checkSkeleton } = this.deps; // Legacy deps are null for popup
-
+    // 1. Reset State Variables
     this.showGhostOverlay = false;
+    this.ghostOpacity = 60;
     this.showInstructor = true;
+    this.instructorSize = "medium";
+    this.instructorPos = "tr";
     this.showPath = true;
+    this.pathWidth = "4";
     this.showSkeleton = true;
     this.showTrail = true;
-    this.showBlurBackground = false; // 🆕
-    this.showGrid = false; // 🆕
+    this.trailLength = "30";
+    this.showBlurBackground = false;
+    this.showGrid = false;
+    this.gridSize = "100";
+    this.gridOpacity = 40;
+
+    // Side-by-Side Defaults
+    this.isSideBySide = false;
+    this.sbsMode = "cover";
+    this.sbsRatio = "50";
+
+    // Mirror Defaults
+    this.isMirrored = false;
+    this.mirrorRotation = 0;
+    this.mirrorFlipAxis = "horizontal";
+
     this.trailHistory = [];
     this.circularityScore = null;
 
-    // Sync checkboxes
-    const checkGhost = document.getElementById("check-ghost");
-    const checkInstructor = document.getElementById("check-instructor");
-    const checkPath = document.getElementById("check-path");
-    const checkSkeleton = document.getElementById("check-skeleton");
+    // 2. Sync UI Toggles (Checkboxes)
+    const setCheck = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.checked = val;
+    };
 
-    if (checkGhost) checkGhost.checked = false;
-    if (checkInstructor) checkInstructor.checked = true;
-    if (checkPath) checkPath.checked = true;
-    if (checkSkeleton) checkSkeleton.checked = true;
+    setCheck("check-ghost", false);
+    setCheck("check-instructor", true);
+    setCheck("check-path", true);
+    setCheck("check-skeleton", true);
+    setCheck("check-trail", true);
+    setCheck("check-blur-bg", false);
+    setCheck("check-grid", false);
+    setCheck("check-side-by-side", false);
+    setCheck("check-mirror", false);
 
-    const checkTrail = document.getElementById("check-trail");
-    if (checkTrail) checkTrail.checked = true;
+    // 3. Sync Sliders & Selects (Values)
+    const setVal = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    };
+    // Ghost
+    setVal("ghost-opacity", "60");
+    // Path
+    setVal("path-width", "4");
+    // Trail
+    setVal("trail-length", "30"); // Ensure default matches UI
+    // Grid
+    setVal("grid-size", "100");
+    setVal("grid-opacity", "40");
 
-    const checkGrid = document.getElementById("check-grid");
-    if (checkGrid) checkGrid.checked = false;
+    // 4. Enforce Logic & Update Visuals
+    // Mirror
+    this.setMirrorMode(false);
+    this.updateMirrorUI();
 
-    const checkBlurBg = document.getElementById("check-blur-bg");
-    if (checkBlurBg) checkBlurBg.checked = false; // 🆕
-
-    // Reset Side-by-Side
+    // Side-by-Side
     this.toggleSideBySide(false);
-    const checkSideBySide = document.getElementById("check-side-by-side");
-    if (checkSideBySide) checkSideBySide.checked = false;
+    this.updateSideBySideUI(); // Reset buttons to Defaults
+
+    // Instructor
+    this.updateInstructorStyle();
+    this.updateInstructorUI(); // Reset buttons to Defaults
+
+    // Apply other updates
+    if (this.deps.drawingManager) {
+      // Force redraw or config update if needed
+      // drawingManager usually reads from displayController directly each frame
+    }
   }
 
   /**

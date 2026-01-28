@@ -50,7 +50,7 @@ class RulesPopupManager {
    */
   generateHtml() {
     return `
-            <div id="${this.popupId}" class="relative w-full max-w-4xl max-h-[90vh] flex flex-col bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700/50 transform scale-95 animate-[scaleIn_0.2s_ease-out_forwards] overflow-hidden">
+            <div id="${this.popupId}" class="relative w-full max-w-4xl max-h-[90vh] flex flex-col bg-white/85 dark:bg-gray-900/25 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700/50 transform scale-95 animate-[scaleIn_0.2s_ease-out_forwards] overflow-hidden">
                 
                 <!-- Header -->
                 <div class="flex justify-between items-center p-6 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">

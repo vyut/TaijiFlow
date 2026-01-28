@@ -85,6 +85,12 @@ class DisplayPopupManager {
                            Hover over an option to see details. Keyboard shortcuts shown in ().
                         </span>
                      </div>
+
+                     <!-- Reset Button (Right) -->
+                     <button onclick="window.displayController.resetToDefaults()" 
+                             class="px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-800 transition-colors text-sm font-medium flex items-center gap-2">
+                         <span>🔄</span> Reset to Defaults
+                     </button>
                 </div>
 
                 <style>

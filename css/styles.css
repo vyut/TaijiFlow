@@ -1,5 +1,241 @@
 /**
  * ============================================================================
+ * TaijiFlow AI - Base Styles
+ * ============================================================================
+ *
+ * Shared styles for both index.html (Landing) and app.html (App)
+ *
+ * Contents:
+ *   1. CSS Variables
+ *   2. Reset
+ *   3. Base Body
+ *   4. Typography
+ *   5. Shared Animations
+ *   6. Shared Components
+ *
+ * ============================================================================
+ */
+
+/* =============================================================================
+   1. CSS VARIABLES
+   ============================================================================= */
+:root {
+  /* Colors - Background */
+  --color-bg-primary: #000;
+  --color-bg-secondary: #1a1a2e;
+  --color-bg-gradient: linear-gradient(180deg, #000 0%, #1a1a2e 100%);
+
+  /* Colors - Accent (Purple) */
+  --color-accent: #a855f7;
+  --color-accent-light: #c084fc;
+  --color-accent-dark: #9333ea;
+  --color-accent-glow: rgba(168, 85, 247, 0.4);
+
+  /* Colors - Text */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.8);
+  --color-text-muted: rgba(255, 255, 255, 0.6);
+
+  /* Colors - Glass Effect */
+  --color-glass-bg: rgba(168, 85, 247, 0.1);
+  --color-glass-border: rgba(168, 85, 247, 0.3);
+  --color-glass-hover: rgba(168, 85, 247, 0.2);
+
+  /* Typography */
+  --font-family:
+    "Sarabun", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+}
+
+/* =============================================================================
+   2. RESET
+   ============================================================================= */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* =============================================================================
+   3. BASE BODY
+   ============================================================================= */
+body {
+  font-family: var(--font-family);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: background-color var(--transition-normal);
+}
+
+/* Light Mode Override */
+body.light {
+  --color-bg-primary: #f8fafc;
+  --color-bg-secondary: #e2e8f0;
+  --color-text-primary: #1e293b;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+  --color-glass-bg: rgba(168, 85, 247, 0.08);
+  --color-glass-border: rgba(168, 85, 247, 0.2);
+}
+
+/* =============================================================================
+   4. TYPOGRAPHY
+   ============================================================================= */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-accent-light);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    var(--color-text-primary) 0%,
+    var(--color-accent) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =============================================================================
+   5. SHARED ANIMATIONS
+   ============================================================================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes pulse-shadow {
+  0% {
+    box-shadow: 0 0 0 0 var(--color-accent-glow);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(147, 51, 234, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(147, 51, 234, 0);
+  }
+}
+
+/* =============================================================================
+   6. SHARED COMPONENTS
+   ============================================================================= */
+
+/* Glass Card */
+.glass-card {
+  background: var(--color-glass-bg);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+}
+
+/* Glass Card with hover effect (use for cards that should animate) */
+.glass-card-hover {
+  background: var(--color-glass-bg);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+  transition:
+    transform var(--transition-normal),
+    box-shadow var(--transition-normal);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 40px var(--color-accent-glow);
+}
+
+/* Primary Button */
+.btn-accent {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: linear-gradient(135deg, var(--color-accent), #6366f1);
+  color: var(--color-text-primary) !important;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.btn-accent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px var(--color-accent-glow);
+}
+
+/* Pulse Animation Class */
+.pulse-btn {
+  animation: pulse-shadow 2s infinite;
+}
+/**
+ * ============================================================================
  * TaijiFlow AI - App Styles
  * ============================================================================
  *
@@ -468,4 +704,68 @@ body.side-by-side-mode #instructor-thumbnail {
 body.side-by-side-mode #feedback-overlay,
 body.side-by-side-mode #debug-overlay {
   z-index: 50;
+}
+/* =============================================================================
+   MOBILE PORTRAIT MODE (Full Screen)
+   ============================================================================= */
+
+/* Active when body has 'mobile-portrait-mode' class */
+body.mobile-portrait-mode {
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  background-color: black !important;
+}
+
+/* Hide standard Controls & UI */
+body.mobile-portrait-mode #main-card,
+body.mobile-portrait-mode #app-title,
+body.mobile-portrait-mode footer {
+  display: none !important;
+}
+
+/* Fullscreen Video Container */
+body.mobile-portrait-mode .canvas-container {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  aspect-ratio: auto !important;
+  z-index: 10;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Video & Canvas: Object Cover to fill screen */
+body.mobile-portrait-mode .canvas-container video,
+body.mobile-portrait-mode .canvas-container canvas:not(#instructor-thumbnail) {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important; /* Key: Clip sides to fill height */
+  border-radius: 0 !important;
+}
+
+/* Show Floating Controls (Hidden by default) */
+body.mobile-portrait-mode #mobile-controls {
+  display: flex !important;
+}
+
+/* Adjust Overlays for Safe Zone */
+body.mobile-portrait-mode #feedback-panel {
+  top: 80px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 90% !important;
+  text-align: center !important;
+}
+
+/* Instructor Thumbnail - Reposition */
+body.mobile-portrait-mode #instructor-thumbnail {
+  top: 10px !important;
+  right: 10px !important;
+  width: 30vw !important;
+  max-width: 150px !important;
+  z-index: 40 !important;
 }

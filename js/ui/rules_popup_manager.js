@@ -75,11 +75,20 @@ class RulesPopupManager {
                     </div>
                 </div>
 
-                <!-- Footer (Reset Button) -->
-                <div class="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 flex justify-end">
+                <!-- Footer (Info & Reset) -->
+                <div class="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 flex flex-col md:flex-row justify-between items-center gap-4">
+                     <!-- Info Bar (Left) -->
+                     <div class="flex-1 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 w-full md:w-auto">
+                        <span class="text-xl">ℹ️</span>
+                        <span id="rules-info-text" class="italic transition-all duration-300">
+                           Hover over a rule to see details. Lower values = Stricter checks.
+                        </span>
+                     </div>
+
+                     <!-- Reset Button (Right) -->
                      <button
                         id="rules-reset-btn"
-                        class="px-4 py-2 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-white font-medium rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-all flex items-center gap-2 text-sm shadow-sm hover:shadow"
+                        class="px-4 py-2 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-white font-medium rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-all flex items-center gap-2 text-sm shadow-sm hover:shadow whitespace-nowrap"
                       >
                         🔄 Reset to Defaults
                       </button>
@@ -107,11 +116,13 @@ class RulesPopupManager {
                     🟢 L1: นั่ง (3 กฎ)
                 </h3>
                 <div class="space-y-4">
-                    ${this._renderItem("Path Shape", "rule-path", "Consistency", "threshold-path", 0.6, 0.3, 0.9, 0.05)}
-                    ${this._renderItem("Elbow Sinking", "rule-elbow", "Tolerance", "threshold-elbow", 0.01, 0.005, 0.05, 0.005)}
-                    ${this._renderItem("Continuity", "rule-continuity", "Threshold", "threshold-motion", 0.003, 0.001, 0.01, 0.001)}
+                    ${this._renderItem("Path Shape", "rule-path", "Consistency", "threshold-path", 0.6, 0.3, 0.9, 0.05, "วัดความแม่นยำเส้นทาง (Consistency: 0.3-0.9) | • ค่าสูง = เข้มงวด (ต้องวาดเหมือนเป๊ะ) | • ค่าต่ำ = ผ่อนปรน (เพี้ยนได้บ้าง)")}
+                    ${this._renderItem("Elbow Sinking", "rule-elbow", "Tolerance", "threshold-elbow", 0.01, 0.005, 0.05, 0.005, "กฎศอกจม (Tolerance: 0.005-0.05) | • ค่าต่ำ = เข้มงวด (ห้ามยกศอกสูงกว่าไหล่เลย) | • ค่าสูง = ผ่อนปรน (อนุโลมให้ศอกลอยได้นิดหน่อย)")}
+                    ${this._renderItem("Continuity", "rule-continuity", "Threshold", "threshold-motion", 0.003, 0.001, 0.01, 0.001, "ความต่อเนื่อง (Threshold: 0.001-0.01) | • ค่าสูง = เข้มงวด (ขยับช้าลงนิดเดียวถือว่าหยุด) | • ค่าต่ำ = ผ่อนปรน (ต้องหยุดนิ่งจริงๆ ถึงจะเตือน)")}
                     <!-- Continuity has 2 thresholds, manual fix -->
-                    <div class="ml-8 -mt-2 mb-2 text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                    <div class="ml-8 -mt-2 mb-2 text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2"
+                         onmouseenter="window.rulesPopupManager.updateInfo('Pause Window (ระยะเวลาหยุด: 1-5 วินาที) | • ค่าต่ำ = เข้มงวด (หยุดปุ๊บเตือนปั๊บ) | • ค่าสูง = ผ่อนปรน (อนุญาตให้หยุดค้างท่าได้นานขึ้น)')"
+                         onmouseleave="window.rulesPopupManager.resetInfo()">
                         <span>Window(s):</span>
                         <input type="number" id="threshold-pause" value="2" step="0.5" min="1" max="5" class="w-14 px-1 py-0.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded text-center text-xs text-gray-900 dark:text-white focus:border-green-500 focus:outline-none">
                     </div>
@@ -127,14 +138,16 @@ class RulesPopupManager {
                     🔵 L2: ยืน (เพิ่ม 3 กฎ)
                 </h3>
                 <div class="space-y-4">
-                     ${this._renderItem("Arm Rotation", "rule-rotation", "Motion", "threshold-rotation", 0.015, 0.005, 0.05, 0.005)}
-                     ${this._renderItem("Waist Initiation", "rule-waist", "Hip Vel", "threshold-hip-vel", 1.0, 0.5, 10, 0.5)}
+                     ${this._renderItem("Arm Rotation", "rule-rotation", "Motion", "threshold-rotation", 0.015, 0.005, 0.05, 0.005, "การหมุนแขน (Motion Threshold: 0.005-0.05) | • ค่าต่ำ = ตรวจสอบละเอียด (ขยับมือขึ้นลงนิดเดียวก็เช็คการหมุน) | • ค่าสูง = ตรวจสอบหยาบ (ต้องขยับมือเยอะๆ ถึงจะเริ่มเช็ค)")}
+                     ${this._renderItem("Waist Initiation", "rule-waist", "Hip Vel", "threshold-hip-vel", 1.0, 0.5, 10, 0.5, "ความเร็วเอว (Hip Velocity: 0.5-10) | • ค่าสูง = เข้มงวด (ต้องบิดเอวเร็ว/แรง) | • ค่าต่ำ = ผ่อนปรน (บิดเอวช้าๆ ก็ผ่าน)")}
                      <!-- Waist has 2 thresholds -->
-                     <div class="ml-8 -mt-2 mb-2 text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                     <div class="ml-8 -mt-2 mb-2 text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2"
+                          onmouseenter="window.rulesPopupManager.updateInfo('S/H Ratio (สัดส่วนไหล่/เอว: 1-10) | • ค่าต่ำ = เข้มงวด (ไหล่ห้ามหมุนเร็วกว่าเอว) | • ค่าสูง = ผ่อนปรน (อนุญาตให้ไหล่หมุนนำเอวได้บ้าง)")"
+                          onmouseleave="window.rulesPopupManager.resetInfo()">
                         <span>S/H Ratio:</span>
                         <input type="number" id="threshold-sh-ratio" value="2.0" step="0.5" min="1" max="10" class="w-14 px-1 py-0.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded text-center text-xs text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none">
                     </div>
-                     ${this._renderItem("Smoothness", "rule-smooth", "Threshold", "threshold-smooth", 0.05, 0.01, 0.15, 0.01)}
+                     ${this._renderItem("Smoothness", "rule-smooth", "Threshold", "threshold-smooth", 0.05, 0.01, 0.15, 0.01, "ความลื่นไหล (Smoothness Threshold: 0.01-0.15) <br>• ค่าต่ำ = เข้มงวดมาก (ห้ามกระตุกเลย) <br>• ค่าสูง = ผ่อนปรน (ยอมให้มีการสั่น/กระตุกได้บ้าง)")}
                 </div>
             </div>
         `;
@@ -147,9 +160,9 @@ class RulesPopupManager {
                     🟣 L3: ยืนย่อ (เพิ่ม 3 กฎ)
                 </h3>
                 <div class="space-y-4">
-                    ${this._renderItem("Stability", "rule-stability", "Threshold", "threshold-stability", 0.05, 0.01, 0.15, 0.01)}
-                    ${this._renderItem("Weight Shift", "rule-weight", "Buffer", "threshold-weight", 0.3, 0.05, 0.5, 0.05)}
-                    ${this._renderItem("Coordination", "rule-coordination", "Vel Thresh", "threshold-coordination", 0.02, 0.01, 0.1, 0.01)}
+                    ${this._renderItem("Stability", "rule-stability", "Threshold", "threshold-stability", 0.05, 0.01, 0.15, 0.01, "ศีรษะนิ่ง (Vertical Stability: 0.01-0.15) | • ค่าต่ำ = เข้มงวด (ศีรษะห้ามขยับขึ้นลง) | • ค่าสูง = ผ่อนปรน (ยอมให้ศีรษะขยับได้บ้าง)")}
+                    ${this._renderItem("Weight Shift", "rule-weight", "Buffer", "threshold-weight", 0.3, 0.05, 0.5, 0.05, "การถ่ายน้ำหนัก (Center Buffer: 0.05-0.5) | • ค่าสูง = เข้มงวด (ต้องทิ้งน้ำหนักลงขาหนึ่งข้างให้ชัดเจนมากๆ) | • ค่าต่ำ = ผ่อนปรน (แง้มขาออกนิดเดียวก็ถือว่าถ่ายน้ำหนักแล้ว)")}
+                    ${this._renderItem("Coordination", "rule-coordination", "Vel Thresh", "threshold-coordination", 0.02, 0.01, 0.1, 0.01, "ความสัมพันธ์บนล่าง (Coordination: 0.01-0.10) | • ค่าต่ำ = เข้มงวด (มือเท้าต้องหยุด/ขยับพร้อมกันเป๊ะๆ) | • ค่าสูง = ผ่อนปรน")}
                 </div>
             </div>
         `;
@@ -169,9 +182,22 @@ class RulesPopupManager {
         `;
   }
 
-  _renderItem(title, checkId, inputLabel, inputId, val, min, max, step) {
+  _renderItem(
+    title,
+    checkId,
+    inputLabel,
+    inputId,
+    val,
+    min,
+    max,
+    step,
+    helpText = "",
+  ) {
+    // Escape single quotes for HTML attribute
+    const safeHelp = helpText.replace(/'/g, "&apos;");
+
     return `
-            <div class="group">
+            <div class="group" onmouseenter="window.rulesPopupManager.updateInfo('${safeHelp}')" onmouseleave="window.rulesPopupManager.resetInfo()">
                 <div class="flex items-center justify-between mb-1">
                     <label class="flex items-center cursor-pointer select-none">
                         <input type="checkbox" id="${checkId}" class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-indigo-600 dark:text-indigo-500 focus:ring-offset-white dark:focus:ring-offset-gray-900">
@@ -186,6 +212,38 @@ class RulesPopupManager {
                 </div>
             </div>
         `;
+  }
+
+  // =========================================================================
+  // Footer Info Logic
+  // =========================================================================
+
+  updateInfo(text) {
+    const el = document.getElementById("rules-info-text");
+    if (el && text) {
+      el.textContent = text;
+      el.classList.remove("text-gray-500", "dark:text-gray-400", "italic"); // Active style
+      el.classList.add(
+        "text-indigo-600",
+        "dark:text-indigo-400",
+        "font-medium",
+      );
+    }
+  }
+
+  resetInfo() {
+    const el = document.getElementById("rules-info-text");
+    if (el) {
+      el.textContent =
+        "Hover over a rule to see details. Lower values = Stricter checks.";
+      // Reset style
+      el.classList.add("text-gray-500", "dark:text-gray-400", "italic");
+      el.classList.remove(
+        "text-indigo-600",
+        "dark:text-indigo-400",
+        "font-medium",
+      );
+    }
   }
 
   // =========================================================================

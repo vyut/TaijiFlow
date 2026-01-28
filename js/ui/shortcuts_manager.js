@@ -204,9 +204,9 @@ class ShortcutsManager {
     });
 
     return `
-      <div id="${this.popupId}" class="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto custom-scrollbar bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-purple-500/30 p-6 transform scale-95 animate-[scaleIn_0.2s_ease-out_forwards]">
+      <div id="${this.popupId}" class="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto custom-scrollbar bg-white/90 dark:bg-gray-900/50 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 dark:border-purple-500/30 p-6 transform scale-95 animate-[scaleIn_0.2s_ease-out_forwards]">
          <!-- Header -->
-         <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-100 dark:border-gray-800">
+         <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-100/50 dark:border-gray-800/50">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
                ⌨️ Keyboard Shortcuts
                <span class="text-xs font-normal text-gray-500 dark:text-gray-400 px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-full">

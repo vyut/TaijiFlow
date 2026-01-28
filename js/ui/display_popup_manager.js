@@ -51,10 +51,10 @@ class DisplayPopupManager {
    */
   generateHtml() {
     return `
-            <div id="${this.popupId}" class="relative w-full max-w-4xl max-h-[90vh] flex flex-col bg-white/85 dark:bg-gray-900/25 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 dark:border-gray-700/30 transform scale-95 animate-[scaleIn_0.2s_ease-out_forwards] overflow-hidden">
+            <div id="${this.popupId}" class="relative w-full max-w-4xl max-h-[90vh] flex flex-col bg-white/90 dark:bg-gray-900/50 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 dark:border-gray-700/50 transform scale-95 animate-[scaleIn_0.2s_ease-out_forwards] overflow-hidden">
                 
                 <!-- Header -->
-                <div class="flex justify-between items-center p-6 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50">
+                <div class="flex justify-between items-center p-6 border-b border-gray-100/50 dark:border-gray-800/50 bg-gray-50/50 dark:bg-gray-900/30">
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
                         ⚙️ Display & Visuals
                         <span class="text-xs font-normal text-gray-500 dark:text-gray-400 px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded-full border border-gray-300 dark:border-gray-700">

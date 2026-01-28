@@ -124,8 +124,9 @@ class ScorePopupManager {
     }
 
     // 2. Generate HTML Content
+    // 2. Generate HTML Content
     const html = `
-      <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-6 w-full text-center relative transform scale-95 animate-[scaleIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards] border border-gray-100 dark:border-gray-700 max-w-[700px] max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <div class="bg-white/90 dark:bg-gray-900/50 backdrop-blur-xl rounded-3xl shadow-2xl p-6 w-full text-center relative transform scale-95 animate-[scaleIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards] border border-white/20 dark:border-gray-700/50 max-w-[700px] max-h-[90vh] overflow-y-auto custom-scrollbar">
         
         <!-- Close X Button -->
         <button id="close-x-btn-score" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition z-10">

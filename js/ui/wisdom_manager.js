@@ -49,7 +49,7 @@ class WisdomManager {
     // 2. Generate HTML
     // ใช้ Design เดิมจาก app.html แต่แปลงเป็น JS Template
     const html = `
-      <div class="relative w-full max-w-lg bg-white dark:bg-gray-900 rounded-2xl border border-purple-500/30 shadow-2xl overflow-hidden flex flex-col items-center p-8 transform scale-95 animate-[scaleIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards]">
+      <div class="relative w-full max-w-lg bg-white/90 dark:bg-gray-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/30 shadow-2xl overflow-hidden flex flex-col items-center p-8 transform scale-95 animate-[scaleIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards]">
         
         <!-- Close Button -->
         <button id="wisdom-close-btn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10">

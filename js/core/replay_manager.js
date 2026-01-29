@@ -39,16 +39,28 @@ class ReplayManager {
    * @param {string} jsonString - เนื้อหาไฟล์ JSON
    * @returns {Object} result - { success: boolean, message: string }
    */
-  load(jsonString) {
+  load(inputData) {
     try {
-      const parsed = JSON.parse(jsonString);
+      let parsed;
+      if (typeof inputData === "string") {
+        parsed = JSON.parse(inputData);
+      } else if (typeof inputData === "object" && inputData !== null) {
+        parsed = inputData; // Direct object (Instant Replay)
+      } else {
+        return { success: false, message: "Invalid input type" };
+      }
 
       // Validate Format
       if (!parsed.frames || !Array.isArray(parsed.frames)) {
-        return {
-          success: false,
-          message: "Invalid file format: No 'frames' array found.",
-        };
+        // Fallback for direct array input (if passed frames directly)
+        if (Array.isArray(parsed)) {
+          parsed = { frames: parsed, meta: {} };
+        } else {
+          return {
+            success: false,
+            message: "Invalid file format: No 'frames' array found.",
+          };
+        }
       }
 
       this.data = parsed;

@@ -655,6 +655,7 @@ function startReplayMode() {
   if (btnLoadReplay) btnLoadReplay.classList.add("hidden");
 
   // 3. Start Loop
+  replayManager.play(); // Auto-start
   loopReplay();
 }
 
@@ -681,6 +682,11 @@ function stopReplayMode() {
   stopTrainingBtn.classList.remove("hidden");
   if (btnLoadReplay) btnLoadReplay.classList.remove("hidden");
 
+  // Custom: Ensure Camera is Mirrored (Restoring User Preference)
+  displayController.setMirrorMode(true);
+  const mirrorCheck = document.getElementById("check-mirror");
+  if (mirrorCheck) mirrorCheck.checked = true;
+
   // Clear Canvas
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 }
@@ -706,7 +712,7 @@ function loopReplay() {
         data.error_joints || [], // Pass recorded error joints
         displayController.skeletonColor,
         false,
-        displayController.isMirrored,
+        true, // 🛑 FORCE MIRROR MODE (Always true for replay)
         null, // activeRule (Replay doesn't save rule name individually yet, or use data if available)
         {
           style: displayController.highlightStyle,
@@ -967,6 +973,50 @@ function endTrainingSession() {
       } frames)`,
       "success",
     );
+
+    // 🆕 Instant Replay Handler
+    const replayBtn = document.getElementById("btn-instant-replay");
+    if (replayBtn && recordedSessionData.length > 0) {
+      replayBtn.addEventListener("click", () => {
+        console.log("🎬 Instant Replay Clicked");
+        // 1. Close Popup
+        // Use the close button's ID to trigger close logic properly or remove element
+        const closeBtn = document.getElementById("close-x-btn-score");
+        if (closeBtn) closeBtn.click();
+
+        // 2. Prepare Data (Reuse fullDataset if possible, or create on fly)
+        // Since fullDataset scope is limited, we reconstruct a simple version or use recordedSessionData
+        // ReplayManager can handle raw frames + meta
+        const replayData = {
+          frames: recordedSessionData,
+          meta: {
+            exercise: currentExercise,
+            level: currentLevel,
+            timestamp: new Date().toISOString(),
+          },
+        };
+
+        // 3. Load & Start
+        const loadResult = replayManager.load(replayData);
+        if (loadResult && loadResult.success === false) {
+          console.error("Instant Replay Load Failed:", loadResult.message);
+          uiManager.showNotification("Replay Failed", "error");
+        } else {
+          // 🛑 Cancel the auto-reset to home screen
+          if (window.resetTimeoutId) {
+            clearTimeout(window.resetTimeoutId);
+            window.resetTimeoutId = null;
+          }
+          // 🛑 FORCE MIRROR MODE for Instant Replay
+          if (window.displayController)
+            window.displayController.setMirrorMode(true);
+          const mirrorCheck = document.getElementById("check-mirror");
+          if (mirrorCheck) mirrorCheck.checked = true;
+
+          startReplayMode();
+        }
+      });
+    }
   } catch (error) {
     console.error("Error in endTrainingSession:", error);
     // ยังคงแสดง notification แจ้งเตือน
@@ -974,7 +1024,9 @@ function endTrainingSession() {
   }
 
   // 6. Reset UI และกลับหน้าแรก (เรียกเสมอ ไม่ว่าจะมี error หรือไม่)
-  setTimeout(() => {
+  // Store timeout ID globally (or on window) to allow cancellation
+  if (window.resetTimeoutId) clearTimeout(window.resetTimeoutId);
+  window.resetTimeoutId = setTimeout(() => {
     resetToHomeScreen();
   }, 3000);
 }

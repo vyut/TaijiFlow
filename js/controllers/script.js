@@ -106,6 +106,11 @@ window.lightingManager = lightingManager;
 
 window.shortcutsManager = shortcutsManager; // Expose globally
 
+// 🆕 Replay Manager
+const replayManager = new ReplayManager();
+let isReplayMode = false;
+let replayAnimationFrameId = null;
+
 // -----------------------------------------------------------------------------
 // State Variables - ตัวแปรเก็บสถานะ
 // -----------------------------------------------------------------------------
@@ -526,6 +531,217 @@ levelButtons.forEach((btn) => {
     checkSelectionComplete();
   });
 });
+
+// =============================================================================
+// REPLAY MODE LOGIC
+// =============================================================================
+
+// UI Elements
+const btnLoadReplay = document.getElementById("btn-load-replay");
+const replayInput = document.getElementById("replay-upload-input");
+const replayOverlay = document.getElementById("replay-control-overlay");
+const replayTimeCurrent = document.getElementById("replay-time-current");
+const replayTimeTotal = document.getElementById("replay-time-total");
+const replayTimeline = document.getElementById("replay-timeline");
+const replayBtnPlay = document.getElementById("replay-btn-play");
+const replayBtnPrev = document.getElementById("replay-btn-prev");
+const replayBtnNext = document.getElementById("replay-btn-next");
+const replaySpeedBtn = document.getElementById("replay-speed-btn");
+const replayBtnClose = document.getElementById("replay-btn-close");
+
+// Event Listeners
+if (btnLoadReplay) {
+  btnLoadReplay.addEventListener("click", () => replayInput.click());
+}
+
+if (replayInput) {
+  replayInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Show loading
+    uiManager.showNotification("Loading Replay...", "info");
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const result = replayManager.load(event.target.result);
+      if (result.success) {
+        uiManager.showNotification(`✅ Loaded: ${file.name}`, "success");
+        // Enter Replay Mode
+        startReplayMode();
+        // Auto Play
+        replayManager.play();
+        updateReplayUIState();
+      } else {
+        uiManager.showNotification(`❌ Error: ${result.message}`, "error");
+      }
+    };
+    reader.readAsText(file);
+    // Reset input
+    e.target.value = "";
+  });
+}
+
+// Controls
+if (replayBtnPlay) {
+  replayBtnPlay.addEventListener("click", () => {
+    if (replayManager.isPlaying) replayManager.pause();
+    else replayManager.play();
+    updateReplayUIState();
+  });
+}
+
+if (replayTimeline) {
+  replayTimeline.addEventListener("input", (e) => {
+    // User dragging: pause first
+    // replayManager.pause();
+    const percent = parseFloat(e.target.value);
+    const duration = replayManager.totalDuration || 1; // Prevent NaN
+    const time = (percent / 100) * duration;
+    replayManager.seek(time);
+    updateReplayUIState();
+  });
+}
+
+if (replaySpeedBtn) {
+  let speeds = [0.5, 1.0, 2.0];
+  let speedIdx = 1;
+  replaySpeedBtn.addEventListener("click", () => {
+    speedIdx = (speedIdx + 1) % speeds.length;
+    const s = speeds[speedIdx];
+    replayManager.setSpeed(s);
+    replaySpeedBtn.innerText = s + "x";
+  });
+}
+
+if (replayBtnClose) {
+  replayBtnClose.addEventListener("click", () => stopReplayMode());
+}
+
+if (replayBtnPrev)
+  replayBtnPrev.addEventListener("click", () =>
+    replayManager.seek(replayManager.currentTime - 5),
+  );
+if (replayBtnNext)
+  replayBtnNext.addEventListener("click", () =>
+    replayManager.seek(replayManager.currentTime + 5),
+  );
+
+function updateReplayUIState() {
+  replayBtnPlay.innerHTML = replayManager.isPlaying ? "⏸️" : "▶️";
+}
+
+function startReplayMode() {
+  if (isReplayMode) return;
+  isReplayMode = true;
+
+  // 1. Stop Camera
+  if (cameraManager && cameraManager.camera) {
+    // cameraManager has no explicit stop in public API?
+    // We can just stop the video or hide it.
+    // Actually best to just not render the camera frame, but keep it running to avoid warmup delay?
+    // Or stop to save battery. Let's stop.
+    // Assuming camera_utils camera.stop() exists.
+    // If not, we just hide video.
+    videoElement.pause();
+  }
+
+  // 2. UI Updates
+  replayOverlay.classList.remove("hidden");
+  startOverlay.classList.add("hidden");
+  // Hide default controls
+  startTrainingBtn.classList.add("hidden");
+  stopTrainingBtn.classList.add("hidden");
+  if (btnLoadReplay) btnLoadReplay.classList.add("hidden");
+
+  // 3. Start Loop
+  loopReplay();
+}
+
+function stopReplayMode() {
+  if (!isReplayMode) return;
+  isReplayMode = false;
+
+  // 1. Stop Loop
+  if (replayAnimationFrameId) cancelAnimationFrame(replayAnimationFrameId);
+  replayManager.pause();
+
+  // 2. Resume Camera
+  videoElement.play();
+
+  // 3. UI Updates
+  replayOverlay.classList.add("hidden");
+
+  // Restore Start Overlay if not recording/trained
+  if (!isRecording && !isTrainingMode) {
+    if (startOverlay) startOverlay.classList.remove("hidden");
+  }
+
+  startTrainingBtn.classList.remove("hidden");
+  stopTrainingBtn.classList.remove("hidden");
+  if (btnLoadReplay) btnLoadReplay.classList.remove("hidden");
+
+  // Clear Canvas
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+}
+
+function loopReplay() {
+  if (!isReplayMode) return;
+
+  // 1. Update Manager
+  const data = replayManager.update();
+
+  // 2. Render
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+  // Black background for replay
+  canvasCtx.fillStyle = "#111";
+  canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
+
+  if (data) {
+    // Draw Skeleton
+    if (data.landmarks) {
+      drawer.drawSkeleton(
+        data.landmarks,
+        data.error_joints || [], // Pass recorded error joints
+        displayController.skeletonColor,
+        false,
+        displayController.isMirrored,
+        null, // activeRule (Replay doesn't save rule name individually yet, or use data if available)
+        {
+          style: displayController.highlightStyle,
+          scope: displayController.highlightScope,
+          opacity: displayController.highlightOpacity,
+        },
+      );
+    }
+
+    // Draw Feedbacks (Synchronized)
+    if (data.feedbacks && data.feedbacks.length > 0) {
+      updateFeedbackOverlay(data.feedbacks);
+    } else {
+      updateFeedbackOverlay([]);
+    }
+
+    // Update Timeline UI
+    const duration = data.duration || 1;
+    // Prevent NaN
+    if (!isNaN(data.timestamp) && !isNaN(duration) && duration > 0) {
+      const percent = (data.timestamp / duration) * 100;
+      if (document.activeElement !== replayTimeline) {
+        replayTimeline.value = percent;
+      }
+      replayTimeCurrent.innerText = TimeUtils.formatTime(data.timestamp * 1000);
+      replayTimeTotal.innerText = TimeUtils.formatTime(duration * 1000);
+    }
+
+    if (!data.isPlaying && Math.abs(data.progress - 1) < 0.01) {
+      updateReplayUIState(); // End reached
+    }
+  }
+
+  replayAnimationFrameId = requestAnimationFrame(loopReplay);
+}
 
 // =============================================================================
 // TRAINING FLOW FUNCTIONS (New UX)
@@ -1205,6 +1421,9 @@ async function onResults(results) {
     console.error("LightingManager Error:", e);
   }
 
+  // 🆕 Replay Mode Guard
+  if (isReplayMode) return;
+
   // วาดภาพ (Clean Draw)
   canvasCtx.drawImage(
     results.image,
@@ -1636,8 +1855,10 @@ async function onResults(results) {
           // Use debugManager to update debug overlay
         }
 
-        // 2. *** เก็บข้อมูล (Data Logging) - เก็บทุก 3 frames เพื่อลดขนาดไฟล์ ***
-        if (isRecording && shouldCheckHeuristics) {
+        // 2. *** เก็บข้อมูล (Data Logging) ***
+        // ปรับปรุง: เก็บทุกเฟรมเพื่อให้ Replay ลื่นไหล (30 FPS)
+        // แต่ Feedback จะอัปเดตเฉพาะเมื่อ shouldCheckHeuristics เป็นจริง
+        if (isRecording) {
           const currentTime = (Date.now() - sessionStartTime) / 1000;
 
           // คำนวณค่าเฉลี่ย Visibility ของ Landmarks สำคัญ
@@ -1665,10 +1886,18 @@ async function onResults(results) {
           recordedSessionData.push({
             frame_number: recordedSessionData.length,
             timestamp: currentTime,
-            visibility_avg: Math.round(avgVisibility * 1000) / 1000, // ปัดเศษ 3 ตำแหน่ง
-            landmarks: results.poseLandmarks, // เก็บพิกัดทั้งตัว
-            active_feedbacks: feedbacks, // เก็บผลการตรวจ (ใช้เป็น Label ในอนาคต)
-            has_error: feedbacks.length > 0,
+            visibility_avg: Math.round(avgVisibility * 1000) / 1000,
+            // 🆕 Optimization: Round decimals to 5 places to save space (approx 50% reduction)
+            landmarks: results.poseLandmarks.map((lm) => ({
+              x: Number(lm.x.toFixed(5)),
+              y: Number(lm.y.toFixed(5)),
+              z: Number(lm.z.toFixed(5)),
+              visibility: Number((lm.visibility || 0).toFixed(5)),
+            })),
+            active_feedbacks: lastDisplayedFeedbacks || [], // ใช้ค่าล่าสุดที่โชว์อยู่ (Sticky)
+            error_joints: lastErrorJoints || [], // 🆕 บันทึกจุดที่ผิดด้วย
+            has_error:
+              lastDisplayedFeedbacks && lastDisplayedFeedbacks.length > 0,
           });
 
           // บันทึกคะแนนทุกเฟรม

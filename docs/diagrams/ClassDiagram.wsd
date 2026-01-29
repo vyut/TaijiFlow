@@ -196,6 +196,40 @@ package "UI Managers" <<UI>> {
         + toggleChat()
         + sendMessage(text)
     }
+
+    class WisdomManager {
+        + init()
+        + showQuote()
+        + close()
+    }
+
+    class FeedbackManager {
+        + open()
+        + submit(data)
+    }
+
+    class ShortcutsManager {
+        + init()
+        + toggleHelp()
+        + handleKey(event)
+    }
+
+    class WisdomManager {
+        + init()
+        + showQuote()
+        + close()
+    }
+
+    class FeedbackManager {
+        + open()
+        + submit(data)
+    }
+
+    class ShortcutsManager {
+        + init()
+        + toggleHelp()
+        + handleKey(event)
+    }
 }
 
 ' ============================================================================

@@ -138,6 +138,7 @@ group #F3E5F5 สิ้นสุดการฝึก (End Training)
     deactivate Scoring
     
     Training --> UI : แสดงผลคะแนน 📊
+    UI -> Scoring : ScorePopupManager.show()
     UI --> User : Score Popup
     deactivate Training
 end

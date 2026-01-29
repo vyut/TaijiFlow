@@ -32,6 +32,9 @@
 
 ```javascript
 // สร้างอัตโนมัติตอน DOMContentLoaded
+// Feedback Popup: A modal form for user feedback.
+// Glassmorphism Style: Consistent with other system popups.
+// Netlify Forms: Submits data directly to Netlify.
 window.feedbackManager = new FeedbackManager();
 ```
 

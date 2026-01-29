@@ -18,6 +18,7 @@ package "TaijiFlow AI System" {
     package "User Support (ระบบสนับสนุนผู้ใช้)" {
         usecase "UC-05: Manage Settings\n(ตั้งค่าระบบ)" as UC05
         usecase "UC-04: View Tutorial\n(ดูคู่มือการใช้งาน)" as UC04
+        usecase "UC-07: Send Feedback\n(ส่งข้อเสนอแนะ)" as UC07
     }
 
     package "Training System (ระบบการฝึกฝน)" {
@@ -31,6 +32,7 @@ package "TaijiFlow AI System" {
 trainee -- UC02
 trainee -- UC04
 trainee -- UC05
+trainee -- UC07
 
 admin -- UC06
 

@@ -11,7 +11,7 @@ TaijiFlow AI ใช้สถาปัตยกรรมแบบ **Client-Side O
 #### ข้อดีของ Client-Side Architecture
 
 | ข้อดี | รายละเอียด |
-|------|-----------|
+| :--- | :--- |
 | **ไม่มีค่า Server** | ไม่ต้องจ่ายค่า Hosting Backend |
 | **Offline Support** | ใช้งานได้หลังโหลด AI Model ครั้งแรก |
 | **Privacy** | ข้อมูลไม่ถูกส่งออกนอก |
@@ -71,7 +71,7 @@ TaijiFlow AI ใช้สถาปัตยกรรมแบบ **Client-Side O
 *รูปที่ 4.2: 4-Layer Architecture*
 
 | Layer | หน้าที่ | Modules | Responsibility |
-|-------|--------|---------|----------------|
+| :--- | :--- | :--- | :--- |
 | **Presentation** | แสดงผล UI | ui_manager, drawing_manager, shortcuts_manager, tutorial_manager, gesture_manager, feedback_manager, score_popup_manager, background_manager, webgl_manager, wisdom_manager | รับ input, แสดงผล Canvas/WebGL, ตอบโต้ผู้ใช้ |
 | **Business Logic** | ประมวลผลหลัก | script.js, heuristics_engine, calibration_manager, scoring_manager, rules_config_manager | วิเคราะห์ท่า, คำนวณคะแนน, จัดการกฎ |
 | **Data** | จัดการข้อมูล | session_manager, data_exporter, translations | Session, Export, i18n |
@@ -86,7 +86,7 @@ TaijiFlow AI ใช้สถาปัตยกรรมแบบ **Client-Side O
 #### Frontend Technologies
 
 | Technology | Version | Purpose |
-|------------|:-------:|---------|
+| :--- | :---: | :--- |
 | **HTML5** | 5 | Page Structure, Canvas, Video Elements |
 | **CSS3** | 3 | Styling, Theme System, Responsive Design |
 | **JavaScript** | ES6+ | Core Logic (22 modules) |
@@ -96,7 +96,7 @@ TaijiFlow AI ใช้สถาปัตยกรรมแบบ **Client-Side O
 #### AI / Machine Learning
 
 | Technology | Version | Purpose |
-|------------|:-------:|---------|
+| :--- | :---: | :--- |
 | **MediaPipe Pose** | @latest | Pose Detection (33 landmarks) |
 | **MediaPipe Tasks Vision** | @0.10.8 | Hand Gesture Recognition (👍✊) |
 | **Gemini API** | - | AI Chatbot (Optional) |
@@ -104,7 +104,7 @@ TaijiFlow AI ใช้สถาปัตยกรรมแบบ **Client-Side O
 #### Browser APIs
 
 | API | Purpose |
-|-----|---------|
+| :--- | :--- |
 | **Canvas API** | วาด Skeleton, Path, Trail, Ghost |
 | **WebGL 2.0** | Primitives Rendering, Shaders, Background Blur |
 | **Web Speech API** | Text-to-Speech เสียงเตือน |
@@ -126,7 +126,7 @@ TaijiFlow AI ใช้สถาปัตยกรรมแบบ **Client-Side O
 *รูปที่ 4.3: Module Dependencies Diagram*
 
 | Category | Modules | Count | หน้าที่ |
-|----------|:-------:|:-----:|--------|
+| :--- | :---: | :---: | :--- |
 | **Main Controller** | script.js | 1 | ควบคุมการทำงานหลัก (Glue Code) |
 | **Core Managers** | Camera, Heuristics, Calibration, Scoring, Performance | 5 | วิเคราะห์ท่า, จัดการ Input/Output หลัก |
 | **Display Managers** | Drawing, Ghost, Background, WebGL, SilkAnimation | 5 | วาด Canvas, WebGL, Ghost, Background |
@@ -263,7 +263,7 @@ class HeuristicsEngine {
 **9 Heuristic Rules by Level:**
 
 | Rule | ชื่อกฎ | L1 (พื้นฐาน) | L2 (มาตรฐาน) | L3 (ขั้นสูง) |
-|:----:|--------|:---:|:---:|:---:|
+| :---: | :--- | :---: | :---: | :---: |
 | R-01 | Path Shape | ✓ | ✓ | ✓ |
 | R-02 | Arm Rotation | | ✓ | ✓ |
 | R-03 | Elbow Sinking | ✓ | ✓ | ✓ |
@@ -594,7 +594,7 @@ class DebugManager {
 
 หน้าต่าง Rules Settings จัดกลุ่มกฎตาม Level เพื่อให้ผู้ใช้เข้าใจได้ง่าย:
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │  ⚙️ Rules Settings                                  │
 ├─────────────────────────────────────────────────────┤
@@ -608,9 +608,10 @@ class DebugManager {
 │  ☑ 4. Waist Initiation [Hip Vel: 1.0, Ratio: 2.0]  │
 │  ☑ 6. Smoothness       [Threshold: 0.05]           │
 ├─────────────────────────────────────────────────────┤
-│  L3: ยืนย่อ (เพิ่มอีก 2 กฎ)          ← สีม่วง       │
+│  L3: ยืนย่อ (เพิ่มอีก 3 กฎ)          ← สีม่วง       │
 │  ☑ 5. Vertical Stability [Threshold: 0.05]         │
 │  ☑ 8. Weight Shift     [Buffer: 0.3]               │
+│  ☑ 9. Coordination     [Threshold: 0.4]            │
 ├─────────────────────────────────────────────────────┤
 │  [🔄 Reset to Defaults]                             │
 └─────────────────────────────────────────────────────┘
@@ -619,7 +620,7 @@ class DebugManager {
 **Configurable Parameters:**
 
 | กฎ | Parameter | Default | ช่วง | ความหมาย |
-|:--:|-----------|:-------:|------|----------|
+| :---: | :--- | :---: | :--- | :--- |
 | 1 | Consistency | 0.6 | 0.3-0.9 | ความสม่ำเสมอของทิศทางหมุน |
 | 2 | Motion | 0.015 | 0.005-0.05 | ต้องขยับขึ้น/ลงอย่างน้อยเท่านี้ก่อนเช็คการหมุน |
 | 3 | Tolerance | 0.01 | 0.005-0.05 | ความอดทนต่อความสูงศอกที่เกินข้อมือ |
@@ -664,7 +665,7 @@ analyze(..., currentLevel) {
 **🎮 Control:**
 
 | Key | Action |
-|:---:|--------|
+| :---: | :--- |
 | `Space` | Start/Stop Training |
 | `Esc` | Cancel/Close |
 | `F` | Toggle Fullscreen |
@@ -672,7 +673,7 @@ analyze(..., currentLevel) {
 **👁️ Display Toggle:**
 
 | Option | Default | Description |
-|--------|:-------:|-------------|
+| :--- | :---: | :--- |
 | Path | ON | เส้นทางวงกลม |
 | Skeleton | ON | โครงกระดูกผู้ฝึก |
 | Instructor | ON | วิดีโอต้นแบบ (thumbnail) |
@@ -682,7 +683,7 @@ analyze(..., currentLevel) {
 | **Blur Background** | **OFF** | **🆕 เบลอฉากหลัง (Visual Effects)** |
 
 | Key | Action |
-|:---:|--------|
+| :---: | :--- |
 | `O` | Ghost (เงาครู) |
 | `I` | Instructor (วิดีโอครู) |
 | `P` | Path (เส้นทาง) |
@@ -697,7 +698,7 @@ analyze(..., currentLevel) {
 **⚙️ Settings:**
 
 | Key | Action |
-|:---:|--------|
+| :---: | :--- |
 | `M` | Mute/Unmute |
 | `L` | Language TH/EN |
 | `T` | Theme Dark/Light |
@@ -706,7 +707,7 @@ analyze(..., currentLevel) {
 **❓ Help:**
 
 | Key | Action |
-|:---:|--------|
+| :---: | :--- |
 | `H` | Open Tutorial |
 | `?` | Open Tutorial |
 | `/` | Show Shortcuts |
@@ -792,7 +793,7 @@ class SilkReelingAnimation {
 ระบบประกอบด้วย **30+ Classes** แบ่งเป็น **6 Packages:**
 
 | Package | Classes | Description |
-|---------|:-------:|-------------|
+| :--- | :---: | :--- |
 | Controllers | 3 | script.js, KeyboardController, DisplayController |
 | Core Managers | 5 | HeuristicsEngine, CalibrationManager, ScoringManager, CameraManager, PerformanceMonitor |
 | Display Managers | 4 | DrawingManager, GhostManager, BackgroundManager, WebGLManager |
@@ -801,9 +802,9 @@ class SilkReelingAnimation {
 
 ### 4.3.2 Key Class Relationships
 
-**Main Controller (script.js):**
+#### Main Controller (script.js)
 
-```
+```mermaid
 script.js ──────┬───> HeuristicsEngine
                 ├───> CalibrationManager
                 ├───> DrawingManager
@@ -814,18 +815,18 @@ script.js ──────┬───> HeuristicsEngine
                 └───> DisplayController
 ```
 
-**Display Controller:**
+#### Display Controller
 
-```
+```mermaid
 DisplayController ──┬───> GhostManager
                     ├───> BackgroundManager
                     │      └──> WebGLManager
                     └───> DisplayController
 ```
 
-**Heuristics Engine:**
+#### Heuristics Engine
 
-```
+```mermaid
 HeuristicsEngine <─── CalibrationManager (setCalibration)
 HeuristicsEngine ───> ScoringManager (recordFrame)
 HeuristicsEngine ───> DrawingManager (highlight violations)
@@ -853,7 +854,7 @@ HeuristicsEngine ───> DrawingManager (highlight violations)
 #### 4 Phases
 
 | Phase | Description | Key Steps |
-|:-----:|-------------|-----------|
+| :---: | :--- | :--- |
 | 1 | Start Training | เลือกท่า → กด Start / 👍 → เริ่ม Calibration |
 | 2 | Calibration | ทำ T-Pose → นับ 3 วินาที → บันทึกสัดส่วน |
 | 3 | Training Loop | วิเคราะห์ทุก frame → แสดง Feedback → บันทึกคะแนน |
@@ -910,7 +911,7 @@ HeuristicsEngine ───> DrawingManager (highlight violations)
 #### 8 States
 
 | State | Description | Variables |
-|-------|-------------|-----------|
+| :--- | :--- | :--- |
 | **PrivacyModal** | แสดง Privacy + Warning Modal | รอผู้ใช้กด "เข้าใจแล้ว" |
 | **MobileCheck** | ตรวจสอบอุปกรณ์ | isMobilePhone()? |
 | **MobileWarning** | เตือนผู้ใช้มือถือ | เลือก "กลับ" หรือ "ดำเนินการต่อ" |
@@ -923,7 +924,7 @@ HeuristicsEngine ───> DrawingManager (highlight violations)
 #### Transitions
 
 | From | To | Trigger |
-|------|-----|---------|
+| :--- | :--- | :--- |
 | **[*]** | PrivacyModal | เปิด app.html |
 | PrivacyModal | MobileCheck | กด "เข้าใจแล้ว" + initCamera() |
 | MobileCheck | MobileWarning | [isMobilePhone = true] |
@@ -931,7 +932,6 @@ HeuristicsEngine ───> DrawingManager (highlight violations)
 | MobileWarning | Idle | กด "ดำเนินการต่อ →" |
 | MobileWarning | **[*]** | กด "← กลับหน้าหลัก" (redirect) |
 
-*Document updated: 2026-01-25 (v1.1.2)*
 | Idle | Calibrating | กด Start / ยก 👍 |
 | Calibrating | Countdown | Calibration Complete |
 | Calibrating | Idle | กด Cancel / Timeout |
@@ -966,7 +966,7 @@ HeuristicsEngine ───> DrawingManager (highlight violations)
 ### 4.6.4 Support & Features (หน้าจออื่นๆ)
 
 | Feature | Screenshot | คำอธิบาย |
-|---------|------------|----------|
+| :--- | :--- | :--- |
 | **Tutorial** | ![Tutorial Popup](../screenshots/tutorial.png) | คู่มือการใช้งานและคำแนะนำเบื้องต้น |
 | **Chatbot** | ![Chatbot UI](../screenshots/chatbot.png) | หน้าต่างสนทนากับ AI (Gemini) |
 | **Feedback** | ![Feedback Box](../screenshots/feedback.png) | ช่องทางแจ้งปัญหา/ข้อเสนอแนะ |
@@ -978,7 +978,7 @@ Modal ที่แสดงเมื่อเข้าสู่หน้า app.
 **ส่วนประกอบ:**
 
 | Section | เนื้อหา |
-|---------|---------|
+| :--- | :--- |
 | 🔒 **Privacy** | 1. ประมวลผลในเครื่อง 2. ไม่ส่งข้อมูลออก 3. Gemini API (optional) |
 | ⚠️ **Warning** | 1. ข้อจำกัด (ไม่ใช่ครูจริง) 2. สุขภาพ 3. Disclaimer |
 
@@ -1001,7 +1001,7 @@ Modal ที่แสดงเมื่อตรวจพบว่าผู้�
 ระบบรองรับการแสดงผล 2 ธีม (Light/Dark) โดยมีการกำหนดชุดสี (Color Palette) ดังนี้:
 
 | Theme | Background | Text | Accent |
-|-------|------------|------|--------|
+| :--- | :--- | :--- | :--- |
 | Light (☀️) | `#f8fafc` | `#1e293b` | `#a855f7` |
 | Dark (🌙) | `#000000` | `#ffffff` | `#a855f7` |
 
@@ -1078,7 +1078,7 @@ landmark = {
 *รูปที่ 4.x: แผนภาพแสดงตำแหน่ง 33 Landmarks (ที่มา: MediaPipe)*
 
 | Index | Name | Index | Name |
-|:-----:|------|:-----:|------|
+| :---: | :--- | :---: | :--- |
 | 0 | nose | 16 | right_wrist |
 | 11 | left_shoulder | 17 | right_pinky |
 | 12 | right_shoulder | 18 | left_index |
@@ -1107,7 +1107,7 @@ feedback = {
 #### 4.7.3.1 LocalStorage Keys
 
 | Key | Type | Content |
-|-----|------|---------|
+| :--- | :--- | :--- |
 | `taijiflow_theme` | string | `"light"` / `"dark"` |
 | `taijiflow_lang` | string | `"th"` / `"en"` |
 | `taijiflow_audio` | boolean | Audio enabled |
@@ -1166,7 +1166,7 @@ data/
 ### 4.8.1 Patterns Used
 
 | Pattern | Where Used | Purpose |
-|---------|------------|---------|
+| :--- | :--- | :--- |
 | **Module Pattern** | ทุก Manager classes | Encapsulation - แยก scope |
 | **Singleton** | `ghostManager`, `uiManager` | Single Instance - ป้องกันสร้างซ้ำ |
 | **Observer** | Event Listeners | Reactive UI - อัปเดตเมื่อ state เปลี่ยน |

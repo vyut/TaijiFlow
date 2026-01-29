@@ -4,6 +4,32 @@
 
 ---
 
+## [v1.3.0] - 2026-01-28
+
+### 🎨 UI & Design (Major Overhaul)
+- **Glassmorphism Theme** - Refreshed all 9 Popups (Display, Rules, Shortcuts, Wisdom, Score, Tutorial, Feedback, Privacy, Mobile Warning) with a premium `bg-white/90` + `backdrop-blur-xl` look.
+- **Unified Borders** - Standardized all popup borders to `border-white/20` (neutral), removing inconsistent purple/green theme borders.
+- **Consistent Controls** - Added "Close (✕)" and "Reset to Defaults (🔄)" buttons to all major popups.
+
+### 🛠️ Popups Refactoring (Architecture)
+- **Rules Popup** (`rules_popup_manager.js`) - Refactored into a 4-Column Grid (L1, L2, L3, L4) with tooltips.
+- **Display Popup** (`display_popup_manager.js`) - Refactored into a 4-Column Grid (Trainee, Reference, View, System) with inline fine-tuning controls.
+
+### ✨ Visual Customization
+- **Fine-Tuning Controls** - Added detail settings for all visualizations:
+  - **Error Highlights**: Style (Vivid/Minimal/Outline) & Opacity.
+  - **Motion Trail**: Length (Short/Med/Long) & Color.
+  - **Path Guide**: Thickness & Color.
+  - **Ghost Overlay**: Opacity & Color Tint.
+- **Virtual Backgrounds** - Added **Custom Image Upload** support and removed simplified presets.
+
+### ⚙️ System Enhancements
+- **Mirror Mode 2.0** - Independent Rotation (0/90/180/270) and Flip Axis (H/V) controls.
+- **Side-by-Side 2.0** - Added Fit/Cover modes and Adjustable Split Ratios (50:50, 60:40).
+- **Mobile Experience** - Responsive Popup Grid (Stacks on mobile) and "Mobile Warning" modal for small screens.
+
+---
+
 ## [v1.2.0] - 2026-01-26
 
 ### 🏗️ Major Architecture Refactoring & Smart Chatbot

@@ -56,6 +56,7 @@ tests/
 | R-06 | 2 | Smoothness - acceleration |
 | R-07 | 2 | Continuity - pause detection |
 | R-08 | 2 | Weight Shift - center of mass |
+| R-09 | 2 | Coordination - hand & foot sync |
 
 **ตัวอย่าง Test Case:**
 
@@ -154,6 +155,7 @@ npm test -- --coverage
 | 3.6 | Smoothness | เคลื่อนไหวกระตุก | "เคลื่อนไหวให้ลื่น" | ✅ |
 | 3.7 | Continuity | หยุดนิ่ง | "อย่าหยุด" | ✅ |
 | 3.8 | Weight Shift | เอียงตัวมาก | "รักษาสมดุล" | ✅ |
+| 3.9 | Coordination | มือ/เท้าสวนทาง | "มือและเท้าไม่สัมพันธ์กัน" | ✅ |
 
 ### 6.3.4 Gesture Control Testing
 

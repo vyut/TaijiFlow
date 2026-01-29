@@ -32,6 +32,8 @@ A web-based real-time pose analysis system that helps practitioners learn and im
 | **Dark/Light Theme** | User preference saved locally |
 | **Privacy Notice** | Clear data handling disclosure on startup |
 | **Debug Mode** | Press `D` to toggle real-time analysis overlay |
+| **Advanced Visuals** | Customizable Error Highlights, Motion Trails, and Ghost Overlay opacity |
+| **Glassmorphism UI** | Modern, transparent interface with 4-column settings panels |
 | **Data Export** | JSON export for ML training data (Developer tool) |
 
 ---

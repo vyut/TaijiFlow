@@ -72,7 +72,7 @@ Popup ใช้ Glassmorphism Design:
 | Method | Description |
 |--------|-------------|
 | `toggle()` | เปิด/ปิด Popup (เรียก `init()` อัตโนมัติถ้ายังไม่สร้าง) |
-| `init()` | สร้าง DOM Elements และ Event Listeners |
+| `init()` | สร้าง DOM Elements และ Event Listeners สำหรับ: <br>- **Glassmorphism UI**: Uses the standard transparent styling.<br>- **Keyboard Listener**: Listens for '?' key to toggle visibility.<br>- **Close Button**: Added "Close" button for mouse users. |
 | `generateHtml()` | สร้าง HTML String สำหรับ Grid Layout |
 
 ---

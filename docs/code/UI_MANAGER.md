@@ -26,7 +26,7 @@
 ### 🎯 หน้าที่หลัก
 
 | หน้าที่ | คำอธิบาย |
-|---------|---------|
+| :--- | :--- |
 | **Unified Popups** | ระบบ Popup กลาง (showPopup) |
 | **Language Management** | สลับภาษา TH/EN |
 | **Theme Management** | สลับ Dark/Light Mode |
@@ -60,7 +60,7 @@ uiManager.showPopup("my-popup-id", "<h3>Title</h3><p>Content</p>");
 ### Supported Languages
 
 | Code | Language | Flag |
-|:----:|----------|:----:|
+| :---: | :--- | :---: |
 | `th` | ภาษาไทย | 🇹🇭 |
 | `en` | English | 🇺🇸 |
 
@@ -99,7 +99,7 @@ exercise_select → #exercise-select [title]
 ### Theme Options
 
 | Theme | Background | Text | Accent |
-|-------|------------|------|--------|
+| :--- | :--- | :--- | :--- |
 | `dark` | Gray-900 | White | Purple-400 |
 | `light` | White | Gray-900 | Purple-600 |
 
@@ -120,7 +120,7 @@ controls.classList.toggle(...);
 ### Notification Types
 
 | Type | Color | Icon | Use Case |
-|------|-------|:----:|----------|
+| :--- | :--- | :---: | :--- |
 | `info` | Blue | ℹ️ | ข้อมูลทั่วไป |
 | `success` | Green | ✅ | ทำสำเร็จ |
 | `warning` | Yellow | ⚠️ | คำเตือน |
@@ -144,7 +144,7 @@ controls.classList.toggle(...);
 ### Level Buttons
 
 | Level | Active Style | Inactive Style |
-|:-----:|--------------|----------------|
+| :---: | :--- | :--- |
 | L1 | Purple background | Transparent |
 | L2 | Purple background | Transparent |
 | L3 | Purple background | Transparent |
@@ -152,7 +152,7 @@ controls.classList.toggle(...);
 ### Record Button States
 
 | State | Text (TH) | Color |
-|-------|-----------|-------|
+| :--- | :--- | :--- |
 | Ready | บันทึก | Default |
 | Recording | หยุดบันทึก | Red |
 | Processing | กำลังประมวลผล... | Yellow |
@@ -179,21 +179,21 @@ showPopup(contentId, htmlContent, onCloseCallback) {
 ### Initialization
 
 | Method | Description |
-|--------|-------------|
+| :--- | :--- |
 | `constructor()` | กำหนดค่าเริ่มต้น, สร้าง translations |
 | `init()` | โหลดการตั้งค่าจาก localStorage |
 
 ### Global UI Methods
 
 | Method | Parameters | Description |
-|--------|------------|-------------|
+| :--- | :--- | :--- |
 | `showPopup(id, html, onClose)` | string, string, fn | แสดง Modal Popup กลางจอ |
 | `hidePopup()` | - | ปิด Popup ปัจจุบัน |
 
 ### Language Methods
 
 | Method | Returns | Description |
-|--------|---------|-------------|
+| :--- | :--- | :--- |
 | `toggleLanguage()` | string | สลับ TH ↔ EN |
 | `setLanguage(lang)` | void | ตั้งภาษาเฉพาะ |
 | `updateText()` | void | อัปเดตข้อความทั้งหน้า |
@@ -203,21 +203,21 @@ showPopup(contentId, htmlContent, onCloseCallback) {
 ### Theme Methods
 
 | Method | Returns | Description |
-|--------|---------|-------------|
+| :--- | :--- | :--- |
 | `toggleTheme()` | string | สลับ Dark ↔ Light |
 | `setTheme(theme)` | void | ตั้ง theme เฉพาะ |
 
 ### Notification Methods
 
 | Method | Parameters | Description |
-|--------|------------|-------------|
+| :--- | :--- | :--- |
 | `showNotification(msg, type, duration)` | string, string, number | แสดง toast |
 | `hideNotification(id)` | string | ซ่อน toast |
 
 ### Button State Methods
 
 | Method | Parameters | Description |
-|--------|------------|-------------|
+| :--- | :--- | :--- |
 | `updateLevelButtons(level)` | string | อัปเดตปุ่มระดับ |
 | `updateRecordButtonState(state)` | string | อัปเดตปุ่ม Record |
 | `setElementEnabled(id, enabled)` | string, boolean | Enable/Disable element |
@@ -225,6 +225,8 @@ showPopup(contentId, htmlContent, onCloseCallback) {
 ---
 
 ## 7. Code Examples
+
+The `UIManager` serves as the central orchestrator for the application's user interface. It handles global UI state, theme switching (Dark/Light), language switching (i18n), and initial UI setup. It delegates specific popup management to specialized managers (e.g., `DisplayPopupManager`, `RulesPopupManager`).
 
 ### Toggle Language with UI Update
 
@@ -296,6 +298,8 @@ updateText() {
   }
 }
 ```
+-   **Glassmorphism**: Enforces the `bg-white/90` + `backdrop-blur-xl` style across modals.
+-   **Theme Toggling**: Switches between 'dark' and 'light' classes on the `<html>` element.
 
 ---
 

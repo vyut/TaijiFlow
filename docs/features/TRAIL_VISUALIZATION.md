@@ -9,16 +9,19 @@
 ## 1. Overview
 
 ### Feature Name
+
 **Wrist Trail Visualization**
 
 ### Description
+
 แสดงเส้นทางการเคลื่อนไหวของมือ (Trail) แบบ Real-time บนหน้าจอขณะฝึก
 
 ### Features
-- เส้น Fading Line สีฟ้า (Cyan)
+
+- เส้น Fading Line หลากสี (Cyan, Gold, Lime, Magenta)
 - Glow effect ที่ปลาย (ตำแหน่งปัจจุบัน)
 - Smoothing ลด noise จาก MediaPipe
-- ปรับความยาว Trail ได้
+- ปรับความยาว Trail ได้ (Short, Medium, Long)
 
 ---
 
@@ -53,10 +56,15 @@ const SMOOTH_FACTOR = 0.4;
 ## 3. Usage
 
 ### UI
-ไปที่ **Display Options** → เลือก **🔵 Trail**
+
+ไปที่ **⚙️ Display** → **Trainee Column** → **Motion Trail**
+- **Toggle:** เปิด/ปิด Trail
+- **Length:** Short, Medium, Long
+- **Color:** Cyan, Gold, Lime, Magenta
 
 ### Keyboard
-กดปุ่ม **R**
+
+กดปุ่ม **R** (Toggle On/Off)
 
 ---
 
@@ -65,7 +73,7 @@ const SMOOTH_FACTOR = 0.4;
 ### Files
 
 | ไฟล์ | หน้าที่ |
-|------|--------|
+| :--- | :--- |
 | `js/drawing_manager.js` | `drawTrail()` - วาดเส้นและ glow |
 | `js/script.js` | เก็บ trailHistory + smoothing |
 | `index.html` | Trail checkbox |
@@ -88,7 +96,7 @@ smoothY = last.y * SMOOTH_FACTOR + wrist.y * (1 - SMOOTH_FACTOR);
 ## 5. Performance
 
 | ส่วน | Impact |
-|------|:------:|
+| :--- | :---: |
 | เก็บจุด | ~0.1% |
 | วาดเส้น | ~1-2% |
 | Glow | ~0.5% |

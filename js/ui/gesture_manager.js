@@ -151,7 +151,7 @@ class GestureManager {
 
       console.log("[GestureManager] Loading WASM files...");
       const vision = await FilesetResolver.forVisionTasks(
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/wasm"
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/wasm",
       );
 
       console.log("[GestureManager] Creating Gesture Recognizer...");
@@ -165,7 +165,7 @@ class GestureManager {
           },
           runningMode: "VIDEO",
           numHands: 2,
-        }
+        },
       );
 
       this.isReady = true;
@@ -195,7 +195,7 @@ class GestureManager {
       // Timeout 10 วินาที
       setTimeout(() => {
         console.warn(
-          "[GestureManager] MediaPipe load timeout, proceeding anyway..."
+          "[GestureManager] MediaPipe load timeout, proceeding anyway...",
         );
         resolve();
       }, 10000);
@@ -216,7 +216,7 @@ class GestureManager {
     this.overlayEl.className =
       "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 hidden";
     this.overlayEl.innerHTML = `
-      <div class="bg-black/80 backdrop-blur-sm rounded-2xl p-8 text-center shadow-2xl border border-purple-500/50">
+      <div class="bg-black/80 backdrop-blur-sm rounded-2xl p-8 text-center shadow-2xl border border-white/20 dark:border-gray-700/50">
         <div id="gesture-icon" class="text-6xl mb-4">👍</div>
         <div id="gesture-text" class="text-white text-xl mb-4">เริ่มการฝึก...</div>
         <div class="w-48 h-3 bg-gray-700 rounded-full overflow-hidden">
@@ -259,7 +259,7 @@ class GestureManager {
     try {
       const results = this.gestureRecognizer.recognizeForVideo(
         videoElement,
-        timestamp
+        timestamp,
       );
 
       // หา gesture ที่ detect ได้

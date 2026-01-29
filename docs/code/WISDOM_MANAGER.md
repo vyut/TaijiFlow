@@ -1,4 +1,6 @@
 # TaijiFlow AI - Wisdom Manager Documentation
+- **Daily Wisdom**: Shows a random quote on startup.
+- **Glassmorphism UI**: Beautiful, reliable aesthetic.
 
 **Version:** 1.0  
 **Last Updated:** 2026-01-25  
@@ -18,7 +20,7 @@
 
 ---
 
-## 2. การใช้งาน
+### 📊 การใช้งาน
 
 ```javascript
 const wisdomManager = new WisdomManager(uiManager);
@@ -54,6 +56,14 @@ window.TAIJI_QUOTES = [
 ```
 
 ---
+
+### Visual Structure
+
+| Layer | Component | Description |
+| :--- | :--- | :--- |
+| **Background** | `bg-white/90` | Glassmorphism base with blur |
+| **Animation** | Enso Circle | SVG path animation (Zen circle) |
+| **Content** | Quote + Author | Typography with fade-in effect |
 
 ## 5. Methods
 

@@ -72,12 +72,15 @@ package "🌐 TaijiFlow AI Web Application" as WebApp {
         [tutorial_manager.js] as TutorialManager
         [score_popup_manager.js] as ScorePopup
         [chatbot.js] as Chatbot
+        [feedback_manager.js] as Feedback
+        [wisdom_manager.js] as Wisdom
+        [shortcuts_manager.js] as Shortcuts
     }
     
     ' --- Business Logic Layer ---
     package "⚙️ BUSINESS LOGIC LAYER" <<business>> {
         [script.js\nMain Controller] as Script
-        [heuristics_engine.js\n8 Rules] as Heuristics
+        [heuristics_engine.js\n9 Rules] as Heuristics
         [calibration_manager.js\nT-Pose] as Calibration
         [scoring_manager.js\nScore] as Scoring
         [gesture_manager.js\n👍✊] as Gesture
@@ -116,6 +119,7 @@ package "🌐 EXTERNAL APIs (CDN)" <<external>> {
     cloud "Web APIs" as WebAPIs {
         [Web Speech API\nTTS] as WebSpeech
         [Canvas API\n2D Graphics] as CanvasAPI
+        [Netlify Forms] as NetlifyForms
     }
 }
 
@@ -135,6 +139,9 @@ AppHtml --> Script
 UIManager --> Script
 DrawingManager --> Heuristics
 ScorePopup --> Scoring
+Feedback --> NetlifyForms
+Wisdom --> UIManager
+Shortcuts --> UIManager
 
 ' Business Logic → Data
 Script --> Session

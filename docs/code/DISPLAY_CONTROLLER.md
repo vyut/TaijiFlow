@@ -24,7 +24,7 @@
 ### 🎯 หน้าที่หลัก
 
 | หน้าที่ | คำอธิบาย |
-|---------|---------|
+| :--- | :--- |
 | **Toggle Management** | จัดการ 6 display toggles |
 | **Trail Tracking** | บันทึกเส้นทางการเคลื่อนไหว |
 | **Checkbox Sync** | Sync state กับ UI checkboxes |
@@ -54,7 +54,7 @@ const displayController = new DisplayController({
 ### State Variables
 
 | Variable | Type | Default | Description |
-|----------|------|:-------:|-------------|
+| :--- | :--- | :---: | :--- |
 | `showGhostOverlay` | boolean | `false` | เงาครูฝึกบนวิดีโอหลัก |
 | `showInstructor` | boolean | `true` | Thumbnail ครูฝึกมุมขวาบน |
 | `showPath` | boolean | `true` | เส้นทางต้นแบบ |
@@ -89,7 +89,7 @@ const displayController = new DisplayController({
 ### Configuration
 
 | Parameter | Value | Description |
-|-----------|:-----:|-------------|
+| :--- | :---: | :--- |
 | `TRAIL_LENGTH` | 60 | จำนวน points สูงสุด |
 | `trailHistory` | Array | เก็บ {x, y, timestamp} |
 | `circularityScore` | number | คะแนนความเป็นวงกลม |
@@ -111,7 +111,7 @@ trailHistory = [
 ### Initialization Methods
 
 | Method | Description |
-|--------|-------------|
+| :--- | :--- |
 | `init()` | Initialize all display options |
 | `initDropdown()` | Setup dropdown toggle behavior |
 | `initGhostCheckbox()` | Setup Ghost checkbox |
@@ -125,14 +125,14 @@ trailHistory = [
 ### Control Methods
 
 | Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
+| :--- | :--- | :--- | :--- |
 | `toggleInstructor(show)` | boolean | void | Toggle instructor thumbnail |
 | `resetToDefaults()` | - | void | Reset ทุกค่าเป็น default |
 
 ### Trail Methods
 
 | Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
+| :--- | :--- | :--- | :--- |
 | `addTrailPoint(x, y)` | number, number | void | เพิ่ม point ใน trail |
 | `clearTrail()` | - | void | ล้าง trail history |
 

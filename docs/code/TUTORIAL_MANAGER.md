@@ -27,7 +27,9 @@
 | หน้าที่ | คำอธิบาย |
 |---------|---------|
 | **Popup Management** | เปิด/ปิด Tutorial popup |
-| **Tab Navigation** | 3 tabs (Principles, Exercises, How To Use) |
+| **Interactive Tabs** | "How to Use", "Principles", "Tips" |
+| **Glassmorphism UI** | Consistent transparent design |
+| **Visual Guides** | Displays icons and gesture descriptions |
 | **Content Rendering** | แสดงเนื้อหาตาม tab และภาษา |
 | **Exercise Selection** | เลือกท่าและระดับ |
 

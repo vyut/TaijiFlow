@@ -9,7 +9,9 @@
 ## 📋 สารบัญ
 
 1. [ภาพรวม](#1-ภาพรวม)
-2. [Score Display](#2-score-display)
+2. - **Score Visualization**: Displays circular score chart.
+   - **Glassmorphism UI**: Premium transparent background.
+   - **Grade Calculation**: Maps percentages to A-F grades.
 3. [Grading System](#3-grading-system)
 4. [Methods Reference](#4-methods-reference)
 5. [Code Examples](#5-code-examples)
